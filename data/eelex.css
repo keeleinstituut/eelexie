@@ -1,0 +1,29 @@
+body {
+	font-family: Arial, Tahoma, Verdana, Helvetica, sans-serif;
+}
+
+html {
+  height: 100%;
+  margin-bottom: 1px;
+}
+
+H1, H2, H3, H4, H5 {
+	margin: 0.1em 0 0.5em 0;
+	padding: 0;
+	color: #000;
+}
+
+.sektsioon {
+	width: auto;
+	margin-left: 120px;
+	margin-right: 120px;
+	border: 1px solid #00f;
+	padding: 20px;
+}
+.sektsioon tr {
+	background-color: #ddeeff;
+}
+.sektsioon td, th {
+	margin: 4px;
+	padding: 10px;
+}

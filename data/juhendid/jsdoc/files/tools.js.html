@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>tools.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/dxf.html">dxf</a></li>
+            
+                <li><a href="..&#x2F;classes/komponendid.html">komponendid</a></li>
+            
+                <li><a href="..&#x2F;classes/kontrollid.html">kontrollid</a></li>
+            
+                <li><a href="..&#x2F;classes/lisad.html">lisad</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_app.html">procs_app</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_edt.html">procs_edt</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_TextContMenu.html">procs_TextContMenu</a></li>
+            
+                <li><a href="..&#x2F;classes/tools.html">tools</a></li>
+            
+                <li><a href="..&#x2F;classes/tools_dx.html">tools_dx</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: tools.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+* tools.js
+* IE verstiooni oma
+*
+* @class tools
+*&#x2F;
+
+&#x2F;**
+* Hoiab highlight&#x27;i ajal ajutist värvi.
+* 
+* @property str_TDBGCol
+* @type {String}
+*&#x2F;
+var str_TDBGCol;
+var xmlHTTPAsync, myAsync;
+
+&#x2F;&#x2F; readyState Property (IXMLHTTPRequest)
+var XMLHTTP_UNINITIALIZED = 0;
+var XMLHTTP_LOADING = 1;
+var XMLHTTP_LOADED = 2;
+var XMLHTTP_INTERACTIVE = 3;
+var XMLHTTP_COMPLETED = 4;
+
+
+
+&#x2F;**
+* Tagasatb algus ja lõpu wild characteridest vabastatud otsitava.
+*
+* @method getSrPn2
+* @param {String} algPtrn String, mida puhastada vaja.
+* @param {String} mode Päringu tüüp - kas &quot;MySql&quot; või &quot;XML&quot;.
+* @returns {String} Puhastatud string.
+*&#x2F;
+function getSrPn2(algPtrn, mode) {
+    &#x2F;&#x2F;tulemuseks newPtrn - srchPtrn (algus ja lõputärnidest vabastatud otsitav)
+    &#x2F;&#x2F;mode - &quot;MySql&quot;, &quot;XML&quot;
+    var i, ptrn, newPtrn;
+    if ((jsLeft(algPtrn, 1) == &quot;*&quot;)) {
+        ptrn = jsMid(algPtrn, 1);
+        newPtrn = &quot;&quot;;
+    } else {
+        ptrn = algPtrn;
+        newPtrn = &quot;^&quot;;
+    }
+    for (i = 0; i &lt; ptrn.length; i++) {
+        if ((jsMid(ptrn, i, 1) == &quot;\\&quot;)) {
+            if ((i &lt; ptrn.length - 1)) {
+                if ((jsMid(ptrn, i + 1, 1) == &quot;\\&quot;)) {
+                    if ((mode == &quot;MySql&quot;)) {
+                        newPtrn = newPtrn + &quot;\\\\\\\\&quot;;
+                    } else {
+                        newPtrn = newPtrn + &quot;\\\\&quot;;
+                    }
+                    i = i + 1;
+                } else if ((jsMid(ptrn, i + 1, 1) == &quot;*&quot;)) {
+                    if ((mode == &quot;MySql&quot;)) {
+                        newPtrn = newPtrn + &quot;\\\\*&quot;;
+                    } else {
+                        newPtrn = newPtrn + &quot;\\*&quot;;
+                    }
+                    i = i + 1;
+                } else if ((jsMid(ptrn, i + 1, 1) == &quot;?&quot;)) {
+                    if ((mode == &quot;MySql&quot;)) {
+                        newPtrn = newPtrn + &quot;\\\\?&quot;;
+                    } else {
+                        newPtrn = newPtrn + &quot;\\?&quot;;
+                    }
+                    i = i + 1;
+                } else if ((specCh.indexOf(jsMid(ptrn, i + 1, 1)) &gt; -1)) {
+                    if ((mode == &quot;MySql&quot;)) {
+                        newPtrn = newPtrn + &quot;\\\\&quot; + jsMid(ptrn, i + 1, 1);
+                    } else {
+                        newPtrn = newPtrn + &quot;\\&quot; + jsMid(ptrn, i + 1, 1);
+                    }
+                    i = i + 1;
+                } else {
+                    if ((mode == &quot;MySql&quot;)) {
+                        &#x2F;&#x2F;                        newPtrn = newPtrn + &quot;\\\\\\\\&quot;;
+                    } else {
+                        &#x2F;&#x2F;                        newPtrn = newPtrn + &quot;\\\\&quot;;
+                    }
+                }
+            } else {
+                if ((mode == &quot;MySql&quot;)) {
+                    &#x2F;&#x2F;                    newPtrn = newPtrn + &quot;\\\\\\\\&quot;;
+                } else {
+                    &#x2F;&#x2F;                    newPtrn = newPtrn + &quot;\\\\&quot;;
+                }
+            }
+            if ((i == ptrn.length - 1)) {
+                newPtrn = newPtrn + &quot;$&quot;;
+            }
+        } else if ((specCh.indexOf(jsMid(ptrn, i, 1)) &gt; -1)) {
+            if ((jsMid(ptrn, i, 1) == &quot;*&quot;)) {
+                if ((i &gt; 0 &amp;&amp; i &lt; ptrn.length - 1)) {
+                    newPtrn = newPtrn + &quot;.*&quot;;
+                }
+            } else if ((jsMid(ptrn, i, 1) == &quot;?&quot;)) {
+                if ((mode == &quot;MySql&quot;)) {
+                    &#x2F;&#x2F;MySQL REGEXP otsib baidi, mitte tähe kaupa !!!!!!!!!!!!!!;
+                    &#x2F;&#x2F;                newPtrn = newPtrn + &quot;(.|Š|Ž|Õ|Ä|Ö|Ü|š|ž|õ|ä|ö|ü)&quot;
+                    &#x2F;&#x2F;                newPtrn = newPtrn + &quot;([[:alpha:]]|Š|Ž|Õ|Ä|Ö|Ü|š|ž|õ|ä|ö|ü)&quot;
+                    &#x2F;&#x2F;{1,2} - üks täpitäht v kaks tavalist tähte;
+                    newPtrn = newPtrn + &quot;.{1,2}&quot;;
+                } else {
+                    newPtrn = newPtrn + &quot;.&quot;;
+                }
+                if ((i == ptrn.length - 1)) {
+                    newPtrn = newPtrn + &quot;$&quot;;
+                }
+            } else {
+                if ((mode == &quot;MySql&quot;)) {
+                    newPtrn = newPtrn + &quot;\\&quot;;
+                }
+                newPtrn = newPtrn + &quot;\\&quot; + jsMid(ptrn, i, 1);
+                if ((i == ptrn.length - 1)) {
+                    newPtrn = newPtrn + &quot;$&quot;;
+                }
+            }
+        } else {
+            newPtrn = newPtrn + jsMid(ptrn, i, 1);
+            if ((i == ptrn.length - 1)) {
+                newPtrn = newPtrn + &quot;$&quot;;
+            }
+        }
+    }
+    return newPtrn;
+} &#x2F;&#x2F;getSrPn2
+
+
+&#x2F;**
+* Kontrollib, kas sisendstringis on sümboleid, mis ei ole tähestikus.
+*
+* @method CheckForSymbols
+* @param {String} sQryText String, millest otsitakse.
+* @param {String} voivadOlla Lisaks lubatud märgid.
+* @returns {Boolean} true, kui leiti.
+*&#x2F;
+function CheckForSymbols(sQryText, voivadOlla) {
+    var tahed = msAlpha + voivadOlla;
+    for (var i = 0; i &lt; sQryText.length; i++) {
+        if (tahed.indexOf(sQryText.charAt(i)) &lt; 0) {
+            return true;
+        }
+    }
+    return false;
+} &#x2F;&#x2F;CheckForSymbols
+
+
+&#x2F;**
+* Higlight&#x27;ib asju, kui hiirega neile peale minna. Kasutab muutujat str_TDBGCol. 
+*
+* @method SwitchTD
+* @param {Object} obj_evnt  
+* @returns {Boolean} true, kui leiti.
+*&#x2F;
+function SwitchTD(obj_evnt) {
+    var obj_tdelem = obj_evnt.srcElement.parentElement;
+    switch (obj_evnt.type) {
+        case &quot;mouseover&quot;:
+            str_TDBGCol = obj_tdelem.style.backgroundColor;
+            obj_tdelem.style.borderColor = &quot;Black&quot;;
+            obj_tdelem.style.backgroundColor = &quot;Background&quot;;
+            break;
+        case &quot;mouseout&quot;:
+            obj_tdelem.style.borderColor = str_TDBGCol;
+            obj_tdelem.style.backgroundColor = str_TDBGCol;
+            break;
+    }
+} &#x2F;&#x2F;SwitchTD
+
+
+&#x2F;**
+* Tagastab MSXML dokumendi objekti.
+*
+* @method CreateMSXMLDocumentObject
+* @returns {Object} null, kui ei õnnestu.
+*&#x2F;
+function CreateMSXMLDocumentObject() {
+    if (typeof (ActiveXObject) != &quot;undefined&quot;) {
+        &#x2F;&#x2F;        var progIDs = [
+        &#x2F;&#x2F;                        &quot;Msxml2.DOMDocument.6.0&quot;,
+        &#x2F;&#x2F;                        &quot;Msxml2.DOMDocument.5.0&quot;,
+        &#x2F;&#x2F;                        &quot;Msxml2.DOMDocument.4.0&quot;,
+        &#x2F;&#x2F;                        &quot;Msxml2.DOMDocument.3.0&quot;,
+        &#x2F;&#x2F;                        &quot;MSXML2.DOMDocument&quot;,
+        &#x2F;&#x2F;                        &quot;MSXML.DOMDocument&quot;
+        &#x2F;&#x2F;                      ];
+
+        var progIDs = [
+                        &quot;Msxml2.DOMDocument.6.0&quot;,
+                        &quot;Msxml2.DOMDocument.3.0&quot;,
+                        &quot;MSXML2.DOMDocument&quot;,
+                        &quot;MSXML.DOMDocument&quot;
+                      ];
+        for (var i = 0; i &lt; progIDs.length; i++) {
+            try {
+                return new ActiveXObject(progIDs[i]);
+            } catch (e) { };
+        }
+    }
+    return null;
+} &#x2F;&#x2F; CreateMSXMLDocumentObject
+
+
+&#x2F;**
+* Teisendab XML stringi objektiks.
+*
+* @method BuildXMLFromString
+* @param {String} text
+* @returns {Object} MSXML dokumendi objekt. null, kui ei õnnestu. 
+*&#x2F;
+function BuildXMLFromString(text) {
+    var xmlDoc = null;
+    if (window.DOMParser) { &#x2F;&#x2F; all browsers, except IE before version 9
+        var parser = new DOMParser();
+        try {
+            xmlDoc = parser.parseFromString(text, &quot;text&#x2F;xml&quot;);
+        } catch (e) {
+            &#x2F;&#x2F; if text is not well-formed, 
+            &#x2F;&#x2F; it raises an exception in IE from version 9
+            alert(&quot;XML parsing error (&#x27;DOMParser()&#x27;.&#x27;parseFromString&#x27;).&quot;);
+            return null;
+        }
+    }
+    else {  &#x2F;&#x2F; Internet Explorer before version 9
+        xmlDoc = CreateMSXMLDocumentObject();
+        if (!xmlDoc) {
+            alert(&quot;Cannot create MSXMLDocument object&quot;);
+            return null;
+        }
+        xmlDoc.loadXML(text);
+    }
+
+    var errorMsg = null;
+    if (xmlDoc.parseError &amp;&amp; xmlDoc.parseError.errorCode != 0) {
+        errorMsg = &quot;XML Parsing Error: &quot; + xmlDoc.parseError.reason
+                          + &quot; at line &quot; + xmlDoc.parseError.line
+                          + &quot; at position &quot; + xmlDoc.parseError.linepos;
+    }
+    else {
+        if (xmlDoc.documentElement) {
+            if (xmlDoc.documentElement.nodeName == &quot;parsererror&quot;) {
+                errorMsg = xmlDoc.documentElement.childNodes[0].nodeValue;
+            }
+        }
+        else {
+            errorMsg = &quot;XML Parsing Error!&quot;;
+        }
+    }
+
+    if (errorMsg) {
+        alert(errorMsg + &quot;\n\n&quot; + text);
+        return null;
+    }
+
+    return xmlDoc;
+} &#x2F;&#x2F; BuildXMLFromString
+
+
+
+&#x2F;**
+* Teeb (Ajax) päringust xml objekti.
+*
+* @method ParseHTTPResponse
+* @param {Object} myRequest 
+* @returns {Object} MSXML dokumendi objekt. null, kui ei õnnestu. 
+*&#x2F;
+function ParseHTTPResponse(myRequest) {
+    var xmlDoc = myRequest.responseXML;
+
+    &#x2F;&#x2F; if responseXML is not valid, try to create the XML document from the responseText property
+    if (!xmlDoc || !xmlDoc.documentElement) {
+        xmlDoc = BuildXMLFromString(myRequest.responseText);
+    }
+
+    &#x2F;&#x2F; if there was an error while parsing the XML document
+    var errorMsg = null;
+    if (xmlDoc) {
+        if (xmlDoc.parseError &amp;&amp; xmlDoc.parseError.errorCode != 0) {
+            errorMsg = &quot;XML Parsing Error: &quot; + xmlDoc.parseError.reason
+                  + &quot; at line &quot; + xmlDoc.parseError.line
+                  + &quot; at position &quot; + xmlDoc.parseError.linepos;
+        }
+        else {
+            if (xmlDoc.documentElement) {
+                if (xmlDoc.documentElement.nodeName == &quot;parsererror&quot;) {
+                    errorMsg = xmlDoc.documentElement.childNodes[0].nodeValue;
+                }
+            }
+        }
+    }
+    if (errorMsg) {
+        alert(errorMsg);
+        return null;
+    }
+
+    &#x2F;&#x2F; ok, the XML document is valid
+    return xmlDoc;
+} &#x2F;&#x2F; ParseHTTPResponse
+
+
+&#x2F;**
+* InitDomDoc. Luuakse uus xmldomdoc.
+*
+* @method IDD
+* @param {String} domsrc Allika tüüp. &quot;string&quot;, &quot;file&quot;, &quot;&quot;.
+* @param {String} domstr Viide allikale või allikas ise, sõltuvalt muutuja domsrc väärtusest. Kui domsrc on &quot;&quot;, siis funktsioon loob tühja dokumendi.
+* @param {Boolean} res_ext Kas lahendada välised viited.
+* @param {Boolean} val_on_parse Kas laadimisel valideeritakse.
+* @param {Object} domsc Skeem või null.
+* @returns {Object} xmldomdoc objekt.
+*&#x2F;
+function IDD(domsrc, domstr, res_ext, val_on_parse, domsc) {
+
+    var tempdom = new ActiveXObject(&quot;Msxml2.DOMDocument.6.0&quot;);
+    tempdom.async = false;
+    tempdom.preserveWhiteSpace = false;
+    tempdom.resolveExternals = res_ext;
+    tempdom.validateOnParse = val_on_parse;
+    if (domsc != null) {
+        tempdom.schemas = domsc;
+    }
+    var domsta;
+    switch (domsrc.toLowerCase()) {
+        case &quot;string&quot;:
+            domsta = tempdom.loadXML(domstr);
+            break;
+        case &quot;file&quot;:
+            domsta = tempdom.load(domstr);
+            break;
+        case &quot;&quot;:
+            domsta = true;
+            break;
+    }
+    return tempdom;
+} &#x2F;&#x2F; IDD
+
+
+&#x2F;**
+* Sünkroonne cgi postituspäring.
+*
+* @method exCGISync
+* @param {String} srvCGIFile Aadress, kuhu postitatakse.
+* @param {String} cmdId Postituse sisu.
+* @returns {Object} Request object.
+*&#x2F;
+function exCGISync(srvCGIFile, cmdId) {
+    var xh = getXmlHttpObject();
+    if (xh == null) {
+        alert(&quot;Your browser does not support XMLHttp!&quot;);
+        window.status = &quot;&quot;;
+        return null;
+    }
+    xh.open(&quot;POST&quot;, srvCGIFile, false); &#x2F;&#x2F;async = false
+    xh.setRequestHeader(&quot;Content-Type&quot;, &quot;text&#x2F;plain; charset=&#x27;utf-8&#x27;;&quot;);
+    xh.send(cmdId);
+    return xh;
+} &#x2F;&#x2F; exCGISync
+
+
+&#x2F;**
+* Tagastab Ajax objekti. 
+*
+* @method getXmlHttpObject
+* @returns {Object} = new XMLHttpRequest();
+*&#x2F;
+function getXmlHttpObject() {
+    var xmlHttp = null;
+    var moodus = &#x27;&#x27;;
+    try {
+        &#x2F;&#x2F; Firefox, Opera 8.0+, Safari, IE 7+
+        xmlHttp = new XMLHttpRequest();
+        moodus = &#x27;new XMLHttpRequest()&#x27;;
+    }
+    catch (e) {
+        try {
+            &#x2F;&#x2F; Internet Explorer 6+
+            xmlHttp = new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;);
+            moodus = &#x27;new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;)&#x27;;
+        }
+        catch (e) {
+            &#x2F;&#x2F; IE 5.5+
+            xmlHttp = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+            moodus = &#x27;new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;)&#x27;;
+        }
+    }
+    return xmlHttp;
+}
+
+
+
+&#x2F;**
+* Teeb asünkroonse päringu servfuncs.cgi-st ja vastus läheb funktsiooni doHttpReadyStateChange.
+*
+* @method QueryResponseAsync
+* @param {Object} oPrmDom XML objekt päringuga.
+*&#x2F;
+function QueryResponseAsync(oPrmDom) {
+    xmlHTTPAsync = getXmlHttpObject();
+    xmlHTTPAsync.onreadystatechange = doHttpReadyStateChange;
+    xmlHTTPAsync.open(&quot;POST&quot;, &quot;srvfuncs.cgi&quot;, true);
+    xmlHTTPAsync.setRequestHeader(&quot;Content-Type&quot;, &quot;text&#x2F;xml; charset=&#x27;utf-8&#x27;;&quot;);
+    &#x2F;&#x2F; cmd, vol, nfo, axp, exp[, q:A]
+    xmlHTTPAsync.send(oPrmDom.xml);
+} &#x2F;&#x2F;QueryResponseAsync
+
+
+&#x2F;**
+* Töötleb päringu vastust ja edastatakse funktsiooniga asyncCompleted.
+*
+* @method doHttpReadyStateChange
+*&#x2F;
+function doHttpReadyStateChange() {
+    if (xmlHTTPAsync.readyState == XMLHTTP_COMPLETED) {
+        var oSrvRspDOM, rspNode, domsta;
+        if (xmlHTTPAsync.statusText == &quot;OK&quot;) {
+            &#x2F;&#x2F; sta, cnt, vol[, q:A|q:sr]
+            oSrvRspDOM = IDD(&quot;&quot;, &quot;&quot;, false, false, null);
+            domsta = oSrvRspDOM.loadXML(xmlHTTPAsync.responseText); &#x2F;&#x2F;responseXML: TypeName = DomDocument
+            if (!domsta) {
+                var pe = oSrvRspDOM.parseError;
+                if (pe.errorCode != 0) {
+                    ShowXMLParseError(oSrvRspDOM);
+                }
+                oSrvRspDOM = IDD(&quot;String&quot;, &quot;&lt;rsp&#x2F;&gt;&quot;, false, false, null);
+                rspNode = oSrvRspDOM.documentElement.appendChild(oSrvRspDOM.createNode(NODE_ELEMENT, &quot;appSta&quot;, &quot;&quot;));
+                rspNode.text = &quot;AppFailure&quot;;
+            }
+            else {
+                rspNode = oSrvRspDOM.documentElement.appendChild(oSrvRspDOM.createNode(NODE_ELEMENT, &quot;appSta&quot;, &quot;&quot;));
+                rspNode.text = &quot;AppSuccess&quot;;
+            }
+        }
+        else
+            oSrvRspDOM = IDD(&quot;String&quot;, &quot;&lt;rsp&#x2F;&gt;&quot;, false, false, null);
+
+        rspNode = oSrvRspDOM.documentElement.appendChild(oSrvRspDOM.createNode(NODE_ELEMENT, &quot;statusText&quot;, &quot;&quot;));
+        rspNode.text = xmlHTTPAsync.statusText;
+        rspNode = oSrvRspDOM.documentElement.appendChild(oSrvRspDOM.createNode(NODE_ELEMENT, &quot;status&quot;, &quot;&quot;));
+        rspNode.text = xmlHTTPAsync.status;
+
+        var nRTLen = 512;
+        rspNode = oSrvRspDOM.documentElement.appendChild(oSrvRspDOM.createNode(NODE_ELEMENT, &quot;responseText&quot;, &quot;&quot;));
+        if (xmlHTTPAsync.responseText.length &gt; nRTLen)
+            rspNode.text = xmlHTTPAsync.responseText.substr(0, nRTLen) + &quot; ...&quot;;
+        else
+            rspNode.text = xmlHTTPAsync.responseText;
+        oSrvRspDOM.setProperty(&quot;SelectionLanguage&quot;, &quot;XPath&quot;);
+        oSrvRspDOM.setProperty(&quot;SelectionNamespaces&quot;, sXmlNsList);
+
+        asyncCompleted(oSrvRspDOM);
+    }
+} &#x2F;&#x2F;doHttpReadyStateChange
+
+
+&#x2F;**
+* Teeb asünkroonse päringu  antud aadressil ja vastus läheb funktsiooni myAsyncStateChanged.
+*
+* @method exCGIASync
+* @param {String} srvCGIFile Aadress.
+* @param {String} cmdId Postituse sisu.
+*&#x2F;
+function exCGIASync(srvCGIFile, cmdId) {
+    myAsync = getXmlHttpObject();
+    if (myAsync != null) {
+        myAsync.onreadystatechange = myAsyncStateChanged;
+        myAsync.open(&quot;POST&quot;, srvCGIFile, true); &#x2F;&#x2F; async == true
+        myAsync.setRequestHeader(&quot;Content-Type&quot;, &quot;text&#x2F;plain; charset=&#x27;utf-8&#x27;;&quot;);
+        myAsync.send(cmdId);
+    }
+    return;
+} &#x2F;&#x2F; exCGIASync
+
+
+&#x2F;**
+* Kontrollib, kas päring on valmis, kui on, siis saadab selle edasi funktsioonile toCaller.
+*
+* @method myAsyncStateChanged
+*&#x2F;
+function myAsyncStateChanged() {
+    if (myAsync.readyState == XMLHTTP_COMPLETED) {
+        toCaller(myAsync);
+    }
+}
+
+
+&#x2F;**
+* Otsustab kumba väljatrükki kasutada.
+*
+* @method ExportToWord
+* @param {String} nStartPageNumber
+* @param {String} bRemoveShaded
+* @param {String} sWordFileName
+* @param {String} checkSpellingAndGrammar
+* @param {String} oPrintXSL
+* @param {String} sCSS
+* @param {String} oErrDisp
+* @param {String} srNode
+* @returns {Int} erinevad
+*&#x2F;
+function ExportToWord(nStartPageNumber,
+                        bRemoveShaded,
+                        sWordFileName,
+                        checkSpellingAndGrammar,
+                        oPrintXSL,
+                        sCSS,
+                        oErrDisp,
+                        srNode) {
+
+    try{
+      return ExportToWordS(nStartPageNumber,bRemoveShaded,sWordFileName,checkSpellingAndGrammar,oPrintXSL,sCSS,oErrDisp,srNode);
+    }catch(err){
+        alert(&quot;Viga trükkimisel: Kontrolli IE sätteid.&quot;);
+        
+        &#x2F;&#x2F;if(err.number == -2146827859){
+        &#x2F;&#x2F;    return ExportToWordNS(nStartPageNumber,bRemoveShaded,sWordFileName,checkSpellingAndGrammar,oPrintXSL,sCSS,oErrDisp,srNode);
+        &#x2F;&#x2F;}else{
+        &#x2F;&#x2F;    alert(&quot;Trüki viga: &quot;+err.number+&quot;\n message: &quot;+err.message);
+        &#x2F;&#x2F;}
+    }
+    &#x2F;&#x2F;mingi viga hoopis vastata
+    return 0;
+} &#x2F;&#x2F;ExportToWordNS
+
+&#x2F;**
+* Salvestab väljatrüki faili.
+*
+* @method ExportToWordNS
+* @param {String} nStartPageNumber
+* @param {String} bRemoveShaded
+* @param {String} sWordFileName
+* @param {String} checkSpellingAndGrammar
+* @param {String} oPrintXSL
+* @param {String} sCSS
+* @param {String} oErrDisp
+* @param {String} srNode
+* @returns {Int} 0
+*&#x2F;
+function ExportToWordNS(nStartPageNumber,
+                        bRemoveShaded,
+                        sWordFileName,
+                        checkSpellingAndGrammar,
+                        oPrintXSL,
+                        sCSS,
+                        oErrDisp,
+                        srNode) {
+
+
+    window.status = &quot;Streamita ...&quot;;
+    var oXSL = oPrintXSL.cloneNode(true);
+
+    oXSL.documentElement.selectSingleNode(NS_XSL_PR + &quot;:variable[@name = &#x27;printing&#x27;]&quot;).text = &quot;1&quot;;
+    if (bRemoveShaded) {
+        oXSL.documentElement.selectSingleNode(NS_XSL_PR + &quot;:variable[@name = &#x27;showShaded&#x27;]&quot;).text = &quot;0&quot;;
+    }
+
+    var tekst = &quot;&lt;html&gt;&quot; +
+		            &quot;\r\n&lt;head&gt;&quot; +
+			            &quot;\r\n&lt;META HTTP-EQUIV=&#x27;Content-Type&#x27; CONTENT=&#x27;text&#x2F;html; charset=utf-8&#x27;&gt;&quot; +
+			            &quot;\r\n&lt;style&gt;\r\n&quot; +
+			                sCSS +
+			            &quot;&lt;&#x2F;style&gt;&quot; +
+		            &quot;\r\n&lt;&#x2F;head&gt;\r\n&quot; +
+		            srNode.transformNode(oXSL) +
+	            &quot;\r\n&lt;&#x2F;html&gt;&quot;;
+
+   window.open(&quot;data:application&#x2F;octet-stream,&quot; + encodeURIComponent(tekst));
+
+&#x2F;&#x2F;window.open(&quot;data:application&#x2F;octet-stream;filename=file.doc,&quot; + encodeURIComponent(tekst), &quot;file.doc&quot;);
+
+    return 0;
+} &#x2F;&#x2F;ExportToWordNS
+
+&#x2F;**
+* Vastutab Wordi trükkimise eest. (ActiveXObject(&quot;ADODB.Stream&quot;);)
+*
+* @method ExportToWordS
+* @param {String} nStartPageNumber
+* @param {String} bRemoveShaded
+* @param {String} sWordFileName
+* @param {String} checkSpellingAndGrammar
+* @param {String} oPrintXSL
+* @param {String} sCSS
+* @param {String} oErrDisp
+* @param {String} srNode
+* @returns {Int} erinevad
+*&#x2F;
+function ExportToWordS(nStartPageNumber,
+                        bRemoveShaded,
+                        sWordFileName,
+                        checkSpellingAndGrammar,
+                        oPrintXSL,
+                        sCSS,
+                        oErrDisp,
+                        srNode) {
+
+
+    &#x2F;&#x2F; &#x27;sWordFileName&#x27; siin üldse ei kasutata ...
+
+    window.status = &quot;Preparing XSL ...&quot;;
+    var oXSL = oPrintXSL.cloneNode(true);
+
+    oXSL.documentElement.selectSingleNode(NS_XSL_PR + &quot;:variable[@name = &#x27;printing&#x27;]&quot;).text = &quot;1&quot;;
+    if (bRemoveShaded) {
+        oXSL.documentElement.selectSingleNode(NS_XSL_PR + &quot;:variable[@name = &#x27;showShaded&#x27;]&quot;).text = &quot;0&quot;;
+    }
+
+    &#x2F;&#x2F;    window.status = &quot;Accessing query results ...&quot;;
+    &#x2F;&#x2F;    var usrUnName = &quot;&quot;, i;
+    &#x2F;&#x2F;    for (i = 0; i &lt; sUsrName.length; i++) {
+    &#x2F;&#x2F;        if (i &gt; 0)
+    &#x2F;&#x2F;            usrUnName += &#x27;_&#x27;;
+    &#x2F;&#x2F;        usrUnName += sUsrName.charCodeAt(i);
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;    var srvDoc = IDD(&quot;File&quot;, &quot;temp&#x2F;printDOM_&quot; + usrUnName + &quot;.xml&quot;, false, false, null);
+    &#x2F;&#x2F;    var xslIndented = IDD(&quot;File&quot;, &quot;xsl&#x2F;tools&#x2F;indented_copy.xsl&quot;, false, false, null);
+    &#x2F;&#x2F;    srvDoc.transformNodeToObject(xslIndented, srvDoc);
+
+    &#x2F;&#x2F;    srvDoc.setProperty(&quot;SelectionLanguage&quot;, &quot;XPath&quot;);
+    &#x2F;&#x2F;    srvDoc.setProperty(&quot;SelectionNamespaces&quot;, &quot;xmlns:&quot; + DICPR + &quot;=&#x27;&quot; + DICURI + &quot;&#x27;&quot;);
+
+
+    &#x2F;&#x2F;    var dicConfDom, cfgElem, viewFont, wordFontSize;
+    &#x2F;&#x2F;    dicConfDom = IDD(&quot;File&quot;, &quot;shsconfig_&quot; + dic_desc + &quot;.xml&quot;, false, false, null);
+    &#x2F;&#x2F;    cfgElem = dicConfDom.documentElement.selectSingleNode(&quot;colorsFonts&#x2F;viewArea&#x2F;viewFont&quot;);
+    &#x2F;&#x2F;    if (cfgElem) {
+    &#x2F;&#x2F;        viewFont = cfgElem.text;
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;    cfgElem = dicConfDom.documentElement.selectSingleNode(&quot;colorsFonts&#x2F;viewArea&#x2F;wordFontSize&quot;);
+    &#x2F;&#x2F;    if (cfgElem) {
+    &#x2F;&#x2F;        wordFontSize = parseInt(cfgElem.text);
+    &#x2F;&#x2F;    }
+
+
+    &#x2F;&#x2F; Word doc sulgemine peab enne uue kirjutamist käima ...
+    window.status = &quot;Accessing Word object ...&quot;;
+    var oWord = eelexSWCtl.propWordApp;
+    if (oWord == null) {
+        window.status = &quot;MS Word objekt pole kättesaadav (loomine)!&quot;;
+        return -1;
+    }
+
+    try {
+        oWord.Visible = true;
+    }
+    catch (e) {
+        window.status = &quot;MS Word objekt pole kättesaadav (nähtav)!&quot;;
+        return -1;
+    }
+
+    window.status = &quot;Enumerating Word documents ...&quot;;
+    var oEnum = new Enumerator(oWord.Documents);
+    for (; !oEnum.atEnd(); oEnum.moveNext()) {
+        if (oEnum.item().Name == &#x27;artiklid.txt&#x27;)
+            oEnum.item().Close(wdDoNotSaveChanges);
+    }
+
+    window.status = &quot;Writing local file ...&quot;;
+    &#x2F;&#x2F;    var d = new Date();
+    &#x2F;&#x2F;    var qInfoStr = lcRoot.selectSingleNode(&quot;itm[@n = &#x27;QUERY&#x27;][@l = &#x27;&quot; + sAppLang + &quot;&#x27;]&quot;).text + &quot;: &quot; +
+    &#x2F;&#x2F;        sQryInfo + &quot;; &quot; + outDOM.childNodes.length + &quot; &quot; +
+    &#x2F;&#x2F;        lcRoot.selectSingleNode(&quot;itm[@n = &#x27;ENTRIES&#x27;][@l = &#x27;&quot; + sAppLang + &quot;&#x27;]&quot;).text +
+    &#x2F;&#x2F;        &quot; (&quot; + d.toLocaleString() + &quot;).&quot;;
+    &#x2F;&#x2F;    outDOM.setAttribute(&quot;qinfo&quot;, qInfoStr);
+
+    &#x2F;&#x2F; &quot;c:&#x2F;EELex&#x2F;Väljatrükid&#x2F;artiklid.txt&quot;
+    var fn = eelexSWCtl.propActualVtr;
+    var tekst = &quot;&lt;html&gt;&quot; +
+		            &quot;\r\n&lt;head&gt;&quot; +
+			            &quot;\r\n&lt;META HTTP-EQUIV=&#x27;Content-Type&#x27; CONTENT=&#x27;text&#x2F;html; charset=utf-8&#x27;&gt;&quot; +
+			            &quot;\r\n&lt;style&gt;\r\n&quot; +
+			                sCSS +
+			            &quot;&lt;&#x2F;style&gt;&quot; +
+		            &quot;\r\n&lt;&#x2F;head&gt;\r\n&quot; +
+		            srNode.transformNode(oXSL) +
+	            &quot;\r\n&lt;&#x2F;html&gt;&quot;;
+
+    var strm = new ActiveXObject(&quot;ADODB.Stream&quot;);
+    strm.Type = adTypeText;
+    strm.Charset = &quot;utf-8&quot;;
+    strm.LineSeparator = adCRLF;
+    strm.Open();
+    strm.WriteText(tekst);
+    strm.SaveToFile(fn, adSaveCreateOverWrite);
+    strm.Close();
+    strm = null;
+
+    &#x2F;&#x2F;var sta;
+    &#x2F;&#x2F;try {
+    &#x2F;&#x2F;    sta = eelexSWCtl.setTempPrintFile(tekst);
+    &#x2F;&#x2F;}
+    &#x2F;&#x2F;catch (e) {
+    &#x2F;&#x2F;    window.status = &quot;MS Word väljatrükk pole kättesaadav (.setTempPrintFile)!&quot;;
+    &#x2F;&#x2F;    return -1;
+    &#x2F;&#x2F;}
+    &#x2F;&#x2F;if (sta != 1) {
+    &#x2F;&#x2F;    window.status = &quot;MS Word väljatrükk pole kättesaadav (.setTempPrintFile -&gt; sta)!&quot;;
+    &#x2F;&#x2F;    return -1;
+    &#x2F;&#x2F;}
+
+    window.status = &quot;Loading Word document ...&quot;;
+    &#x2F;&#x2F; 2003 VBA ...
+    &#x2F;&#x2F; Open: FileName, ConfirmConversions, ReadOnly, AddToRecentFiles, PasswordDocument, PasswordTemplate, Revert,
+    &#x2F;&#x2F;          WritePasswordDocument, WritePasswordTemplate, Format, Encoding, Visible,
+    &#x2F;&#x2F;          OpenConflictDocument, OpenAndRepair , DocumentDirection, NoEncodingDialog
+    var oLastQueryDoc = oWord.Documents.Open(fn, false, true, false, &#x27;&#x27;, &#x27;&#x27;, true, &#x27;&#x27;, &#x27;&#x27;, wdOpenFormatWebPages, msoEncodingUTF8, true);
+    if (checkSpellingAndGrammar)
+        oLastQueryDoc.Content.NoProofing = false;
+    else
+        oLastQueryDoc.Content.NoProofing = true;
+
+
+    window.status = &quot;Customizing Word doc ...&quot;;
+    oLastQueryDoc.ActiveWindow.View.Type = wdPrintView;
+
+    &#x2F;&#x2F; ss_: kõik &#x27;Indent&#x27; ja &#x27;Alignment&#x27; tehakse XSL-is ja CSS-is
+    if (!(dic_desc == &quot;ss_&quot;)) { &#x2F;&#x2F;  || dic_desc == &quot;sp_&quot;
+        oLastQueryDoc.Content.ParagraphFormat.Alignment = wdAlignParagraphLeft;
+    }
+
+    &#x2F;&#x2F;    if (viewFont) {
+    &#x2F;&#x2F;        oLastQueryDoc.Content.Font.Name = viewFont
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;    if (wordFontSize) {
+    &#x2F;&#x2F;        oLastQueryDoc.Content.Font.Size = wordFontSize
+    &#x2F;&#x2F;    }
+
+    try {
+
+        switch (dic_desc) {
+            case &#x27;sp_&#x27;:
+                &#x2F;&#x2F; sp_ korral UL (OL) - ide jaoks ei &#x27;LeftIndent&#x27; sobi: (toob kõik bulletid vasakusse äärde)
+                oLastQueryDoc.PageSetup.TopMargin = oWord.CentimetersToPoints(2);
+                oLastQueryDoc.PageSetup.BottomMargin = oWord.CentimetersToPoints(2);
+                oLastQueryDoc.PageSetup.LeftMargin = oWord.CentimetersToPoints(2);
+                oLastQueryDoc.PageSetup.RightMargin = oWord.CentimetersToPoints(3);
+                &#x2F;&#x2F;                oLastQueryDoc.Content.ParagraphFormat.SpaceBefore = oWord.CentimetersToPoints(0);
+                break;
+            case &#x27;ss_&#x27;:
+                &#x2F;&#x2F; ss_: kõik &#x27;Indent&#x27; ja &#x27;Alignment&#x27; tehakse XSL-is ja CSS-is
+                &#x2F;&#x2F;                oLastQueryDoc.PageSetup.TextColumns.SetCount(2);
+                &#x2F;&#x2F;                oLastQueryDoc.PageSetup.TextColumns.EvenlySpaced = true;
+                break;
+            case &#x27;ems&#x27;:
+                break;
+            default:
+                oLastQueryDoc.PageSetup.TopMargin = oWord.CentimetersToPoints(2);
+                oLastQueryDoc.PageSetup.BottomMargin = oWord.CentimetersToPoints(2);
+                oLastQueryDoc.PageSetup.LeftMargin = oWord.CentimetersToPoints(3);
+                oLastQueryDoc.PageSetup.RightMargin = oWord.CentimetersToPoints(4);
+
+                oLastQueryDoc.Content.ParagraphFormat.LeftIndent = oWord.CentimetersToPoints(0.5);
+                oLastQueryDoc.Content.ParagraphFormat.RightIndent = oWord.CentimetersToPoints(0);
+                oLastQueryDoc.Content.ParagraphFormat.FirstLineIndent = oWord.CentimetersToPoints(-0.5);
+                break;
+        }
+
+        oLastQueryDoc.Content.ParagraphFormat.LineSpacingRule = wdLineSpaceSingle;
+    }
+    catch (e) {
+        oErrDisp.innerHTML += &quot;\n&lt;u&gt;ParagraphFormat (&quot; + dic_desc + &quot;)&lt;&#x2F;u&gt;: there was a MS Word &quot; + e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;;
+    }
+
+
+    if (nStartPageNumber &gt; -1) {
+        try {
+            oLastQueryDoc.Sections(1).Footers(wdHeaderFooterPrimary).PageNumbers.NumberStyle = wdPageNumberStyleArabic;
+            oLastQueryDoc.Sections(1).Footers(wdHeaderFooterPrimary).PageNumbers.IncludeChapterNumber = false;
+            oLastQueryDoc.Sections(1).Footers(wdHeaderFooterPrimary).PageNumbers.RestartNumberingAtSection = true;
+            oLastQueryDoc.Sections(1).Footers(wdHeaderFooterPrimary).PageNumbers.StartingNumber = nStartPageNumber;
+            &#x2F;&#x2F;	Add: 1. - align, 2. - FirstPage
+            oLastQueryDoc.Sections(1).Footers(wdHeaderFooterPrimary).PageNumbers.Add(wdAlignPageNumberCenter, true);
+        }
+        catch (e) {
+            oErrDisp.innerHTML += &quot;\n&lt;u&gt;PageNumbers (&quot; + dic_desc + &quot;)&lt;&#x2F;u&gt;: there was a MS Word &quot; + e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;;
+        }
+    }
+
+
+    &#x2F;&#x2F;	ComputeStatistics: 1. - statistic, 2. - IncludeFootnotesAndEndnotes
+    &#x2F;&#x2F;	var nPageCount = oArtsDoc.ComputeStatistics(wdStatisticPages, false);
+
+    oWord.Visible = true;
+    oWord.Activate();
+    oWord = null;
+
+    return 0;
+
+} &#x2F;&#x2F;ExportToWordS
+
+
+&#x2F;**
+* Teisendab täpitähed %HH kujule (näiteks õ - %F5).
+*
+* @method val1257
+* @param {String} s Sisend.
+* @returns {String} Väljund.
+*&#x2F;
+function val1257(s) {
+    var arg1257 = s;
+    arg1257 = arg1257.replace(&#x2F;õ&#x2F;g, &quot;%F5&quot;);
+    arg1257 = arg1257.replace(&#x2F;ä&#x2F;g, &quot;%E4&quot;);
+    arg1257 = arg1257.replace(&#x2F;ö&#x2F;g, &quot;%F6&quot;);
+    arg1257 = arg1257.replace(&#x2F;ü&#x2F;g, &quot;%FC&quot;);
+
+    arg1257 = arg1257.replace(&#x2F;Õ&#x2F;g, &quot;%D5&quot;);
+    arg1257 = arg1257.replace(&#x2F;Ä&#x2F;g, &quot;%C4&quot;);
+    arg1257 = arg1257.replace(&#x2F;Ö&#x2F;g, &quot;%D6&quot;);
+    arg1257 = arg1257.replace(&#x2F;Ü&#x2F;g, &quot;%DC&quot;);
+
+    arg1257 = arg1257.replace(&#x2F;ž&#x2F;g, &quot;%FE&quot;);
+    arg1257 = arg1257.replace(&#x2F;Ž&#x2F;g, &quot;%DE&quot;);
+    arg1257 = arg1257.replace(&#x2F;š&#x2F;g, &quot;%F0&quot;);
+    arg1257 = arg1257.replace(&#x2F;Š&#x2F;g, &quot;%D0&quot;);
+    return arg1257;
+} &#x2F;&#x2F; val1257
+
+
+&#x2F;**
+* Valideerib XMLi. Näitab errorit. 
+*
+* @method ValidateXML
+* @param {Object} oXMLNode XMLi objekt.
+* @param {Object} oSchemaCache Läheb IDD viimaseks väärtuseks.
+* @returns {Boolean} true, kui valiidne. 
+*&#x2F;
+function ValidateXML(oXMLNode, oSchemaCache) {
+    var tempdom = IDD(&quot;&quot;, &quot;&quot;, false, true, oSchemaCache);
+    var domsta = tempdom.loadXML(oXMLNode.xml);
+    if (!domsta) {
+        var pe = tempdom.parseError;
+        if (pe.errorCode != 0) {
+            ShowXMLParseError(tempdom);
+        }
+        return false;
+    }
+    else
+        return true;
+} &#x2F;&#x2F; ValidateXML
+
+
+&#x2F;**
+* Näitab kasutajale XMLi valideerimise viga.
+*
+* @method ShowXMLParseError
+* @param {Object} srcDOM XML objekt, kus viga oli.
+*&#x2F;
+function ShowXMLParseError(srcDOM) {
+    var sValErrTxt, pikkus = 100;
+    var pe = srcDOM.parseError;
+    var pestr = FILE_WORD + &quot;:\t&quot; + pe.url + &quot;\n&quot; +
+					ERROR_WORD + &quot;\t0x&quot; + hex(pe.errorCode, true) + &quot; (&quot; + pe.errorCode + &quot;): &quot; + pe.reason + &quot;\n&quot; +
+					LINE_WORD + &quot;\t&quot; + pe.line + &quot;, pos &quot; + pe.linepos + &quot; (filepos &quot; + pe.filepos + &quot;).\n\n&quot; +
+					SRC_TEXT + &quot;:\t&quot; + pe.srcText;
+    alert(VAL_ERR + &#x27;\n\n&#x27; + pestr);
+} &#x2F;&#x2F; ShowXMLParseError
+
+
+&#x2F;**
+* Unikaalse nime koostamiseks tõstutundetule keskkonnale (näiteks css). Tähed teisendatakse numbrilisteks koodideks. 
+*
+* @method unNameXsl 
+* @param {String} inpStr Sisendstring
+* @return {String} 
+*&#x2F;
+function unNameXsl(inpStr) {
+    var unStr = &#x27;&#x27;, i;
+    &#x2F;&#x2F; unStr = inpStr.replace(&#x2F;:&#x2F;, &quot;-&quot;);
+    for (i = 0; i &lt; inpStr.length; i++) {
+        unStr += &#x27;_&#x27; + inpStr.charCodeAt(i);
+    }
+    return unStr;
+} &#x2F;&#x2F; unNameXsl
+
+
+&#x2F;**
+* Teeb sisendstringi esitähe suureks. 
+*
+* @method captl 
+* @param {String} inpStr Sisendstring
+* @return {String} Väljund.
+*&#x2F;
+function captl(inpStr) {
+    return inpStr.substr(0, 1).toUpperCase() + inpStr.substr(1);
+} &#x2F;&#x2F; captl
+
+&#x2F;**
+* Sorteerib järjendi (array) kasutades funktsiooni arrSort. Liidab vastuse \b-ga
+*
+* @method arrSort 
+* @param {Array} myArr
+* @return {String} 
+*&#x2F;
+function arrSort(myArr) {
+    return myArr.sort(ciSort).join(&#x27;\b&#x27;);
+    &#x2F;&#x2F;    return myArr.toArray().sort(ciSort).join(&#x27;\b&#x27;);
+}
+
+
+&#x2F;**
+* Sorteerimise abifunktsioon ( ci - &quot;case insensitive&quot;, tõstutundetu).
+*
+* @method ciSort 
+* @param {String} param1
+* @param {String} param2
+* @return {Int}  String.localeCompare
+*&#x2F;
+function ciSort(param1, param2) {
+    var first = param1.toLowerCase();
+    var second = param2.toLowerCase();
+    return first.localeCompare(second);
+}
+
+&#x2F;**
+*  
+*
+* @method mdArrSortCi 
+* @param {String} param1 ?
+* @param {String} param2
+* @return {Int} String.localeCompare
+*&#x2F;
+function mdArrSortCi(param1, param2) {
+    var first = param1[0].toLowerCase();
+    var second = param2.toLowerCase();
+    return first.localeCompare(second);
+}
+
+
+&#x2F;**
+*  Tagastab sisendstringi positsioonilt mystart stringi pikkusega mylength.
+*
+* @method jsMid 
+* @param {String} mystring Sisendstring.
+* @param {Int} mystart Alguspositsioon.
+* @param {Int} mylength Tähtede arv.
+* @return {String} 
+*&#x2F;
+function jsMid(mystring, mystart, mylength) {
+    return mystring.substr(mystart, mylength);
+}
+
+&#x2F;**
+*   Stringi vasakust poolest niipalju kui vaja.
+*
+* @method jsLeft 
+* @param {String} mystring
+* @param {Int} mylength
+* @return {String} 
+*&#x2F;
+function jsLeft(mystring, mylength) {
+    return mystring.substr(0, mylength);
+}
+
+
+&#x2F;**
+*  Stringi paremast poolest niipalju kui vaja.
+*
+* @method jsRight 
+* @param {String} mystring
+* @param {Int} mylength
+* @return {String} 
+*&#x2F;
+function jsRight(mystring, mylength) {
+    return mystring.substr(mystring.length - mylength);
+}
+
+&#x2F;**
+*  Asendab mystringi seest jupp oldStr stringiga newStr.
+*
+* @method jsReplace 
+* @param {String} mystring
+* @param {String} oldStr
+* @param {String} newStr
+* @return {String} 
+*&#x2F;
+function jsReplace(mystring, oldStr, newStr) {
+    &#x2F;&#x2F;    return mystring.replace(oldStr, newStr);
+    &#x2F;&#x2F;    var r = new RegExp(oldStr, &quot;g&quot;);
+    &#x2F;&#x2F;    return mystring.replace(r, newStr);
+    &#x2F;&#x2F;    var rets = mystring;
+    &#x2F;&#x2F;    var j = 0;
+    &#x2F;&#x2F;    while (rets.indexOf(oldStr) &gt; -1) {
+    &#x2F;&#x2F;        rets = rets.replace(oldStr, newStr);
+    &#x2F;&#x2F;        j += 1;
+    &#x2F;&#x2F;        if (j &gt; 20)
+    &#x2F;&#x2F;            blahh;
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;    return rets;
+    return mystring.split(oldStr).join(newStr);
+}
+
+
+&#x2F;**
+*  return myNum.toFixed(myDd);
+*
+* @method jsFormatNumber 
+* @param {Int} myNum
+* @param {Int} myDd
+* @return {String} 
+*&#x2F;
+function jsFormatNumber(myNum, myDd) {
+    return myNum.toFixed(myDd);
+}
+
+
+&#x2F;**
+*  Kontrollib, kas objekt on undefined.
+*
+* @method jsIsNull 
+* @param {Object} thing Kontrollitav objekt.
+* @return {Boolean} true, kui undefined.
+*&#x2F;
+function jsIsNull(thing) {
+    if (typeof (thing) == &quot;undefined&quot;)
+        return true;
+    else
+        return false;
+}
+
+
+&#x2F;**
+*  Kontrollib, kas objekt on tüüpi date.
+*
+* @method jsIsDate 
+* @param {String} sDate Kontrollitav kuupäev.
+* @return {Boolean} true
+*&#x2F;
+function jsIsDate(sDate) {
+    var scratch = new Date(Date.parse(sDate));
+    return true;
+    &#x2F;&#x2F;    if (scratch.toString() == &quot;NaN&quot; || scratch.toString() == &quot;Invalid Date&quot;) {
+    &#x2F;&#x2F;        return false;
+    &#x2F;&#x2F;    } else {
+    &#x2F;&#x2F;        return true;
+    &#x2F;&#x2F;    }
+}
+
+
+&#x2F;**
+*  Keerab stringi tagurpidi.
+*
+* @method jsStrReverse 
+* @param {String} s  
+* @return {String} 
+*&#x2F;
+function jsStrReverse(s) {
+    var rets = &#x27;&#x27;;
+    for (var ixChar = 0; ixChar &lt; s.length; ixChar++) {
+        rets = s.charAt(ixChar) + rets;
+    }
+    return rets;
+}
+
+&#x2F;**
+*  Tagastab XML elemendi väärtuse. 
+*
+* @method xmlElementTextValue 
+* @param {Object} myElem  XML element.
+* @return {String} 
+*&#x2F;
+function xmlElementTextValue(myElem) {
+    if (!myElem)
+        return &#x27;&#x27;;
+    if (&#x27;textContent&#x27; in myElem)
+        return myElem.textContent;
+    else
+        return myElem.text; &#x2F;&#x2F; MSXML
+}
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lc>
+  <art>
+    <!--'art' eesti keeles-->
+    <itm n="NAME_VOL" l="et">köide</itm>
+    <itm n="DELD_VOL" l="et">Kustutatud</itm>
+    <itm n="ALL_VOLS" l="et">Kõik köited</itm>
+    <itm n="NAME_FIND" l="et">Otsi</itm>
+    <itm n="NAME_PATH" l="et">Rada [</itm>
+    <itm n="NAME_EDIT" l="et">Toimetamisala</itm>
+    <itm n="NAME_TABLE" l="et">Tabelina</itm>
+    <itm n="NAME_AS_VIEW" l="et">Vaatena</itm>
+    <itm n="NAME_VIEW" l="et">Vaade</itm>
+    <itm n="TEST_DB" l="et"> - [T E S T B A A S]</itm>
+    <itm n="NAME_ARTICLE" l="et">Artikkel</itm>
+    <itm n="NAME_IMAGES" l="et">Illustratsioon(id)</itm>
+    <itm n="NAME_BROWSE" l="et">Otsingutulemuste tabel</itm>
+    <itm n="CHOOSE_VOL" l="et">Vali köide</itm>
+    <itm n="ADD_ARTICLE" l="et">Lisa artikkel</itm>
+    <itm n="PRINT_ARTICLES" l="et">Trüki artiklid</itm>
+    <itm n="SR_TOOLS" l="et">Sõnastiku tööriistad</itm>
+    <itm n="IMPORT_ARTICLE" l="et">Impordi artikkel muust sõnastikust</itm>
+    <itm n="XML_SCHEMA" l="et">Skeem (XML reeglistik)</itm>
+    <itm n="APP_TIPS" l="et">Lühispikker</itm>
+    <itm n="APP_HELP" l="et">Rakenduse juhend</itm>
+    <itm n="ATTR_ENUMS" l="et">Atribuudi väärtuste loend</itm>
+    <itm n="ATTR_TEXT" l="et">Atribuudi tekst</itm>
+    <itm n="ELEM_ENUMS" l="et">Elemendi väärtuste loend</itm>
+    <itm n="ELEM_TEXT" l="et">Elemendi tekst</itm>
+    <itm n="ADV_QUERY" l="et">Laiendatud võimalustega otsing</itm>
+    <itm n="QRY_CASE_SENSITIVITY" l="et">Linnuke: otsing on tõstutundetu, \nTühi: otsing eristab suuri ja väikseid tähti</itm>
+    <itm n="QRY_SYMBOL_SENSITIVITY" l="et">Linnuke: otsitakse kõiki märke, \nTühi: otsitakse ainult tähti</itm>
+    <itm n="QRY_FAKULT_SENSITIVITY" l="et">Linnuke: otsitakse ka fakultatiivseid järjendeid</itm>
+    <itm n="QRY_GLOBAL_SENSITIVITY" l="et">Linnuke: otsitakse kogu artiklist (globaalselt), \nTühi: otsitakse valitud piirkonnast (lokaalselt)</itm>
+    <itm n="QRYTYPE_MODES" l="et">.//text() - otsing kõikidest elemendi all olevatest tekstidest eraldi; . - otsing elemendi all leiduva kogu teksti kohta tervikuna; text() - otsing ainult selle elemendi teksti(de)s, mitte alamtekstides.</itm>
+    <itm n="ART_TOOLS" l="et">Artikli tööriistad</itm>
+    <itm n="ENTRY_FIRST" l="et">Esimene artikkel</itm>
+    <itm n="ENTRY_PREV" l="et">Eelmine artikkel: Ctrl + Shift + ←</itm>
+    <itm n="ENTRY_NEXT" l="et">Järgmine artikkel: Ctrl + Shift + →</itm>
+    <itm n="ENTRY_LAST" l="et">Viimane artikkel</itm>
+    <itm n="ART_HISTORY" l="et">Artiklite ajalugu</itm>
+    <itm n="EXPAND_COLLAPSE" l="et">Kõik elemendid kinni/lahti</itm>
+    <itm n="VALIDATE_ARTICLE" l="et">Valideeri artikkel: Ctrl + Shift + V</itm>
+    <itm n="SAVE_ARTICLE" l="et">Salvesta artikkel: Ctrl + Shift + S</itm>
+    <itm n="DELETE_ARTICLE" l="et">Kustuta (taasta) artikkel: Ctrl + Shift + K</itm>
+    <itm n="APP_UNDO" l="et">Tühista (Undo)</itm>
+    <itm n="APP_REDO" l="et">Taasta (Redo)</itm>
+    <itm n="UNDO_TITLE" l="et">Mitu puhvrit tagasi võtta saab</itm>
+    <itm n="REDO_TITLE" l="et">Puhvrite koguarv</itm>
+    <itm n="ALIGN_VIEW_LEFT" l="et">Joonda vasakult</itm>
+    <itm n="ALIGN_VIEW_CENTER" l="et">Joonda keskele</itm>
+    <itm n="ALIGN_VIEW_RIGHT" l="et">Joonda paremalt</itm>
+    <itm n="ALIGN_VIEW_JUSTIFY" l="et">Joonda mõlemalt poolt</itm>
+    <itm n="PRINT_VIEW" l="et">Trüki vaade</itm>
+    <itm n="QRY_METHOD_XML" l="et">Päring XML süntaksi järgi</itm>
+    <!--'art' inglise keeles-->
+    <itm n="NAME_VOL" l="en">volume</itm>
+    <itm n="DELD_VOL" l="en">Deleted</itm>
+    <itm n="ALL_VOLS" l="en">All volumes</itm>
+    <itm n="NAME_FIND" l="en">Search</itm>
+    <itm n="NAME_PATH" l="en">Path [</itm>
+    <itm n="NAME_EDIT" l="en">Edit</itm>
+    <itm n="NAME_TABLE" l="en">As&#xA0;table</itm>
+    <itm n="NAME_AS_VIEW" l="en">As&#xA0;layout</itm>
+    <itm n="NAME_VIEW" l="en">Layout</itm>
+    <itm n="TEST_DB" l="en"> - [T E S T &#xA0; D A T A B A S E]</itm>
+    <itm n="NAME_ARTICLE" l="en">Entry</itm>
+    <itm n="NAME_IMAGES" l="en">Illustration(s)</itm>
+    <itm n="NAME_BROWSE" l="en">Matched entries list</itm>
+    <itm n="CHOOSE_VOL" l="en">Choose volume</itm>
+    <itm n="ADD_ARTICLE" l="en">Add entry</itm>
+    <itm n="PRINT_ARTICLES" l="en">Print entries</itm>
+    <itm n="SR_TOOLS" l="en">Dictionary tools</itm>
+    <itm n="IMPORT_ARTICLE" l="en">Import entry from another dictionary</itm>
+    <itm n="XML_SCHEMA" l="en">Schema</itm>
+    <itm n="APP_TIPS" l="en">Tips</itm>
+    <itm n="APP_HELP" l="en">Help</itm>
+    <itm n="ATTR_ENUMS" l="en">Attribute value choices</itm>
+    <itm n="ATTR_TEXT" l="en">Attribute value</itm>
+    <itm n="ELEM_ENUMS" l="en">Element value choices</itm>
+    <itm n="ELEM_TEXT" l="en">Element value</itm>
+    <itm n="ADV_QUERY" l="en">Advanced search</itm>
+    <itm n="QRY_CASE_SENSITIVITY" l="en">Checked: case insensitive</itm>
+    <itm n="QRY_SYMBOL_SENSITIVITY" l="en">Checked: nonletters included</itm>
+    <itm n="QRY_GLOBAL_SENSITIVITY" l="en">Checked: looking global, in the whole entry</itm>
+    <itm n="QRYTYPE_MODES" l="en">.//text() - search in all texts below element separately; . - search in text as a whole; text() - search only in own texts (not in childs).</itm>
+    <itm n="ART_TOOLS" l="en">Entry tools</itm>
+    <itm n="ENTRY_FIRST" l="en">First entry</itm>
+    <itm n="ENTRY_PREV" l="en">Previous entry</itm>
+    <itm n="ENTRY_NEXT" l="en">Next entry</itm>
+    <itm n="ENTRY_LAST" l="en">Last entry</itm>
+    <itm n="ART_HISTORY" l="en">History of entries</itm>
+    <itm n="EXPAND_COLLAPSE" l="en">Expand/collapse all elements</itm>
+    <itm n="VALIDATE_ARTICLE" l="en">Validate entry</itm>
+    <itm n="SAVE_ARTICLE" l="en">Save entry</itm>
+    <itm n="DELETE_ARTICLE" l="en">Delete (restore) entry</itm>
+    <itm n="APP_UNDO" l="en">Undo</itm>
+    <itm n="APP_REDO" l="en">Redo</itm>
+    <itm n="UNDO_TITLE" l="en">Edit buffers left</itm>
+    <itm n="REDO_TITLE" l="en">Edit buffers count</itm>
+    <itm n="ALIGN_VIEW_LEFT" l="en">Align left</itm>
+    <itm n="ALIGN_VIEW_CENTER" l="en">Align center</itm>
+    <itm n="ALIGN_VIEW_RIGHT" l="en">Align right</itm>
+    <itm n="ALIGN_VIEW_JUSTIFY" l="en">Justify</itm>
+    <itm n="PRINT_VIEW" l="en">Print layout</itm>
+    <itm n="QRY_METHOD_XML" l="en">Query by XML syntax</itm>
+  </art>
+
+  <itm n="QUERY" l="et">Päring</itm>
+  <itm n="QUERY" l="en">Query</itm>
+  <itm n="QUERY" l="ru">Поиск</itm>
+
+  <itm n="MATCHES" l="et">leidu</itm>
+  <itm n="MATCHES" l="en">matches</itm>
+  <itm n="MATCHES" l="ru">находок</itm>
+
+  <itm n="ENTRIES" l="et">artiklit</itm>
+  <itm n="ENTRIES" l="en">entries</itm>
+  <itm n="ENTRIES" l="ru">статей</itm>
+
+  <itm n="FIRSTTOSHOW" l="et">näidatakse esimesed</itm>
+  <itm n="FIRSTTOSHOW" l="en">showing first</itm>
+  <itm n="FIRSTTOSHOW" l="ru">показаны первые</itm>
+
+  <itm n="NR" l="et">Jnr: KB</itm>
+  <itm n="NR" l="en">#: KB</itm>
+  <itm n="NR" l="ru">Нр.: KB</itm>
+
+  <itm n="VOLUME" l="et">Kd.</itm>
+  <itm n="VOLUME" l="en">Vol</itm>
+  <itm n="VOLUME" l="ru">Том</itm>
+
+  <itm n="HEADWORDS" l="et">Märksõna(d)</itm>
+  <itm n="HEADWORDS" l="en">Headword(s)</itm>
+  <itm n="HEADWORDS" l="ru">Загл. слово</itm>
+
+  <itm n="MATCH" l="et">Leid</itm>
+  <itm n="MATCH" l="en">Match</itm>
+  <itm n="MATCH" l="ru">Находка</itm>
+
+  <itm n="TRANSLATOR" l="et">Tlk.n.</itm>
+  <itm n="TRANSLATOR" l="en">Transalator</itm>
+  <itm n="TRANSLATOR" l="ru">Переводчик</itm>
+
+  <itm n="SOURCE" l="et">Allikas</itm>
+  <itm n="SOURCE" l="en">Source</itm>
+  <itm n="SOURCE" l="ru">Источник</itm>
+
+  <itm n="CAPACITY" l="et">Maht</itm>
+  <itm n="CAPACITY" l="en">Capacity</itm>
+  <itm n="CAPACITY" l="ru">Емкость</itm>
+
+  <itm n="CREATOR" l="et">K.</itm>
+  <itm n="CREATOR" l="en">Creator</itm>
+  <itm n="CREATOR" l="ru">Составитель</itm>
+
+  <itm n="CREATED" l="et">K. aeg</itm>
+  <itm n="CREATED" l="en">Created</itm>
+  <itm n="CREATED" l="ru">Время сост.</itm>
+
+  <itm n="CREATINGENDED" l="et">K. lõpp</itm>
+  <itm n="CREATINGENDED" l="en">Creating ended</itm>
+  <itm n="CREATINGENDED" l="ru">K. lõpp</itm>
+
+  <itm n="EDITOR" l="et">T.</itm>
+  <itm n="EDITOR" l="en">Editor</itm>
+  <itm n="EDITOR" l="ru">Редактор</itm>
+
+  <itm n="EDITED" l="et">T. aeg</itm>
+  <itm n="EDITED" l="en">Last edited</itm>
+  <itm n="EDITED" l="ru">Время ред.</itm>
+
+  <itm n="EDITINGENDED" l="et">T. lõpp</itm>
+  <itm n="EDITINGENDED" l="en">Editing ended</itm>
+  <itm n="EDITINGENDED" l="ru">T. lõpp</itm>
+
+  <itm n="SIGNER" l="et">Pt.</itm>
+  <itm n="SIGNER" l="en">Signer</itm>
+  <itm n="SIGNER" l="ru">Отв. редактор</itm>
+
+  <itm n="SIGNED" l="et">Pt. aeg</itm>
+  <itm n="SIGNED" l="en">Signing date</itm>
+  <itm n="SIGNED" l="ru">Pt. aeg</itm>
+
+  <itm n="FLT" l="et">ainult erinevad</itm>
+  <itm n="FLT" l="en">select distinct only</itm>
+  <itm n="FLT" l="ru">только разные</itm>
+
+  <itm n="SORT" l="et">sordi</itm>
+  <itm n="SORT" l="en">sort</itm>
+  <itm n="SORT" l="ru">сорт.</itm>
+
+  <itm n="SAVE_LIST" l="et">salvesta nimekiri</itm>
+  <itm n="SAVE_LIST" l="en">save list</itm>
+  <itm n="SAVE_LIST" l="ru">сохраняи список результатов поиска</itm>
+
+  <itm n="SAVE_XML" l="et">salvesta artiklid XML - ina</itm>
+  <itm n="SAVE_XML" l="en">save entries as XML</itm>
+  <itm n="SAVE_XML" l="ru">сохраняи статьи в виде XML</itm>
+
+  <itm n="CHECK_HOMS" l="et">Homonüümsete kontroll sihtköites</itm>
+  <itm n="CHECK_HOMS" l="en">Checking homonyms in target volume</itm>
+  <itm n="CHECK_HOMS" l="ru">Проверка омоним в томе</itm>
+
+  <itm n="HW_HOM_COMBINATION" l="et">Märksõna-hom.nr.-ps kombinatsioon juba olemas</itm>
+  <itm n="HW_HOM_COMBINATION" l="en">Hw-hom#-bhw combination already exists</itm>
+  <itm n="HW_HOM_COMBINATION" l="ru">Такое загл. слово (и омоним) уже существует</itm>
+</lc>

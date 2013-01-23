@@ -1,0 +1,1153 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:x="http://www.eki.ee/dict/dmo" xmlns:ec_2="http://www.eki.ee/dict/schemas/ec_2" xmlns:tyybid="http://www.eki.ee/dict/schemas/dmo_tyybid" targetNamespace="http://www.eki.ee/dict/dmo" attributeFormDefault="qualified" elementFormDefault="qualified">
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+	<xs:import namespace="http://www.eki.ee/dict/schemas/ec_2" schemaLocation="common/ec_2.xsd"/>
+	<xs:import namespace="http://www.eki.ee/dict/schemas/dmo_tyybid" schemaLocation="dmo/dmo_tyybid.xsd"/>
+	<xs:element name="sr">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">s&#xF5;naraamat</xs:documentation>
+			<xs:documentation xml:lang="en">dictionary</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x43B;&#x43E;&#x432;&#x430;&#x440;&#x44C;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:A" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="xml:lang"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="A">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">artikkel</xs:documentation>
+			<xs:documentation xml:lang="en">entry</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x442;&#x430;&#x442;&#x44C;&#x44F;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:maht" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:P" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:S" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:KOM" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:I" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:G" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:K" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:KA" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:KL" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:T" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:TA" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:TL" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:PT" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:PTA" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:X" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:XA" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute ref="x:KF"/>
+			<xs:attribute ref="x:AS"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="KF" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">k&#xF6;ite fail</xs:documentation>
+			<xs:documentation xml:lang="en">k&#xF6;ite fail</xs:documentation>
+			<xs:documentation xml:lang="ru">k&#xF6;ite fail</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="AS" type="tyybid:ASA_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">artikli staatus</xs:documentation>
+			<xs:documentation xml:lang="en">artikli staatus</xs:documentation>
+			<xs:documentation xml:lang="ru">artikli staatus</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="maht" type="tyybid:maht_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">mahuklass</xs:documentation>
+			<xs:documentation xml:lang="en">size class</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43A;&#x43B;&#x430;&#x441;&#x441; &#x43E;&#x431;&#x44A;&#x451;&#x43C;&#x430;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="P">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">p&#xE4;is</xs:documentation>
+			<xs:documentation xml:lang="en">head</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x437;&#x430;&#x433;&#x43E;&#x43B;&#x43E;&#x432;&#x43E;&#x43A;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:mg" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:element ref="x:a" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:mvt" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">m&#xE4;rks&#xF5;na grupp</xs:documentation>
+			<xs:documentation xml:lang="en">headword_grp</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x433;&#x440;&#x443;&#x43F;&#x43F;&#x430; &#x437;&#x430;&#x433;&#x43B;&#x430;&#x432;&#x43D;&#x44B;&#x445; &#x441;&#x43B;&#x43E;&#x432;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:m" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:hld" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:vk" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:grp" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:v" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:s" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="m">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">m&#xE4;rks&#xF5;na</xs:documentation>
+			<xs:documentation xml:lang="en">headword</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x437;&#x430;&#x433;&#x43B;&#x430;&#x432;&#x43D;&#x43E;&#x435; &#x441;&#x43B;&#x43E;&#x432;&#x43E;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element ref="x:r" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="x:i"/>
+			<xs:attribute ref="x:liik"/>
+			<xs:attribute ref="x:ps"/>
+			<xs:attribute ref="x:u"/>
+			<xs:attribute ref="x:O" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="i" type="xs:positiveInteger">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">hom-number</xs:documentation>
+			<xs:documentation xml:lang="en">homonym number</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43D;&#x43E;&#x43C;&#x435;&#x440; &#x43E;&#x43C;&#x43E;&#x43D;&#x438;&#x43C;&#x430;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="liik" type="tyybid:liik_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">m&#xE4;rks&#xF5;na liik</xs:documentation>
+			<xs:documentation xml:lang="en">type of the headword</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x442;&#x438;&#x43F; &#x437;&#x430;&#x433;&#x43B;&#x430;&#x432;&#x43D;&#x43E;&#x433;&#x43E; &#x441;&#x43B;&#x43E;&#x432;&#x430;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="ps" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">p&#xF5;his&#xF5;na</xs:documentation>
+			<xs:documentation xml:lang="en">p&#xF5;his&#xF5;na</xs:documentation>
+			<xs:documentation xml:lang="ru">p&#xF5;his&#xF5;na</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="u" type="tyybid:u_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">uus m&#xE4;rks&#xF5;na</xs:documentation>
+			<xs:documentation xml:lang="en">uus m&#xE4;rks&#xF5;na</xs:documentation>
+			<xs:documentation xml:lang="ru">uus m&#xE4;rks&#xF5;na</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="O" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">sorteerimisv&#xE4;&#xE4;rtus</xs:documentation>
+			<xs:documentation xml:lang="en">sortvalue</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x437;&#x43D;&#x430;&#x447;&#x435;&#x43D;&#x438;&#x435; &#x441;&#x43E;&#x440;&#x442;&#x438;&#x440;&#x43E;&#x432;&#x43A;&#x438;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="r" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">rektsioon</xs:documentation>
+			<xs:documentation xml:lang="en">government (question)</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x443;&#x43F;&#x440;&#x430;&#x432;&#x43B;&#x435;&#x43D;&#x438;&#x435;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="hld" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">h&#xE4;&#xE4;ldus</xs:documentation>
+			<xs:documentation xml:lang="en">pronunciation</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43F;&#x440;&#x43E;&#x438;&#x437;&#x43D;&#x43E;&#x448;&#x435;&#x43D;&#x438;&#x435;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="vk" type="tyybid:vk_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vormikood</xs:documentation>
+			<xs:documentation xml:lang="en">morphological code</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43C;&#x43E;&#x440;&#x444;&#x43E;&#x43B;&#x43E;&#x433;&#x438;&#x447;&#x435;&#x441;&#x43A;&#x438;&#x439; &#x43A;&#x43E;&#x434;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="grp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">grammatika plokk</xs:documentation>
+			<xs:documentation xml:lang="en">grammatika plokk</xs:documentation>
+			<xs:documentation xml:lang="ru">grammatika plokk</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:mfp" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:gri" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mfp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">morfoloogia plokk</xs:documentation>
+			<xs:documentation xml:lang="en">morfoloogia plokk</xs:documentation>
+			<xs:documentation xml:lang="ru">morfoloogia plokk</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:mkg" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:mvg" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:mt" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mkg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">morf.kirje grupp</xs:documentation>
+			<xs:documentation xml:lang="en">morf.kirje grupp</xs:documentation>
+			<xs:documentation xml:lang="ru">morf.kirje grupp</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:mkl" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:mk" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mkl" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">morf.kirje l&#xFC;hikujul</xs:documentation>
+			<xs:documentation xml:lang="en">morf.kirje l&#xFC;hikujul</xs:documentation>
+			<xs:documentation xml:lang="ru">morf.kirje l&#xFC;hikujul</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="mk" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">morf.kirje</xs:documentation>
+			<xs:documentation xml:lang="en">morf.kirje</xs:documentation>
+			<xs:documentation xml:lang="ru">morf.kirje</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="mvg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">muutevormi grupp</xs:documentation>
+			<xs:documentation xml:lang="en">muutevormi grupp</xs:documentation>
+			<xs:documentation xml:lang="ru">muutevormi grupp</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:vk" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:mv" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mv" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">muutevormid</xs:documentation>
+			<xs:documentation xml:lang="en">inflectional forms</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x444;&#x43E;&#x440;&#x43C;&#x44B; &#x441;&#x43B;&#x43E;&#x432;&#x43E;&#x438;&#x437;&#x43C;&#x435;&#x43D;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="mt" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">muutt&#xFC;&#xFC;p</xs:documentation>
+			<xs:documentation xml:lang="en">inflectional type number</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x442;&#x438;&#x43F; &#x441;&#x43B;&#x43E;&#x432;&#x43E;&#x438;&#x437;&#x43C;&#x435;&#x43D;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="gri">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">grammatiline info</xs:documentation>
+			<xs:documentation xml:lang="en">grammatiline info</xs:documentation>
+			<xs:documentation xml:lang="ru">grammatiline info</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:sl" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:gki" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:r" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="sl">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">s&#xF5;naliik</xs:documentation>
+			<xs:documentation xml:lang="en">part of speech</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x447;&#x430;&#x441;&#x442;&#x44C; &#x440;&#x435;&#x447;&#x438;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="tyybid:sl_tyyp">
+					<xs:attribute ref="x:rk"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="rk" type="tyybid:rk_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">rektsioonikood</xs:documentation>
+			<xs:documentation xml:lang="en">rektsioonikood</xs:documentation>
+			<xs:documentation xml:lang="ru">rektsioonikood</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="gki" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">gr.kasutusinfo</xs:documentation>
+			<xs:documentation xml:lang="en">usage hints (grammatical information)</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x433;&#x440;&#x430;&#x43C;&#x43C;&#x430;&#x442;&#x438;&#x447;&#x435;&#x441;&#x43A;&#x430;&#x44F; &#x438;&#x43D;&#x444;&#x43E;&#x440;&#x43C;&#x430;&#x446;&#x438;&#x44F; &#x43E; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x43D;&#x435;&#x43D;&#x438;&#x438;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="v">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vald</xs:documentation>
+			<xs:documentation xml:lang="en">domain</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x444;&#x435;&#x440;&#x430; &#x438;&#x441;&#x43F;&#x43E;&#x43B;&#x44C;&#x437;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="tyybid:v_tyyp">
+					<xs:attribute ref="x:l"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="l" type="tyybid:levik_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">kasutuslisand</xs:documentation>
+			<xs:documentation xml:lang="en">usage hint</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43F;&#x440;&#x438;&#x43B;&#x43E;&#x436;&#x435;&#x43D;&#x438;&#x435;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="s">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">stiil</xs:documentation>
+			<xs:documentation xml:lang="en">register</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x442;&#x438;&#x43B;&#x44C;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="tyybid:s_tyyp">
+					<xs:attribute ref="x:l"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="a">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">alternatiiv</xs:documentation>
+			<xs:documentation xml:lang="en">alternative</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x430;&#x43B;&#x44C;&#x442;&#x435;&#x440;&#x43D;&#x430;&#x442;&#x438;&#x432;&#x430;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute ref="x:i"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mvt">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">m&#xE4;rks&#xF5;naviide</xs:documentation>
+			<xs:documentation xml:lang="en">headword reference</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x441;&#x44B;&#x43B;&#x43A;&#x430; &#x437;&#x430;&#x433;&#x43B;&#x430;&#x432;&#x43D;&#x43E;&#x433;&#x43E; &#x441;&#x43B;&#x43E;&#x432;&#x430;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute ref="x:i"/>
+					<xs:attribute ref="x:t"/>
+					<xs:attribute ref="x:mvtl" use="required"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="t" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">t&#xE4;h-number</xs:documentation>
+			<xs:documentation xml:lang="en">t&#xE4;h-number</xs:documentation>
+			<xs:documentation xml:lang="ru">t&#xE4;h-number</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="mvtl" type="tyybid:mvtl_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">m.viite liik</xs:documentation>
+			<xs:documentation xml:lang="en">type of the headword reference</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x442;&#x438;&#x43F; &#x441;&#x441;&#x44B;&#x43B;&#x43E;&#x447;&#x43D;&#x43E;&#x439; &#x441;&#x442;&#x430;&#x442;&#x44C;&#x438;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="S">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">sisu</xs:documentation>
+			<xs:documentation xml:lang="en">body</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x43E;&#x434;&#x435;&#x440;&#x436;&#x430;&#x43D;&#x438;&#x435;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:tp" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:element ref="x:LS" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="tp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">t&#xE4;hendusnumbri plokk</xs:documentation>
+			<xs:documentation xml:lang="en">sense number_block</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x431;&#x43B;&#x43E;&#x43A; &#x437;&#x43D;&#x430;&#x447;&#x435;&#x43D;&#x438;&#x439;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:mmg" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:gri" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:tg" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:np" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:tvt" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="x:tnr" use="required"/>
+			<xs:attribute ref="x:as"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="tnr" type="xs:positiveInteger">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">t&#xE4;hendusnumber</xs:documentation>
+			<xs:documentation xml:lang="en">sense number</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43D;&#x43E;&#x43C;&#x435;&#x440; &#x437;&#x43D;&#x430;&#x447;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="as" type="tyybid:as_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">elemendi staatus</xs:documentation>
+			<xs:documentation xml:lang="en">elemendi staatus</xs:documentation>
+			<xs:documentation xml:lang="ru">elemendi staatus</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="mmg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">allm&#xE4;rks&#xF5;na grupp</xs:documentation>
+			<xs:documentation xml:lang="en">allm&#xE4;rks&#xF5;na grupp</xs:documentation>
+			<xs:documentation xml:lang="ru">allm&#xE4;rks&#xF5;na grupp</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:mm" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:vk" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mm" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">allm&#xE4;rks&#xF5;na</xs:documentation>
+			<xs:documentation xml:lang="en">allm&#xE4;rks&#xF5;na</xs:documentation>
+			<xs:documentation xml:lang="ru">allm&#xE4;rks&#xF5;na</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="tg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">t&#xE4;hendusgrupp</xs:documentation>
+			<xs:documentation xml:lang="en">sense_grp</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x433;&#x440;&#x443;&#x43F;&#x43F;&#x430; &#x437;&#x43D;&#x430;&#x447;&#x435;&#x43D;&#x438;&#x439;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:dg" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xp" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+			<xs:attribute ref="x:as"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">definitsioonigrupp</xs:documentation>
+			<xs:documentation xml:lang="en">definition_grp</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x433;&#x440;&#x443;&#x43F;&#x43F;&#x430; &#x43F;&#x43E;&#x44F;&#x441;&#x43D;&#x435;&#x43D;&#x438;&#x439;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:v" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:s" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:dt" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:d" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dt">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">tulenemisseletus</xs:documentation>
+			<xs:documentation xml:lang="en">derived from</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43F;&#x43E;&#x44F;&#x441;&#x43D;&#x435;&#x43D;&#x438;&#x435; &#x43F;&#x440;&#x43E;&#x438;&#x441;&#x445;&#x43E;&#x436;&#x434;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute ref="x:i"/>
+					<xs:attribute ref="x:t"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="d">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">seletus</xs:documentation>
+			<xs:documentation xml:lang="en">definition</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43F;&#x43E;&#x44F;&#x441;&#x43D;&#x435;&#x43D;&#x438;&#x435;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element ref="x:ld" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ld">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">ladina termin</xs:documentation>
+			<xs:documentation xml:lang="en">latin definition</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43B;&#x430;&#x442;&#x438;&#x43D;&#x441;&#x43A;&#x438;&#x439; &#x442;&#x435;&#x440;&#x43C;&#x438;&#x43D;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute ref="xml:lang" use="required"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="xp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vastete plokk</xs:documentation>
+			<xs:documentation xml:lang="en">equivalent block</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x431;&#x43B;&#x43E;&#x43A; &#x441;&#x43E;&#x43E;&#x442;&#x432;&#x435;&#x442;&#x441;&#x442;&#x432;&#x438;&#x439;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:xg" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="xg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vastegrupp</xs:documentation>
+			<xs:documentation xml:lang="en">equivalent group</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x433;&#x440;&#x443;&#x43F;&#x43F;&#x430; &#x441;&#x43E;&#x43E;&#x442;&#x432;&#x435;&#x442;&#x441;&#x442;&#x432;&#x438;&#x439;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:xtx" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:x" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:hld" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xvk" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:xgrp" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xdg" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="xml:lang" use="required"/>
+			<xs:attribute ref="x:as"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="xtx" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">t&#xE4;psustus</xs:documentation>
+			<xs:documentation xml:lang="en">specification</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x443;&#x442;&#x43E;&#x447;&#x43D;&#x435;&#x43D;&#x438;&#x435;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="x">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste</xs:documentation>
+			<xs:documentation xml:lang="en">equivalent</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x43E;&#x43E;&#x442;&#x432;&#x435;&#x442;&#x441;&#x442;&#x432;&#x438;&#x435;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element ref="x:xr" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="x:xliik"/>
+			<xs:attribute ref="x:xall"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="xliik" type="tyybid:xliik_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste liik</xs:documentation>
+			<xs:documentation xml:lang="en">vaste liik</xs:documentation>
+			<xs:documentation xml:lang="ru">vaste liik</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="xall" type="tyybid:xall_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste p&#xE4;ritolu</xs:documentation>
+			<xs:documentation xml:lang="en">vaste p&#xE4;ritolu</xs:documentation>
+			<xs:documentation xml:lang="ru">vaste p&#xE4;ritolu</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="xr" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">rektsioon</xs:documentation>
+			<xs:documentation xml:lang="en">government (question)</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x443;&#x43F;&#x440;&#x430;&#x432;&#x43B;&#x435;&#x43D;&#x438;&#x435;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xvk" type="tyybid:xvk_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vormikood</xs:documentation>
+			<xs:documentation xml:lang="en">morphological code</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43C;&#x43E;&#x440;&#x444;&#x43E;&#x43B;&#x43E;&#x433;&#x438;&#x447;&#x435;&#x441;&#x43A;&#x438;&#x439; &#x43A;&#x43E;&#x434;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xgrp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste grammatika plokk</xs:documentation>
+			<xs:documentation xml:lang="en">vaste grammatika plokk</xs:documentation>
+			<xs:documentation xml:lang="ru">vaste grammatika plokk</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:xmfp" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xgri" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="xmfp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste morfoloogia plokk</xs:documentation>
+			<xs:documentation xml:lang="en">vaste morfoloogia plokk</xs:documentation>
+			<xs:documentation xml:lang="ru">vaste morfoloogia plokk</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:xmvg" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xag" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:xmt" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="xmvg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste muutevormigrupp</xs:documentation>
+			<xs:documentation xml:lang="en">vaste muutevormigrupp</xs:documentation>
+			<xs:documentation xml:lang="ru">vaste muutevormigrupp</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:xvk" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:xmv" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="xmv" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">muutevormid</xs:documentation>
+			<xs:documentation xml:lang="en">inflectional forms</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x444;&#x43E;&#x440;&#x43C;&#x44B; &#x441;&#x43B;&#x43E;&#x432;&#x43E;&#x438;&#x437;&#x43C;&#x435;&#x43D;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xag">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">gr.variandi grupp</xs:documentation>
+			<xs:documentation xml:lang="en">gr.variandi grupp</xs:documentation>
+			<xs:documentation xml:lang="ru">gr.variandi grupp</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:xa" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:xmv" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="xa">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">gr.variant</xs:documentation>
+			<xs:documentation xml:lang="en">gr.variant</xs:documentation>
+			<xs:documentation xml:lang="ru">gr.variant</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute ref="x:xgk"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="xgk" type="tyybid:xgk_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">gr.kood</xs:documentation>
+			<xs:documentation xml:lang="en">gr.kood</xs:documentation>
+			<xs:documentation xml:lang="ru">gr.kood</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="xmt" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste muutt&#xFC;&#xFC;p</xs:documentation>
+			<xs:documentation xml:lang="en">vaste muutt&#xFC;&#xFC;p</xs:documentation>
+			<xs:documentation xml:lang="ru">vaste muutt&#xFC;&#xFC;p</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xgri">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste grammatiline info</xs:documentation>
+			<xs:documentation xml:lang="en">vaste grammatiline info</xs:documentation>
+			<xs:documentation xml:lang="ru">vaste grammatiline info</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:xsl" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xz" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xgki" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xr" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="xsl" type="tyybid:xsl_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">s&#xF5;naliik</xs:documentation>
+			<xs:documentation xml:lang="en">part of speech</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x447;&#x430;&#x441;&#x442;&#x44C; &#x440;&#x435;&#x447;&#x438;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xz" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">gr.sugu</xs:documentation>
+			<xs:documentation xml:lang="en">gr.sugu</xs:documentation>
+			<xs:documentation xml:lang="ru">gr.sugu</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xgki" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">gr.kasutusinfo</xs:documentation>
+			<xs:documentation xml:lang="en">gr.kasutusinfo</xs:documentation>
+			<xs:documentation xml:lang="ru">gr.kasutusinfo</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xdg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste definitsioonigrupp</xs:documentation>
+			<xs:documentation xml:lang="en">vaste definitsioonigrupp</xs:documentation>
+			<xs:documentation xml:lang="ru">vaste definitsioonigrupp</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:xv" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xs" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xd" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:xn" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="xv" type="tyybid:xv_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vald</xs:documentation>
+			<xs:documentation xml:lang="en">domain</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x444;&#x435;&#x440;&#x430; &#x443;&#x43F;&#x43E;&#x442;&#x440;&#x435;&#x431;&#x43B;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xs" type="tyybid:xs_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">stiil</xs:documentation>
+			<xs:documentation xml:lang="en">register</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x442;&#x438;&#x43B;&#x44C;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xd" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste seletus</xs:documentation>
+			<xs:documentation xml:lang="en">definition</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43F;&#x43E;&#x44F;&#x441;&#x43D;&#x435;&#x43D;&#x438;&#x435;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="xn" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste kasutusn&#xE4;ide</xs:documentation>
+			<xs:documentation xml:lang="en">vaste kasutusn&#xE4;ide</xs:documentation>
+			<xs:documentation xml:lang="ru">vaste kasutusn&#xE4;ide</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="np">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">n&#xE4;idete plokk</xs:documentation>
+			<xs:documentation xml:lang="en">examples_block</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x431;&#x43B;&#x43E;&#x43A; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x440;&#x43E;&#x432;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:ng" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ng">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">n&#xE4;itegrupp</xs:documentation>
+			<xs:documentation xml:lang="en">examples_grp</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x433;&#x440;&#x443;&#x43F;&#x43F;&#x430; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x440;&#x43E;&#x432;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:n" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:element ref="x:qnp" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="x:as"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="n">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">n&#xE4;ide</xs:documentation>
+			<xs:documentation xml:lang="en">example</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x438;&#x43B;&#x43B;&#x44E;&#x441;&#x442;&#x440;&#x430;&#x442;&#x438;&#x432;&#x43D;&#x44B;&#x439; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x440;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element ref="x:r" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="x:nrl"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="nrl" type="tyybid:nrl_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">v&#xE4;ljendi roll</xs:documentation>
+			<xs:documentation xml:lang="en">role of an expression</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x440;&#x43E;&#x43B;&#x44C; &#x432;&#x44B;&#x440;&#x430;&#x436;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="qnp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">n&#xE4;itet&#xF5;lgete plokk</xs:documentation>
+			<xs:documentation xml:lang="en">translations (of the examples)_block</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x431;&#x43B;&#x43E;&#x43A; &#x43F;&#x435;&#x440;&#x435;&#x432;&#x43E;&#x434;&#x43E;&#x432; &#x438;&#x43B;&#x43B;&#x44E;&#x441;&#x442;&#x440;&#x430;&#x442;&#x438;&#x432;&#x43D;&#x44B;&#x445; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x440;&#x43E;&#x432;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:ndg" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:qng" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="x:ntnr" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="ntnr" type="xs:positiveInteger">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">n&#xE4;ite t&#xE4;hendusnumber</xs:documentation>
+			<xs:documentation xml:lang="en">sense number (of the example)</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43D;&#x43E;&#x43C;&#x435;&#x440; &#x437;&#x43D;&#x430;&#x447;&#x435;&#x43D;&#x438;&#x44F; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x440;&#x430;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="ndg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">n&#xE4;ite definitsioonigrupp</xs:documentation>
+			<xs:documentation xml:lang="en">definition (of the examples)_group</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x433;&#x440;&#x443;&#x43F;&#x43F;&#x430; &#x43F;&#x43E;&#x44F;&#x441;&#x43D;&#x435;&#x43D;&#x438;&#x44F; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x440;&#x43E;&#x432;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:v" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:s" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:nd" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="nd">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">n&#xE4;ite seletus</xs:documentation>
+			<xs:documentation xml:lang="en">definition of the example</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43F;&#x43E;&#x44F;&#x441;&#x43D;&#x435;&#x43D;&#x438;&#x435; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x440;&#x430;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element ref="x:ld" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="qng">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">n&#xE4;itet&#xF5;lke grupp</xs:documentation>
+			<xs:documentation xml:lang="en">translation group</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x433;&#x440;&#x443;&#x43F;&#x43F;&#x430; &#x43F;&#x435;&#x440;&#x435;&#x432;&#x43E;&#x434;&#x430; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x440;&#x43E;&#x432;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:xtx" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:qn" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:xv" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:xs" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="xml:lang" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="qn">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">n&#xE4;itet&#xF5;lge</xs:documentation>
+			<xs:documentation xml:lang="en">translation</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43F;&#x435;&#x440;&#x435;&#x432;&#x43E;&#x434; &#x43F;&#x440;&#x438;&#x43C;&#x435;&#x440;&#x430;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType mixed="true">
+			<xs:sequence>
+				<xs:element ref="x:xr" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="tvt">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">t&#xE4;hendusviide</xs:documentation>
+			<xs:documentation xml:lang="en">sense reference</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43B;&#x435;&#x43A;&#x441;&#x438;&#x43A;&#x43E;-&#x441;&#x435;&#x43C;&#x430;&#x43D;&#x442;&#x438;&#x447;&#x435;&#x441;&#x43A;&#x430;&#x44F; &#x441;&#x441;&#x44B;&#x43B;&#x43A;&#x430;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute ref="x:i"/>
+					<xs:attribute ref="x:t"/>
+					<xs:attribute ref="x:tvtl" use="required"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="tvtl" type="tyybid:tvtl_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">t.viite liik</xs:documentation>
+			<xs:documentation xml:lang="en">type of the sense reference</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x442;&#x438;&#x43F; &#x441;&#x441;&#x44B;&#x43B;&#x43E;&#x447;&#x43D;&#x43E;&#x439; &#x441;&#x442;&#x430;&#x442;&#x44C;&#x438;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="LS">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">liits&#xF5;nade plokk</xs:documentation>
+			<xs:documentation xml:lang="en">compound words_block</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x431;&#x43B;&#x43E;&#x43A; &#x441;&#x43B;&#x43E;&#x436;&#x43D;&#x44B;&#x445; &#x441;&#x43B;&#x43E;&#x432;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:lsdg" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:np" minOccurs="0" maxOccurs="1"/>
+				<xs:element ref="x:tvt" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute ref="x:lso" use="required"/>
+			<xs:attribute ref="x:as"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attribute name="lso" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">liits&#xF5;naosa</xs:documentation>
+			<xs:documentation xml:lang="en">liits&#xF5;naosa</xs:documentation>
+			<xs:documentation xml:lang="ru">liits&#xF5;naosa</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:element name="lsdg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">ls. definitsioonigrupp</xs:documentation>
+			<xs:documentation xml:lang="en">ls. definitsioonigrupp</xs:documentation>
+			<xs:documentation xml:lang="ru">ls. definitsioonigrupp</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:v" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:s" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="x:lsd" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="lsd" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">liits&#xF5;naosa seletus</xs:documentation>
+			<xs:documentation xml:lang="en">definition of compound words_block</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43F;&#x43E;&#x44F;&#x441;&#x43D;&#x435;&#x43D;&#x438;&#x435; &#x43A;&#x43E;&#x43C;&#x43F;&#x43E;&#x43D;&#x435;&#x43D;&#x442;&#x430; &#x441;&#x43B;&#x43E;&#x436;&#x43D;&#x43E;&#x433;&#x43E; &#x441;&#x43B;&#x43E;&#x432;&#x430;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="KOM">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">kommentaarid</xs:documentation>
+			<xs:documentation xml:lang="en">comments</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43A;&#x43E;&#x43C;&#x43C;&#x435;&#x43D;&#x442;&#x430;&#x440;&#x438;&#x438;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:komg" minOccurs="1" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="komg">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">kommentaari grupp</xs:documentation>
+			<xs:documentation xml:lang="en">comment_grp</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x433;&#x440;&#x443;&#x43F;&#x43F;&#x430; &#x43A;&#x43E;&#x43C;&#x43C;&#x435;&#x43D;&#x442;&#x430;&#x440;&#x438;&#x435;&#x432;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:kom" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:kaut" minOccurs="1" maxOccurs="1"/>
+				<xs:element ref="x:kaeg" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="kom" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">kommentaar</xs:documentation>
+			<xs:documentation xml:lang="en">comment</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43A;&#x43E;&#x43C;&#x43C;&#x435;&#x43D;&#x442;&#x430;&#x440;&#x438;&#x439;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="kaut" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">kommentaari autor</xs:documentation>
+			<xs:documentation xml:lang="en">author of the comment</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x430;&#x432;&#x442;&#x43E;&#x440; &#x43A;&#x43E;&#x43C;&#x43C;&#x435;&#x43D;&#x442;&#x430;&#x440;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="kaeg" type="xs:dateTime">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">kommenteerimisaeg</xs:documentation>
+			<xs:documentation xml:lang="en">date of the comment</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x434;&#x430;&#x442;&#x430; &#x43A;&#x43E;&#x43C;&#x43C;&#x435;&#x43D;&#x442;&#x430;&#x440;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="I">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">imporditud artiklid</xs:documentation>
+			<xs:documentation xml:lang="en">imporditud artiklid</xs:documentation>
+			<xs:documentation xml:lang="ru">imporditud artiklid</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="x:any" minOccurs="1" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="any" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">artikkel</xs:documentation>
+			<xs:documentation xml:lang="en">artikkel</xs:documentation>
+			<xs:documentation xml:lang="ru">artikkel</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="G" type="ec_2:G_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">GUID</xs:documentation>
+			<xs:documentation xml:lang="en">GUID</xs:documentation>
+			<xs:documentation xml:lang="ru">GUID</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="K" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">artikli koostaja</xs:documentation>
+			<xs:documentation xml:lang="en">created by</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x441;&#x43E;&#x441;&#x442;&#x430;&#x432;&#x438;&#x442;&#x435;&#x43B;&#x44C; &#x441;&#x442;&#x430;&#x442;&#x44C;&#x438;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="KA" type="xs:dateTime">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">koostamisaeg</xs:documentation>
+			<xs:documentation xml:lang="en">date of creation</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x432;&#x440;&#x435;&#x43C;&#x44F; &#x441;&#x43E;&#x441;&#x442;&#x430;&#x432;&#x43B;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="KL" type="xs:dateTime">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">koostamise l&#xF5;pp</xs:documentation>
+			<xs:documentation xml:lang="en">end of creation</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x437;&#x430;&#x432;&#x435;&#x440;&#x448;&#x435;&#x43D;&#x438;&#x435; &#x441;&#x43E;&#x441;&#x442;&#x430;&#x432;&#x43B;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="T" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">artikli toimetaja</xs:documentation>
+			<xs:documentation xml:lang="en">modified by</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x440;&#x435;&#x434;&#x430;&#x43A;&#x442;&#x43E;&#x440; &#x441;&#x442;&#x430;&#x442;&#x44C;&#x438;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TA" type="xs:dateTime">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">toimetamisaeg</xs:documentation>
+			<xs:documentation xml:lang="en">date of modification</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x432;&#x440;&#x435;&#x43C;&#x44F; &#x440;&#x435;&#x434;&#x430;&#x43A;&#x442;&#x438;&#x440;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="TL" type="xs:dateTime">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">toimetamise l&#xF5;pp</xs:documentation>
+			<xs:documentation xml:lang="en">end of modification</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x437;&#x430;&#x432;&#x435;&#x440;&#x448;&#x435;&#x43D;&#x438;&#x435; &#x440;&#x435;&#x434;&#x430;&#x43A;&#x442;&#x438;&#x440;&#x43E;&#x432;&#x430;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PT" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">artikli peatoimetaja</xs:documentation>
+			<xs:documentation xml:lang="en">signed by</xs:documentation>
+			<xs:documentation xml:lang="ru">x:PT</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PTA" type="xs:dateTime">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">peatoimetamise aeg</xs:documentation>
+			<xs:documentation xml:lang="en">date of signing</xs:documentation>
+			<xs:documentation xml:lang="ru">x:PTA</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="X" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">artikli kustutaja</xs:documentation>
+			<xs:documentation xml:lang="en">deleted by</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x443;&#x434;&#x430;&#x43B;&#x438;&#x442;&#x435;&#x43B;&#x44C; &#x441;&#x442;&#x430;&#x442;&#x44C;&#x438;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="XA" type="xs:dateTime">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">kustutamise aeg</xs:documentation>
+			<xs:documentation xml:lang="en">date of deletion</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x432;&#x440;&#x435;&#x43C;&#x44F; &#x443;&#x434;&#x430;&#x43B;&#x435;&#x43D;&#x438;&#x44F;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<!--gen: 'xs:any' jaoks defineeritud või unustatud elemendid-->
+	<xs:element name="mf" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">morfonoloogiline vorm</xs:documentation>
+			<xs:documentation xml:lang="en">morphonological form</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x43C;&#x43E;&#x440;&#x444;&#x43E;&#x43B;&#x43E;&#x433;&#x438;&#x447;&#x435;&#x441;&#x43A;&#x430;&#x44F; &#x444;&#x43E;&#x440;&#x43C;&#x430;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="all" type="tyybid:allik_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">allikas</xs:documentation>
+			<xs:documentation xml:lang="en">source</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x438;&#x441;&#x442;&#x43E;&#x447;&#x43D;&#x438;&#x43A;</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="data">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">algtekst</xs:documentation>
+			<xs:documentation xml:lang="en">source text</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x438;&#x441;&#x445;&#x43E;&#x434;&#x43D;&#x44B;&#x439; &#x442;&#x435;&#x43A;&#x441;&#x442;</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="xs:string">
+					<xs:attribute ref="x:src" use="required"/>
+				</xs:extension>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<!--gen: 'xs:any' sisu elementide jaoks defineeritud või unustatud atribuudid-->
+	<xs:attribute name="src" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">allikas</xs:documentation>
+			<xs:documentation xml:lang="en">source</xs:documentation>
+			<xs:documentation xml:lang="ru">&#x438;&#x441;&#x442;&#x43E;&#x447;&#x43D;&#x438;&#x43A;</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="k" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">kustuta</xs:documentation>
+			<xs:documentation xml:lang="en">kustuta</xs:documentation>
+			<xs:documentation xml:lang="ru">kustuta</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="aT" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">toimetaja</xs:documentation>
+			<xs:documentation xml:lang="en">toimetaja</xs:documentation>
+			<xs:documentation xml:lang="ru">toimetaja</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="aTA" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">toimetamise aeg</xs:documentation>
+			<xs:documentation xml:lang="en">toimetamise aeg</xs:documentation>
+			<xs:documentation xml:lang="ru">toimetamise aeg</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+	<xs:attribute name="g" type="xs:string">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">genereeritud</xs:documentation>
+			<xs:documentation xml:lang="en">genereeritud</xs:documentation>
+			<xs:documentation xml:lang="ru">genereeritud</xs:documentation>
+		</xs:annotation>
+	</xs:attribute>
+</xs:schema>

@@ -1,0 +1,145 @@
+﻿<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>Eksport</title>
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="pragma" content="no-cache">
+        <!--<meta http-equiv="refresh" content="10">-->
+        <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+        <meta name="author" content="Andres Loopmann">
+        <meta name="keywords" content="EELex">
+
+		<script type="text/javascript" src="tools.js"></script>
+		<script type="text/vbscript">
+
+		<!--
+Option Explicit
+
+Dim dic_desc, sAppLang, PD, retVal, usrName, volId
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+PD = ChrW(&HE001)
+Dim inArr
+if IsArray(window.dialogArguments) then
+	inArr = window.dialogArguments
+else
+	inArr = Split(window.dialogArguments, PD)
+end if
+dic_desc = inArr(0)
+sAppLang = inArr(1)
+usrName = inArr(3)
+volId = inArr(4)
+if (volId = dic_desc & "All") then
+    spnVols.innerHTML = "Kõik köited"
+else
+    spnVols.innerHTML = Right(volId, 1) & ". köide"
+end if
+document.title = document.title & ": " & dic_desc
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub divBtnOnClick()
+
+idDivBtn.disabled = true
+
+Dim xh
+set xh = exCGISync("../tools.cgi", "xmlCopy" & PD & dic_desc & PD & usrName)
+
+if (xh.statusText = "OK") then
+
+    Dim rspDOM, sta
+    set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDoc
+    sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+    if (sta) then
+        Dim fNode
+        set fNode = rspDOM.selectSingleNode("rsp/outDOM/f")
+        idDivLink.innerHTML = "<a href='../" & fNode.text & "'>XML koopia fail</a>"
+        MsgBox "Koopia tehtud," & vbCrLf & vbCrLf & "klõpsa nüüd linki ...", vbInformation, "XML koopia"
+    end if
+
+else
+    MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+        xh.responseText, _
+        vbCritical
+end if
+
+idDivBtn.disabled = false
+
+End Sub 'divBtnOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub btnMsLoendOnClick()
+btnMsLoend.disabled = true
+
+Dim sqlClause, volClause
+if (volId = dic_desc & "All") then
+    volClause = dic_desc & ".vol_nr > 0"
+else
+    volClause = dic_desc & ".vol_nr = " & Right(volId, 1)
+end if
+sqlClause = "SELECT " & dic_desc & ".md AS md " & _
+                        "FROM " & dic_desc & " " & _
+                        "WHERE " & volClause & " " & _
+                        "ORDER BY " & dic_desc & ".ms_att_OO"
+
+Dim xh
+set xh = exCGISync("../tools.cgi", "msLoend" & PD & dic_desc & PD & usrName & PD & _
+            sqlClause)
+
+if (xh.statusText = "OK") then
+
+    Dim rspDOM, sta
+    set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDoc
+    sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+    if (sta) then
+        Dim fNode, r
+        Randomize
+        r = Int((1000000 - 0 + 1) * Rnd + 0) 'Int((upperbound - lowerbound + 1) * Rnd + lowerbound)
+        set fNode = rspDOM.selectSingleNode("rsp/outDOM/f")
+'        idDivLink.innerHTML = "<A CHARSET='utf-8' TARGET='xyz' HREF='../" & fNode.text & "' HREFLANG='et-EE'>Ms. loendi fail</A>"
+        idDivLink.innerHTML = "<A HREF='../" & fNode.text & "?r=" & r & "'>Ms. loendi fail</A>"
+        MsgBox "Ms. loend tehtud," & vbCrLf & vbCrLf & "klõpsa nüüd linki ...", vbInformation, "Ms. loend"
+'        call window.open("../" & fNode.text, "_blank")
+    end if
+
+else
+    MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+        xh.responseText, _
+        vbCritical
+end if
+
+btnMsLoend.disabled = false
+
+End Sub 'btnMsLoendOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+end if
+End Sub 'bodyOnKeyUp
+
+			-->
+
+		</script>
+	</head>
+	<body style="background-color:buttonface" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()">
+		<div id="idBody" style="PADDING-LEFT: 10mm; PADDING-TOP: 5mm">
+		    <br />
+            <span id="spnVols"></span>
+		    <div id="idDivLink"></div>
+		    <br />
+		    <br />
+		    <input id="idDivBtn" type="button" value="XML koopia (kõik)" onclick="divBtnOnClick()" />
+		    <input id="btnMsLoend" type="button" value="Ms. loend" onclick="btnMsLoendOnClick()" />
+		</div>
+	</body>
+</html>

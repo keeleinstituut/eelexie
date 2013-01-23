@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Artikkel</title>
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann" />
+    <meta name="author" content="Andres Loopmann" />
+    <meta name="keywords" content="EELex, sõnastik, dictionary" />
+    <script type="text/javascript" src="Koond_lisad.js"></script>
+    <script type="text/javascript">
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnLoad() {
+            //            var xh, rspDom;
+            //            xh = exCGISync("tools.cgi", "appOpen" + PD + dic_desc + PD + sUsrName + PD + brVer);
+            //            if (xh.statusText == "OK") {
+            //                rspDOM = ParseHTTPResponse(xh);
+            //                if (rspDOM) {
+            //                    var opStatus = getXmlSingleNodeValue(rspDOM, "rsp/sta");
+            //                    if (opStatus == "Success") {
+            //                    } else {
+            //                    }
+            //                }
+            //            }
+
+            parent.setVala();
+        } // bodyOnLoad
+        //-----------------------------------------------------------------------------------
+        function valaOnClick(event) {
+            parent.handleView(event);
+            cancelThisEvent(event);
+        } // valaOnClick
+        //-----------------------------------------------------------------------------------
+        function getNewWord(event) {
+            var marquee = event.target ? event.target : event.srcElement;
+            var tekstiKoht = document.getElementById("spnTekstiKoht");
+            tekstiKoht.innerHTML = "rundel";
+        } // getNewWord
+        // font-family:Calibri; display:none;
+
+    </script>
+    <style id="valaCss"></style>
+</head>
+<body style="background-color: #deeaf8;" onload="bodyOnLoad()">
+    <div id="valaDiv" onclick="valaOnClick(event)">
+    </div>
+    <marquee direction="down" behavior="scroll" scrollamount="3" style="display: none;
+        position: absolute; left: 10px; top: 10px; height: 90%;" onstart="getNewWord(event)">
+        <span id="spnTekstiKoht" 
+            style="color:fuchsia;font-weight:bold;font-style:italic;font-size:larger;">sõna ...</span></marquee>
+</body>
+</html>

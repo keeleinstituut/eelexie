@@ -1,0 +1,60 @@
+<c>
+  <p n="morf_syntees_vormid.htm">
+    <itm n="title" l="et">sünteesitud vormid</itm>
+    <itm n="title" l="en">synthesized forms</itm>
+    <itm n="title" l="ru">synthesized forms</itm>
+
+    <itm n="mt" l="et">muuttüüp</itm>
+    <itm n="mt" l="en">type number</itm>
+    <itm n="mt" l="ru">type number</itm>
+
+    <itm n="sl" l="et">sõnaliik</itm>
+    <itm n="sl" l="en">part of speech</itm>
+    <itm n="sl" l="ru">part of speech</itm>
+
+    <itm n="var" l="et">variant</itm>
+    <itm n="var" l="en">variant</itm>
+    <itm n="var" l="ru">variant</itm>
+
+    <itm n="repl" l="et">asenda</itm>
+    <itm n="repl" l="en">replace</itm>
+    <itm n="repl" l="ru">replace</itm>
+
+    <itm n="types" l="et">tüüpi</itm>
+    <itm n="types" l="en">types</itm>
+    <itm n="types" l="ru">types</itm>
+
+    <itm n="forms" l="et">vormi</itm>
+    <itm n="forms" l="en">forms</itm>
+    <itm n="forms" l="ru">forms</itm>
+  </p>
+  <p n="eelex_setup.htm">
+    <itm n="title" l="et">EELex sätted</itm>
+    <itm n="title" l="en">EELex setup</itm>
+    <itm n="title" l="ru">EELex setup</itm>
+
+    <itm n="useKbChanger" l="et">kasuta automaatset klaviatuurivahetust</itm>
+    <itm n="useKbChanger" l="en">change keyboard automatically</itm>
+    <itm n="useKbChanger" l="ru">change keyboard automatically</itm>
+
+    <itm n="useSpellCheck" l="et">kasuta MS Word õigekirjakontrolli</itm>
+    <itm n="useSpellCheck" l="en">check spelling</itm>
+    <itm n="useSpellCheck" l="ru">check spelling</itm>
+
+    <itm n="useRPM" l="et">kasuta reeglipõhist morfoloogiat</itm>
+    <itm n="useRPM" l="en">use morphology component</itm>
+    <itm n="useRPM" l="ru">use morphology component</itm>
+
+    <itm n="morf_ana_setup" l="et">Morf. analüüsi sätted</itm>
+    <itm n="morf_ana_setup" l="en">Morph analysis setup</itm>
+    <itm n="morf_ana_setup" l="ru">Morph analysis setup</itm>
+
+    <itm n="morf_syn_setup" l="et">Morf. sünteesi sätted</itm>
+    <itm n="morf_syn_setup" l="en">Morph synthesis setup</itm>
+    <itm n="morf_syn_setup" l="ru">Morph synthesis setup</itm>
+
+    <itm n="btnCancelText" l="et">Loobu</itm>
+    <itm n="btnCancelText" l="en">Cancel</itm>
+    <itm n="btnCancelText" l="ru">Cancel</itm>
+  </p>
+</c>

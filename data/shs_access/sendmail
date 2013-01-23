@@ -1,0 +1,13 @@
+
+sub meiliteade {
+    $ENV{PATH} = '/usr/sbin:/sbin:/root/bin:/bin';
+    open  (M, "|/usr/sbin/sendmail -t") or die ('Viga meili saatmisel');
+    print (M "To: eelex.admin\@eki.ee\n");
+    print (M "From: eelex.admin\@eki.ee\n");
+    print (M "Subject: EELEX: uus kasutaja vajab lisamist\n");
+    print (M "Content-type: text/plain\n\n");
+    print (M "Kasutaja " . $q->param('parisnimi') . " soovis saada EELexi kasutajaks.\n");
+    print (M "Keda see teade puudutab, palun ajage asi jonksu.\n");
+    print (M "Link on http://eelextest.eki.ee/shs_access/halda.cgi\n");
+    close (M);
+}

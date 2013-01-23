@@ -1,0 +1,644 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0"
+                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+                xmlns:al="http://www.eo.ee/xml/xsl/scripts"
+                xmlns:pref="http://www.eki.ee/dict/nothing"
+                xmlns:eRegs="http://exslt.org/regular-expressions" exclude-result-prefixes="msxsl eRegs">
+
+  <xsl:output method="html" omit-xml-declaration="yes" indent="no" encoding="utf-8" />
+
+  <!--Chrome ja Safari ei toeta include ja import-->
+  <!--<xsl:include href="../xsl/include/incTemplates.xsl"/>-->
+
+  <msxsl:script language="javascript" implements-prefix="al">
+
+    <![CDATA[
+
+    var tagaTyhik = '';
+    // <!--märksõna m korral tagab = 1 tühiku mittepanemise-->
+    var kyljes = 1;
+    var currentLn = '';
+    var dic_desc = '';
+    var dotNet = '';
+    var itad = '';
+    var paksud = '';
+    
+    var dicPr = '?', dicUri = '?';
+    var xmlNsMgr;
+
+    function myInit(parDicDesc, parDotNet, parItad, parPaksud, parDicPr, parDicUri) {
+        dic_desc = parDicDesc;
+        dotNet = parDotNet;
+        itad = parItad;
+        paksud = parPaksud;
+        dicPr = parDicPr;
+        dicUri = parDicUri;
+        if (dotNet == '1') {
+            xmlNsMgr = new XmlNamespaceManager(new NameTable);
+            xmlNsMgr.AddNamespace(dicPr, dicUri);
+            xmlNsMgr.AddNamespace("pref", dicUri);
+        }
+        return '';
+    }
+
+    function paneKylge(sym) {
+      kyljes = 1;
+      // Extension function parameters or return values which have Clr type 'ConcatString' are not supported
+      return "" + sym;
+    }
+    
+    function paneTyhikJarele(sym) {
+      tagaTyhik = ' ';
+      // Extension function parameters or return values which have Clr type 'ConcatString' are not supported
+      return "" + sym;
+    }
+    
+    function paneTyhikEtte(myNodeList, ln) {
+      var retStr;
+      var tekst, prevNode, eelmTekst = '';
+
+      if (dotNet == '1') { // kas läheb .NET alt?
+        myNodeList.MoveNext();
+        var nav = myNodeList.Current;
+        tekst = nav.Value;
+        prevNode = nav.SelectSingleNode("preceding-sibling::node()[1]");
+        if (!prevNode) {
+            // kõik on ju tekstid, sellepärast 'parentNode'
+            prevNode = nav.SelectSingleNode("../preceding-sibling::node()[1]");
+        }
+        if (prevNode) {
+          eelmTekst = prevNode.Value;
+        }
+      }
+      else {
+        tekst = myNodeList[0].text;
+        prevNode = myNodeList[0].selectSingleNode("preceding-sibling::node()[1]");
+        if (!prevNode) {
+            // kõik on ju tekstid, sellepärast 'parentNode'
+            prevNode = myNodeList[0].parentNode.selectSingleNode("preceding-sibling::node()[1]");
+        }
+        if (prevNode) {
+          eelmTekst = prevNode.text;
+        }
+      }
+
+      if (tagaTyhik == ' ')
+          retStr = '';
+        else {
+          if (kyljes == 0) {
+            if (ln == currentLn)                                            // omab tähendust ainult elemendi ja tema atribuutide vaheldumisel
+              retStr = ' ';
+            else {                                                          // algas uus element, atribuudi korral saadetakse ka element ise, mitte atribuut
+              if (");:,.!?-".indexOf(tekst.substr(0, 1)) > -1) {            // jooksev
+                  if (tekst.length > 1) {
+                      if (" .,;:".indexOf(tekst.substr(1, 1)) > -1) {
+                        retStr = '';
+                      } else {
+                        retStr = ' ';
+                      }
+                  }
+                  else
+                      retStr = '';
+              }
+              else {
+                  retStr = ' ';
+                  if (eelmTekst) {
+                      if (dic_desc == "ety") {
+                          if ("(".indexOf(eelmTekst.substr(eelmTekst.length - 1, 1)) > -1)
+                              retStr = '';
+                      } else if (dic_desc == "ss1") {
+                          if ("(".indexOf(eelmTekst.substr(eelmTekst.length - 1, 1)) > -1)
+                              retStr = '';
+                      } else if (dic_desc == "ems") {
+                          if ("(".indexOf(eelmTekst.substr(eelmTekst.length - 1, 1)) > -1)
+                              retStr = '';
+                      } else {
+                          if ("(-".indexOf(eelmTekst.substr(eelmTekst.length - 1, 1)) > -1)
+                              retStr = '';
+                      }
+                  }
+              } // ");:,.!?-".indexOf(tekst.substr(0, 1)) > -1
+            } // ln == currentLn
+          } // kyljes == 0
+          else
+            retStr = '';
+        } // tagatyhik == ' '
+  //      retStr = currentLn + '- >' + ln + ':' + myNodeList[0].nodeName + ':' + retStr;
+        currentLn = ln;
+        return retStr;
+    }
+
+
+    function xslNumberToRepString(xslNumber, repStr, lenOffStr) {
+        var xslNumbers = xslNumber.split('.');
+        var lenOff = parseInt(lenOffStr);
+        var rets = '';
+        for (var ix = 0; ix < xslNumbers.length + lenOff; ix++) {
+            rets += repStr;
+        }
+        // Extension function parameters or return values which have Clr type 'ConcatString' are not supported
+        return "" + rets;
+    }
+
+
+    function capitalize(tekst) {
+      return tekst.substr(0, 1).toUpperCase() + tekst.substr(1);
+    }
+
+    function unNameXsl(inpStr) {
+        var unStr = '', i;
+        // unStr = inpStr.replace(/:/, "-");
+        for (i = 0; i < inpStr.length; i++) {
+            unStr += '_' + inpStr.charCodeAt(i);
+        }
+        // Extension function parameters or return values which have Clr type 'ConcatString' are not supported
+        return "" + unStr;
+    }
+
+    function RS(currtext, locName) {
+        var ln = locName, currElemNode = null, currParent = null, nt = '';
+  
+        if (typeof(currtext) == 'object'){ // nodelist
+          if (dotNet == '1') {
+            // currtext tuleb sisse '{MS.Internal.Xml.XPath.XPathArrayIterator}' tüüpi
+            // see on 'XPathNodeIterator' tüüpi
+            // MoveNext():
+            // "moves the XPathNavigator object returned by the Current property to the next node in the selected node set."
+            currtext.MoveNext();
+            var nav = currtext.Current;
+            nt = nav.Value;
+            currElemNode = nav.SelectSingleNode("..");
+            currParent = currElemNode.SelectSingleNode("..");
+          }
+          else {
+            nt = currtext[0].text;
+            currElemNode = currtext[0].parentNode;
+            // currParent = currElemNode.parentNode; // psv pärast, ja alati ei pruugi parent olemas olla
+          }
+        }
+        else{
+          nt = currtext;
+        }
+        
+        
+        
+        if (ln == 'src'){
+            nt = nt.replace(/^\s*(http:\/\/[^\s]+)\s*$/, "<a href='$1'>$1</a>"); // 
+        }
+        
+        // siia pane tekstide 'reksAsendused'
+
+        // Jutumärgid nagu raamatus: <<  >> (lõpetaval on ees konks)
+        // nt = nt.replace(/\^"/g, String.fromCharCode(0x00BB));
+        // nt = nt.replace(/"/g, String.fromCharCode(0x00AB));
+        // nt = nt.replace(/\^"/g, '\u201D');
+        // nt = nt.replace(/"/g, '\u201E');
+        nt = nt.replace(/"\b/g, '\u201E');
+        nt = nt.replace(/\b"/g, '\u201D');
+
+        if (ln == 'm' || ln == 'mvt' || ln == 'tvt')
+            nt = nt.replace(/_+$/, ''); // alakriipsud m jt lõpust maha
+    
+        // muuttüüpides paralleelvormide eraldajad, tüübinumbrid
+        if (ln == 'mt') {
+          if ((dic_desc == 'ex_') && dotNet != '0') {
+            var tarr, i, tyyp, lisand;
+            tarr = nt.split("_&_");
+            for (i = 0; i < tarr.length; i++) {
+                tyyp = tarr[i], lisand = '';
+                if (tyyp.substr(0, 1) == '0') {
+                  tyyp = tyyp.substr(1);
+                }
+                if (tyyp.substr(tyyp.length - 1, 1) == '?') {
+                  tyyp = tyyp.substr(0, tyyp.length - 1);
+                  lisand = '?';
+                } else if (tyyp.substr(tyyp.length - 1, 1) == '~') {
+                  tyyp = tyyp.substr(0, tyyp.length - 1);
+                  lisand = '~';
+                }
+                tarr[i] = "<a href='inc/tyypsonad_" + dic_desc + ".html#tp" + tyyp + "'>" + tyyp + "</a>" + lisand;
+            }
+            nt = tarr.join("_&_");
+          }
+          nt = nt.replace(/_&_/g, " &amp; ");
+        }
+
+        if (dic_desc == 'ss_') {
+            if (ln == 'vk' || ln == 'sl') {
+              nt = nt.replace(/(\s)/g, ".$1");
+            }
+            if (ln == 'caut') {
+              nt = nt.replace(/(\.\s+)/g, ".&#xA0;"); //NO-BREAK SPACE
+            }
+            if (ln == 'n' || ln == 'c') {
+              nt = nt.replace(/(^\.\.\s+)/, "..&#xA0;"); //NO-BREAK SPACE
+              nt = nt.replace(/(\s+\.\.)/g, "&#xA0;.."); //NO-BREAK SPACE
+            }
+            if (ln == 'hev' || ln == 'd') {
+              nt = nt.replace(/(-)/g, "&#x2011;"); //NO-BREAKING HYPHEN
+            }
+        }
+        
+        if (dic_desc == 'ems') {
+            nt = nt.replace(/\-\s\-/g, "\u2011\xA0\u2011"); // murdumatu kriips + murdumatu tühik + murdumatu kriips
+            nt = nt.replace(/\-(\S)/g, "\u2011$1");
+            nt = nt.replace(/(\S)\-/g, "$1\u2011");
+        }
+
+        if (dic_desc == 'ldw') {
+            nt = nt.replace(/õ/g, 'o\u0324\u0323'); // kombineerivad dierees + punkt all
+            nt = nt.replace(/Õ/g, 'O\u0324\u0323'); // kombineerivad dierees + punkt all
+        }
+
+        if (dic_desc == 'qs_' || dic_desc == 'eos'|| dic_desc == 'kno') {
+            // slash / asendus alakaarega, hiljem võib HTML tõttu juba olla lisa /
+            nt = nt.replace(/\//g, String.fromCharCode(0x203F)); //undertie
+            nt = nt.replace(/\+/g, String.fromCharCode(0x203F)); //undertie
+            
+            nt = nt.replace(/(\{(([^{}]*?)([^\s{}]+?)([^{}]*?))\})/g, "<span style='color: gray;'>$2</span>");
+            
+            nt = nt.replace(/¤/g, '\u00b4'); //acute accent
+        }
+
+        if (dic_desc == 'psv') {
+            if (ln == 'mv') {
+                // muutevormide tekstis formatiivipiir ja lõpuke
+                nt = nt.replace(/\[/g, '');
+                nt = nt.replace(/\//g, '');
+            } else if (ln == 'kol') {
+                var esiOsa = nt.substr(0, nt.indexOf(" ") + 1); // koos tühikuga
+                if (esiOsa.length > 0) {
+                    var tagaOsa = nt.substr(nt.lastIndexOf(" ")); // koos tühikuga
+                    if (dotNet == '1') {
+                      // esiosad samad: trepist üles minema, trepist alla minema
+                      if (!currParent.SelectSingleNode("c:kol[not(contains(concat('~~~', .), '~~~" + esiOsa + "'))]", xmlNsMgr)) {
+                          if (currElemNode.SelectSingleNode("preceding-sibling::c:kol", xmlNsMgr))
+                              nt = nt.substr(nt.indexOf(" ") + 1);
+                      // tagaosad samad: kitsas trepp, lai trepp, kõrge trepp, järsk trepp
+                      } else if (!currParent.SelectSingleNode("c:kol[not(contains(concat(., '~~~'), '" + tagaOsa + "~~~'))]", xmlNsMgr)) {
+                          if (currElemNode.SelectSingleNode("following-sibling::c:kol", xmlNsMgr))
+                              nt = nt.substr(0, nt.lastIndexOf(" "));
+                      }
+                    }
+                    else {
+                      // esiosad samad: trepist üles minema, trepist alla minema
+                      if (!currElemNode.parentNode.selectSingleNode("c:kol[not(contains(concat('~~~', .), '~~~" + esiOsa + "'))]")) {
+                          if (currElemNode.selectSingleNode("preceding-sibling::c:kol"))
+                              nt = nt.substr(nt.indexOf(" ") + 1);
+                      // tagaosad samad: kitsas trepp, lai trepp, kõrge trepp, järsk trepp
+                      } else if (!currElemNode.parentNode.selectSingleNode("c:kol[not(contains(concat(., '~~~'), '" + tagaOsa + "~~~'))]")) {
+                          if (currElemNode.selectSingleNode("following-sibling::c:kol"))
+                              nt = nt.substr(0, nt.lastIndexOf(" "));
+                      }
+                    }
+                }
+            }
+        }
+
+        // liited (sufiksid, prefiksid) paksus kirjas
+        if (dic_desc == 'sp_' || dic_desc == 'spi' || dic_desc == 'spp') {
+            if (ln == 'ml' || ln == 'mml') {
+                var esi = '', taga = nt;
+                if (nt.indexOf(":") > -1) {
+                    esi = nt.substr(0, nt.indexOf(":"));
+                    taga = nt.substr(nt.indexOf(":") + 1);
+                }
+                taga = taga.replace(/(=(.*?)(#|\+|$))/g, "=<b style='font-weight:bold;'>$2</b>$3");
+                taga = taga.replace(/(,(.*?)(=|\+|~|#|$))/, "-<b style='font-weight:bold;'>$2</b>$3");
+                taga = taga.replace(/#(?!ma$)/g, "");
+                if (esi.length > 0) {
+                    nt = "<b style='font-weight:bold;'>" + esi + "</b>:" + taga;
+                }
+                else {
+                    nt = taga;
+                }
+            }
+        }
+
+
+        // $1-$9, $1 on esimene
+        nt = nt.replace(/(&suba;(.+?)&subl;)/g, "$2".sub());
+        nt = nt.replace(/(&supa;(.+?)&supl;)/g, "$2".sup());
+        nt = nt.replace(/(&la;(.+?)&ll;)/g, "<u>$2</u>");
+        nt = nt.replace(/(&capa;(.+?)&capl;)/g, "<i style='font-weight:bold;font-style:italic;font-variant:small-caps;'>$2</i>");
+        nt = nt.replace(/(&br;)/g, "<br/>");
+
+        // nt = nt.replace(/(&ba;(.+?)&bl;)/g, "$2".bold());
+        if (paksud.indexOf(';etvw_' + ln + ';') > -1) { //paksus mitte-paks
+            nt = nt.replace(/(&ba;(.+?)&bl;)/g, "<b style='font-weight:normal;'>$2</b>");
+        }
+        else {
+            nt = nt.replace(/(&ba;(.+?)&bl;)/g, "<b style='font-weight:bold;'>$2</b>");
+        }
+
+        if (itad.indexOf(';etvw_' + ln + ';') > -1) { //kursiivis pöörata kursiiv tagasi
+            nt = nt.replace(/(&ema;(.+?)&eml;)/g, "<i style='font-style:normal;'>$2</i>");
+        }
+        else {
+            nt = nt.replace(/(&ema;(.+?)&eml;)/g, "$2".italics());
+        }
+
+        // muutujad (entities)
+        // nt = nt.replace(/(&(\w+?);)/g, "$2".italics());
+        nt = nt.replace(/(&(ehk|Hrl|hrl|ja|jne|jt|ka|nt|puudub|v|vm|vms|vrd|vt|напр\.|и др\.|и т\. п\.|г\.);)/g, "$2".italics());
+
+        // 0x1D100 - 0x1D126
+/*
+        var muss = '';
+        for(i=0xDD00; i<=0xDD26; i++) {
+            muss += String.fromCharCode(0xD834, i);
+        }
+        var re = new RegExp("\(\[" + muss + "\]\)", 'g');
+        nt = nt.replace(re, "<span style='font-family:symbola;font-size:x-large'>$1</span>");
+*/
+
+        nt = nt.replace(/&gclef;/g, "<span style='font-family:symbola;font-size:x-large'>&#xA0;&#xA0;&#xA0;&#x1D11E;</span>");
+        nt = nt.replace(/&gclefottavaalta;/g, "<span style='font-family:symbola;font-size:x-large'>&#x1D11F;</span>");
+        nt = nt.replace(/&gclefottavabassa;/g, "<span style='font-family:symbola;font-size:x-large'>&#x1D120;</span>");
+        nt = nt.replace(/&cclef;/g, "<span style='font-family:symbola;font-size:x-large'>&#xA0;&#xA0;&#xA0;&#x1D121;</span>");
+        nt = nt.replace(/&fclef;/g, "<span style='font-family:symbola;font-size:x-large'>&#xA0;&#xA0;&#xA0;&#x1D122;</span>");
+        nt = nt.replace(/&fclefottavaalta;/g, "<span style='font-family:symbola;font-size:x-large'>&#x1D123;</span>");
+        nt = nt.replace(/&fclefottavabassa;/g, "<span style='font-family:symbola;font-size:x-large'>&#x1D124;</span>");
+        nt = nt.replace(/&drumclef1;/g, "<span style='font-family:symbola;font-size:x-large'>&#x1D125;</span>");
+        nt = nt.replace(/&drumclef2;/g, "<span style='font-family:symbola;font-size:x-large'>&#x1D126;</span>");
+        nt = nt.replace(/&brevis;/g, "<span style='font-family:symbola;font-size:x-large'>&#x1D1B8;</span>");
+
+        nt = nt.replace(/&fermata;/g, "<span style='font-family:symbola;font-size:x-large'>&#x1D110;</span>");
+        nt = nt.replace(/&segno;/g, "<span style='font-family:symbola;font-size:x-large'>&#x1D10B;</span>");
+
+        if (dic_desc == 'sp_' || dic_desc == 'spi' || dic_desc == 'spp') {
+            if (ln == 'ml' || ln == 'mml') {
+                nt = nt.replace(/[;\|¤]/g, "");
+            }
+            nt = nt.replace(/#/g, "/");
+        }
+
+        l6petaTekst();
+    
+        return nt;
+        }
+
+        function l6petaTekst() {
+            tagaTyhik = '';
+            kyljes = 0;
+            return '';
+        }
+
+        ]]>
+
+  </msxsl:script>
+  <xsl:variable name="pildiJuurikas"></xsl:variable>
+  <xsl:variable name="dic_desc"></xsl:variable>
+  <xsl:variable name="dotNet">0</xsl:variable>
+  <xsl:variable name="msie">1</xsl:variable>
+  <xsl:variable name="itad"></xsl:variable>
+  <xsl:variable name="paksud"></xsl:variable>
+  <xsl:variable name="edMode">0</xsl:variable>
+  <xsl:variable name="printing">0</xsl:variable>
+  <xsl:variable name="showShaded">1</xsl:variable>
+
+  <xsl:template match="/">
+    <xsl:apply-templates select="*"></xsl:apply-templates>
+  </xsl:template>
+
+  <!--dotNet-is tuleb esimesena <A> !!! -->
+  <!--Word väljatrükis <sr> -->
+  <!--artikli korral DOM ise-->
+  <xsl:template match="pref:sr">
+    <xsl:if test="function-available('al:myInit')">
+      <xsl:value-of select="al:myInit(string($dic_desc), string($dotNet), string($itad), string($paksud), substring-before(name(), ':'), namespace-uri())"></xsl:value-of>
+    </xsl:if>
+    <xsl:variable name="juurStiil">
+      <xsl:choose>
+        <xsl:when test="$printing = '1'"></xsl:when>
+        <xsl:otherwise></xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:element name="body">
+      <xsl:attribute name="lang">
+        <xsl:choose>
+          <xsl:when test="@xml:lang">
+            <xsl:value-of select="@xml:lang"></xsl:value-of>
+          </xsl:when>
+          <xsl:otherwise>et</xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:if test="$juurStiil != ''">
+        <xsl:attribute name="style">
+          <xsl:value-of select="$juurStiil"/>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:if test="$showShaded = '1' and $printing = '1'">
+        <div>
+          <h3 style="background-color: silver;">
+            <xsl:value-of select="@qinfo" />
+          </h3>
+        </div>
+      </xsl:if>
+      <xsl:apply-templates select="pref:A[not(@pref:Al = 'all') or $printing = '0']">
+        <xsl:with-param name="rada"></xsl:with-param>
+        <xsl:with-param name="peidus"></xsl:with-param>
+      </xsl:apply-templates>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template name="elemendiSisemus">
+    <xsl:param name="rada"></xsl:param>
+    <xsl:param name="posnr"></xsl:param>
+    <xsl:param name="peidus"></xsl:param>
+    <xsl:choose>
+      <xsl:when test="1 = 2"></xsl:when>
+      <xsl:when test="@pref:mT = 'img'">
+        <xsl:element name="div">
+          <xsl:element name="img">
+            <xsl:attribute name="src">
+              <xsl:value-of select="concat($pildiJuurikas, $dic_desc, '/__pildid/', .)"></xsl:value-of>
+            </xsl:attribute>
+            <xsl:attribute name="alt">
+              <xsl:value-of select="."></xsl:value-of>
+            </xsl:attribute>
+            <xsl:attribute name="title">
+              <xsl:value-of select="concat('&lt;', ., '&gt;')"></xsl:value-of>
+            </xsl:attribute>
+            <xsl:if test="@pref:mW">
+              <xsl:attribute name="style">
+                width:<xsl:value-of select="@pref:mW"></xsl:value-of>;
+              </xsl:attribute>
+            </xsl:if>
+          </xsl:element>
+        </xsl:element>
+      </xsl:when>
+      <xsl:when test="@pref:mT = 'html'">
+        <xsl:element name="div">
+          <xsl:attribute name="class">
+            <!--MS Word loeb sisse ainult esimese className-->
+            <xsl:value-of select="concat('etvw_', translate(name(), ':', '_'))"/>
+            <xsl:choose>
+              <xsl:when test="function-available('al:unNameXsl')">
+                <xsl:value-of select="al:unNameXsl(local-name())"></xsl:value-of>
+              </xsl:when>
+            </xsl:choose>
+          </xsl:attribute>
+          <xsl:copy-of select="node()"></xsl:copy-of>
+        </xsl:element>
+      </xsl:when>
+      <!-- keeleplokkide valimise järjekord -->
+      <xsl:otherwise>
+        <xsl:apply-templates select="node()[not(. = '')]">
+          <xsl:with-param name="rada">
+            <xsl:value-of select="concat($rada, name(), '[', $posnr, ']/')"></xsl:value-of>
+          </xsl:with-param>
+          <xsl:with-param name="peidus">
+            <xsl:value-of select="$peidus"></xsl:value-of>
+          </xsl:with-param>
+        </xsl:apply-templates>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="*"></xsl:template>
+
+  <xsl:template match="text()">
+    <xsl:param name="rada"></xsl:param>
+    <xsl:param name="peidus"></xsl:param>
+    <xsl:variable name="posnr">
+      <xsl:number level="single" format="1"></xsl:number>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="function-available('al:paneTyhikEtte')">
+        <xsl:value-of select='al:paneTyhikEtte(., local-name(..))'/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:text xml:space="preserve"> </xsl:text>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:element name="span">
+      <xsl:if test="$printing = '0' and $peidus = ''">
+        <xsl:attribute name="tabIndex">0</xsl:attribute>
+        <xsl:attribute name="id">
+          <xsl:value-of select="concat($rada, 'text()[', $posnr, ']')" />
+        </xsl:attribute>
+        <xsl:attribute name="title">
+          <xsl:value-of select="concat($rada, 'text()[', $posnr, ']')" />
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:attribute name="class">
+        <!--MS Word loeb sisse ainult esimese className-->
+        <xsl:value-of select="concat('etvw_', translate(name(..), ':', '_'))"/>
+        <xsl:choose>
+          <xsl:when test="function-available('al:unNameXsl')">
+            <xsl:value-of select="al:unNameXsl(local-name(..))"></xsl:value-of>
+          </xsl:when>
+        </xsl:choose>
+        <xsl:if test="$edMode = '1'">
+          <xsl:text> noedit</xsl:text>
+        </xsl:if>
+        <!-- tekstiLink -->
+        <xsl:if test="1 = 2">
+          <xsl:value-of select="concat(' lingike G_', ../@pref:aG, ' href_', ../@pref:href, ' dst_', ../@pref:dst)"/>
+        </xsl:if>
+      </xsl:attribute>
+      <xsl:variable name="styleInSpan"></xsl:variable>
+      <xsl:if test="string-length($styleInSpan) > 0">
+        <xsl:attribute name="style">
+          <xsl:value-of select="$styleInSpan"></xsl:value-of>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:attribute name="lang">
+        <xsl:call-template name="get_lang">
+        </xsl:call-template>
+      </xsl:attribute>
+      <xsl:choose>
+        <xsl:when test="1 = 2"></xsl:when>
+        <!-- tekstiSisu -->
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="function-available('al:RS')">
+              <xsl:value-of select="al:RS(., string(local-name(..)))" disable-output-escaping="yes" />
+            </xsl:when>
+            <xsl:when test="function-available('eRegs:replace')">
+              <xsl:value-of select="eRegs:replace(., '(&amp;\w+;)', 'g', '')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="."></xsl:value-of>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="@*">
+    <xsl:param name="rada">
+    </xsl:param>
+    <xsl:element name="span">
+      <xsl:if test="$printing = '0'">
+        <xsl:attribute name="tabIndex">0</xsl:attribute>
+        <xsl:attribute name="id">
+          <xsl:value-of select="concat($rada, '@', name())" />
+        </xsl:attribute>
+        <xsl:attribute name="title">
+          <xsl:value-of select="concat($rada, '@', name())" />
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:attribute name="class">
+        <xsl:value-of select="concat('atvw_', translate(name(..), ':', '_'), '_', translate(name(), ':', '_'))" />
+        <xsl:choose>
+          <xsl:when test="function-available('al:unNameXsl')">
+            <xsl:value-of select="al:unNameXsl(local-name())"></xsl:value-of>
+          </xsl:when>
+        </xsl:choose>
+        <xsl:if test="$edMode = '1'">
+          <xsl:text> noedit</xsl:text>
+        </xsl:if>
+        <!-- atribuudiLink -->
+        <xsl:if test="1 = 2">
+          <xsl:text> lingike</xsl:text>
+        </xsl:if>
+      </xsl:attribute>
+      <xsl:variable name="styleInSpanAttr"></xsl:variable>
+      <xsl:if test="string-length($styleInSpanAttr) > 0">
+        <xsl:attribute name="style">
+          <xsl:value-of select="$styleInSpanAttr"></xsl:value-of>
+        </xsl:attribute>
+      </xsl:if>
+      <xsl:attribute name="lang">
+        <xsl:call-template name="get_lang">
+        </xsl:call-template>
+      </xsl:attribute>
+      <xsl:choose>
+        <xsl:when test="1 = 2"></xsl:when>
+        <!-- atribuudiSisu -->
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="function-available('al:RS')">
+              <xsl:value-of select="al:RS(., string(local-name()))" disable-output-escaping="yes" />
+            </xsl:when>
+            <xsl:when test="function-available('eRegs:replace')">
+              <xsl:value-of select="eRegs:replace(., '(&amp;\w+;)', 'g', '')"/>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:value-of select="."></xsl:value-of>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template name="get_lang">
+    <xsl:variable name="keel">
+      <xsl:for-each select="ancestor-or-self::*[@xml:lang][1]">
+        <xsl:value-of select="@xml:lang"/>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$keel != ''">
+        <xsl:value-of select="$keel"/>
+      </xsl:when>
+      <xsl:otherwise>et</xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+</xsl:stylesheet>

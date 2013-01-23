@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Sõnaartikli muutmine</h2>
+	
+<span style="display: block; text-align: justify;">Artikli avamisel avaneb vasakul poolel Toimetamisala, kus on artikli tekst XML üksuste kaupa, paremal artikli tekst küljendatud kujul (Vaade). </span>Toimetamisala ja küljenduse vaated on omavahel seotud: klõpsates ühel neist mingile elemendile, avatakse või näidatakse taustaga võõbatult sama element ka teises.<br />
+<span style="display: block; text-align: justify;"><img src="files/avatud_artikkel.png" alt="avatud_artikkel.png" title="avatud_artikkel.png" style="height: 276px; width: 800px;" /><br />
+</span><br />
+<span style="display: block; text-align: justify;">Toimetamisala saab vaadata erinevatel kujudel:</span><br />
+<ul><li><strong>Tabelina</strong> (vaikimisi, näitab väljade nimesid ja sisusid tabeli vormis),</li><li><strong>XML</strong> (artikkel XML märgenduses)</li><li><strong>Vaatena</strong> (küljendatud vaatena, kus saab tekstiparandusi teha, struktuurimuudatusi mitte).</li></ul>Neid kujusid saab esile kuvada<br />
+<span style="display: block; text-align: justify;">Toimetamisala ülaservas olevate samanimeliste nuppude abil:</span><br />
+<img src="files/tabelina_xml_vaatena.png" alt="tabelina_xml_vaatena.png" title="tabelina_xml_vaatena.png" /><br />
+<br />
+<span style="display: block; text-align: justify;"><strong>Gruppide ja elementide lisamiseks</strong> on Toimetamisalal tabeli vaates elementide nimest vasakul valge taustaga ikoonid <img src="files/lisa_element.png" alt="lisa_element.png" title="lisa_element.png" />.<br />
+</span><span style="display: block; text-align: justify;"><strong>Elemendi või grupi loomine</strong> - elemendist <strong>vasakul</strong> asuva musta allapoole suunatud noolekujulise ikooni<img src="files/loo_element.png" alt="loo_element.png" title="loo_element.png" />.<br />
+</span><span style="display: block; text-align: justify;"><strong>Lisada kõik antud grupis veel avamata elemendid</strong> - Tabelivaate <strong>paremas</strong> ääres olevad noolekujulised ikoonid <img src="files/ava_lahter.png" alt="ava_lahter.png" title="ava_lahter.png" />.</span><br />
+<span style="display: block; text-align: justify;">Parandamisel on võimalik kasutada tühista/taasta (<strong>Undo/Redo</strong>) käske, vastavad noolekujulised nupud <img src="files/undo_puhvriga.png" alt="undo_puhvriga.png" title="undo_puhvriga.png" />asuvad Toimetamisala üleval paremas ääres. Numbrid noolenuppudest vasakul tähistavad paranduste jooksvat puhvrit ja puhvrite koguarvu .</span><br />
+<br />
+<h3 id="toc0"><a name="x--Kontekstmenüüd"></a>Kontekstmenüüd</h3>
+ Erinevad kontekstmenüüd avanevad, kui paremklõpsad XML elemendile või tekstilahtrile. <br />
+<br />
+1. Igale artikli üksusele ehk <strong>XML elemendile</strong> <strong>paremklõpsu</strong> tehes on võimalik esitada tema kontekstmenüü, kus saab valida ainult neid tegevusi, mis antud artikli osas on skeemi järgi lubatud. <br />
+<br />
+<img src="files/kontekstmenyy.png" alt="kontekstmenyy.png" title="kontekstmenyy.png" style="height: 256px; width: 800px;" /><br />
+Kontekstmenüü kaudu on võimalik<br />
+<ul><li>lisada elemente antud elemendi ette või järele;</li><li>lisada elemendile tunnuseid ehk atribuute, kui elemendil on need skeemi järgi olemas;</li><li>muuta elemendi silti (ja nime), kui skeemi järgi on see lubatud;</li><li>kopeerida, lõigata või kleepida elementi, tervet gruppi või mitut elementi või gruppi korraga (hoia all ctrl+alt+shift all paremklõpsu ajal ja ilmuvad valikud Kopeeri lisaks ja Lõika lisaks);</li><li>kustutada element, kui see on lubatud.</li></ul><br />
+Elemendi või ploki <strong>sisu saab kopeerida</strong>, kui Toimetamisalal teha paremklõps elemendi/ploki sildil ning kontekstmenüüst valida <strong>Ava kopeerimiseks</strong>. Tekstid kuvatakse Vaatealal, kust neid saab kopeerida. Tagasi tavalisse Vaatesse saab ilmunud nupu <img src="files/nupp_tagasi_vaade.png" alt="nupp_tagasi_vaade.png" title="nupp_tagasi_vaade.png" /> abil.<br />
+<br />
+<strong>Ava parandusteks üle köidete</strong> - avaneb Hulgiparanduste aken, kus on juba otsinguparameetrid ära täidetud. Edasi toimimiseks vt <a class="wiki_link" href="hulgiparandused.html">Hulgiparandused</a>.<br />
+<br />
+<strong>P</strong>aremklõps sildil ja valik <strong>Guuglisse</strong> pärib selle elemendi teksti google.com otsimootoris.<br />
+<br />
+<strong>Välised lingid</strong> - kuvab lehe, kus loetelu välistest allikatest, kust selle elemendi sisu otsiti: Google ja vaikimisi mitu Eesti Keele Instituudi veebisõnastikku; on võimalus lisada teisi EKI veebisõnastikke (sisestades sõnastiku lingi).<br />
+<br />
+2. Eraldi kontekstmenüü on olemas <strong>tekstilahtrite sees</strong> (s.t paremklõpsata siis, kui kursor plingib tekstilahtri sees): ka seal on võimalikud ainult kindlad, kontekstile vastavad tegevused. Vaid Mx tüüpi elementide puhul saab lisada nii teksti kui teisi elemente. Tavalise tekstivälja korral kuvatakse ainult <strong>sümbolite</strong> ja <strong>kirjastiilide</strong> menüüpunktid (näiteks kirjastiili muutuse algus ja lõpp, ülaindeksi algus ja lõpp, allajoonitud algus ja lõpp jne - tähendusi vaata hiirega stiilile peale jäädes ilmuvalt ribalt).<br />
+<br />
+Tekstiväljas on <strong>topeltklõpsuga</strong> võimalik märgistada mingi osa ja paremklõps sel osal avab kontekstmenüü, mille alläärde on lisandunud valik <strong>kirjastiili</strong> määramiseks.<br />
+<br />
+Ladina tähestiku kontekstmenüüsse on lisatud kõik laiendatud ladina tähestiku tähed, <strong>kombineerivate diakriitiliste märkide</strong> abil on võimalik märkida rõhkusid, võimalik on lisada mitmesuguseid matemaatilisi jm sümboleid. <br />
+<img src="files/kontekstmenyy_ladina_clai.png" alt="kontekstmenyy_ladina_clai.png" title="kontekstmenyy_ladina_clai.png" style="height: 295px; width: 800px;" /><br />
+<br />
+Tekstilahtri sisu muutmisel kontrollitakse sisu vastavust andmetüübile ja skeemi seatud piirangutele.<br />
+Soovi korral on võimalik kasutada tööjaama MS Word <strong>õigekirjakontrolli </strong>.
+    </div>
+  </body>
+</html>

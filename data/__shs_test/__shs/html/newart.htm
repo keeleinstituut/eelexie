@@ -1,0 +1,207 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title></title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">--> 
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script type="text/javascript" src="res_var.js"></script>
+    <script type="text/javascript" src="res_lang_et.js"></script>
+    <script type="text/javascript" src="procs_TextContMenu.js"></script>
+    <!--<script type="text/javascript" src="tools.js"></script>-->
+    <script type="text/javascript" src="tools_dx.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/script.css">
+    <script type="text/javascript">
+
+        //-----------------------------------------------------------------------------------
+        function displayTexts(lang) {
+            switch (lang) {
+                case "et":
+                    document.getElementById("spanVolume").innerHTML = "<b><u>Köide:</u></b>";
+                    document.getElementById("lblMs").innerHTML = "Uue artikli <u>m</u>ärksõna:";
+                    document.getElementById("lblHomNr").innerHTML = "Märksõna <u>h</u>omonüüminumber:";
+                    document.getElementById("lblPs").innerHTML = "<u>P</u>õhisõna tunnus:";
+                    document.getElementById("lisa").value = "Lisa";
+                    document.title = "Artikli lisamine";
+                    break;
+                case "en":
+                    document.getElementById("spanVolume").innerHTML = "<b><u>Volume:</u></b>";
+                    document.getElementById("lblMs").innerHTML = "New headword:";
+                    document.getElementById("lblHomNr").innerHTML = "Hom. number:";
+                    document.getElementById("lblPs").innerHTML = "Base headword:";
+                    document.getElementById("lisa").value = "Add";
+                    document.title = "Add entry";
+                    break;
+            }
+
+        }
+
+
+        //-----------------------------------------------------------------------------------
+        function LisaLoad() {
+
+            var dic_desc, sAppLang, DICPR, DICURI, msLang, psTrue;
+            var inarr = window.dialogArguments;
+
+            document.getElementById("idvolnr").innerHTML = inarr[0];
+            ms.value = inarr[1];
+            dic_desc = inarr[2];
+            sAppLang = inarr[3];
+            psTrue = inarr[5];
+            msLang = inarr[6];
+            if (psTrue) {
+                document.getElementById("lblPs").style.visibility = "visible";
+                document.getElementById("ps").style.visibility = "visible";
+            }
+            document.getElementById("ms").focus();
+            document.getElementById("ms").select();
+
+            var oConfigDOM = IDD("File", "../shsconfig_" + dic_desc + ".xml", false, false, null);
+            if (!oConfigDOM) {
+                return;
+            }
+            DICPR = xmlElementTextValue(oConfigDOM.documentElement.getElementsByTagName("dicpr")[0]);
+            DICURI = xmlElementTextValue(oConfigDOM.documentElement.getElementsByTagName("dicuri")[0]);
+
+            displayTexts(sAppLang);
+
+            FillInsertSymbolsMenu()
+
+            if (msLang && window.ActiveXObject) {
+                var setKeyboard, sta;
+                var cfgElem = oConfigDOM.documentElement.getElementsByTagName("cfgSetKeyboard")[0];
+                if (cfgElem) {
+                    setKeyboard = jsStringToBoolean(xmlElementTextValue(cfgElem));
+                } else {
+                    setKeyboard = false;
+                }
+
+                if (setKeyboard) {
+                    try {
+                        sta = eelexSWCtl.setKeyboardLayout(msLang);
+                    }
+                    catch (e) {
+                        alert(e.name + " 0x" + hex(e.number, true) + ": '" + e.description + "'.");
+                        return;
+                    }
+                    if (sta < 0) {
+                        //-1: vigased sisendparameetrid;;
+                        //-2: ei leitud locale-t (nt Windows XP-s on locale name //null'!);;
+                        //-3: ei leitud klaviatuuri paigutust;;
+                        document.getElementById("spnInfo").innerHTML = "'setKeyboardLayout' viga: " + sta;
+                    }
+                }
+            }
+
+        } //LisaLoad
+
+
+        //-----------------------------------------------------------------------------------
+        function HandleBodyKeyUp() {
+            var keyCode = ('which' in event) ? event.which : event.keyCode;
+            if (keyCode == 27) {
+                window.close();
+            } else if (keyCode == 13) {
+                SetReturnV();
+            }
+        } //HandleBodyKeyUp
+
+
+        //-----------------------------------------------------------------------------------
+        function LisaClick() {
+            SetReturnV();
+        } //LisaClick
+
+
+        //-----------------------------------------------------------------------------------
+        function SetReturnV() {
+
+            var msval = jsTrim(ms.value);
+            var homnrvalue = jsTrim(homnr.value);
+            var psVal = jsTrim(ps.value)
+
+            if (msval) {
+                if (homnrvalue) {
+                    var rex = /^\d+$/;
+                    if (!homnrvalue.match(rex)) {
+                        alert("Hom. number ei ole number!");
+                        return;
+                    }
+                    if (parseInt(homnrvalue) < 1) {
+                        alert("Hom. number peab olema nullist suurem täisarv!");
+                        return;
+                    }
+                }
+                window.returnValue = msval + JR + homnrvalue + JR + psVal;
+                window.close();
+            }
+        } //SetReturnV
+
+
+        //-----------------------------------------------------------------------------------
+        function tbOnContextMenu() {
+            var cmhtml = "<div style='width:100%' class='md'>#text</div>" + document.getElementById("insert_symbols").innerHTML;
+            var tnCMenu = document.getElementById("tn_cmenu");
+            tnCMenu.innerHTML = cmhtml;
+
+//            if ((window.event.clientX + tnCMenu.style.pixelWidth + insert_entities.style.pixelWidth + big_character.style.pixelWidth / 2 + 60 > window.document.body.clientWidth)) {
+//                srcx = window.event.screenX - (tnCMenu.style.pixelWidth + 60);
+//            } else {
+//                srcx = window.event.screenX + 60;
+//            }
+
+
+//            var srcx, srcy, mdivs, mheight;
+//            mdivs = tnCMenu.all.tags("DIV").length;
+//            mheight = (mdivs * 16) + 6;
+//            if ((window.event.clientY + mheight + 20 > window.document.body.clientHeight)) {
+//                srcy = window.event.screenY - window.screenTop - (mheight + 20);
+//            } else {
+//                srcy = window.event.screenY - window.screenTop + 20;
+//            }
+
+            var srcX = window.event.clientX + 16;
+            var srcY = window.event.clientY + 16;
+            DisplayTNCMenu(srcX, srcY);
+            window.event.returnValue = false;
+
+        } //tbOnContextMenu
+
+
+    </script>
+</head>
+<body style="background-color: buttonface" onload="LisaLoad()" onkeyup="HandleBodyKeyUp()">
+    <object id="eelexSWCtl" classid="CLSID:A8C1E9B0-99B1-41B0-975B-1A194BC1D3C0" codebase="../install/eelexSWCtl.CAB#version=-1,-1,-1,-1"
+        style="display: none;" viewastext>
+        <param name="propDd" value="___">
+    </object>
+    <div id="id_body" style="padding-left: 10mm; padding-top: 5mm">
+        <span id="spanVolume"></span><span id="idvolnr"></span>
+        <br />
+        <br />
+        <label id="lblMs" for="ms" accesskey="m" style="font-size: x-small">
+        </label>
+        <br />
+        <input id="ms" name="ms" type="text" size="40" tabindex="1" oncontextmenu='tbOnContextMenu()' />
+        <br />
+        <label id="lblHomNr" for="homnr" accesskey="h" style="font-size: x-small">
+        </label>
+        <br />
+        <input id="homnr" name="homnr" type="text" size="40" tabindex="2" />
+        <br />
+        <label id="lblPs" for="ps" accesskey="p" style="font-size: x-small; visibility: hidden">
+        </label>
+        <br />
+        <input id="ps" name="ps" type="text" size="40" tabindex="3" style="visibility: hidden" />
+        <br />
+        <br />
+        <input id="lisa" name="lisa" onclick="LisaClick()" type="button" value="-" tabindex="4">
+        <span id="spnInfo" style="color: red;"></span>
+    </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Hulgiparandused</h2>
+Sõnastikutöös tekib olukordi, kui on vaja teha ühesugune parandus paljudes artiklites korraga, viia sõnastik vastavusse skeemimuutusega, kustutada mingi tunnuse järgi leitavad artiklid vms. Vältimaks ajakulu ja vigu, mis ükshaaval parandamise käigus paratamatult tekib, on EELexil selliste operatsioonide tarbeks võimas tööriist Hulgiparandused.<br />
+<br />
+Hulgiparandusi saab teha elemendi, tema väärtuse või atribuudi, elementide grupi või artikli kallal. Hulgi saab<br />
+<ol><li>parandada või kustutada elemendi väärtust;</li><li>asendada, lisada või kustutada elementi valitud piirkonnas (grupis, ülemelemendis);</li><li>asendada/lisada või kustutada atribuuti;</li><li>muuta gruppe;</li><li>kustutada artikleid.</li></ol><span style="color: #ff0000;">NB! Korra tehtud hulgiparandust lihtsa võttega tühistada ei saa! Keerulised võtted on olemas</span>, vt Hulgiparanduse tühistamine allpool.<br />
+<br />
+<h2 id="toc0"><a name="x-Tööde järjekord hulgi parandades"></a>Tööde järjekord hulgi parandades</h2>
+ <ol><li>Veendu, et plaanitavad parandused on kooskõlas sõnastiku skeemiga. Vajaduse korral muuda enne skeemi.</li><li>Tee hulgiparandused.</li><li>Valideeri parandatud köide (köited) (vt <a class="wiki_link_new" href="s6nastiku_valideerimine.html">Sõnastiku valideerimine</a>).</li></ol><br />
+<h2 id="toc1"><a name="x-Hulgiparanduste aken"></a>Hulgiparanduste aken</h2>
+ Ava Hulgiparandused Sõnastiku tööriistade nupu alt. Ilmuvas aknas on kolm piirkonda:<br />
+<ol><li><strong>Otsinguala</strong> ülal vasakul - otsinguparameetrite abil leitakse artikli osad (grupid), milles parandusi tegema hakatakse.</li><li><strong>Operatsioonide ala</strong> ülal paremal - siin vali tehtava paranduse laad ja määra vanad ja/või uued väärtused;</li><li><strong>Otsingutulemuste tabel</strong> all keskel - siin on näha, millised artikli osad otsinguparameetrite järgi sõnastikust leiti. Tabelis lahtritele klikkides saab näha otsitava elemendi ümbrust XML kujul. Lahtritele klõpsates saab ka artikkelhaaval muutusi teha - mõnikord osutub just see kõige mugavamaks viisiks (mugavam ka kui Toimetamisalal parandamine). Esimeses veerus saab linnukest maha võttes ära märkida need artiklid, millele hulgiparandust rakendada tarvis ei ole.</li></ol><br />
+Igal akna elemendil hiirega veidi aega viibides ilmub lühike abiinfo.<br />
+<br />
+<img src="files/hulgiparandused.PNG" alt="hulgiparandused.PNG" title="hulgiparandused.PNG" style="height: 522px; width: 800px;" /><br />
+<br />
+<h3 id="toc2"><a name="x-Hulgiparanduste aken-Muudetavate kirjete ja piirkonna määramine"></a><span style="font-family: Arial,Helvetica,sans-serif;">Muudetavate kirjete ja piirkonna määramine </span></h3>
+ Alusta tööd sellest, et määra ära, millises artikli piirkonnas (artikli osas) ja millises elemendis sa tahad parandust teha. Selleks vali <br />
+<strong>Otsitav piirkond,</strong> s.o piirkond, milles asub element, mida muuta on vaja, ja<br />
+<strong>Otsitav element,</strong> s.o element, mille abil määratled muutmisele minevad artikli osad.<br />
+Tekstilahtrisse saad kirjutada <strong>elemendi väärtuse</strong> (sisu), kasutada saab metamärke (nt tärn * tähistamaks suvalist arvu suvalisi sümboleid). <br />
+Kui otsitaval elemendil on <strong>atribuute</strong>, siis ilmub veel valikmenüü nende valimiseks ning väike tekstilahter väärtuse sisestamiseks.<br />
+Kui otsitav element on <strong>loend (tüüp)</strong>, siis ilmub otsiakna taha allapoole suunatud noolega nupp, mille abil saab loendist väärtuse valida (ja vältida kirjavigu).<br />
+Otsingut saab vaikimisi pandud linnukest maha võttes muuta <strong>tõstutundlik</strong>uks.<br />
+Kui on linnuke <strong>globaalselt</strong>, siis otsitakse kogu artikli ulatuses, vastasel juhul vaid otsitavas piirkonnas.<br />
+Linnuke <strong>A-Z</strong> jt võimaldavad määrata sõnastiku köited, millest otsitakse.<br />
+Vajutus nupule <strong>XML</strong> kuvab kirjeldusele vastavad elemendid. <br />
+Linnuke <strong>märkidega</strong> - kui väljas, siis ignoreerib otsitavas tekstis märke, mis selle sõnastiku tähestikku ei kuulu (nt liitsõnapiiri tähistavat sümbolit).<br />
+<br />
+<h3 id="toc3"><a name="x-Hulgiparanduste aken-Paranduse määramine ja käivitamine"></a>Paranduse määramine ja käivitamine</h3>
+ Operatsioonide ala esimese valiku abil saad valida parandust (operatsiooni), mida otsinguparameetritega määratud piirkonnas rakendada soovid. Selle all on valik, mille abil vali element, mida muuta soovid. Kui sel elemendil on atribuut, siis ilmub atribuudi valimiseks eraldi valik. Kaks alumist lahtrit on vana ja uue väärtuse sisestamiseks.<br />
+Nupp <strong>Rakenda</strong> - näitab leitud kohti Otsingutulemuste tabelis parandatud kujul (kollase taustaga).<br />
+Nupp <strong>Rak. puud.</strong> (Rakenda puuduvatele) aktiveerub siis, kui valitud elemendil on atribuute ja soovitud operatsiooniks on lisa/asenda atribuut. Võimaldab rakendada operatsiooni neile artiklitele, kus see element/atribuut puudub.<br />
+Nupp <strong>Tühista</strong> tühistab viimase vajutuse nupule Rakenda.<br />
+Nupp <strong>Käivita op.</strong> tulemuste tabeli all viib muutused andmebaasi (kuvatud ja linnukesega märgitud artiklitesse). NB! Selle nupuga käivitatud tegevuse tühistamiseks lihtsat tühistamise võtet ei ole, vt Hulgiparanduste tühistamine allpool. Iga rida tabelis, mille parandus andmebaasi viidi, kustub otsingutulemuste tabelist.<br />
+<br />
+<h3 id="toc4"><a name="x-Hulgiparanduste aken-Elemendi väärtuse muutmine"></a>Elemendi väärtuse muutmine</h3>
+ Elemendi väärtus on tema sisu (&lt;x:m&gt;väärtus e sisu&lt;/x:m&gt;). Vali Operatsioonide ala esimesest valikmenüüst <strong>muuda väärtusi (x:element)</strong>. Ülejärgmisesse tekstilahtrisse (<strong>Vana väärtus</strong>) sisesta see väärtus, mis elemendil praegu on ehk mis tuleb asendada, ja viimasesse lahtrisse kirjuta <strong>uus väärtus</strong>. Vajuta <strong>Rakenda</strong> ja otsingutulemuste tabelis näidatakse kollase värviga, kuidas uus olukord välja näeks.<br />
+<br />
+Ülal toodud pildil on näidatud hulgiparanduste aken, kus valdkondade loendis on otsustatud asendada sõna mäend sõnaga mäendus. Otsitava veerg värvus kollaseks pärast nupule Rakenda vajutamist (näitab uut olukorda), järgmine samm oleks viia muutused andmebaasi (nupp Käivita op).<br />
+<br />
+Näiteks on vaja kõik elemendi x:akeel kõigl väärtused &quot;saksa&quot; asendada väärtusega &quot;saksa-rootsi&quot;. Otsingualal valin Otsitavaks piirkonnaks elemendi akeel ülemelemendi, seejärel otsitava elemendi enda (x:akeel), otsilahtrisse tipin &quot;saksa&quot;, vajutan XML ja kontrollin, kas leiti soovitud artiklid. Seejärel valin Operatsioonide alal &quot;muuda väärtusi (x:akeel)&quot;, vana väärtuse lahtrisse tipin &quot;saksa&quot; ja uue väärtuse lahtrisse &quot;saksa-rootsi&quot;, vajutan Rakenda, kontrollin tekkinud muutuse, kui olen rahul - vajutan nupule Käivita op.<br />
+<br />
+<h3 id="toc5"><a name="x-Hulgiparanduste aken-Elemendi kustutamine"></a>Elemendi kustutamine</h3>
+ Kustutatava elemendi määrad otsingualal. Operatsiooniks vali <strong>kustuta (x:element)</strong> ja vajuta Rakenda. Tulemuste tabelis kuvatakse lillal taustal kustutatav element. Muutuse tegemiseks sõnastikus Käivita op. <br />
+<br />
+<h3 id="toc6"><a name="x-Hulgiparanduste aken-Elemendi asendamine, lisamine, kustutamine (x:piirkond) grupis"></a>Elemendi asendamine, lisamine, kustutamine (x:piirkond) grupis</h3>
+ Nende operatsioonidega saad muudetava elemendi eraldi määrata. Hea on see olukorras, kus muudetav element on muu kui otsingualal kasutatu. Otsingualal otsi muudetavad kirjed välja, nüüd vali operatsioon (näiteks <strong>kustuta element (x:A) grupis</strong>) ja seejärel määrad operatsioonide valiku all asuvast valikmenüüst (Vali asendatav/lisatav/kustutatav element) elemendi, mida otsitud piirkonnas kustutada plaanid. Nt vormikoodi korral saab &lt;grp&gt; grupis kustutada muutevormi &lt;mv&gt; jt.<br />
+<br />
+Sarnaselt toimub <strong>elemendi asendamine grupis</strong>: asendatav element tuleb valida operatsioonide valiku all olevast valikust (Vali asendatav/lisatav/kustutatav element) ja uue elemendi nimi kirjuta väljale <strong>Uus väärtus</strong>, kujul: x:uuselement. Nupp Rakenda lubab enne operatsiooni käivitamist vaadelda, kas muudatus on õige ja kas kõigis leitud kirjetes tuleb asendus teha. Kui tulemuste tabel õige, siis vajuta nuppu Käivita op.<br />
+<br />
+<strong>Elemendi lisamiseks grupis</strong> tuleb <br />
+<br />
+<h3 id="toc7"><a name="x-Hulgiparanduste aken-Atribuudi lisamine, asendamine, kustutamine"></a>Atribuudi lisamine, asendamine, kustutamine</h3>
+ Leia Otsingualal muudetavad artiklid, määrates otsitavas piirkonnas otsitava elemendi (vajadusel saad päringut kitsendada ka mõne atribuudi väärtuse abil), millel hakkad atribuuti muutma.<br />
+<br />
+<strong>Atribuudi lisamine:</strong> ülal paremal vali operatsiooniks <strong>lisa/asenda atribuut</strong>, järgmiseks on kasutatav ülalt kolmas valik (Vali asendatav/lisatav/kustutatav atribuut), sealt ära vali midagi, valik jääb tühjaks (näha on kriipsud ---), uue lisatava atribuudi nimi kirjuta formaati kasutades (@x:uusatribuut) lahtrisse Uus väärtus ja vajuta nuppu Rakenda; kui oled tulemuste tabelis nähtuga rahul, siis Käivita op.<br />
+<br />
+<strong>Atribuudi asendamine:</strong> ülal paremal vali operatsiooniks <strong>lisa/asenda atribuut</strong>, järgmiseks on kasutatav ülalt kolmas valik (Vali asendatav/lisatav/kustutatav atribuut), sellest vali atribuut, mille asemele uut soovid. Uue atribuudi nimi kirjuta lahtrisse <strong>Uus väärtus</strong>, kasuta sama formaati, mida atribuutidel valikmenüüdes kasutatud on, näiteks tipi: x:parematribuut - uus ja parem atribuut. Vajuta Rakenda, et näha tulemust; Käivita op., kui kõik õige, ja parandus läheb andmebaasis tegemisele.<br />
+<br />
+<strong>Atribuudi kustutamine:</strong><br />
+ülal paremal vali operatsiooniks <strong>kustuta atribuut</strong>, kolmandast valikust (Vali asendatav/lisatav/kustutatav atribuut) vali atribuut, mida kustutada soovid. Lahtrid Vana väärtus ja Uus väärtus jäävad tühjaks. Vajuta Rakenda, et näha tulemust; Käivita op., kui kõik õige, ja parandus läheb andmebaasis tegemisele.<br />
+<br />
+<h3 id="toc8"><a name="x-Hulgiparanduste aken-Gruppide muutmine (x:ülemelement)"></a>Gruppide muutmine (x:ülemelement)</h3>
+ Leitud elemendi gruppi (vanaisa ehk veeru Grupp lahtrite sisu) saan muuta otsingutabelis käsitsi, kui valin op-ks Muuda gruppe.<br />
+<br />
+<h3 id="toc9"><a name="x-Hulgiparanduste aken-Artiklite kustutamine (x:A)"></a>Artiklite kustutamine (x:A)</h3>
+ Kustutamisele minevad sõnaartiklid määra otsingualal. Operatsioonide alal vali operatsiooniks <strong>kustuta artiklid (x:A)</strong> ja vajuta Rakenda ja kui tulemsute tabeli järgi tehtavaga rahul oled, vajuta Käivita op.<br />
+<br />
+<h3 id="toc10"><a name="x-Hulgiparanduste aken-Hulgiparanduse tühistamine"></a>Hulgiparanduse tühistamine</h3>
+ Pärast Käivita op. nupu töö lõppemist muudetakse andmebaasis andmed ära ja lihtsa nö <em>undo</em>-võttega enam tehtut tühistada ei saa. Kui siiski läks valesti ja on vaja tehtu tühistada, kasuta järgmisi võimalusi:<br />
+<ul><li>vaata Toimetamise logi (Sõnastiku tööriistad - Toimetamise logi). Jättes linnuke alles vaid H-tähe ikooni ees näed, mis operatsioonid hulgiparandusega tehti. Samuti on näha kellaaeg (x:TA), saad metamärkide abil otsida, nt 2011-06-26*</li><li>Käsitsi parandamine Toimetamisalal</li><li>Pöördu administraatori poole, baasi on võimalik asendada varukoopiaga (EKI serveris säilitatakse ajalugu 2 nädalat).</li></ul>
+    </div>
+  </body>
+</html>

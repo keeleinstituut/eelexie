@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://www.eki.ee/dict/schemas/ec_2" 
+           xmlns:ec_2="http://www.eki.ee/dict/schemas/ec_2" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           elementFormDefault="qualified" 
+           attributeFormDefault="qualified">
+
+  <xs:simpleType name="G_tyyp">
+    <xs:annotation>
+      <xs:documentation xml:lang="et">GUID tüüp</xs:documentation>
+      <xs:documentation xml:lang="en">GUID type</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="meedia_tyyp">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="img">
+        <xs:annotation>
+          <xs:documentation xml:lang="et">pilt</xs:documentation>
+          <xs:documentation xml:lang="en">picture</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="imgA">
+        <xs:annotation>
+          <xs:documentation xml:lang="et">link pildile</xs:documentation>
+          <xs:documentation xml:lang="en">picture link</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="f?v"> <!-- f4v, flv -->
+        <xs:annotation>
+          <xs:documentation xml:lang="et">Flash video</xs:documentation>
+          <xs:documentation xml:lang="en">Flash video</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="snd">
+        <xs:annotation>
+          <xs:documentation xml:lang="et">heli</xs:documentation>
+          <xs:documentation xml:lang="en">sound</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>

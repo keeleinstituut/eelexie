@@ -1,0 +1,296 @@
+﻿<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title></title>
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="pragma" content="no-cache">
+        <!--<meta http-equiv="refresh" content="10">-->
+
+        <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+        <meta name="author" content="Andres Loopmann">
+        <meta name="keywords" content="EELex">
+    
+		<script language="JScript" type="text/jscript" src="tools.js"></script>
+		<script language=vbscript type="text/vbscript">
+
+		<!--
+Option Explicit
+
+Dim sDefaultWordDoc
+Dim sParDelimiter
+
+
+'-----------------------------------------------------------------------------------
+Sub PrintLoad()
+Dim inarr
+Dim qinfo, dic_desc, oConfigDOM, sAppLang, DICPR, DICURI
+
+sParDelimiter = ChrW(&HE001)
+
+if IsArray(window.dialogArguments) then
+	inarr = window.dialogArguments
+else
+	inarr = Split(window.dialogArguments, sParDelimiter)
+end if
+qinfo = inarr(0)
+sDefaultWordDoc = inarr(1)
+dic_desc = inarr(2)
+sAppLang = inarr(3)
+
+set oConfigDOM = IDD("File", "../shsconfig_" & dic_desc & ".xml", False, False, Nothing)
+if (oConfigDOM.parseError.errorCode <> 0) then
+    Call ShowXMLParseError(oConfigDOM)
+    Exit Sub
+end if
+DICPR = oConfigDOM.documentElement.selectSingleNode("dicpr").text
+DICURI = oConfigDOM.documentElement.selectSingleNode("dicuri").text
+set oConfigDOM = Nothing
+
+Dim lc
+set lc = langConst.all("langConst_" & sAppLang)
+Call window.execScript(lc.innerText, "JScript")
+
+queryText.innerText = qinfo
+lblChooseFile.title = lblChooseFile.title & " (" & BY_DEFAULT_TXT & " '" & sDefaultWordDoc & "')"
+chooseFile.title = chooseFile.title & " (" & BY_DEFAULT_TXT & " '" & sDefaultWordDoc & "')"
+lblUseQuery.title = USE_QUERY_LBL_TITLE
+lblUseQuery.innerHTML = USE_QUERY_LBL_TXT
+lblUseM.title = USE_M_LBL_TITLE
+lblUseM.innerHTML = USE_M_LBL_TXT
+algArtikkel.innerHTML = ALG_ARTIKKEL_TXT
+loppArtikkel.innerHTML = LOPP_ARTIKKEL_TXT
+algArt.title = ALG_ART_TITLE
+loppArt.title = LOPP_ART_TITLE
+lblFullText.title = FULL_TEXT_LBL_TITLE
+lblFullText.innerHTML = FULL_TEXT_LBL_TXT
+lblNummerda.title = NUMMERDA_LBL_TITLE
+lblNummerda.innerHTML = NUMMERDA_LBL_TXT
+lblChooseFile.title = CHOOSE_FILE_TITLE
+lblChooseFile.innerHTML = CHOOSE_FILE_TXT
+printButt.title = PRINT_BUTT_TITLE
+printButt.value = PRINT_BUTT_TXT
+document.title = DOC_TITLE
+
+Call qryModeClick()
+'algArt.focus
+
+End Sub 'PrintLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub qryModeClick()
+if (useQuery.checked) then
+	queryText.disabled = False
+	tbl_Arts.disabled = True
+	algArt.disabled = True
+	loppArt.disabled = True
+elseif (useM.checked) then
+	queryText.disabled = True
+	tbl_Arts.disabled = False
+	algArt.disabled = False
+	loppArt.disabled = False
+end if
+End Sub 'qryModeClick
+
+
+'-----------------------------------------------------------------------------------
+Sub SwitchNummerdus()
+if (window.event.srcElement.checked) then
+	pnr.disabled = False
+else
+	pnr.disabled = True
+end if
+End Sub 'SwitchNummerdus
+
+
+'-----------------------------------------------------------------------------------
+Sub HandleBodyKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+elseif (window.event.keyCode = 13) then
+	SetReturnV()
+end if
+End Sub 'HandleBodyKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub HandlePrintButtClick()
+SetReturnV()
+End Sub 'HandlePrintButtClick
+
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+Dim sM1, sM2, sAlgLk, nPageNr, sFile, rng
+
+sM1 = Trim(algArt.value)
+sM2 = Trim(loppArt.value)
+sAlgLk = Trim(pnr.value)
+nPageNr = -1
+
+chooseFile.select()
+set rng = document.selection.createRange()
+sFile = Trim(rng.text)
+set rng = Nothing
+document.selection.empty()
+if (sFile = "") then
+	sFile = sDefaultWordDoc
+end if
+
+if (nummerda.checked) then
+	if (IsNumeric(sAlgLk)) then
+		if (Clng(sAlgLk) > 0 and InStr(1, sAlgLk, ".") < 1 and InStr(1, sAlgLk, ",") < 1) then
+			nPageNr = CLng(sAlgLk)
+		else
+			Exit Sub
+		end if
+	else
+		Exit Sub
+	end if
+end if
+
+Dim sParms
+if (useQuery.checked) then
+    '        1                            2                    3                    4                               5                                        6
+	sParms = "useQuery" & sParDelimiter & "" & sParDelimiter & "" & sParDelimiter & CStr(nPageNr) & sParDelimiter & CStr(fulltext.checked) & sParDelimiter & sFile
+elseif (useM.checked) then
+	if (sM1 = "" or sM2 = "") then
+		Exit Sub
+	end if
+    '        1                        2                     3                     4                               5                                        6
+	sParms = "useM" & sParDelimiter & sM1 & sParDelimiter & sM2 & sParDelimiter & CStr(nPageNr) & sParDelimiter & CStr(fulltext.checked) & sParDelimiter & sFile
+end if
+window.returnValue = sParms
+window.close()
+End Sub 'SetReturnV
+
+			-->
+		</script>
+	</head>
+	<body style="background-color:buttonface" onkeyup="HandleBodyKeyUp()" onload="PrintLoad()">
+		<div id="id_body" style="padding:10mm">
+			<table id="qryTable" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td>
+						<input id="useQuery" name="qryMode" checked type="radio" tabIndex="1" value="useQuery" onclick="qryModeClick()">
+						<label for="useQuery" id="lblUseQuery" accesskey="p" style="font-size:x-small"></label>
+					</td>
+					<td style="padding:2mm">
+						<span id="queryText" style="font-weight:bold;"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input id="useM" name="qryMode" type="radio" tabIndex="10" value="useM" onclick="qryModeClick()">
+						<label for="useM" id="lblUseM" style="font-size:x-small"></label>
+					</td>
+					<td style="padding:2mm">
+						<table id="tbl_Arts" border="0" cellpadding="0" cellspacing="0" width="100%">
+							<tbody>
+								<tr>
+									<td id="algArtikkel" style="font-size:x-small;font-weight:bold"></td>
+									<td></td>
+									<td id="loppArtikkel" style="font-size:x-small;font-weight:bold"></td>
+								</tr>
+								<tr>
+									<td><input id="algArt" type="text" size="30" tabindex="11" value="" accesskey="a"></td>
+									<td>-</td>
+									<td><input id="loppArt" type="text" size="30" tabindex="12" value="" accesskey="l"></td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input id="fullText" type="checkbox" tabindex="20"> <label for="fullText" id="lblFullText" accesskey="t" style="font-size:x-small"></label>
+					</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>
+						<input id="nummerda" type="checkbox" checked onclick="SwitchNummerdus()" tabindex="21">
+						<label for="nummerda" id="lblNummerda" accesskey="n" style="font-size:x-small"></label>
+					</td>
+					<td style="padding:2mm">
+						<input id="pnr" type="text" size="30" value="1" title="Number: 'Alt-1'!" accesskey="1" tabindex="22">
+					</td>
+				</tr>
+				<tr>
+					<td style="padding-left:8mm">
+						<label id="lblChooseFile" for="chooseFile" accesskey="f" style="font-size:x-small"></label>
+					</td>
+					<td style="padding:2mm">
+						<input id="chooseFile" type="file" size="30" tabindex="23">
+					</td>
+				</tr>
+			</table>
+			<br />
+			<input id="printButt" onclick="HandlePrintButtClick()" type="button" value="-" tabindex="30">
+		</div>
+        <!-- selle meetodiga ei näe võimalust, kuidas teisest failist neid kasutada. -->
+        <div id="langConst" style="display:none;">
+            <div id="langConst_et">
+                var DOC_TITLE = "Artiklite väljatrükk";
+                var BY_DEFAULT_TXT = "vaikimisi";
+                var USE_QUERY_LBL_TITLE = "Valitud: kasutatakse pealehel määratud päringut: 'Alt-P'";
+                var USE_QUERY_LBL_TXT = "- Kasuta <u>p</u>äringut";
+                var USE_M_LBL_TITLE = "Valitud: päringul trükitakse kõik artiklid alg- ja lõppartikli vahemikus: 'Alt-M'";
+                var USE_M_LBL_TXT = "- Kasuta artikleid";
+                var ALG_ARTIKKEL_TXT = "<u>A</u>lgartikli tunnus (>=)";
+                var LOPP_ARTIKKEL_TXT = "<u>L</u>õppartikli tunnus (<=)";
+                var ALG_ART_TITLE = "Sisesta algartikli märksõna: 'Alt-A'";
+                var LOPP_ART_TITLE = "Sisesta lõppartikli märksõna: 'Alt-L'";
+                var FULL_TEXT_LBL_TITLE = "Linnuke: trükitakse ka varjutatud tekst: 'Alt-T'";
+                var FULL_TEXT_LBL_TXT = "- Koos varjutatud <u>t</u>ekstiga";
+                var NUMMERDA_LBL_TITLE = "Linnuke: leheküljed MS Word väljatrükis nummerdatakse: 'Alt-N'";
+                var NUMMERDA_LBL_TXT = "- <u>N</u>ummerda lk-d alates:";
+                var CHOOSE_FILE_TITLE = "Vali MS Word dokument: 'Alt-F'";
+                var CHOOSE_FILE_TXT = "Wordi <u>f</u>ail:";
+                var PRINT_BUTT_TITLE = "Prindi artiklid: 'Enter'";
+                var PRINT_BUTT_TXT = "Prindi";
+            </div>
+            <div id="langConst_en">
+                var DOC_TITLE = "Print entries";
+                var BY_DEFAULT_TXT = "by default";
+                var USE_QUERY_LBL_TITLE = "Selected: use main page query: 'Alt-P'";
+                var USE_QUERY_LBL_TXT = "- Use query";
+                var USE_M_LBL_TITLE = "Selected: all entries between first and second headword are printed: 'Alt-M'";
+                var USE_M_LBL_TXT = "- Use entries";
+                var ALG_ARTIKKEL_TXT = "1. entry's token (>=)";
+                var LOPP_ARTIKKEL_TXT = "2. entry's token (<=)";
+                var ALG_ART_TITLE = "Enter first headword: 'Alt-A'";
+                var LOPP_ART_TITLE = "Enter second headword: 'Alt-L'";
+                var FULL_TEXT_LBL_TITLE = "Checked: with hidden text: 'Alt-T'";
+                var FULL_TEXT_LBL_TXT = "- With hidden text";
+                var NUMMERDA_LBL_TITLE = "Checked: pages in MS Word are numbered: 'Alt-N'";
+                var NUMMERDA_LBL_TXT = "- <u>N</u>umbering from:";
+                var CHOOSE_FILE_TITLE = "Open MS Word document: 'Alt-F'";
+                var CHOOSE_FILE_TXT = "MS Word <u>f</u>ile:";
+                var PRINT_BUTT_TITLE = "Print entries: 'Enter'";
+                var PRINT_BUTT_TXT = "Print";
+            </div>
+            <div id="langConst_ru">
+                var DOC_TITLE = "Распечатывать статьи";
+                var BY_DEFAULT_TXT = "by default";
+                var USE_QUERY_LBL_TITLE = "Selected: use main page query: 'Alt-P'";
+                var USE_QUERY_LBL_TXT = "- Use query";
+                var USE_M_LBL_TITLE = "Selected: all entries between first and second headword are printed: 'Alt-M'";
+                var USE_M_LBL_TXT = "- Use entries";
+                var ALG_ARTIKKEL_TXT = "1. entry's token (>=)";
+                var LOPP_ARTIKKEL_TXT = "2. entry's token (<=)";
+                var ALG_ART_TITLE = "Enter first headword: 'Alt-A'";
+                var LOPP_ART_TITLE = "Enter second headword: 'Alt-L'";
+                var FULL_TEXT_LBL_TITLE = "Checked: with hidden text: 'Alt-T'";
+                var FULL_TEXT_LBL_TXT = "- With hidden text";
+                var NUMMERDA_LBL_TITLE = "Checked: pages in MS Word are numbered: 'Alt-N'";
+                var NUMMERDA_LBL_TXT = "- <u>N</u>umbering from:";
+                var CHOOSE_FILE_TITLE = "Open MS Word document: 'Alt-F'";
+                var CHOOSE_FILE_TXT = "MS Word <u>f</u>ile:";
+                var PRINT_BUTT_TITLE = "Распечатывать статьи: 'Enter'";
+                var PRINT_BUTT_TXT = "Распечатывать";
+            </div>
+        </div>
+	</body>
+</html>

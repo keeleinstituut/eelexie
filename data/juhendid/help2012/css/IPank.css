@@ -1,0 +1,12 @@
+a:link		{color: #003366; text-decoration: none}
+a:active	{color: #003366; text-decoration: none}
+a:visited	{color: #003366; text-decoration: none}
+a:hover		{color: #336699; text-decoration: none}
+.form, form, input, select, textarea {
+    font-family : verdana, arial, helvetica, sans-serif;
+    font-size : 8.5pt;
+}
+body, span, div, p, pre, table, tr, th, td {
+    font-family : verdana, arial, helvetica, sans-serif;
+    font-size : 8.5pt; 
+}

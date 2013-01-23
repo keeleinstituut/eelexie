@@ -1,0 +1,1892 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title></title>
+		<script language="JScript" type="text/jscript" src="tools.js"></script>
+		<script language="vbscript" type="text/vbscript" src="res_xml.vbs"></script>
+		<script language="vbscript" type="text/vbscript">
+<!--
+Option Explicit
+
+'Const ELEM_NAME = "en"
+'Const ELEM_NAME_MIXED = "enmx"
+'Const ELEM_NAME_XML1 = "enx1"
+'Const ELEM_NAME_LEVEL1 = "enl1"
+'Const ATTR_NAME = "an"
+'Const ATTR_NAME_MIXED = "anmx"
+'Const ATTR_NAME_XML1 = "anx1"
+'Const ELEM_TEXT = "et"
+'Const ELEM_TEXT_LEVEL1 = "etl1"
+'Const ATTR_TEXT = "at"
+'Const ATTR_TEXT_MIXED = "atmx"
+'Const ATTR_TEXT_XML1 = "atx1"
+'Const COMM_TEXT = "ct"
+'Const ELEM_CREATE = "ec"
+'Const INFO_TEXT = "it"
+'Const WIDE_SPAN = "etws"
+
+Const ELM_SHOW_CELL = 0
+Const ELM_NR_CELL = 4
+Const ELM_HEADING_CELL = 5
+Const ELM_CREATE_CELL = 6
+Const ELM_ADD_CELL = 7
+Const ELM_MAJOR_CELL = 8
+Const ELM_EDIT_CELL = 9
+Const ELM_INIT_CELL = 10
+Const ELM_ATTRS_CELL = 11
+
+Const INFINITY_HTML = "&#x221e;"
+Const NO_BREAK_SPACE = "&#x00a0;"
+
+Dim dic_desc
+Dim sAppLang
+Dim DICPR
+Dim DICURI
+Dim qn_sort_attr
+
+Dim oXsdDOM
+
+Dim sEditDOMString
+Dim oXmlNsm
+
+Dim oSchRootElems, oSchRootAttrs
+Dim oStruDom
+
+Dim strm
+Const adTypeText = 2
+Const adSaveCreateOverWrite = 2
+Const adCRLF = -1
+Const adWriteLine = 1
+
+Dim oIndented
+
+Dim dXsl2ConfDOM, dXsl2ConfRoot
+
+Dim schemaConfTable
+
+Dim cssDict
+
+Dim mainApp
+
+'??? (21. detsember 2006)
+'
+'Käsitsi tuleb panna:
+'
+'KohaNimed:
+'1) n:kom   -   create; stiil   'text-transform:uppercase;'
+'2) n:t     -   create; stiil   'font-weight:bold;text-decoration:underline;text-transform:capitalize;'
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+Dim sPr, i, xsd_file, sAppDesc
+set mainApp = window.opener
+dic_desc = mainApp.dic_desc
+sAppLang = mainApp.sAppLang
+DICPR = mainApp.DICPR
+DICURI = mainApp.DICURI
+sAppDesc = "{" & dic_desc & "}"
+qn_sort_attr = mainApp.qn_sort_attr
+
+set oIndented = IDD("File", "../xsl/tools/indented_copy.xsl", False, False, Nothing)
+if (oIndented.parseError.errorCode <> 0) then
+	Call ShowXMLParseError(oIndented)
+	Exit Sub
+end if
+
+' not marked as safe for scripting ...
+set strm = CreateObject("ADODB.Stream")
+strm.Type = adTypeText
+strm.Charset = "utf-8"
+strm.LineSeparator = adCRLF
+
+set cssDict = CreateObject("Scripting.Dictionary")
+
+Dim lc
+set lc = langConst.all("langConst_" & sAppLang)
+Call window.execScript(lc.innerText, "JScript")
+
+xsd_file = "xsd/schema_" & dic_desc & ".xsd"
+
+set oXsdDOM = IDD("File", "../" & xsd_file, False, False, Nothing)
+if (oXsdDOM.parseError.errorCode <> 0) then
+	Call ShowXMLParseError(oXsdDOM)
+	Exit Sub
+end if
+
+Dim oXsdNsm
+set oXsdNsm = CreateObject("Msxml2.MXNamespaceManager.6.0")
+oXsdNsm.allowOverride = True
+
+Dim oNsNodeList
+set oNsNodeList = oXsdDOM.documentElement.selectNodes("namespace::*")
+for i = 0 to oNsNodeList.length - 1
+	if (oNsNodeList(i).prefix <> "") then
+		if (oNsNodeList(i).baseName <> "xml") then
+			Call oXsdNsm.declarePrefix(oNsNodeList(i).baseName, oNsNodeList(i).value)
+		end if
+	end if
+next
+
+Dim sXsdNsList
+sXsdNsList = ""
+for i = 0 to oXsdNsm.getDeclaredPrefixes.length - 1
+	sPr = oXsdNsm.getDeclaredPrefixes.item(i)
+	if (sPr <> "xml") then
+		sXsdNsList = sXsdNsList & " xmlns:" & sPr & "='" & oXsdNsm.getURI(sPr) & "'"
+	end if
+next
+oXsdDOM.setProperty "SelectionLanguage", "XPath"
+oXsdDOM.setProperty "SelectionNamespaces", Trim(sXsdNsList)
+
+Dim oXsdSc
+set oXsdSc = CreateObject("Msxml2.XMLSchemaCache.6.0")
+oXsdSc.validateOnLoad = True
+Call oXsdSc.Add(DICURI, "../" & xsd_file)
+
+
+'konfig
+Dim oConfigDOM
+set oConfigDOM = IDD("File", "../shsconfig_" & dic_desc & ".xml", False, False, Nothing)
+if (oConfigDOM.parseError.errorCode <> 0) then
+	Call ShowXMLParseError(oConfigDOM)
+	Exit Sub
+end if
+
+Dim cfgElem, rootLang
+set cfgElem = oConfigDOM.documentElement.selectSingleNode("rootLang") 'xml:lang 'sr' küljes
+if Not (cfgElem Is Nothing) then
+    rootLang = cfgElem.text
+else
+    rootLang = "et"
+end if
+
+sEditDOMString = "<" & DICPR & ":sr xml:lang='" & rootLang & "' xmlns:" & DICPR & "='" & DICURI & "' />"
+Dim oEditDOM
+set oEditDOM = IDD("String", sEditDOMString, False, False, oXsdSc)
+if (oEditDOM.parseError.errorCode <> 0) then
+	Call ShowXMLParseError(oEditDOM)
+	Exit Sub
+end if
+
+Dim oEditDOMRoot
+set oEditDOMRoot = oEditDOM.documentElement
+
+
+set oXmlNsm = CreateObject("Msxml2.MXNamespaceManager.6.0")
+oXmlNsm.allowOverride = True
+
+set oNsNodeList = oEditDOMRoot.selectNodes("namespace::*")
+for i = 0 to oNsNodeList.length - 1
+	if (oNsNodeList(i).prefix <> "") then
+		if (oNsNodeList(i).baseName <> "xml") then
+			Call oXmlNsm.declarePrefix(oNsNodeList(i).baseName, oNsNodeList(i).value)
+		end if
+	end if
+next
+
+Dim sXmlNsList
+sXmlNsList = ""
+for i = 0 to oXmlNsm.getDeclaredPrefixes.length - 1
+	sPr = oXmlNsm.getDeclaredPrefixes.item(i)
+	if (sPr <> "xml") then
+		sXmlNsList = sXmlNsList & " xmlns:" & sPr & "='" & oXmlNsm.getURI(sPr) & "'"
+	end if
+next
+sXmlNsList = sXmlNsList & " xmlns:" & SDPR & "='" & SDURI & "'"
+oEditDOM.setProperty "SelectionLanguage", "XPath"
+oEditDOM.setProperty "SelectionNamespaces", Trim(sXmlNsList)
+
+Dim oXmlSc
+set oXmlSc = oEditDOM.namespaces
+set oSchRootElems = oXmlSc.getSchema(DICURI).elements
+set oSchRootAttrs = oXmlSc.getSchema(DICURI).attributes
+
+set oStruDom = IDD("String", sEditDOMString, False, False, Nothing)
+'set oStruDom = IDD("", "", False, False, Nothing)
+
+oStruDom.setProperty "SelectionLanguage", "XPath"
+oStruDom.setProperty "SelectionNamespaces", Trim(sXmlNsList)
+
+Dim oParticle, sItemURI, sItemQN
+
+'set oParticle = oXmlSc.getDeclaration(oEditDOMRoot)
+set oParticle = oXmlSc.getDeclaration(oStruDom.documentElement)
+
+If Not (oParticle.namespaceURI = "") Then
+	sItemURI = oParticle.namespaceURI
+	sPr = oXmlNsm.getPrefixes(sItemURI).Item(0)
+	if (sPr = "") then
+		sItemQN = oParticle.name
+	else
+		sItemQN = sPr & ":" & oParticle.name
+	end if
+Else
+	sItemURI = ""
+    sItemQN = oParticle.name
+End If
+
+Dim oStruDomNode, oStruDomAttr
+'set oStruDomNode = oStruDom.appendChild(oStruDom.createNode(NODE_ELEMENT, sItemQN, sItemURI))
+set oStruDomNode = oStruDom.documentElement
+
+Dim oOrgAttr, sAttrURI, sAttrQN
+
+Dim nContentType, nGroupType, sDispType
+if (TypeName(oParticle.type) = "ISchemaComplexType") then
+	nContentType = oParticle.type.contentType
+	if (nContentType = SCHEMACONTENTTYPE_MIXED) then
+		sDispType = "Ct,Mx"
+	elseif (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+		sDispType = "Ct,Eo"
+	elseif (nContentType = SCHEMACONTENTTYPE_TEXTONLY) then
+		sDispType = "Ct,To"
+	elseif (nContentType = SCHEMACONTENTTYPE_EMPTY) then
+		sDispType = "Ct, "
+	end if
+	'"ISchemaComplexType" korral peaks alati olema TypeName(oParticle.type.contentModel) = "ISchemaModelGroup" ?
+	nGroupType = oParticle.type.contentModel.itemType
+	if (nGroupType = SOMITEM_EMPTYPARTICLE) then
+		sDispType = sDispType & ", "
+	elseif (nGroupType = SOMITEM_SEQUENCE) then
+		sDispType = sDispType & ",Sq"
+	elseif (nGroupType = SOMITEM_CHOICE) then
+		sDispType = sDispType & ",Ch"
+	elseif (nGroupType = SOMITEM_ALL) then
+		sDispType = sDispType & ",All"
+	end if
+elseif (TypeName(oParticle.type) = "ISchemaType") then
+	nContentType = -1
+	nGroupType = -1
+	sDispType = "St"
+end if
+
+Dim sXsdXPath, oXsdNode, sKirjeldav
+sXsdXPath = ".//" & NS_XS_PR & ":element[@name='" & oParticle.name & "']/" & NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang='" & sAppLang & "']"
+set oXsdNode = oXsdDOM.documentElement.selectSingleNode(sXsdXPath)
+if Not (oXsdNode Is Nothing) then
+	sKirjeldav = oXsdNode.text
+else
+	sKirjeldav = sItemQN
+end if
+
+Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":sAppLang", SDURI))
+oStruDomAttr.nodeValue = sAppLang
+
+Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":depth", SDURI))
+oStruDomAttr.nodeValue = 0
+Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":desc", SDURI))
+oStruDomAttr.nodeValue = sKirjeldav
+
+Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":ct", SDURI))
+oStruDomAttr.nodeValue = nContentType
+Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":gt", SDURI))
+oStruDomAttr.nodeValue = nGroupType
+Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":min_occ", SDURI))
+oStruDomAttr.nodeValue = oParticle.minOccurs
+Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":max_occ", SDURI))
+oStruDomAttr.nodeValue = oParticle.maxOccurs
+
+document.title = sAppDesc & ": " & DOC_TITLE
+pealkiri.innerHTML = "<u>" & sAppDesc & ": " & DOC_TITLE & "</u>"
+
+id_col_show.innerText = COL_SHOW
+id_COL_DESC.innerText = COL_DESC
+id_COL_TYPE.innerText = COL_TYPE
+id_COL_COUNTS.innerText = COL_COUNTS
+id_COL_ELEMENT.innerText = COL_ELEMENT
+id_COL_HEADING.innerText = COL_HEADING
+id_COL_CREATE.innerText = COL_CREATE
+id_COL_ADD.innerText = COL_ADD
+id_COL_MAJOR.innerText = COL_MAJOR
+id_COL_CHANGE.innerText = COL_CHANGE
+id_COL_INIT.innerText = COL_INIT
+id_COL_ATTRS.innerText = COL_ATTRS
+id_COL_PATH.innerText = COL_PATH
+
+set schemaConfTable = document.all("tbl_TAAdmin")
+
+save_Xsl.value = SAVE_XSL_BTN_TEXT
+save_Config.value = SAVE_CONF_BTN_TEXT
+
+set dXsl2ConfDOM = IDD("File", "../config/xsl2/dxsl2config_" & dic_desc & ".xml", False, False, Nothing)
+if (dXsl2ConfDOM.parseError.errorCode <> 0) then
+	'Call ShowXMLParseError(dXsl2ConfDOM)
+	set dXsl2ConfDOM = IDD("", "", False, False, Nothing)
+	set dXsl2ConfRoot = dXsl2ConfDOM.appendChild(dXsl2ConfDOM.createNode(NODE_ELEMENT, "dxsl2config", ""))
+else
+	set dXsl2ConfRoot = dXsl2ConfDOM.documentElement
+end if
+
+Dim dXsl2ConfElement, dXsl2ConfElementItem, confValue
+set dXsl2ConfElement = dXsl2ConfRoot.selectSingleNode("cssStyles")
+if (dXsl2ConfElement Is Nothing) then
+    set dXsl2ConfElement = dXsl2ConfRoot.insertBefore(dXsl2ConfDom.createNode(NODE_ELEMENT, "cssStyles", ""), dXsl2ConfRoot.firstChild)
+    'element name
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "en")
+    'element name : first-letter
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "en:first-letter")
+    dXsl2ConfElementItem.text = "text-transform:uppercase;"
+    'element name in mixed element
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "enmx")
+    dXsl2ConfElementItem.text = "background-color:darkgray;border:black 1px solid;padding:0 3;"
+    'element name in XML1
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "enx1")
+    dXsl2ConfElementItem.text = "font-weight:bold;"
+    'element name at level 1
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "enl1")
+    'attribute name
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "an")
+    'attribute name in mixed element
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "anmx")
+    'attribute name in XML1
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "anx1")
+    'element text
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "et")
+    dXsl2ConfElementItem.text = "background-color:white;border:black 1px solid;font-family:'Arial Unicode MS';"
+    'element text at level 1
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "etl1")
+    dXsl2ConfElementItem.text = "background-color:white;border:black 1px solid;font-family:'Arial Unicode MS';"
+    'attribute text
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "at")
+    dXsl2ConfElementItem.text = "background-color:white;border:black 1px solid;font-family:'Arial Unicode MS';"
+    'attribute text in mixed element
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "atmx")
+    dXsl2ConfElementItem.text = "background-color:silver;border:1px solid black;"
+    'attribute text in XML1
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "atx1")
+    'comment text
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "ct")
+    dXsl2ConfElementItem.text = "color:white;background-color:deepskyblue;width:100%;"
+    'element create
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "ec")
+    dXsl2ConfElementItem.text = "color:gray;"
+    'info text
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "it")
+    'element text in wide span
+    set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2ConfElementItem.setAttribute("id", "etws")
+    dXsl2ConfElementItem.text = "width:100%;"
+end if
+'element name
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'en']").text
+tbl_Cmn_CSS.rows(1).cells(1).all("ti").value = confValue
+'element name : first-letter
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'en:first-letter']").text
+tbl_Cmn_CSS.rows(2).cells(1).all("ti").value = confValue
+'element name in mixed element
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'enmx']").text
+tbl_Cmn_CSS.rows(3).cells(1).all("ti").value = confValue
+'element name in XML1
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'enx1']").text
+tbl_Cmn_CSS.rows(4).cells(1).all("ti").value = confValue
+'element name at level 1
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'enl1']").text
+tbl_Cmn_CSS.rows(5).cells(1).all("ti").value = confValue
+'attribute name
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'an']").text
+tbl_Cmn_CSS.rows(6).cells(1).all("ti").value = confValue
+'attribute name in mixed element
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'anmx']").text
+tbl_Cmn_CSS.rows(7).cells(1).all("ti").value = confValue
+'attribute name in XML1
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'anx1']").text
+tbl_Cmn_CSS.rows(8).cells(1).all("ti").value = confValue
+'element text
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'et']").text
+tbl_Cmn_CSS.rows(9).cells(1).all("ti").value = confValue
+'element text at level 1
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'etl1']").text
+tbl_Cmn_CSS.rows(10).cells(1).all("ti").value = confValue
+'attribute text
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'at']").text
+tbl_Cmn_CSS.rows(11).cells(1).all("ti").value = confValue
+'attribute text in mixed element
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'atmx']").text
+tbl_Cmn_CSS.rows(12).cells(1).all("ti").value = confValue
+'attribute text in XML1
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'atx1']").text
+tbl_Cmn_CSS.rows(13).cells(1).all("ti").value = confValue
+'comment text
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'ct']").text
+tbl_Cmn_CSS.rows(14).cells(1).all("ti").value = confValue
+'element create
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'ec']").text
+tbl_Cmn_CSS.rows(15).cells(1).all("ti").value = confValue
+'info text
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'it']").text
+tbl_Cmn_CSS.rows(16).cells(1).all("ti").value = confValue
+'element text in wide span
+confValue = dXsl2ConfElement.selectSingleNode("item[@id = 'etws']").text
+tbl_Cmn_CSS.rows(17).cells(1).all("ti").value = confValue
+
+if (TypeName(oParticle.type) = "ISchemaComplexType") then
+	Call GetStruDom(oParticle, oStruDomNode, "", 0)
+end if
+
+div_AdminToimetamisala.style.visibility = "visible"
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub GetStruDom(oISchItem, oCurrStruNode, sFullPath, nDepth)
+Dim sPr, sParentQN
+if Not (oISchItem.namespaceURI = "") then
+	sPr = oXmlNsm.getPrefixes(oISchItem.namespaceURI).Item(0)
+	if (sPr = "") then
+		sParentQN = oISchItem.name
+	else
+		sParentQN = sPr & ":" & oISchItem.name
+	end if
+else
+	sParentQN = oISchItem.name
+end if
+
+Dim sItemURI, sItemQN
+Dim oParticle
+Dim nParticleCount
+Dim oXmlFrDom
+Dim sMinSymbol, sMaxSymbol, sElemPath
+
+Dim aAnyNames
+
+Dim oStruDomNode
+Dim oStruDomAttr
+Dim nContentType, nGroupType
+Dim sDispType, sKirjeldav, sAttrKirjeldav
+
+Dim oFirstParticle
+set oFirstParticle = oISchItem.type.contentModel.particles(0)
+
+if (TypeName(oFirstParticle) = "ISchemaAny") then
+	'aa: "add any"
+	set oXmlFrDom = IDD("file", "../xml/" & dic_desc & "/aa_" & unName(sParentQN) & ".xml",  False, False, Nothing)
+	if Not (oXmlFrDom.parseError.errorCode = 0) then
+		sItemURI = NS_XS
+		sItemQN = NS_XS_PR & ":any"
+		set oStruDomNode = oCurrStruNode.appendChild(oStruDom.createNode(NODE_ELEMENT, sItemQN, sItemURI))
+        oStruDomNode.text = sItemQN
+
+		sDispType = "Any,-,-"
+		sKirjeldav = sItemQN
+		set oParticle = oISchItem.type.contentModel.particles(0)
+		Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":ct", SDURI))
+		oStruDomAttr.nodeValue = -1
+		nContentType = -1
+		Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":gt", SDURI))
+		oStruDomAttr.nodeValue = -1
+	    nGroupType = -1
+		Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":min_occ", SDURI))
+		oStruDomAttr.nodeValue = oParticle.minOccurs
+		sMinSymbol = oParticle.minOccurs
+		Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":max_occ", SDURI))
+		oStruDomAttr.nodeValue = oParticle.maxOccurs
+		if (oParticle.maxOccurs = "-1") then
+			sMaxSymbol = INFINITY_HTML
+		else
+			sMaxSymbol = oParticle.maxOccurs
+		end if
+		if (sFullPath = "") then
+			sElemPath = sItemQN
+		else
+			sElemPath = sFullPath & "/" & sItemQN
+		end if
+		Exit Sub
+	else
+		aAnyNames = Split(oXmlFrDom.documentElement.text, "|")
+		nParticleCount = UBound(aAnyNames, 1) + 1
+		Set oStruDomAttr = oCurrStruNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":anySequence", SDURI))
+		oStruDomAttr.nodeValue = oXmlFrDom.documentElement.text
+	end if
+else
+	nParticleCount = oISchItem.type.contentModel.particles.length
+end if
+
+Dim sLName
+Dim oOrgAttr
+Dim sAttrURI, sAttrQN
+Dim sXsdXPath, oXsdNode
+Dim dXsl2ConfElement, dXsl2ConfElementItem, dXsl2ConfElementItemPart, confValue, styleType
+
+Dim oNewTableRow, oNewRowCell
+Dim attrKast
+
+Dim i
+for i = 0 to nParticleCount - 1
+	if (TypeName(oFirstParticle) = "ISchemaAny") then
+		sItemQN = aAnyNames(i)
+		if (InStr(1, sItemQN, ":") > 0) then
+			sPr = Mid(sItemQN, 1, InStr(1, sItemQN, ":") - 1)
+			sLName = Mid(sItemQN, InStr(1, sItemQN, ":") + 1)
+			sItemURI = oXmlNsm.getURI(sPr)
+		else
+			sPr = ""
+			sLName = sItemQN
+			sItemURI = oXmlNsm.getURI("")
+		end if
+		set oParticle = oSchRootElems.itemByQName(sLName, sItemURI)
+	elseif (TypeName(oFirstParticle) = "ISchemaElement") then
+		set oParticle = oISchItem.type.contentModel.particles(i)
+		if Not (oParticle.namespaceURI = "") then
+			sItemURI = oParticle.namespaceURI
+			sPr = oXmlNsm.getPrefixes(sItemURI).Item(0)
+			if (sPr = "") then
+				sItemQN = oParticle.name
+			else
+				sItemQN = sPr & ":" & oParticle.name
+			end if
+		Else
+			sItemURI = ""
+			sItemQN = oParticle.name
+		End If
+	end if
+	
+	nContentType = -1
+	nGroupType = -1
+
+	set oStruDomNode = oCurrStruNode.appendChild(oStruDom.createNode(NODE_ELEMENT, sItemQN, sItemURI))
+
+	if (TypeName(oParticle.type) = "ISchemaComplexType") then
+		nContentType = oParticle.type.contentType
+		if (nContentType = SCHEMACONTENTTYPE_MIXED) then
+			sDispType = "Ct,Mx"
+		elseif (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+			sDispType = "Ct,Eo"
+		elseif (nContentType = SCHEMACONTENTTYPE_TEXTONLY) then
+			sDispType = "Ct,To"
+		elseif (nContentType = SCHEMACONTENTTYPE_EMPTY) then
+			sDispType = "Ct, "
+		end if
+		'"ISchemaComplexType" korral peaks alati olema TypeName(oParticle.type.contentModel) = "ISchemaModelGroup" ?
+		nGroupType = oParticle.type.contentModel.itemType
+		if (nGroupType = SOMITEM_EMPTYPARTICLE) then
+			sDispType = sDispType & ", "
+		elseif (nGroupType = SOMITEM_SEQUENCE) then
+			sDispType = sDispType & ",Sq"
+		elseif (nGroupType = SOMITEM_CHOICE) then
+			sDispType = sDispType & ",Ch"
+		elseif (nGroupType = SOMITEM_ALL) then
+			sDispType = sDispType & ",All"
+		end if
+		if (oParticle.type.attributes.length > 0) then
+			for each oOrgAttr in oParticle.type.attributes
+				If Not (oOrgAttr.namespaceURI = "") Then
+					sAttrURI = oOrgAttr.namespaceURI
+					sAttrQN = oXmlNsm.getPrefixes(sAttrURI).Item(0) & ":" & oOrgAttr.name
+				Else
+					sAttrURI = ""
+					sAttrQN = oOrgAttr.name
+				End If
+				Call oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, sAttrQN, sAttrURI))
+			next
+		end if
+	elseif (TypeName(oParticle.type) = "ISchemaType") then
+		sDispType = "St"
+	end if
+	sXsdXPath = ".//" & NS_XS_PR & ":element[@name='" & oParticle.name & "']/" & NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang='" & sAppLang & "']"
+	set oXsdNode = oXsdDOM.documentElement.selectSingleNode(sXsdXPath)
+	if Not (oXsdNode Is Nothing) then
+		sKirjeldav = oXsdNode.text
+	else
+		sKirjeldav = sItemQN
+	end if
+
+	Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":depth", SDURI))
+	oStruDomAttr.nodeValue = nDepth
+	Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":desc", SDURI))
+	oStruDomAttr.nodeValue = sKirjeldav
+	Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":ct", SDURI))
+	oStruDomAttr.nodeValue = nContentType
+	Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":gt", SDURI))
+	oStruDomAttr.nodeValue = nGroupType
+	
+	if (TypeName(oFirstParticle) = "ISchemaAny") then
+		Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":min_occ", SDURI))
+		oStruDomAttr.nodeValue = oFirstParticle.minOccurs
+		sMinSymbol = oFirstParticle.minOccurs
+		Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":max_occ", SDURI))
+		oStruDomAttr.nodeValue = oFirstParticle.maxOccurs
+		if (oFirstParticle.maxOccurs = "-1") then
+			sMaxSymbol = INFINITY_HTML
+		else
+			sMaxSymbol = oFirstParticle.maxOccurs
+		end if
+	elseif (TypeName(oFirstParticle) = "ISchemaElement") then
+		Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":min_occ", SDURI))
+		oStruDomAttr.nodeValue = oParticle.minOccurs
+		sMinSymbol = oParticle.minOccurs
+		Set oStruDomAttr = oStruDomNode.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":max_occ", SDURI))
+		oStruDomAttr.nodeValue = oParticle.maxOccurs
+		if (oParticle.maxOccurs = "-1") then
+			sMaxSymbol = INFINITY_HTML
+		else
+			sMaxSymbol = oParticle.maxOccurs
+		end if
+	end if
+	
+	if (sFullPath = "") then
+		sElemPath = sItemQN
+	else
+		sElemPath = sFullPath & "/" & sItemQN
+	end if
+
+    set oNewTableRow = schemaConfTable.insertRow()
+    oNewTableRow.id = sElemPath
+    oNewTableRow.className = "sCR"
+    Call oNewTableRow.setAttribute("value", sItemQN & "|" & oParticle.name & "|" & sItemURI & "|1|" & sKirjeldav)
+
+    set dXsl2ConfElement = dXsl2ConfRoot.selectSingleNode("element[fp = '" & sElemPath & "']")
+
+    if (dXsl2ConfElement Is Nothing) then
+        set dXsl2ConfElement = dXsl2ConfRoot.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "element", ""))
+        'rada
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "fp", ""))
+        dXsl2ConfElementItem.text = sElemPath
+        'näidata
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "show", ""))
+        if (oStruDomNode.baseName = "G" or oStruDomNode.baseName = "K" or oStruDomNode.baseName = "KA" or _
+        oStruDomNode.baseName = "KL" or oStruDomNode.baseName = "T" or oStruDomNode.baseName = "TA" or _
+        oStruDomNode.baseName = "TL") then
+            dXsl2ConfElementItem.text = "0"
+        else
+            dXsl2ConfElementItem.text = "1"
+        end if
+        'kas teha pealkiri
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "hng", ""))
+	    if (nDepth > 0) then
+            dXsl2ConfElementItem.text = "1"
+	    else 'art
+            dXsl2ConfElementItem.text = "0"
+	    end if
+	    'pealkirja CSS kujundus
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "en_", ""))
+        if (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+            if (nDepth = 0) then 'A
+            elseif (nDepth = 1) then 'P, S, Z, N, F, VT, KOM, G, K, KA, T, TA
+                dXsl2ConfElementItem.text = "font-weight:bold;text-transform:uppercase;"
+            elseif (nDepth = 2) then
+                dXsl2ConfElementItem.text = "font-weight:bold;text-decoration:underline;"
+            elseif (nDepth = 3) then
+                dXsl2ConfElementItem.text = "font-weight:bold;"
+            elseif (nDepth > 3) then
+                dXsl2ConfElementItem.text = "text-decoration:underline;"
+            end if
+        end if
+	    'pealkirja korrapõhine kujundus
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "enInl", ""))
+        'tekstiväärtuste CSS ja inline stiilid
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "et_", ""))
+        dXsl2ConfElementItem.text = setTxtStyleCSS(oStruDomNode.baseName)
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "etInl", ""))
+        'Loomise nupp
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "createbutton", ""))
+        if (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+            dXsl2ConfElementItem.text = "1"
+        else
+            dXsl2ConfElementItem.text = "0"
+        end if
+        'Lisamise nupp
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "addbutton", ""))
+        if (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY and sMaxSymbol = INFINITY_HTML) then
+            dXsl2ConfElementItem.text = "1"
+        else
+            dXsl2ConfElementItem.text = "0"
+        end if
+        'põhielement
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "major", ""))
+        if (oStruDomNode.baseName = "G" or oStruDomNode.baseName = "K" or oStruDomNode.baseName = "KA" or _
+        oStruDomNode.baseName = "T" or oStruDomNode.baseName = "TA") then
+            dXsl2ConfElementItem.text = "1"
+        else
+            if (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+                dXsl2ConfElementItem.text = "1"
+            else
+                dXsl2ConfElementItem.text = "0"
+            end if
+        end if
+        'muutmine
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "edit", ""))
+        if (oStruDomNode.baseName = "G" or oStruDomNode.baseName = "K" or oStruDomNode.baseName = "KA" or _
+        oStruDomNode.baseName = "KL" or oStruDomNode.baseName = "T" or oStruDomNode.baseName = "TA" or _
+        oStruDomNode.baseName = "TL" or oStruDomNode.baseName = "kaut" or oStruDomNode.baseName = "kaeg") then
+            dXsl2ConfElementItem.text = "0"
+        else
+            if Not (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+                dXsl2ConfElementItem.text = "1"
+            else
+                dXsl2ConfElementItem.text = "0"
+            end if
+        end if
+        'algväärtus
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "init", ""))
+        'atribuudid
+        if (TypeName(oParticle.type) = "ISchemaComplexType") then
+		    if (oParticle.type.attributes.length > 0) then
+			    for each oOrgAttr in oParticle.type.attributes
+				    If Not (oOrgAttr.namespaceURI = "") Then
+					    sAttrURI = oOrgAttr.namespaceURI
+					    sAttrQN = oXmlNsm.getPrefixes(sAttrURI).Item(0) & ":" & oOrgAttr.name
+				    Else
+					    sAttrURI = ""
+					    sAttrQN = oOrgAttr.name
+				    End If
+                    Call AddConfAttribute(dXsl2ConfElement, sAttrQN, oOrgAttr)
+			    next
+            end if
+	    end if
+    end if
+    
+    'näidata
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.className = "sCC"
+    oNewRowCell.title = Replace(COL_SHOW, "-", "")
+    confValue = dXsl2ConfElement.selectSingleNode("show").text
+    if (confValue = "1") then
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox' checked>"
+    else
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox'>"
+    end if
+
+	'Kirjeldav nimi, tüüp, korduvus ning nr ja element
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.innerHTML = sKirjeldav
+    oNewRowCell.title = Replace(COL_DESC, "-", "") & " ja rada: " & sElemPath
+    'tüüp
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.nowrap = true
+    oNewRowCell.innerHTML = sDispType
+    oNewRowCell.title = Replace(COL_TYPE, "-", "") & ": St - simpleType; Ct - complexType; Eo - elementOnly; To - textOnly; Mx - mixed; Sq - sequence; Ch - choice; All - all."
+    'korduvus
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.nowrap = true
+    oNewRowCell.innerHTML = sMinSymbol & ", " & sMaxSymbol
+    oNewRowCell.title = Replace(COL_COUNTS, "-", "")
+    'nr ja elemendi nimi
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.className = "sCC"
+    oNewRowCell.nowrap = true
+    oNewRowCell.innerHTML = String(4 * nDepth, Chrw(&H00a0)) & _
+        "<input id='ti' type='text' size='1' style='width:5mm' value='" & (i + 1) & "'> " & _
+        sItemQN
+    oNewRowCell.title = Replace(COL_ELEMENT, "-", "")
+
+	'Kas teha pealkiri
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.className = "sCC"
+    confValue = dXsl2ConfElement.selectSingleNode("hng").text
+    if (confValue = "1") then
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox' checked title='" & Replace(COL_HEADING, "-", "") & "'>"
+    else
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox' title='" & Replace(COL_HEADING, "-", "") & "'>"
+    end if
+
+	'mingi elemendi pealkirja CSS kujundus
+    set dXsl2ConfElementItem = dXsl2ConfElement.selectSingleNode("en_")
+    if (dXsl2ConfElementItem Is Nothing) then
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "en_", ""))
+    end if
+    confValue = dXsl2ConfElementItem.text
+    styleType = "en"
+    oNewRowCell.innerHTML = oNewRowCell.innerHTML & _
+        "<input id='ti' class='stEd_" & styleType & "_CSS' type='text' size='5' value='" & confValue & _
+        "' title='" & confValue & "'>"
+    'mingi elemendi pealkirja instantsipõhine kujundus
+    set dXsl2ConfElementItem = dXsl2ConfElement.selectSingleNode("enInl")
+    if (dXsl2ConfElementItem Is Nothing) then
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "enInl", ""))
+    end if
+    confValue = dXsl2ConfElementItem.text
+    oNewRowCell.innerHTML = oNewRowCell.innerHTML & _
+        "<input id='ti2' class='stEd_en_Inl' type='text' size='5' value='" & confValue & _
+        "' title='" & confValue & "'>"
+
+	'tekstiväärtuse CSS kujundus
+    set dXsl2ConfElementItem = dXsl2ConfElement.selectSingleNode("et_")
+    if (dXsl2ConfElementItem Is Nothing) then
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "et_", ""))
+        dXsl2ConfElementItem.text = setTxtStyleCSS(oStruDomNode.baseName)
+    end if
+    confValue = dXsl2ConfElementItem.text
+    styleType = "et"
+    oNewRowCell.innerHTML = oNewRowCell.innerHTML & _
+        "<br/><input id='dummy' type='checkbox' disabled>" & _
+        "<input id='ti3' class='stEd_" & styleType & "_CSS' type='text' size='5' value='" & confValue & _
+        "' title='" & confValue & "'>"
+    'tekstiväärtuse instantsipõhine kujundus
+    set dXsl2ConfElementItem = dXsl2ConfElement.selectSingleNode("etInl")
+    if (dXsl2ConfElementItem Is Nothing) then
+        set dXsl2ConfElementItem = dXsl2ConfElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "etInl", ""))
+    end if
+    confValue = dXsl2ConfElementItem.text
+    oNewRowCell.innerHTML = oNewRowCell.innerHTML & _
+        "<input id='ti4' class='stEd_et_Inl' type='text' size='5' value='" & confValue & _
+        "' title='" & confValue & "'>"
+
+	'Loomise nupp
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.className = "sCC"
+    confValue = dXsl2ConfElement.selectSingleNode("createbutton").text
+    if (confValue = "1") then
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox' checked>"
+    else
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox'>"
+    end if
+    oNewRowCell.title = Replace(COL_CREATE, "-", "")
+
+	'Lisamise nupp
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.className = "sCC"
+    confValue = dXsl2ConfElement.selectSingleNode("addbutton").text
+    if (confValue = "1") then
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox' checked>"
+    else
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox'>"
+    end if
+    oNewRowCell.title = Replace(COL_ADD, "-", "")
+
+	'Põhielement
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.className = "sCC"
+    confValue = dXsl2ConfElement.selectSingleNode("major").text
+    if (confValue = "1") then
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox' checked>"
+    else
+	    oNewRowCell.innerHTML = "<input id='cb' type='checkbox'>"
+    end if
+    oNewRowCell.title = Replace(COL_MAJOR, "-", "")
+
+    'Muutmise võimalikkus
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.className = "sCC"
+    if (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+        oNewRowCell.innerHTML = "-"
+    else
+        confValue = dXsl2ConfElement.selectSingleNode("edit").text
+        if (confValue = "1") then
+            oNewRowCell.innerHTML = "<input id='cb' type='checkbox' checked>"
+        else
+            oNewRowCell.innerHTML = "<input id='cb' type='checkbox'>"
+        end if
+    end if
+    oNewRowCell.title = Replace(COL_CHANGE, "-", "")
+
+    'Algväärtus
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.className = "sCC"
+    if (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+        oNewRowCell.innerHTML = "-"
+    else
+        confValue = dXsl2ConfElement.selectSingleNode("init").text
+        oNewRowCell.innerHTML = "<input id='ti' type='text' size='5' value='" & confValue & "'>"
+        oNewRowCell.title = "'" & sKirjeldav & "' algväärtus"
+    end if
+    oNewRowCell.title = Replace(COL_INIT, "-", "")
+
+    'Atribuudid
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.className = "sCC"
+    attrKast = ""
+    if (TypeName(oParticle.type) = "ISchemaComplexType") then
+		if (oParticle.type.attributes.length > 0) then
+	        attrKast = attrKast & "<table id='tbl_TAAdminAttrs' border='0' cellSpacing='0' cellPadding='0'>"
+			for each oOrgAttr in oParticle.type.attributes
+				If Not (oOrgAttr.namespaceURI = "") Then
+					sAttrURI = oOrgAttr.namespaceURI
+					sAttrQN = oXmlNsm.getPrefixes(sAttrURI).Item(0) & ":" & oOrgAttr.name
+				Else
+					sAttrURI = ""
+					sAttrQN = oOrgAttr.name
+				End If
+				sXsdXPath = ".//" & NS_XS_PR & ":attribute[@name='" & oOrgAttr.name & "']/" & NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang='" & sAppLang & "']"
+				set oXsdNode = oXsdDOM.documentElement.selectSingleNode(sXsdXPath)
+				if Not (oXsdNode Is Nothing) then
+					sAttrKirjeldav = oXsdNode.text
+				else
+					sAttrKirjeldav = sAttrQN
+				end if
+	            attrKast = attrKast & _
+	                "<tr id='" & sAttrQN & "' class='sCR' value='" & _
+	                sAttrQN & "|" & oOrgAttr.name & "|" & oOrgAttr.namespaceURI & "|1|" & sAttrKirjeldav & _
+	                "'><td nowrap='true' title='""" & sAttrKirjeldav & """: " & COL_ATTR_DESC & "'>"
+
+                set dXsl2ConfElementItem = dXsl2ConfElement.selectSingleNode("attribute[qn = '" & sAttrQN & "']")
+                if (dXsl2ConfElementItem Is Nothing) then
+                    Call AddConfAttribute(dXsl2ConfElement, sAttrQN, oOrgAttr)
+                    set dXsl2ConfElementItem = dXsl2ConfElement.selectSingleNode("attribute[qn = '" & sAttrQN & "']")
+                end if
+
+                'atribuudi teksti CSS kujundus
+                set dXsl2ConfElementItemPart = dXsl2ConfElementItem.selectSingleNode("at_")
+                if (dXsl2ConfElementItemPart Is Nothing) then
+                    set dXsl2ConfElementItemPart = dXsl2ConfElementItem.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "at_", ""))
+                end if
+                confValue = dXsl2ConfElementItemPart.text
+				attrKast = attrKast & _
+				    "<input id='ti2' class='stEd_at_CSS' type='text' size='1' style='width:5mm' value='" & confValue & _
+				    "' title='" & confValue & "'>"
+                'atribuudi teksti korrapõhine kujundus
+                set dXsl2ConfElementItemPart = dXsl2ConfElementItem.selectSingleNode("atInl")
+                if (dXsl2ConfElementItemPart Is Nothing) then
+                    set dXsl2ConfElementItemPart = dXsl2ConfElementItem.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "atInl", ""))
+                end if
+                confValue = dXsl2ConfElementItemPart.text
+				attrKast = attrKast & _
+				    "<input id='ti3' class='stEd_at_Inl' type='text' size='1' style='width:5mm' value='" & confValue & _
+				    "' title='" & confValue & "'>"
+
+                'näidata
+                confValue = dXsl2ConfElementItem.selectSingleNode("show").text
+                if (confValue = "1") then
+                    attrKast = attrKast & "<input id='cb' type='checkbox' checked>" 'näidata
+                else
+                    attrKast = attrKast & "<input id='cb' type='checkbox'>" 'näidata
+                end if
+                confValue = dXsl2ConfElementItem.selectSingleNode("edit").text
+                if (confValue = "1") then
+                    attrKast = attrKast & "<input id='cb3' type='checkbox' checked>" 'muutmine
+                else
+                    attrKast = attrKast & "<input id='cb3' type='checkbox'>" 'muutmine
+                end if
+                confValue = dXsl2ConfElementItem.selectSingleNode("major").text
+                if (confValue = "1") then
+                    attrKast = attrKast & "<input id='cb2' type='checkbox' checked>" 'elemendi põhiatribuut
+                else
+                    attrKast = attrKast & "<input id='cb2' type='checkbox'>" 'elemendi põhiatribuut
+                end if
+                confValue = dXsl2ConfElementItem.selectSingleNode("init").text
+                attrKast = attrKast & _
+                    "@" & sAttrQN & " <input id='ti' type='text' size='1' style='width:5mm' value='" & confValue & "'>" 'algväärtus
+	            attrKast = attrKast & "</td></tr>"
+			next
+	        attrKast = attrKast & "</table>"
+		end if
+    end if
+    if Not (attrKast = "") then
+        oNewRowCell.innerHTML = attrKast
+    else
+        oNewRowCell.innerHTML = "-"
+    end if
+
+    'Rada
+    set oNewRowCell = oNewTableRow.insertCell
+    oNewRowCell.innerHTML = sElemPath
+
+	if (TypeName(oParticle.type) = "ISchemaComplexType") then
+		if (oParticle.type.contentModel.particles.length > 0) then
+			'nt q:no (ÕS) pärast läheb tsüklisse
+			if Not (sParentQN = sItemQN) then
+				Call GetStruDom(oParticle, oStruDomNode, sElemPath, nDepth + 1)
+			end if
+		end if
+	end if
+next
+End Sub 'GetStruDom
+
+
+'-----------------------------------------------------------------------------------
+Function setTxtStyleCSS(bName)
+if (bName = "m") then 'märksõna
+    setTxtStyleCSS = "color:maroon;font-weight:bold;"
+elseif (bName = "t" or bName = "d" or bName = "nd" or bName = "fd") then 'tähendus, seletused
+    setTxtStyleCSS = "color:green;font-style:italic;"
+elseif (bName = "r") then 'rektsioon
+    setTxtStyleCSS = "background-color:turquoise;"
+elseif (bName = "v" or bName = "s") then 'valdkond, stiil
+    setTxtStyleCSS = "font-size:x-small;text-transform:uppercase;"
+elseif (bName = "x" or bName = "qn") then 'vaste, tõlge
+    setTxtStyleCSS = "color:red;"
+elseif (bName = "n") then 'näide
+    setTxtStyleCSS = "color:blue;"
+elseif (bName = "mvt" or bName = "tvt") then 'viide
+    setTxtStyleCSS = "color:darkorange;font-weight:bold;"
+elseif (bName = "f") then 'fras. väljend
+    setTxtStyleCSS = "color:purple;font-weight:bold;"
+elseif (bName = "kom") then 'kommentaar, märkus
+    setTxtStyleCSS = "color:blue;font-weight:bold;"
+elseif (bName = "kaut" or bName = "kaeg") then 'kommentaar, märkus
+    setTxtStyleCSS = "font-size:x-small;"
+elseif (bName = "G" or bName = "K" or bName = "KA" or bName = "KL" or bName = "T" or bName = "TA" or bName = "TL") then 'GUID, autor, akp, toimetaja, tkp
+    setTxtStyleCSS = "font-size:x-small;"
+else
+    setTxtStyleCSS = ""
+end if
+End Function 'setTxtStyleCSS
+
+
+'-----------------------------------------------------------------------------------
+Sub AddConfAttribute(confElement, qn, schAttr)
+Dim dXsl2ConfElementItem, dXsl2ConfElementItemPart
+
+set dXsl2ConfElementItem = confElement.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "attribute", ""))
+'QName
+set dXsl2ConfElementItemPart = dXsl2ConfElementItem.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "qn", ""))
+dXsl2ConfElementItemPart.text = qn
+'atribuudi teksti CSS kujundus
+set dXsl2ConfElementItemPart = dXsl2ConfElementItem.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "at_", ""))
+if (schAttr.name = "tnr") then
+    dXsl2ConfElementItemPart.text = "color:green;font-weight:bold;"
+elseif (schAttr.name = "ntnr" or schAttr.name = "ftnr") then
+    dXsl2ConfElementItemPart.text = "color:green;"
+end if
+'atribuudi teksti korrapõhine kujundus
+set dXsl2ConfElementItemPart = dXsl2ConfElementItem.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "atInl", ""))
+'näidata
+set dXsl2ConfElementItemPart = dXsl2ConfElementItem.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "show", ""))
+if (qn = qn_sort_attr) then
+    dXsl2ConfElementItemPart.text = "0"
+else
+    dXsl2ConfElementItemPart.text = "1"
+end if
+'põhielemendi atribuut
+set dXsl2ConfElementItemPart = dXsl2ConfElementItem.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "major", ""))
+if (schAttr.use = SCHEMAUSE_REQUIRED) then
+    dXsl2ConfElementItemPart.text = "1"
+else
+    dXsl2ConfElementItemPart.text = "0"
+end if
+'muutmine
+set dXsl2ConfElementItemPart = dXsl2ConfElementItem.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "edit", ""))
+if (qn = qn_sort_attr) then
+    dXsl2ConfElementItemPart.text = "0"
+else
+    dXsl2ConfElementItemPart.text = "1"
+end if
+'algväärtus
+set dXsl2ConfElementItemPart = dXsl2ConfElementItem.appendChild(dXsl2ConfDom.createNode(NODE_ELEMENT, "init", ""))
+if (schAttr.name = "tnr" or schAttr.name = "ntnr" or schAttr.name = "ftnr") then
+    dXsl2ConfElementItemPart.text = "1"
+end if
+End Sub 'AddConfAttribute
+
+
+'-----------------------------------------------------------------------------------
+Sub SaveDXsl2Config()
+
+Dim elJnr, attrJnr
+Dim oRida, oAttrRida
+
+Dim dXsl2InitDom, dXsl2InitRoot
+Dim dXsl2InitElement, dXsl2InitElementItem, dXsl2InitElementItem2, dXsl2InitElementItem3
+Dim dXsl2InitElementItem4, dXsl2InitElementItem5, dXsl2InitElementItemPart
+
+set dXsl2InitDom = IDD("", "", False, False, Nothing)
+set dXsl2InitRoot = dXsl2InitDom.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "dxsl2config", ""))
+
+set dXsl2InitElement = dXsl2InitRoot.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "cssStyles", ""))
+
+'esimene rida on heading
+for elJnr = 1 to tbl_Cmn_CSS.rows.length - 1
+    set oRida = tbl_Cmn_CSS.rows(elJnr)
+    set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "item", ""))
+    Call dXsl2InitElementItem.setAttribute("id", oRida.id)
+    dXsl2InitElementItem.text = Trim(oRida.cells(1).all("ti").value)
+next
+
+'esimene rida on heading, sp algab 1-st
+for elJnr = 1 to schemaConfTable.rows.length - 1
+
+    set oRida = schemaConfTable.rows(elJnr)
+
+    set dXsl2InitElement = dXsl2InitRoot.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "element", ""))
+    'rada
+    set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "fp", ""))
+    dXsl2InitElementItem.text = oRida.id
+    'näidata
+    set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "show", ""))
+    if (oRida.cells(ELM_SHOW_CELL).all("cb").checked) then
+	    dXsl2InitElementItem.text = "1"
+	else
+	    dXsl2InitElementItem.text = "0"
+    end if
+    'kas teha pealkiri + tema stiilid, kui on
+    set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "hng", ""))
+    set dXsl2InitElementItem2 = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "en_", ""))
+    set dXsl2InitElementItem3 = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "enInl", ""))
+    set dXsl2InitElementItem4 = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "et_", ""))
+    set dXsl2InitElementItem5 = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "etInl", ""))
+    if (oRida.cells(ELM_HEADING_CELL).all("cb").checked) then
+	    dXsl2InitElementItem.text = "1"
+	    dXsl2InitElementItem2.text = oRida.cells(ELM_HEADING_CELL).all("ti").value
+	    dXsl2InitElementItem3.text = oRida.cells(ELM_HEADING_CELL).all("ti2").value
+	    dXsl2InitElementItem4.text = oRida.cells(ELM_HEADING_CELL).all("ti3").value
+	    dXsl2InitElementItem5.text = oRida.cells(ELM_HEADING_CELL).all("ti4").value
+	else
+	    dXsl2InitElementItem.text = "0"
+    end if
+    'loomise nupp
+    set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "createbutton", ""))
+    if (oRida.cells(ELM_CREATE_CELL).all("cb").checked) then
+	    dXsl2InitElementItem.text = "1"
+	else
+	    dXsl2InitElementItem.text = "0"
+    end if
+    'lisamise nupp
+    set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "addbutton", ""))
+    if (oRida.cells(ELM_ADD_CELL).all("cb").checked) then
+	    dXsl2InitElementItem.text = "1"
+	else
+	    dXsl2InitElementItem.text = "0"
+    end if
+    'põhielement
+    set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "major", ""))
+    if (oRida.cells(ELM_MAJOR_CELL).all("cb").checked) then
+	    dXsl2InitElementItem.text = "1"
+	else
+	    dXsl2InitElementItem.text = "0"
+    end if
+    'kas elemendi sisu saab muuta
+    set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "edit", ""))
+    if Not (oRida.cells(ELM_EDIT_CELL).all("cb") Is Nothing) then
+        if (oRida.cells(ELM_EDIT_CELL).all("cb").checked) then
+	        dXsl2InitElementItem.text = "1"
+	    else
+	        dXsl2InitElementItem.text = "0"
+        end if
+    end if
+    'elemendi võimalik algväärtus
+    set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "init", ""))
+    if Not (oRida.cells(ELM_INIT_CELL).all("ti") Is Nothing) then
+        dXsl2InitElementItem.text = oRida.cells(ELM_INIT_CELL).all("ti").value
+    end if
+
+    'atribuudid
+    if Not (oRida.cells(ELM_ATTRS_CELL).all("tbl_TAAdminAttrs") Is Nothing) then
+        for attrJnr = 0 to oRida.cells(ELM_ATTRS_CELL).all("tbl_TAAdminAttrs").rows.length - 1
+
+            set oAttrRida = oRida.cells(ELM_ATTRS_CELL).all("tbl_TAAdminAttrs").rows(attrJnr)
+
+            set dXsl2InitElementItem = dXsl2InitElement.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "attribute", ""))
+
+            'QName
+            set dXsl2InitElementItemPart = dXsl2InitElementItem.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "qn", ""))
+            dXsl2InitElementItemPart.text = oAttrRida.id
+            'atribuudi teksti CSS kujundus
+            set dXsl2InitElementItemPart = dXsl2InitElementItem.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "at_", ""))
+            dXsl2InitElementItemPart.text = Trim(oAttrRida.cells(0).all("ti2").value)
+            'atribuudi teksti korrapõhine kujundus
+            set dXsl2InitElementItemPart = dXsl2InitElementItem.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "atInl", ""))
+            dXsl2InitElementItemPart.text = Trim(oAttrRida.cells(0).all("ti3").value)
+            'näidata
+            set dXsl2InitElementItemPart = dXsl2InitElementItem.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "show", ""))
+            if (oAttrRida.cells(0).all("cb").checked) then 'näidata
+                dXsl2InitElementItemPart.text = "1"
+            else
+                dXsl2InitElementItemPart.text = "0"
+            end if
+            'põhielemendi põhiatribuut (loomine on teine asi kui näidata ...)
+            set dXsl2InitElementItemPart = dXsl2InitElementItem.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "major", ""))
+            if (oAttrRida.cells(0).all("cb2").checked) then 'põhielemendi põhiatribuut
+                dXsl2InitElementItemPart.text = "1"
+            else
+                dXsl2InitElementItemPart.text = "0"
+            end if
+            'kas atribuudi sisu saab muuta
+            set dXsl2InitElementItemPart = dXsl2InitElementItem.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "edit", ""))
+            if (oAttrRida.cells(0).all("cb3").checked) then 'põhielemendi põhiatribuut
+                dXsl2InitElementItemPart.text = "1"
+            else
+                dXsl2InitElementItemPart.text = "0"
+            end if
+            'atribuudi võimalik algväärtus
+            set dXsl2InitElementItemPart = dXsl2InitElementItem.appendChild(dXsl2InitDom.createNode(NODE_ELEMENT, "init", ""))
+            dXsl2InitElementItemPart.text = Trim(oAttrRida.cells(0).all("ti").value)
+            
+        next
+    end if
+    
+next
+
+Dim oTempDOM
+set oTempDOM = IDD("", "", False, False, Nothing)
+
+Call dXsl2InitRoot.transformNodeToObject(oIndented, oTempDOM)
+
+strm.Open
+strm.WriteText oTempDOM.xml
+strm.SaveToFile "c:/Temp/XMLProjects/Generate/" & dic_desc & "/config/xsl2/dxsl2config_" & dic_desc & ".xml", adSaveCreateOverWrite
+strm.Close
+
+MsgBox "OK", vbInformation, SAVE_CONF_XML
+
+End Sub 'SaveDXsl2Config
+
+
+'-----------------------------------------------------------------------------------
+Sub teeXslClick()
+
+Dim elJnr, attrJnr, confValue, tarr
+Dim oRida, oElement, oAttr
+Dim sShowAttrs, sCreateAttrs, sAttrValueString, oAttrRida
+Dim styleType
+
+cssDict.RemoveAll()
+
+'esimene rida on heading
+for elJnr = 1 to tbl_Cmn_CSS.rows.length - 1
+    set oRida = tbl_Cmn_CSS.rows(elJnr)
+    confValue = Trim(oRida.cells(1).all("ti").value)
+    if Not (confValue = "") then
+        cssDict(oRida.id) = confValue
+    end if
+next
+
+'esimene rida on heading, sp algab 1-st
+for elJnr = 1 to schemaConfTable.rows.length - 1
+    set oRida = schemaConfTable.rows(elJnr)
+    set oElement = oStruDom.documentElement.selectSingleNode(oRida.id)
+    set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":qname", SDURI))
+	oAttr.nodeValue = oElement.nodeName
+    set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":unName", SDURI))
+    oAttr.nodeValue = unName(oElement.nodeName)
+    
+    'Näidata
+    set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":show", SDURI))
+    if (oRida.cells(ELM_SHOW_CELL).all("cb").checked) then
+	    oAttr.nodeValue = "true"
+	else
+	    oAttr.nodeValue = "false"
+    end if
+
+    'Pealkiri, tekst ja nende stiilid
+    set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":hng", SDURI))
+    if (oRida.cells(ELM_HEADING_CELL).all("cb").checked) then
+
+	    oAttr.nodeValue = "true"
+        'sItemQN & "|" & oParticle.name & "|" & sItemURI & "|1|" & sKirjeldav
+        tarr = Split(oRida.getAttribute("value"), "|")
+
+        'pealkirja CSS kujundus
+	    confValue = oRida.cells(ELM_HEADING_CELL).all("ti").value
+        if Not (confValue = "") then
+            styleType = Split(oRida.cells(ELM_HEADING_CELL).all("ti").className, "_")(1)
+            cssDict(styleType & "_" & unName(tarr(0))) = confValue
+        end if
+
+        'teksti CSS kujundus
+	    confValue = oRida.cells(ELM_HEADING_CELL).all("ti3").value
+        if Not (confValue = "") then
+            styleType = Split(oRida.cells(ELM_HEADING_CELL).all("ti3").className, "_")(1)
+            cssDict(styleType & "_" & unName(tarr(0))) = confValue
+        end if
+
+	else
+	    oAttr.nodeValue = "false"
+    end if
+
+    'Loomise nupp
+    set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":createbutton", SDURI))
+    if (oRida.cells(ELM_CREATE_CELL).all("cb").checked) then
+	    oAttr.nodeValue = "true"
+	else
+	    oAttr.nodeValue = "false"
+    end if
+
+    'Lisamise nupp
+    set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":addbutton", SDURI))
+    if (oRida.cells(ELM_ADD_CELL).all("cb").checked) then
+	    oAttr.nodeValue = "true"
+	else
+	    oAttr.nodeValue = "false"
+    end if
+
+    'Põhielement
+    set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":majorelement", SDURI))
+    if (oRida.cells(ELM_MAJOR_CELL).all("cb").checked) then
+	    oAttr.nodeValue = "true"
+	else
+	    oAttr.nodeValue = "false"
+    end if
+
+    'Muutmine
+    if Not (oRida.cells(ELM_EDIT_CELL).all("cb") Is Nothing) then
+        set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":enableedit", SDURI))
+        if (oRida.cells(ELM_EDIT_CELL).all("cb").checked) then
+	        oAttr.nodeValue = "edit"
+	    else
+	        oAttr.nodeValue = "noedit"
+        end if
+    end if
+
+    'Algväärtus
+    if Not (oRida.cells(ELM_INIT_CELL).all("ti") Is Nothing) then
+        set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":init", SDURI))
+        oAttr.nodeValue = oRida.cells(ELM_INIT_CELL).all("ti").value
+    end if
+
+    'Atribuudid
+    if Not (oRida.cells(ELM_ATTRS_CELL).all("tbl_TAAdminAttrs") Is Nothing) then
+'        sShowAttrs = "|"
+        sCreateAttrs = ""
+        for attrJnr = 0 to oRida.cells(ELM_ATTRS_CELL).all("tbl_TAAdminAttrs").rows.length - 1
+            set oAttrRida = oRida.cells(ELM_ATTRS_CELL).all("tbl_TAAdminAttrs").rows(attrJnr)
+            sAttrValueString = ""
+            if (oAttrRida.cells(0).all("cb").checked) then 'näidata
+'                sShowAttrs = sShowAttrs & oAttrRida.id & "|" 'QName
+                'sItemQN & "|" & oParticle.name & "|" & sItemURI & "|1|" & sKirjeldav
+                tarr = Split(oAttrRida.getAttribute("value"), "|")
+'                sAttrValueString = oElement.nodeName & "/@" & tarr(0) & ChrW(&HE002) & tarr(4)
+                sAttrValueString = tarr(4) 'kirjeldav
+                if (oAttrRida.cells(0).all("cb3").checked) then 'muutmine
+                    sAttrValueString = sAttrValueString & ChrW(&HE003) & "edit"
+                else
+                    sAttrValueString = sAttrValueString & ChrW(&HE003) & "noedit"
+                end if
+                sAttrValueString = sAttrValueString & ChrW(&HE004) & unName(tarr(0))
+                
+                'atribuudi nime CSS kujundus
+
+                'atribuudi teksti CSS kujundus
+                confValue = Trim(oAttrRida.cells(0).all("ti2").value)
+                if Not (confValue = "") then
+                    styleType = Split(oAttrRida.cells(0).all("ti2").className, "_")(1)
+                    cssDict(styleType & "_" & unName(tarr(0))) = confValue
+                end if
+
+                'atribuudi teksti korrapõhine kujundus
+'                sAttrValueString = sAttrValueString & ChrW(&HE005) & Trim(oAttrRida.cells(0).all("ti3").value)
+            end if
+            'loomine on teine asi kui näidata ...
+            if (oAttrRida.cells(0).all("cb2").checked) then 'põhielemendi atribuut
+                '&HE002 on väärtuste hilisema Split jaoks
+                sCreateAttrs = sCreateAttrs & ChrW(&HE001) & oAttrRida.id & ChrW(&HE002) & "create" & ChrW(&HE002) & Trim(oAttrRida.cells(0).all("ti").value)
+            end if
+            if Not (sAttrValueString = "") then
+                'need atribuudid on juba olemas, seepärast võib kasutada 'setAttribute'
+                Call oElement.setAttribute(oAttrRida.id, sAttrValueString)' kirjeldav &HE003 edit/noedit &HE004 unName
+            end if
+        next
+'        if (Len(sShowAttrs) > 1) then
+'            set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":showattributes", SDURI))
+'            oAttr.nodeValue = sShowAttrs
+'        end if
+        if (Len(sCreateAttrs) > 1) then
+            set oAttr = oElement.Attributes.setNamedItem(oStruDom.createNode(NODE_ATTRIBUTE, SDPR & ":createattributes", SDURI))
+            oAttr.nodeValue = Mid(sCreateAttrs, 2)
+        end if
+    end if
+    
+next
+
+'edit CSS kirjutamine
+Dim dVal
+
+strm.Open
+for each dVal in cssDict.Keys
+    strm.WriteText "." & dVal & " {" & cssDict(dVal) & "}", adWriteLine
+next
+strm.SaveToFile "c:/Temp/XMLProjects/Generate/" & dic_desc & "/css/edit_" & dic_desc & ".css", adSaveCreateOverWrite
+strm.Close
+
+
+Dim oGenXsl2
+set oGenXsl2 = IDD("File", "../xsl/gen_xsl2.xsl", False, False, Nothing)
+if (oGenXsl2.parseError.errorCode <> 0) then
+	Call ShowXMLParseError(oGenXsl2)
+	Exit Sub
+end if
+
+Dim sNsList
+sNsList = "xmlns:xsl='http://www.w3.org/1999/XSL/Transform' xmlns:alt='http://www.w3.org/1999/XSL/Transform-alternate' xmlns:pr_sd='http://www.eo.ee/dev/xml/names'"
+oGenXsl2.setProperty "SelectionLanguage", "XPath"
+oGenXsl2.setProperty "SelectionNamespaces", Trim(sNsList)
+
+set oElement = oGenXsl2.selectSingleNode("xsl:stylesheet/xsl:template[@match='/']/alt:stylesheet")
+set oAttr = oElement.Attributes.setNamedItem(oGenXsl2.createNode(NODE_ATTRIBUTE, DICPR & ":mode", DICURI))
+oAttr.nodeValue = "auto"
+
+
+'----------------------------------------------------------------------------------------
+'üldstruktuur
+Dim yldStru, attrNoded, attrNode, sdNoded, i, t2
+set yldStru = oStruDom.cloneNode(true)
+set attrNoded = yldStru.selectNodes("*//*/@*[not(namespace-uri() = '" & SDURI & "')]")
+for each attrNode in attrNoded
+    attrNode.value = ""
+next
+set attrNoded = yldStru.selectNodes("*//*[@" & SDPR & ":createattributes]")
+for each attrNode in attrNoded
+    tarr = Split(attrNode.getAttribute(SDPR & ":createattributes"), ChrW(&HE001))
+    for i = 0 to UBound(tarr)
+        t2 = Split(tarr(i), ChrW(&HE002))
+        Call attrNode.setAttribute(t2(0), t2(2))
+    next
+next
+set sdNoded = yldStru.selectNodes(".//*/@" & SDPR & ":*")
+sdNoded.removeAll()
+
+Dim oTempDOM
+set oTempDOM = IDD("", "", False, False, Nothing)
+Call yldStru.documentElement.transformNodeToObject(oIndented, oTempDOM)
+
+strm.Open
+strm.WriteText oTempDOM.xml
+strm.SaveToFile "c:/Temp/XMLProjects/Generate/" & dic_desc & "/Xml/stru_" & dic_desc & ".xml", adSaveCreateOverWrite
+strm.Close
+set yldStru = Nothing
+
+
+'----------------------------------------------------------------------------------------------
+'xsl2
+Dim oXsl2DOM
+set oXsl2DOM = IDD("", "", False, False, Nothing)
+Call oStruDom.transformNodeToObject(oGenXsl2, oXsl2DOM)
+
+strm.Open
+strm.WriteText oXsl2DOM.xml
+strm.SaveToFile "c:/Temp/XMLProjects/Generate/" & dic_desc & "/Xsl/xsl2_" & dic_desc & "_" & sAppLang & ".xsl", adSaveCreateOverWrite
+strm.Close
+
+
+'-----------------------------------------------------------------------------------------
+'xsl2 teine keel
+Dim otherLang
+otherLang = vbNullString
+if (sAppLang = "et") then
+    otherLang = "en"
+elseif (sAppLang = "en") then
+    otherLang = "et"
+end if
+
+otherLang = ""
+
+if (Len(otherLang) > 0) then
+    Dim otherDom, otherNodes, otherNode, sXsdXPath, oXsdNode, sKirjeldav, otherAttrs, otherAttr, attrVal
+    set otherDom = oStruDom.cloneNode(true)
+    Call otherDom.documentElement.setAttribute(SDPR & ":sAppLang", otherLang)
+    set otherNodes = otherDom.selectNodes(".//*")
+    for each otherNode in otherNodes
+	    sXsdXPath = ".//" & NS_XS_PR & ":element[@name='" & otherNode.baseName & "']/" & NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang='" & otherLang & "']"
+	    set oXsdNode = oXsdDOM.documentElement.selectSingleNode(sXsdXPath)
+	    if Not (oXsdNode Is Nothing) then
+		    sKirjeldav = oXsdNode.text
+	    else
+		    sKirjeldav = oXmlNsm.getPrefixes(otherNode.namespaceURI).Item(0) & ":" & otherNode.baseName
+	    end if
+        Call otherNode.setAttribute(SDPR & ":desc", sKirjeldav)
+        set otherAttrs = otherNode.selectNodes("@*[namespace-uri() = '" & DICURI & "']")
+        for each otherAttr in otherAttrs
+			sXsdXPath = ".//" & NS_XS_PR & ":attribute[@name='" & otherAttr.baseName & "']/" & NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang='" & otherLang & "']"
+			set oXsdNode = oXsdDOM.documentElement.selectSingleNode(sXsdXPath)
+			if Not (oXsdNode Is Nothing) then
+				sKirjeldav = oXsdNode.text
+			else
+				sKirjeldav = oXmlNsm.getPrefixes(otherAttr.namespaceURI).Item(0) & ":" & otherAttr.baseName
+			end if
+            attrVal = otherAttr.value 'kirjeldav &HE003 edit/noedit &HE004 unName
+            if (Len(attrVal) > 0) then 'kui "näidata"
+                otherAttr.value = sKirjeldav & Mid(attrVal, InStr(1, attrVal, ChrW(&HE003)))
+            end if
+        next
+    next
+    set oXsl2DOM = IDD("", "", False, False, Nothing)
+    Call otherDom.transformNodeToObject(oGenXsl2, oXsl2DOM)
+    strm.Open
+    strm.WriteText oXsl2DOM.xml
+    strm.SaveToFile "c:/Temp/XMLProjects/Generate/" & dic_desc & "/Xsl/xsl2_" & dic_desc & "_" & otherLang & ".xsl", adSaveCreateOverWrite
+    strm.Close
+    set otherDom = Nothing
+end if
+
+
+'-----------------------------------------------------------------------------------------
+'Lisafailid (addgrupp, creategrupp, addlisad)
+set oTempDOM = IDD("", "", False, False, Nothing)
+
+Dim oCGDOM
+set oCGDOM = IDD("String", sEditDOMString, False, False, Nothing)
+if (oCGDOM.parseError.errorCode <> 0) then
+	Call ShowXMLParseError(oCGDOM)
+	Exit Sub
+end if
+Call oCGDOM.documentElement.transformNodeToObject(oIndented, oTempDOM)
+
+strm.Open
+strm.WriteText oTempDOM.xml
+strm.SaveToFile "c:/Temp/XMLProjects/Generate/" & dic_desc & "/Xml/ag_" & unName(oCGDOM.documentElement.nodeName) & ".xml", adSaveCreateOverWrite
+strm.Close
+
+Call traverseStru(oStruDom.documentElement, oCGDOM.documentElement)
+
+MsgBox "OK", vbInformation, SAVE_ENTRY_VIEW_XSL
+
+End Sub 'teeXslClick
+
+
+'-----------------------------------------------------------------------------------
+Sub traverseStru(oGrupiNode, oCGNode)
+Dim oGrupid, oGrupp, oCGDOM, oCGDOMNode, oCGAttr, oTempDOM
+set oTempDOM = IDD("", "", False, False, Nothing)
+
+set oGrupid = oGrupiNode.selectNodes("*")
+for each oGrupp in oGrupid
+    if (oGrupp.getAttribute(SDPR & ":ct") > 1) then 'elementonly ja mixed
+        set oCGDOM = IDD("", "", False, False, Nothing)
+	    set oCGDOMNode = oCGDOM.appendChild(oCGDOM.createNode(NODE_ELEMENT, oGrupp.nodeName, oGrupp.namespaceURI))
+	    Call getXMLGrupp(oGrupp, oCGDOMNode)
+        Call oCGDOM.documentElement.transformNodeToObject(oIndented, oTempDOM)
+        strm.Open
+        strm.WriteText oTempDOM.xml
+        strm.SaveToFile "c:/Temp/XMLProjects/Generate/" & dic_desc & "/Xml/ag_" & unName(oGrupp.nodeName) & ".xml", adSaveCreateOverWrite
+        strm.Close
+        Call traverseStru(oGrupp, oCGDOMNode)
+    else 'textonly
+        set oCGDOM = IDD("", "", False, False, Nothing)
+        set oCGDOMNode = Nothing
+
+        Dim creAttrStr, creAttrs, creVals, i, attrPr, attrURI
+        creAttrStr = oGrupp.getAttribute(SDPR & ":createattributes")
+        if Not (creAttrStr = "") then
+            creAttrs = Split(creAttrStr, ChrW(&HE001))
+            for i = 0 to UBound(creAttrs, 1)
+                creVals = Split(creAttrs(i), ChrW(&HE002))
+                if (InStr(1, creVals(0), ":") > 0) then
+                    attrPr = Left(creVals(0), InStr(1, creVals(0), ":") - 1)
+                else
+                    attrPr = ""
+                end if
+                attrURI = oXmlNsm.getURI(attrPr)
+                if (oCGDOMNode Is Nothing) then
+                    set oCGDOMNode = oCGDOM.appendChild(oCGDOM.createNode(NODE_ELEMENT, oGrupp.nodeName, oGrupp.namespaceURI))
+                end if
+                set oCGAttr = oCGDOMNode.Attributes.setNamedItem(oCGDOM.createNode(NODE_ATTRIBUTE, creVals(0), attrURI))
+                oCGAttr.value = creVals(2)
+            next
+        end if
+        if Not (oGrupp.getAttribute(SDPR & ":init") = "") then 'elemendi algväärtus
+            if (oCGDOMNode Is Nothing) then
+                set oCGDOMNode = oCGDOM.appendChild(oCGDOM.createNode(NODE_ELEMENT, oGrupp.nodeName, oGrupp.namespaceURI))
+            end if
+            oCGDOMNode.text = oGrupp.getAttribute(SDPR & ":init")
+        end if
+        if Not (oCGDOMNode Is Nothing) then
+            Call oCGDOM.documentElement.transformNodeToObject(oIndented, oTempDOM)
+            strm.Open
+            strm.WriteText oTempDOM.xml
+            strm.SaveToFile "c:/Temp/XMLProjects/Generate/" & dic_desc & "/Xml/ag_" & unName(oGrupp.nodeName) & ".xml", adSaveCreateOverWrite
+            strm.Close
+        end if
+    end if
+next
+End Sub 'traverseStru
+
+
+'-----------------------------------------------------------------------------------
+Sub getXMLGrupp(oGrupiNode, oCGNode)
+
+Dim oLisad, oLisa, sLisad
+sLisad = ""
+set oLisad = oGrupiNode.selectNodes("*[@" & SDPR & ":ct != 2]")
+for each oLisa in oLisad
+    sLisad = sLisad & "|" & oLisa.nodeName
+next
+if (sLisad <> "") then
+    strm.Open
+    strm.WriteText "<?xml version=""1.0"" encoding=""utf-8"" standalone=""no""?>", adWriteLine
+    strm.WriteText "<al>" & Mid(sLisad, 2) & "</al>"
+    strm.SaveToFile "c:/Temp/XMLProjects/Generate/" & dic_desc & "/Xml/al_" & unName(oGrupiNode.nodeName) & ".xml", adSaveCreateOverWrite
+    strm.Close
+end if
+
+Dim creAttrStr, creAttrs, creVals, i, oCGAttr, attrPr, attrURI
+creAttrStr = oGrupiNode.getAttribute(SDPR & ":createattributes")
+if Not (creAttrStr = "") then
+    creAttrs = Split(creAttrStr, ChrW(&HE001))
+    for i = 0 to UBound(creAttrs, 1)
+        creVals = Split(creAttrs(i), ChrW(&HE002))
+        if (InStr(1, creVals(0), ":") > 0) then
+            attrPr = Left(creVals(0), InStr(1, creVals(0), ":") - 1)
+        else
+            attrPr = ""
+        end if
+        attrURI = oXmlNsm.getURI(attrPr)
+        set oCGAttr = oCGNode.Attributes.setNamedItem(oCGNode.ownerDocument.createNode(NODE_ATTRIBUTE, creVals(0), attrURI))
+        oCGAttr.value = creVals(2)
+    next
+end if
+
+Dim oGrupid, oGrupp, oCGDOMNode
+set oGrupid = oGrupiNode.selectNodes("*[@" & SDPR & ":majorelement = 'true']")
+for each oGrupp in oGrupid
+    set oCGDOMNode = oCGNode.appendChild(oCGNode.ownerDocument.createNode(NODE_ELEMENT, oGrupp.nodeName, oGrupp.namespaceURI))
+    if Not (oGrupp.getAttribute(SDPR & ":init") = "") then 'elemendi algväärtus
+        oCGDOMNode.text = oGrupp.getAttribute(SDPR & ":init")
+    end if
+	Call getXMLGrupp(oGrupp, oCGDOMNode)
+next
+End Sub 'getXMLGrupp
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+if (window.event.keyCode = 113) then 'F2
+    if (window.event.srcElement.tagName = "INPUT") then
+        if (window.event.srcElement.getAttribute("type") = "text" and _
+        Left(window.event.srcElement.className, 5) = "stEd_") then
+            Call setStyleValue(window.event.srcElement)
+        end if
+    end if
+end if
+End Sub 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnDblClick()
+if (window.event.srcElement.tagName = "INPUT") then
+    if (window.event.srcElement.getAttribute("type") = "text" and _
+    Left(window.event.srcElement.className, 5) = "stEd_") then
+        Call setStyleValue(window.event.srcElement)
+    end if
+end if
+End Sub 'bodyOnDblClick
+
+
+'-----------------------------------------------------------------------------------
+Sub setStyleValue(inpObj)
+Dim trObj, rowVal, tarr, t2
+Dim itm, itmName, itmVal, itmType, sItemQN, sKirjeldav, retVal
+
+set trObj = inpObj
+do while (trObj.className <> "sCR") '"schema conf row"
+    set trObj = trObj.parentElement
+loop
+rowVal = trObj.getAttribute("value")
+
+'stEd_en_CSS, stEd_en_Inl, stEd_et_CSS, stEd_et_Inl
+t2 = Split(inpObj.className, "_")
+
+if Not IsNull(rowVal) then
+    'sItemQN & "|" & oParticle.name & "|" & sItemURI & "|1|" & sKirjeldav
+    tarr = Split(rowVal, "|")
+
+    if (t2(2) = "CSS") then
+        itm = "className"
+        itmName = "." & t2(1) & "_" & tarr(1)
+    elseif (t2(2) = "Inl") then
+        itm = "instance of"
+        itmName = tarr(0)
+    end if
+    itmVal = Trim(inpObj.value)
+    sItemQN = tarr(0)
+    sKirjeldav = tarr(4)
+    itmType = t2(1)
+else
+    itm = "className"
+    itmName = "." & t2(1)
+    itmVal = Trim(inpObj.value)
+    sItemQN = "''"
+    sKirjeldav = t2(1)
+    itmType = t2(1)
+end if
+
+retVal = window.showModalDialog("itmStyleConfig.htm", _
+    Array(itm, itmName, itmVal, sItemQN, sKirjeldav, itmType, sAppLang), _
+    "dialogHeight:400px;dialogWidth:1024px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no")
+if (retVal <> "") then
+    inpObj.value = Mid(retVal, 4)
+    inpObj.title = Mid(retVal, 4)
+end if
+End Sub 'setStyleValue
+
+
+-->
+		</script>
+	</head>
+	<body style="background-color:buttonface" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()" ondblclick="bodyOnDblClick()">
+    <div id="div_AdminToimetamisala" style="visibility:hidden">
+        <h1 id="pealKiri"></h1>
+        <table id='tbl_Cmn_CSS' border='1'>
+            <thead style='background-color:navy;color:white'>
+                <tr>
+                    <th>className</th>
+                    <th>CSS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id='en' class='sCR'>
+                    <td>en</td>
+                    <td><input id='ti' class='stEd_en_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='en:first-letter' class='sCR'>
+                    <td>en:first-letter</td>
+                    <td><input id='ti' class='stEd_en:first-letter_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='enmx' class='sCR'>
+                    <td>enmx</td>
+                    <td><input id='ti' class='stEd_enmx_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='enx1' class='sCR'>
+                    <td>enx1</td>
+                    <td><input id='ti' class='stEd_enx1_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='enl1' class='sCR'>
+                    <td>enl1</td>
+                    <td><input id='ti' class='stEd_enl1_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='an' class='sCR'>
+                    <td>an</td>
+                    <td><input id='ti' class='stEd_an_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='anmx' class='sCR'>
+                    <td>anmx</td>
+                    <td><input id='ti' class='stEd_anmx_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='anx1' class='sCR'>
+                    <td>anx1</td>
+                    <td><input id='ti' class='stEd_anx1_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='et' class='sCR'>
+                    <td>et</td>
+                    <td><input id='ti' class='stEd_et_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='etl1' class='sCR'>
+                    <td>etl1</td>
+                    <td><input id='ti' class='stEd_etl1_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='at' class='sCR'>
+                    <td>at</td>
+                    <td><input id='ti' class='stEd_at_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='atmx' class='sCR'>
+                    <td>atmx</td>
+                    <td><input id='ti' class='stEd_atmx_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='atx1' class='sCR'>
+                    <td>atx1</td>
+                    <td><input id='ti' class='stEd_atx1_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='ct' class='sCR'>
+                    <td>ct</td>
+                    <td><input id='ti' class='stEd_ct_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='ec' class='sCR'>
+                    <td>ec</td>
+                    <td><input id='ti' class='stEd_ec_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='it' class='sCR'>
+                    <td>it</td>
+                    <td><input id='ti' class='stEd_it_CSS' type='text' size='100'></td>
+                </tr>
+                <tr id='etws' class='sCR'>
+                    <td>etws</td>
+                    <td><input id='ti' class='stEd_etws_CSS' type='text' size='100'></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br />
+
+        <table id='tbl_TAAdmin' border='1'>
+            <thead>
+                <tr style='background-color:navy;color:white'>
+                    <th id='id_col_show'></th>
+                    <th id='id_col_desc'></th>
+                    <th id='id_col_type'></th>
+                    <th id='id_col_counts'></th>
+                    <th id='id_col_element'></th>
+                    <th id='id_col_heading'></th>
+                    <th id='id_col_create'></th>
+                    <th id='id_col_add'></th>
+                    <th id='id_col_major'></th>
+                    <th id='id_col_change'></th>
+                    <th id='id_col_init'></th>
+                    <th id='id_col_attrs'></th>
+                    <th id='id_col_path'></th>
+                </tr>
+            </thead>
+        </table>
+
+        <br />
+
+	    <input id="save_Xsl" onclick="teeXslClick()" type="button" value="-">
+	    <input id="save_Config" onclick="SaveDXsl2Config()" type="button" value="-">
+
+    </div>
+    <!-- selle meetodiga ei näe võimalust, kuidas teisest failist neid kasutada. -->
+    <div id="langConst" style="display:none;">
+        <div id="langConst_et">
+            var DOC_TITLE = "Artikli toimetamisala kujundus";
+            var COL_SHOW = "Näi-data";
+            var COL_DESC = "Kirjel-dav nimi";
+            var COL_TYPE = "Tüüp";
+            var COL_COUNTS = "Kor-du-vus";
+            var COL_ELEMENT = "Jnr ja täisnimi";
+            var COL_HEADING = "Kas teha pealkiri, tema CSS ja korrapõhine kujundus,\n ning tekstide CSS ja korrapõhine kujundus";
+            var COL_CREATE = "Loo-mise nupp";
+            var COL_ADD = "Lisa-mise nupp";
+            var COL_MAJOR = "Põhi-ele-ment";
+            var COL_CHANGE = "Muu-de-tav";
+            var COL_INIT = "Alg-väärtus";
+            var COL_IMGSTYLE_TITLE = "Teksti CSS kujundus";
+            var COL_ATTRS = "Atribuudid";
+            var COL_ATTR_DESC = "kas näidata, muutmine, kas on kohustuslik atribuut ja algväärtus";
+            var COL_PATH = "Rada";
+            var SAVE_ENTRY_VIEW_XSL = "Artikli toimetamisala XSL genereerimine";
+            var SAVE_CONF_XML = "Artikli toimetamisala konfiguratsiooni salvestamine";
+            var SAVE_XSL_BTN_TEXT = "Genereeri kujundus";
+            var SAVE_CONF_BTN_TEXT = "Salvesta konfiguratsioon";
+        </div>
+        <div id="langConst_en">
+            var DOC_TITLE = "Entry edit design";
+            var COL_SHOW = "Show";
+            var COL_DESC = "Descrip-tive name";
+            var COL_TYPE = "Type";
+            var COL_COUNTS = "Min, Max";
+            var COL_ELEMENT = "Sq # and QName";
+            var COL_HEADING = "Heading, his CSS and inline style,\n and text CSS and inline style";
+            var COL_CREATE = "Add create-button";
+            var COL_ADD = "Add add-button";
+            var COL_MAJOR = "Major element";
+            var COL_CHANGE = "Edi-ta-ble";
+            var COL_INIT = "Initial value";
+            var COL_IMGSTYLE_TITLE = "Text CSS Style";
+            var COL_ATTRS = "Attributes";
+            var COL_ATTR_DESC = "show, change, is required attribute and initial value";
+            var COL_PATH = "Path";
+            var SAVE_ENTRY_VIEW_XSL = "Generate entry edit design XSL";
+            var SAVE_CONF_XML = "Save entry edit design configuration";
+            var SAVE_XSL_BTN_TEXT = "Generate design";
+            var SAVE_CONF_BTN_TEXT = "Save configuration";
+        </div>
+        <div id="langConst_ru">
+            var DOC_TITLE = "Entry edit design";
+            var COL_SHOW = "Show";
+            var COL_DESC = "Descrip-tive name";
+            var COL_TYPE = "Type";
+            var COL_COUNTS = "Min, Max";
+            var COL_ELEMENT = "Sq # and QName";
+            var COL_HEADING = "Heading, his CSS and inline style,\n and text CSS and inline style";
+            var COL_CREATE = "Add create-button";
+            var COL_ADD = "Add add-button";
+            var COL_MAJOR = "Major element";
+            var COL_CHANGE = "Edi-ta-ble";
+            var COL_INIT = "Initial value";
+            var COL_IMGSTYLE_TITLE = "Text CSS Style";
+            var COL_ATTRS = "Attributes";
+            var COL_ATTR_DESC = "show, change, is required attribute and initial value";
+            var COL_PATH = "Path";
+            var SAVE_ENTRY_VIEW_XSL = "Generate entry edit design XSL";
+            var SAVE_CONF_XML = "Save entry edit design configuration";
+            var SAVE_XSL_BTN_TEXT = "Generate design";
+            var SAVE_CONF_BTN_TEXT = "Save configuration";
+        </div>
+    </div>
+	</body>
+</html>

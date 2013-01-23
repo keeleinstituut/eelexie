@@ -1,0 +1,386 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Skeemi loendid</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <link rel="stylesheet" type="text/css" href="../css/script.css">
+    <script type="text/javascript" src="../html/res_xml.js"></script>
+    <script type="text/javascript" src="../html/tools.js"></script>
+    <script type="text/javascript">
+
+        var dic_desc, appLang, usrName, DICPR, DICURI, rootLang, default_query;
+        var tyybidFile, tyybidDom, tyybidArr;
+        var skeemiDom, nsm, nsList;
+        var tyybidUri;
+
+        var tyybidSalvestatud = false;
+
+        var PD = "\uE001";
+
+        //'-----------------------------------------------------------------------------------
+        function bodyOnKeyUp() {
+            switch (window.event.keyCode) {
+                case 27:
+                    window.close();
+                    break;
+                case 13:
+                    break;
+            }
+            return;
+        } // bodyOnKeyUp
+
+
+        //'-----------------------------------------------------------------------------------
+        function bodyOnLoad() {
+            var inArr = window.dialogArguments;
+            dic_desc = inArr[0];
+            usrName = inArr[1];
+            appLang = inArr[2];
+            tyybidFile = inArr[3];
+
+            var shsconfig, cfgElem;
+            shsconfig = IDD("File", "../shsconfig_" + dic_desc + ".xml", false, false, null);
+            if (shsconfig.parseError.errorCode != 0) {
+                alert("Puudub 'shsconfig_" + dic_desc + ".xml'!");
+                return;
+            }
+
+            cfgElem = shsconfig.documentElement.selectSingleNode("dicpr");
+            if (cfgElem == null) {
+                alert("Puudub 'dicpr'!");
+                return;
+            }
+            DICPR = cfgElem.text;
+
+            cfgElem = shsconfig.documentElement.selectSingleNode("dicuri");
+            if (cfgElem == null) {
+                alert("Puudub 'dicuri'!");
+                return;
+            }
+            DICURI = cfgElem.text;
+
+            cfgElem = shsconfig.documentElement.selectSingleNode("rootLang");
+            if (cfgElem == null) {
+                alert("Puudub 'rootLang'!");
+                return;
+            }
+            rootLang = cfgElem.text;
+
+            cfgElem = shsconfig.documentElement.selectSingleNode("default_query");
+            if (cfgElem == null) {
+                alert("Puudub 'default_query'!");
+                return;
+            }
+            default_query = cfgElem.text;
+
+            tyybidUri = "http://www.eki.ee/dict/schemas/" + dic_desc + "_tyybid";
+
+            skeemiDom = IDD("File", "../xsd/schema_" + dic_desc + ".xsd", false, false, null);
+
+            var i;
+
+            nsm = new ActiveXObject("Msxml2.MXNamespaceManager.6.0");
+            nsm.allowOverride = true;
+            var nsNodes = skeemiDom.documentElement.selectNodes("namespace::*");
+            for (i = 0; i < nsNodes.length; i++) {
+                if (nsNodes[i].prefix != "") {
+                    if ((nsNodes[i].baseName != "xml")) {
+                        nsm.declarePrefix(nsNodes[i].baseName, nsNodes[i].value);
+                    }
+                }
+            }
+            nsList = "";
+            for (i = 0; i < nsm.getDeclaredPrefixes.length; i++) {
+                var sPr = nsm.getDeclaredPrefixes[i];
+                if (sPr != "xml") {
+                    nsList += " xmlns:" + sPr + "='" + nsm.getURI(sPr) + "'";
+                }
+            }
+            nsList = nsList.replace("^\s+", "");
+            skeemiDom.setProperty("SelectionLanguage", "XPath");
+            skeemiDom.setProperty("SelectionNamespaces", nsList);
+
+            tyybidDom = IDD("File", "../xsd/" + tyybidFile, false, false, null);
+            tyybidDom.setProperty("SelectionLanguage", "XPath");
+            tyybidDom.setProperty("SelectionNamespaces", nsList);
+
+            fillTypes();
+
+            window.onunload = setRV;
+
+            return;
+
+        } // bodyOnLoad
+
+
+        //'-----------------------------------------------------------------------------------
+        function fillTypes() {
+
+            while (selTyyp.options.length > 0) {
+                selTyyp.options.remove(0);
+            }
+
+            while (selTyybid.options.length > 0) {
+                selTyybid.options.remove(0);
+            }
+
+            tyybidArr = new Array();
+            var ix, nimi;
+
+            var tyybidNodeList = tyybidDom.documentElement.selectNodes("xs:simpleType");
+            for (ix = 0; ix < tyybidNodeList.length; ix++) {
+                nimi = tyybidNodeList[ix].getAttribute("name");
+                tyybidArr.push(nimi);
+            }
+            tyybidArr.sort(ciSort);
+
+            var ix, nimi, opt;
+            for (ix in tyybidArr) {
+                opt = document.createElement("OPTION");
+                selTyybid.options.add(opt);
+                nimi = tyybidArr[ix];
+                opt.id = nimi;
+                opt.innerText = nimi;
+            }
+
+        } // fillTypes
+
+
+        //'-----------------------------------------------------------------------------------
+        function selTyybidChanged() {
+            while (selTyyp.options.length > 0) {
+                selTyyp.options.remove(0);
+            }
+
+            var id = selTyybid.options[selTyybid.selectedIndex].id;
+            inpTyybiNimi.value = id;
+
+            var tyybiNode, ekNode, ikNode, tekst;
+            tyybiNode = tyybidDom.documentElement.selectSingleNode("xs:simpleType[@name = '" + id + "']");
+            ekNode = tyybiNode.selectSingleNode("xs:annotation/xs:documentation[@xml:lang = 'et']");
+            if (ekNode)
+                inpTyybiKirjeldavEt.value = ekNode.text;
+            ikNode = tyybiNode.selectSingleNode("xs:annotation/xs:documentation[@xml:lang = 'en']");
+            if (ikNode)
+                inpTyybiKirjeldavEn.value = ikNode.text;
+
+            var typePr = nsm.getPrefixes(tyybidUri).item(0);
+            var typeQn = typePr + ":" + id;
+
+            var kasutatud = skeemiDom.documentElement.selectNodes("xs:element[@type = '" + typeQn + "' or .//*/@base = '" + typeQn + "'] | xs:attribute[@type = '" + typeQn + "']");
+            var jubaTehtud = PD;
+            var kirjeldavad = PD;
+            for (var ixItm = 0; ixItm < kasutatud.length; ixItm++) {
+                var obj = kasutatud[ixItm];
+                var objNimi = obj.getAttribute("name");
+
+                var objKirjeldavNode = obj.selectSingleNode("xs:annotation/xs:documentation[@xml:lang='" + appLang + "']");
+                var objKirjeldav = objNimi;
+                if (objKirjeldavNode) {
+                    if (objKirjeldavNode.text.length > 0) {
+                        objKirjeldav = objKirjeldavNode.text;
+                    }
+                }
+
+                if (obj.baseName == "element") {
+                    objNimi = "&lt;" + objNimi + "&gt;";
+                    objKirjeldav = "&lt;" + objKirjeldav + "&gt;";
+                } else {
+                    objNimi = "@" + objNimi;
+                    objKirjeldav = "@" + objKirjeldav;
+                }
+                if (jubaTehtud.indexOf(PD + objNimi + PD) < 0) {
+                    jubaTehtud += objNimi + PD;
+                    kirjeldavad += objKirjeldav + PD;
+                }
+            }
+            spnEsineb.innerHTML = "";
+            if (jubaTehtud.length > 1) {
+                jubaTehtud = jubaTehtud.substr(1, jubaTehtud.length - 2);
+                kirjeldavad = kirjeldavad.substr(1, kirjeldavad.length - 2);
+                var esinebStr = kirjeldavad.split(PD).join(", ") + " (" + jubaTehtud.split(PD).join(", ") + ")";
+                spnEsineb.innerHTML = esinebStr;
+            }
+            else {
+                if (id == "xmllang_tyyp") {
+                    spnEsineb.innerHTML = "tehniline loend";
+                }
+            }
+
+
+            var enumsNodeList = tyybiNode.selectNodes(".//xs:enumeration");
+            var ix;
+
+            for (ix = 0; ix < enumsNodeList.length; ix++) {
+                var enumVal = enumsNodeList[ix].getAttribute("value");
+                tekst = enumVal;
+                ekNode = enumsNodeList[ix].selectSingleNode("xs:annotation/xs:documentation[@xml:lang = 'et']");
+                if (ekNode)
+                    tekst += '  |  ' + ekNode.text;
+                ikNode = enumsNodeList[ix].selectSingleNode("xs:annotation/xs:documentation[@xml:lang = 'en']");
+                if (ikNode)
+                    tekst += '  |  ' + ikNode.text;
+                var opt = document.createElement("OPTION");
+                selTyyp.options.add(opt);
+                opt.id = enumVal;
+                opt.innerText = tekst;
+            }
+        } // selTyybidChanged
+
+
+        //'-----------------------------------------------------------------------------------
+        function addTypeOnClick() {
+            var uusTyyp = prompt("Sisesta uue tüübi nimi!", "xxx_tyyp");
+            if (!uusTyyp)
+                return;
+            if (tyybidDom.documentElement.selectSingleNode("xs:simpleType[@name = '" + uusTyyp + "']")) {
+                alert("Selline tüüp on juba olemas!");
+                return;
+            }
+
+            var uusTyypNode = tyybidDom.documentElement.appendChild(tyybidDom.createNode(NODE_ELEMENT, "xs:simpleType", NS_XS));
+            uusTyypNode.setAttribute("name", uusTyyp);
+            // ilma "xs:restriction" - ta on ka viga
+            var restrNode = uusTyypNode.appendChild(tyybidDom.createNode(NODE_ELEMENT, "xs:restriction", NS_XS));
+            restrNode.setAttribute("base", "xs:string");
+            // getsimpletype (loendite muutmine) jaoks on vaja vähemalt ühte 'enumeration'
+            var enumNode = restrNode.appendChild(tyybidDom.createNode(NODE_ELEMENT, "xs:enumeration", NS_XS));
+            enumNode.setAttribute("value", "yy");
+            var annotNode = enumNode.appendChild(tyybidDom.createNode(NODE_ELEMENT, "xs:annotation", NS_XS));
+            var docnNode = annotNode.appendChild(tyybidDom.createNode(NODE_ELEMENT, "xs:documentation", NS_XS));
+            docnNode.setAttribute("xml:lang", "et");
+            docnNode.text = "mingi uus väärtus";
+            docnNode = annotNode.appendChild(tyybidDom.createNode(NODE_ELEMENT, "xs:documentation", NS_XS));
+            docnNode.setAttribute("xml:lang", "en");
+            docnNode.text = "some new value";
+
+            fillTypes();
+
+        } // addTypeOnClick
+
+
+        //'-----------------------------------------------------------------------------------
+        function delTypeOnClick() {
+            if (selTyybid.selectedIndex < 0)
+                return;
+
+            if (spnEsineb.innerHTML.length > 0) {
+                alert("Tüüp on kasutusel mainitud objektide küljes!\n\nEi kustuta.");
+                return;
+            }
+
+            var id = selTyybid.options[selTyybid.selectedIndex].id;
+            var tyypNode = tyybidDom.documentElement.selectSingleNode("xs:simpleType[@name = '" + id + "']");
+            tyypNode.parentNode.removeChild(tyypNode);
+            fillTypes();
+
+        } // delTypeOnClick
+
+
+        //'-----------------------------------------------------------------------------------
+        function saveTyybid() {
+            var PD = String.fromCharCode(0xE001);
+            var xh = exCGISync("../tools.cgi", "updateXML" + PD + dic_desc + PD + usrName + PD +
+                "xsd/" + tyybidFile + PD +
+                "descendant-or-self::xs:schema" + PD +
+                tyybidDom.documentElement.xml + PD +
+                "");
+
+            if (xh.statusText == "OK") {
+                var rspDOM, status;
+                rspDOM = IDD("", "", false, false, null);
+                sta = rspDOM.load(xh.responseXML); //'responseXML: TypeName = DomDocument
+
+                if (sta) {
+                    status = rspDOM.selectSingleNode("rsp/sta").text;
+                    if (status == "Success") {
+                        tyybidSalvestatud = true;
+                        alert("Tüüpidefaili kirjutamine OK!");
+                    }
+                }
+            }
+            else {
+                alert(xh.status + ": " + xh.statusText + xh.responseText);
+            }
+        } // saveTyybid
+
+
+        //'-----------------------------------------------------------------------------------
+        function setRV() {
+            if (tyybidSalvestatud)
+                window.returnValue = "salvestatud";
+        }
+
+
+        //'-----------------------------------------------------------------------------------
+        function cancelOnClick() {
+            window.close();
+        } // cancelOnClick
+
+
+</script>
+</head>
+<body style="background-color: buttonface" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+    <div id="divBody" style="padding: 5mm 10mm 5mm 10mm;">
+        <table id="tblTyybid" border="1" style="width: 90%;">
+            <tr>
+                <td colspan="2">
+                    <label for="inpTyybiNimi">
+                        Tüüp</label>
+                    <input disabled id="inpTyybiNimi" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="inpTyybiKirjeldavEt">
+                        Ek</label>
+                    <input id="inpTyybiKirjeldavEt" type="text" />
+                </td>
+                <td>
+                    <label for="inpTyybiKirjeldavEn">
+                        Ik</label>
+                    <input id="inpTyybiKirjeldavEn" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <span id="spnEsinebNimetus">Esineb: </span><span id="spnEsineb" style="background-color: Aqua;">
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">
+                    <select id="selTyybid" size="20" onchange="selTyybidChanged()" style="width: 100%;">
+                    </select>
+                </td>
+                <td>
+                    <select id="selTyyp" size="20" style="width: 100%;">
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="btnAddType" type="button" value="Lisa tüüp" onclick="addTypeOnClick()" />
+                    <input id="btnDelType" type="button" value="Kustuta tüüp" onclick="delTypeOnClick()" />
+                </td>
+                <td align="right">
+                    <input id="btnSave" type="button" value="Salvesta" onclick="saveTyybid()" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td align="right">
+                    <input id="btnCancel" type="button" title="Välju" value="  OK  " onclick="cancelOnClick()" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

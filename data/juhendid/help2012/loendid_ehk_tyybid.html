@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Loendid ehk tüübid</h2>
+	
+Loendeid kasutatakse EELexis siis, kui elemendi sisu saab olla vaid üks etteantud valikust. Toimetamisalal näevad loendid välja valikmenüüdena. Loendid on tüüpide alamhulk, sellepärast kasutatakse kohati seda terminit.<br />
+<br />
+<h3 id="toc0"><a name="x--Uue loendi tegemine"></a>Uue loendi tegemine</h3>
+ Loendi loomine käib mitmes etapis: kõigepealt lood (registreerid) loendi ja seod elemendi loodud loendiga, seejärel täidad ta sisuga.<br />
+<br />
+<ol><li>Loendi loomiseks (registreerimiseks) ava Skeemieditor (<strong>Sõnastiku tööriistad</strong> -- <strong>Skeemi genereerimine</strong>), muuda aktiivseks element, mille juurde loendit soovid luua, seejärel klõpsa paremal all nuppu <strong>Tüübid</strong>. Klõpsa <strong>Lisa tüüp</strong> ja avanevas aknas pane talle nimi, mis peab lõppema liitega &quot;_tyyp&quot;. Uue tüübi nimi ilmub teiste tüüpide juurde. Anka parempoolses osas muuda uus tüüp aktiivseks ja pane talle vähemalt eestikeelne nimi. Salvesta ja OK, et aken sulgeda.</li><li>Uus loend on nüüd defineeritud, aga ta tuleb elemendile veel &quot;külge&quot; määrata. Ava skeemieditoris menüü <strong>Tüüp</strong> ja vali sealt vastloodud tüüp. Salvesta ja sulge skeemieditor.</li><li>Klõpsa tööaknas <strong>Sõnastiku tööriistad</strong>, ilmuva menüü alaossa loendite nimekirja on nüüd lisandunud elemendi nimi, mille külge vastloodud tüüp sai määratud; vali see. Avanevas tabelis saad loendi sisu luua: paremklõps real ja vali kas Lisa ette, Lisa järele või Kustuta. Kui tegeled uue rea lisamisega, siis järjest ilmuvatesse dialoogiakendesse tuleb kirjutada väärtus ja eestikeelne seletus. Väärtus on see tekst, mis sõnastikuartiklisse salvestatakse (näiteks lühendid) ja see salvestatakse ka sõnastiku andmefaili. Seletus kuvatakse valikmenüüs väärtuse järele - lühendite puhul on kasutajal nii kergem valida. Hiljem tabelilahtril klõpsates võib lisada ka muukeelse seletuse. Tühi, veel täitmata loendite tabel sisaldab näidisrida yy, mille võib hiljem kustutada.</li></ol><br />
+<h3 id="toc1"><a name="x--Loendi muutmine"></a>Loendi muutmine</h3>
+ Ava loendi muutmise tabel (<strong>Sõnastiku tööriistad --</strong> ilmuva menüü alaosast vali muudetav tüüp). Väärtust tabelis otse muuta ei saa, saab ainult seletust. Väärtuse muutmiseks tuleb vana kustutada ja luua uus. Baasis (sõnastiku XML failis) ei muutu sellega midagi. Aga kui baasis on loend vanal kujul olemas ja oled kustutanud sellise väärtuse, mis baasis eksisteerib, siis sõnastik enam ei valideeru. Seega - olemasoleva sõnastiku loendit muutes tuleb <strong>sõnastik hiljem kindlasti valideerida</strong>!<br />
+<br />
+Nupu <strong>Kopeeri</strong> abil saab kogu tabeli sisu kopeerida selleks, et see kleepida tekstifaili (veergude vahedeks tühikud).<br />
+<br />
+<h3 id="toc2"><a name="x--Loendi kustutamine"></a>Loendi kustutamine</h3>
+ Loendi kustutamiseks &quot;monteeri ta elemendi küljest lahti&quot; ehk Skeemieditoris vali element, mille küljes see loend on, ja määra sellele elemendile mõni muu tüüp (valikmenüü Tüüp abil, tavaliselt muudetakse tagasi stringiks). Kui loend on mitme elemendi küljes, siis tuleb ta kõigi küljest lahti monteerida. Seejärel vali <strong>Sõnastiku tööriistad</strong> -- <strong>Skeemi genereerimine</strong> -- <strong>Tüübid</strong>. Vali loend ja klõpsa <strong>Kustuta tüüp</strong>. Et kustutatud loend kaoks ka Sõnastiku tööriistade menüüst, värskenda lehekülge (<em>Refresh</em> ehk F5)
+    </div>
+  </body>
+</html>

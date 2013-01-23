@@ -1,0 +1,112 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1257" />
+<link href="css/IPank.css" rel=stylesheet type=text/css> 
+<title>EELexi arendajadokumentatsioon</title>
+<script type="text/javascript" language="JavaScript">
+//alert(getParameterByName("RET") );
+
+function jsHeader()
+{
+  headx.innerHTML=getParameterByName("RET");
+}
+function jsRetBack_1()
+{
+ window.close();
+}
+function jsRetBack_0()
+{
+ history.go(-1);
+}
+function jsInsert()
+{
+	eval("parent"+".location='IP_List_2_L.asp'");
+}
+function getParameterByName(name)
+{
+   name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+   var regexS = "[\\?&]" + name + "=([^&#]*)";
+   var regex = new RegExp(regexS);
+   var results = regex.exec(window.location.href);
+   if(results == null)
+     return "-";
+   else
+     return decodeURIComponent(results[1].replace(/\+/g, " ")); }
+
+</script>
+<style>
+	A  {
+	font-size : 10px; 
+	font-family : verdana, arial, helvetica, sans-serif;
+	font-style : normal;
+	color : Black;
+	text-decoration : none
+	}
+
+A:Active,A:Hover {
+	color : #000000
+	}
+
+table {
+	border-style : none
+	}
+body, p, td, ul {
+	font-family: Verdana, Helvetica, Arial, sans-serif ;
+	font-size:10px;
+	text-decoration: none;
+	scrollbar-face-color       : white;
+	scrollbar-highlight-color  : gray;
+	scrollbar-shadow-color     : black;
+	scrollbar-3dlight-color    : none;
+	scrollbar-arrow-color      : black;
+	scrollbar-track-color      : white;
+	scrollbar-darkshadow-color : white;
+	}
+td.menuTD1
+    {
+	border-left: 1px solid #96BEC8;
+ 	}
+td.menuTD2
+    {
+	border-right: 1px solid #96BEC8;
+ 	}
+table.menuTable1 
+    {
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+	border-left: 1px solid #000000;
+ 	} 
+table.menuTable2 {
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+	border-left: 1px solid #000000;
+	border-top: 1px solid #000000;
+ 	} 
+.style1 {
+	font-family: Verdana, Helvetica, Arial, sans-serif ;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 10px;
+}
+.style2 {
+	font-family: Verdana, Helvetica, Arial, sans-serif ;
+	font-size: 10px;
+	color: #000000;
+	font-weight: bold;
+}
+.style3 {
+	font-family: Verdana, Helvetica, Arial, sans-serif ;
+	font-size: 10px;
+	color: #000000;
+}
+</style>
+</head>
+<body onLoad="jsHeader()"> 
+<table width="100%" border="0" cellspacing="0">
+<tr bgcolor="#96BEC8">
+  <td width="1%" id="heady" class="style1">&nbsp;</td>
+<td width="99%" height="20" id="headx" class="style1">&nbsp;</td>
+</tr>
+</table>
+</body>
+</html>

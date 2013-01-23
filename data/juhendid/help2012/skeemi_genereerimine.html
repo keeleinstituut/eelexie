@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Skeemi genereerimine</h2>
+	
+Sõnastiku XML skeemi ehk struktuuri kirjeldab skeemifail (.xsd). Skeemi saab EELexis koostada sisseehitatud skeemieditori abil, mille avamiseks klõpsa Sõnastiku tööriistade nupul <img src="files/sonastiku_tooriistad.png" alt="sonastiku_tooriistad.png" title="sonastiku_tooriistad.png" /> ja vali <strong>Skeemi genereerimine</strong>.<br />
+<br />
+<h3 id="toc0"><a name="x--Skeemieditor"></a>Skeemieditor</h3>
+ Skeemieditori aken koosneb kahest osast: vasakpoolsel on näha sõnastiku skeem puuna, sisaldades skeemi elemente ja atribuute. Kui mõnel neist klõpsata (linnukese puudumisel lisada see elemendi nime ees olevasse kastikesse, siis element muutub klõpsatavaks), siis avaneb paremal pool võimalus selle elemendi/atribuudi omadusi või kirjeldust muuta. Puu kohal on tekstiväli elementide-atribuutide nime järgi otsimiseks (noolenupud otsivad vastavalt aktiivsest elemendist ettepoole või tahapoole). Puu all on näha aktiivse elemendi rada.<br />
+<img src="files/skeemieditor_koik.png" alt="skeemieditor_koik.png" title="skeemieditor_koik.png" style="height: 484px; width: 800px;" /><br />
+Kui kasutasid sõnastiku loomisel mõnd olemasolevat sõnastikupõhja, siis on skeemi algus juba olemas (vt <a class="wiki_link_new" href="eeldefineeritud_elemendid.html">Eeldefineeritud elemendid</a>.) Kasutaja (peatoimetaja) ülesandeks on enne sõnaartiklite lisamist skeem lõpuni välja mõelda ja vajalikud elemendid-atribuudid luua ning kirjeldada.<br />
+<br />
+NB! Kui muuta sellise sõnastiku skeemi, kus juba sõnaartiklid sees, siis on kindlasti vajalik pärast muutmist kogu sõnastik valideerida! Vt <a class="wiki_link_new" href="koite_valideerimine.html">Köite valideerimine</a>. Kui ei valideeru, tuleb kas skeemimuutus tühistada; kui ei valideeru üksik artikkel, siis tuleb see sõnastiku tööakna Toimetamisalal korda teha (vt <a class="wiki_link_new" href="s6naartikli_muutmine.html">Sõnaartikli muutmine</a>); paljude artiklite muutmiseks on võimalik kasutada hulgiparandusi (vt <a class="wiki_link" href="hulgiparandused.html">Hulgiparandused</a>).<br />
+<br />
+<h3 id="toc1"><a name="x--Elemendi ja atribuudi tegemine nähtavaks"></a>Elemendi ja atribuudi tegemine nähtavaks</h3>
+ Kui puus elemendile/atribuudile klõpsamine ei ava parmal pool tema kirjeldust, siis klõpsa tema ees olevasse kastikesse linnuke - see muudab ta &quot;nähtavaks&quot; nii Skeemieditoris kui ka sõnastiku tööakna Toimetamisalal.<br />
+<br />
+<h3 id="toc2"><a name="x--Elementide-atribuutide lisamine, kustutamine, tõstmine"></a>Elementide-atribuutide lisamine, kustutamine, tõstmine</h3>
+ <strong>Elemente saab lisada</strong> olemasoleva elemendi (mitte atribuudi) ette, sisse ja järele. Seega klõpsa aktiivseks skeemieditori vasakpoolsel alal olevas puus element, mille suhtes soovid uut elementi paigutada, ja vali hiire paremkliki alt avanevast kontekstimenüüst vastav valik. Lisamisel on võimalik valida juba varem defineeritud (globaalselt EELexis või lokaalselt selle sõnastiku jaoks) elementide seast. (NB! Kontekstmenüü kõrvale avanevasse alamenüüsse liikudes tuleb hiirega olla täpne: liikuda soovitud valikult täpselt paremale kuni alamenüüni! Vastasel korral esimese menüü aktiivne valik muutub ja ilmub hoopis uue aktiivse valiku alamenüü.)<br />
+<br />
+<strong>Atribuudi lisamiseks</strong> tuleb aktiivseks klõpsata element, millele atribuuti looma hakatakse. Paremkliki alt avanevast kontekstimenüüst vali &quot;Lisa atribuut&quot;. Skeemipuus eristab atribuuti elemendist tumeroosa rombikujuline ikoon.<br />
+<br />
+Sama kontekstimenüü kaudu saab elemente-atribuute ka <strong>kustutada</strong>. Vihje: kui on vaja elementi või atribuuti <strong>puus uude kohta tõsta</strong>, siis mõistlikum vigade parandamise järjekord on nii: luua see element õigesse kohta (siis saab lisamise alamenüüst valida selle nime ja omadustega elemendi, jääb ära uue elemendi kirjeldamine) ja alles seejärel kustutada element valest kohast. Kui samas grupis juba on sellenimeline element, siis tuleb ikkagi enne kustutada ja alles seejärel uus luua.<br />
+<br />
+<h3 id="toc3"><a name="x--Elemendi/atribuudi kirjeldamine"></a>Elemendi/atribuudi kirjeldamine</h3>
+ Uuele elemendile tuleb määrata tema omadused ja hea oleks anda ka tema kirjeldav nimi. Seda saab teha Skeemieditori parempoolsel alal.<br />
+<br />
+<strong>Kirjeldav nimi</strong> võib koosneda mitmest sõnast ja sisaldada täpitähti. Vajaduse korral võib lisada inglis- ja venekeelsed nimed.<br />
+<strong>Liik:</strong> Vali <strong>ainult tekst</strong>, kui see element ei oma allelemente, vaid ainult sisu.<br />
+Vali <strong>ainult elemendid</strong>, kui kirjeldatav element hakkab sisaldama ainult teisi elemente ja mitte sisu (teksti).<br />
+Vali <strong>tekst JA elemendid</strong>, kui see element hakkab sisaldama nii teksti kui allelemente.<br />
+<strong>Tüüp</strong> - saad valida süsteemsete tüüpide (string, boolean, dateTime jne) või EELexis varem loodud tüüpide (sh loendite) seast, ent võid luua ka oma tüübi (selleks vt <a class="wiki_link_new" href="loendid_ehk_tyybid.html">Loendid ehk tüübid</a>). Omaloodud tüüp käitub valikmenüüna (loendina): defineerid sobivad väärtused ja Toimetamisalal kirjet sisestades ilmub selle elemendi juurde hüpikmenüü tüübis (loendis) määratud valikutega. Näiteks paljudes sõnastikes kasutusel olev element valdkond (x:v) on defineeritud loendina, kus võimalikd väärtused on infotehnoloogia, meditsiin, astronoomia jne.<br />
+<strong>Min</strong>. ja <strong>Maks</strong>. määravad elemendi korduvuse: mitu eksemplari sellest elemendist igas märksõnaartiklis on minimaalselt ja mitu võib olla maksimaalselt. Lõpmatuse tähis EELexis on -1.<br />
+<strong>Obl</strong>. Kui linnuke, siis see atribuut on kohustuslik ehk obligatoorne.<br />
+<strong>B</strong>, <em>I</em>, <strong><u>U</u></strong>, <strong>aA</strong>, <strong>Font</strong>, <strong>Suurus</strong>, <strong>Värv</strong>, <strong>Taust</strong> - skeemieditoris saab määrata, kuidas element/atribuut Toimetamisalal välja näeb.<br />
+<strong>Algv.</strong> - defineeri elemendi või atribuudi algväärtus; uue märksõnaartikli loomisel täidetakse see väli siis automaatselt algväärtusega.<br />
+<strong>Muudetav</strong> - kui linnuke, siis saab elemendi sisu Toimetamisealal muuta, linnukese puudumisel ei saa.<br />
+<strong>Luua</strong> - kui linnuke, siis ilmub element Toimetamisalale koos allapoole suunatud noolega vasakul, millest teda saab avada.<br />
+<strong>Põhielement</strong>- (vaid elementidel) kui linnuke, siis on Toimetamisalal selle elemendi jaoks tekstiväli kohe avatud. Linnukese puudumisel see element Toimetamisalal nähtav on, ent tekstiväli tuleb avada vasakpoolse noolenupuga (elemendi ees). Põhielemendiks on mõistlik element teha siis, kui ta esineb paljudes artiklites.<br />
+<br />
+<strong>Tüübid</strong> - vt <a class="wiki_link_new" href="loendid_ehk_tyybid.html">Loendid ehk tüübid</a><br />
+<br />
+<strong>Salvesta</strong> - salvestab siiani tehtud muudatused, aken jääb avatuks. Luuakse .xsd fail.<br />
+Skeemieditori sulgeb nupp <strong>OK</strong>. Kui töö oli salvestamata, küsitakse, kas on vaja salvestada enne sulgemist.<br />
+<br />
+Kui sõnastiku sisu (s.o märksõnaartiklid XML failina) plaanitakse EELexi importida, siis tuleb olla veendunud, et andmed vastaksid selle sõnasitku skeemile!
+    </div>
+  </body>
+</html>

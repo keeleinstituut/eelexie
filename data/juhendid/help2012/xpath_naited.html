@@ -1,0 +1,754 @@
+<html>
+  <head>
+    <title>ekieki - XPath näited</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+<span style="background-color: #ffffff; color: #222222; font-family: arial,sans-serif; font-size: 13px; text-align: start;">Alguseotsa päringud võivad juba aegunud olla ja mitte enam töötada, lõpupool on värskem.</span><br />
+<br />
+---<br />
+Element puudub: =NULL<br />
+<br />
+2) Lisan siia veel üldotsingu näiteid:<br />
+<br />
+NB! Operaatorid peavad olema eraldatud tühjaga! (07. detsember 2005)<br />
+-&gt; Tõstutundlikkus välja, sümbolid sisse (mida täpsemalt tead, seda kiirem on otsing)<br />
+<br />
+1) märkusi, mis on teinud TRehemaa:<br />
+q:art -&gt; §q:toimetaja = 'TRehemaa' and q:markus<br />
+VÕI q:art -&gt; §q:toimetaja = 'TRehemaa' and q:markus = '*'<br />
+<br />
+<br />
+<br />
+2) Kaja poolt lisatud artikleid:<br />
+q:autor -&gt; KKruusmaa<br />
+VÕI q:art -&gt; §q:autor = 'KKruusmaa'<br />
+<br />
+<br />
+3) (Tuuli poolt) parandatud artikleid, mis sisaldavad elementi &lt;b&gt;, välja arvatud kui<br />
+&lt;b&gt; = 'mitm':<br />
+q:art -&gt; §q:toimetaja = 'TRehemaa' and q:b != 'mitm'<br />
+- artiklis leidub vähemalt üks &lt;b&gt;, mis ei ole 'mitm'.<br />
+VÕI q:art -&gt; §q:toimetaja = 'TRehemaa' and not(q:b = 'mitm')<br />
+- artiklis ei ole ühtegi &lt;b&gt;, mis oleks 'mitm'.<br />
+VÕI q:art -&gt; §q:toimetaja = 'TRehemaa' and q:hdr/q:m_grp/q:b != 'mitm'<br />
+- päise märksõna grupi &lt;b&gt; on muud kui 'mitm', teised suvalised.<br />
+<br />
+<br />
+<br />
+4) artiklid, milles sisaldub &amp;eml; ja toimetaja on TRehemaa:<br />
+q:art -&gt; §q:toimetaja = 'TRehemaa' and = '*&amp;eml;*'<br />
+- kui elemendi nimi puudub, kehtib tingimus valitud elemendi,<br />
+- praegu &lt;art&gt; kohta.<br />
+VÕI q:art -&gt; §q:toimetaja = 'TRehemaa' and q:hdr/q:varm_grp/q:a = '*&amp;eml;*'<br />
+- ainult hdr/varm_grp/a - s sisaldub '&amp;eml;'.<br />
+<br />
+<br />
+<br />
+5) artiklid, kus rektsioon (hdr/m_grp/r) on 'millega':<br />
+q:r -&gt; millega<br />
+- 22 artiklit (07. detsember 2005, testandmebaas)<br />
+<br />
+<br />
+<br />
+6) artiklid, kus vähemalt üks hdr/m_grp/r ei ole 'millega':<br />
+q:r -&gt; § != 'millega'<br />
+- kahjuks see r saab max ühe korra olla: mõne teise elemendi, mille max &gt; 1,<br />
+- saaks vahet jälgida: 95 artiklit (07. detsember 2005)<br />
+<br />
+<br />
+7) artiklid, milles pole ühtegi hdr/m_grp/r, mis oleks 'millega':<br />
+q:r -&gt; §not( = 'millega')<br />
+- 95 artiklit (07. detsember 2005, , testandmebaas)<br />
+<br />
+<br />
+<br />
+8) artiklid, milles ükskõik mis element lõpeb komaga:<br />
+<ul><li>-&gt; *,</li></ul>- 3357 artiklit (07. detsember 2005, , testandmebaas)<br />
+VÕI q:art -&gt; §* = '*,'<br />
+- 3357 artiklit (07. detsember 2005, , testandmebaas)<br />
+<br />
+<br />
+<br />
+9) artiklid, milles ükskõik mis element peale &lt;kvm&gt; lõpeb komaga:<br />
+q:art -&gt; §!q:kvm = '*,'<br />
+- 8 artiklit (07. detsember 2005, , testandmebaas)<br />
+- muide, see toob välja ka artiklid, kus tah_grp koosneb AINULT kvm-ist,<br />
+- seega on olemas element &lt;tah_grp&gt;, mis lõpeb komaga kui &lt;kvm&gt; lõpeb komaga ...<br />
+<br />
+<br />
+10) artiklid, kus &lt;t&gt; on kohe &lt;naited&gt; alguses:<br />
+§q:naited/q:nl_grp[1]/node()[1][name()='q:nl']/node()[1][name()='q:t']<br />
+<br />
+11) sama + märksõna lõus on '/':<br />
+§q:naited/q:nl_grp[1]/node()[1][name()='q:nl']/node()[1][name()='q:t'] and q:m = '*/'<br />
+<br />
+<br />
+31.01.2006 (paariliste kontroll)<br />
+<hr />
+<br />
+10) artiklid, milles tähenduse tsooni paariliste arv ei vasta päise tsooni<br />
+paariliste arvule:<br />
+q:art -&gt; §count(q:hdr<em>*[@q:soov='hv'])!=count(q:tahendus</em>*[@q:soov='tp'])<br />
+- 18 artiklit<br />
+<br />
+11) artiklid, kus päise oma paariliste arv ei klapi:<br />
+q:art -&gt; §count(q:hdr<em>*[@q:soov='hv'])!=count(q:hdr</em>*[@q:soov='tp']) and not(q:tahendus<em>*[@q:soov])</em><br />
+<em>- 12 artiklit (on kõik need, kus tähenduses pole ja päises</em><br />
+<em>on üks; kõik on eelmises päringus loetletud)</em><br />
+<br />
+<em>12) artiklid, kus tähenduse oma paariliste arv ei klapi:</em><br />
+<em>q:art -&gt; §count(q:tahendus</em>*[@q:soov='hv'])!=count(q:tahendus<em>*[@q:soov='tp']) and not(q:hdr</em>*[@q:soov])<br />
+- 0 artiklit<br />
+<br />
+13) artiklid, kus paariliste arv näidete tsoonis ei klapi:<br />
+q:art -&gt; §count(q:naited<em>*[@q:soov='hv'])!=count(q:naited</em>*[@q:soov='tp'])<br />
+- 13 artiklit<br />
+<br />
+14) artiklid, kus näidete tsoonis ei järgne paarilisele kohe oma paariline:<br />
+q:art -&gt; §q:naited//*[@q:soov='hv']/following-sibling::*[1][not(@q:soov='tp')]<br />
+- 2 artiklit (olid ka eelmises)<br />
+<br />
+<hr />
+xx) Kuidas küsida artikleid, kus on viidete tsoon kohe &lt;m&gt;-i järel ja &lt;vlyh&gt;<br />
+<ul class="quotelist"><li>on 'vt' (mitte '&amp;vt/-&gt;'</li></ul><br />
+Q:art - &quot;§ q:hdr[not(q:m_grp/q:m/following-sibling::*) and not(q:varm_grp) and not(q:nim_grp)]/following-sibling::*[1][name()='q:viited']<em>q:vlyh='vt'&quot;.</em><br />
+<br />
+<em>Kui küsida lihtsalt kohe peale päist olevaid viitelühendedeid (mitte peale</em><br />
+<em>märksõna), siis:</em><br />
+<em>Q:art - &quot;§ q:hdr/following-sibling::*[1][name()='q:viited']</em>q:vlyh='vt'&quot;<br />
+<br />
+<hr />
+Kuidas leida artikleid, kus on küll olemas kommentaar 'ei soovita<br />
+<ul class="quotelist"><li>tähenduses:', aga järgneval tähendusel puudub atribuut *type=ei*?</li><li>Eelkõige huvitab mind &lt;t_grp&gt;-i &lt;t&gt;.</li></ul><br />
+Q:art -&gt; &quot;§ q:tahendus<em>q:t_grp/q:k1[.='ei soovita tähenduses:']/following-sibling::q:t[not(@q:type='ei')]&quot;</em><br />
+<br />
+<hr />
+<em>&lt;no&gt;, millel puudub &gt; atribuut</em><br />
+<em>Valida q:no ja @*. Atribuudi kasti =NULL ning elemendi kasti *. Sama tulemuse annab Q:no - §not(@*)</em><br />
+<br />
+<hr />
+<em>Artiklid, millel on vähemalt 2 märksõna, mõlemad atribuudiga? Nt multikulturaalne.</em><br />
+<em>Hdr: §#q:m_grp/q:m/@q:soov &gt; 1</em><br />
+<br />
+<hr />
+<em>artiklid, milles on näite lõpus . või ? või ! ja järgneb q:viited</em><br />
+<em>artikkel -&gt; §(.</em>q:nl = '*.' or .<em>q:nl = '*?' or .</em>q:nl = '*!') and<br />
+q:viited (109 artiklit)<br />
+<br />
+artiklid, kus mitte-esimeses märkõnas on vähemalt 2 liitsõnapiiri /:<br />
+otseselt sümboleid xml-s kokku lugeda ei saa aga saab nii:<br />
+artikkel -&gt;<br />
+§q:hdr/q:m_grp[position()&gt;1]/q:m[contains(substring-after(.,'/'),'/')] (53<br />
+artiklit)<br />
+<br />
+<hr />
+Kuidas leida ÕS-i artiklist (täpset kohta ei tea) alternatiiv q:a<br />
+<ul class="quotelist"><li>atribuudiga q:soov=&quot;hv&quot; ?</li></ul>Artikkel -&gt;<br />
+<br />
+<br />
+§.<em>q:a[@q:soov='hv']</em><br />
+<em>Artikli sees võib kasutada Ctrl-F ja otsida &quot;hv&quot;.</em><br />
+<br />
+<hr />
+<em>Kuidas küsida ÕS-st artikleid, kus näite &lt;n&gt; sees on sulgude vahele</em><br />
+<em>pistetud mingi muu element, nt artikkel 'heiskama' (&lt;b&gt;)?</em><br />
+<br />
+<em>No midagi niisugust (kui sulud peavad &lt;n&gt; sees oleva elemendi enda sees</em><br />
+<em>olema):</em><br />
+<em>Artikkel -&gt; §.</em>q:n/*[contains(.,'(')]<br />
+<br />
+Sulud elemendi ümber:<br />
+Artikkel -&gt; §.//q:n[contains(., concat('(', *, ')'))]<br />
+<br />
+<hr />
+kuidas leida juhtumeid, kus esineb: näide &lt;n&gt;, mille lõpus on<br />
+<ul class="quotelist"><li>liitsõnapiir ja kohe selle järel tähendus &lt;t&gt; või kommentaar &lt;k&gt;, mille</li><li>lõpus on koolon.</li><li>Nt peet: peedi/ suhkrupeedi:</li></ul><br />
+Artikkel -&gt; §.<em>q:nl[concat(substring(q:n, string-length(q:n), 1), substring(q:n/following-sibling::*[name()='q:t' or name()='q:k'][1], string-length(q:n/following-sibling::*[name()='q:t' or name()='q:k'][1]), 1))='/:']</em><br />
+<br />
+<em>----- või:</em><br />
+<em>koolon &lt;t&gt; või &lt;k&gt; lõpus: (tulemus sama mis eelmisel)</em><br />
+<em>artikkel -&gt; §.</em>q:n[substring(text(), string-length(text()), 1)='/']/following-sibling::*[1][name()='q:t' or name()='q:k'][substring(text(), string-length(text()), 1)=':']<br />
+<br />
+<hr />
+Koolon &lt;t&gt; või &lt;k&gt; järel järgmise &lt;kvm&gt; - ina:<br />
+<br />
+Artikkel -&gt; §.<em>q:nl_grp[q:nl/q:n[substring(text(), string-length(text()), 1)='/']/following-sibling::*[1][(name()='q:t' or name()='q:k') and not(following-sibling::*)]]/following-sibling::q:nl_grp[1][q:kvm=':']</em><br />
+<em>90 artiklit</em><br />
+<br />
+<hr />
+<em>...leida kõiki elemente &lt;m&gt;, &lt;a&gt; ja &lt;n&gt;, milles on liitsõnapiir nii sees kui ka lõpus.</em><br />
+<br />
+<em>Need on sellised:</em><br />
+<em>&lt;m&gt;, &lt;a&gt;, &lt;n&gt; -&gt; §substring(text(), string-length(text()), 1)='/' and contains(substring(text(), 1, string-length(text())-1), '/')</em><br />
+<em>54 artiklit &lt;m&gt; puhul.</em><br />
+<br />
+<em>Üldiselt ei saa jah nii küsida nagu Sa kirjutasid. Kui soovime nt teada, kas</em><br />
+<em>mingis elemendis on rohkem kui üks kaldkriipsu, siis:</em><br />
+<em>&lt;m&gt; -&gt; §contains(substring-after(text(), '/'), '/')</em><br />
+<br />
+<hr />
+<em>artiklid, kus leidub kooloniga lõppev märgend &lt;v, v1, v2, u, u1, u2&gt;,</em><br />
+<em>millele järgneb tähendus &lt;t&gt;, nt unehaige</em><br />
+<br />
+<em>Artikkel -&gt; §.</em>q:nl[*[contains(';q:u;q:u1;q:u2;q:v;q:v1;q:v2;', concat(';', name(), ';'))][substring(text(), string-length(text()), 1)=':']/following-sibling::*[1][name()='q:t']]<br />
+27 artiklit<br />
+<br />
+<hr />
+<br />
+artiklid, kus &lt;t&gt; on kohe &lt;naited&gt; alguses:<br />
+Artikkel -&gt; §q:np/q:ng[1]/node()[1][name()='q:nl']/node()[1][name()='q:t']<br />
+<br />
+<br />
+sama + märksõna lõus on '/':<br />
+§q:np/q:ng[1]/node()[1][name()='q:nl']/node()[1][name()='q:t'] and<br />
+.<em>q:W[substring(., string-length(.), 1) = '/']</em><br />
+<br />
+<hr />
+<em>Kuidas ma saan ÕS-ist kätte artiklid, kus on rohkem kui 1 märksõna, ja</em><br />
+<em>neil on lõpus liitsõnapiiri märk</em><br />
+<em>Nt tee/, ka (.)teede</em>/<br />
+<br />
+<em>Artikkel -&gt; §count(.</em>q:W[substring(., string-length(.), 1) = '/']) &gt; 1 (3<br />
+tk).<br />
+Üldse kokku on piiriga lõppevaid artikleid 756 (kui panna lõppu ' &gt; 1'<br />
+asemel ' &gt; 0'.<br />
+<br />
+<hr />
+Päisest kõik &lt;k&gt;-d:<br />
+Artikkel -&gt; §q:P[.<em>q:k or .</em>q:k1 or .//q:k2]<br />
+<br />
+<hr />
+<ul class="quotelist"><li>&gt; Palun veel üht päringuspikrit:</li><li>&gt; tahan nt leida &lt;ng&gt;-st (ilma alamelementideta) &lt;k&gt;-sid, milles puudub</li><li>&gt; sõna 'parem'</li><li>&gt; sama, aga milles leidub sõna 'parem'</li><li>&gt; samad kaks, aga koos alamelementidega</li></ul><br />
+1) näitegrupp -&gt; §.<em>q:k[not(contains(., 'parem'))] Kui &lt;n&gt; sees olevat</em><br />
+<em>&lt;k&gt;-d mitte tahta, siis '.</em>' mitte kasutada ( §q:k[not(contains(.,<br />
+'parem'))] ).<br />
+2) näitegrupp -&gt; §.<em>q:k[contains(., 'parem')]</em><br />
+<br />
+<br />
+<hr />
+<em>SP</em><br />
+<em>Homonüüminumbriga märksõnad koos päise infoga:</em><br />
+<em>Päise tsoon -&gt; §.</em>p:ms/@p:i<br />
+<br />
+taanded, milles on hom-nr – ga pereliikmed:<br />
+Taane -&gt; §p:ml_var/p:ml/@p:i<br />
+<br />
+<hr />
+ÕS<br />
+Mul on vaja leida ÕS-ist artiklid, kus:<br />
+1) on mitu märksõnagruppi &lt;mg&gt; ja mõni &lt;mg&gt;-dest sisaldab järelstiili<br />
+&lt;s2&gt; või järelvalda &lt;v2&gt; (marrasknahk, jestas);<br />
+päis -&gt; §count(q:mg) &gt; 1 and q:mg[q:v2 or q:s2]<br />
+<br />
+2) on mitu märksõnagruppi &lt;mg&gt; ja tähendusgrupp &lt;txhg&gt; sisaldab<br />
+eelstiili &lt;s1&gt; või eelvalda &lt;v1&gt; (ehavalge, igatekanti);<br />
+artikkel -&gt; §count(q:P/q:mg) &gt; 1 and q:Z/q:tg/q:txhg[q:s1 or q:v1]<br />
+<br />
+3) ühe &lt;ng&gt; sees on mitu märgendit (&lt;v&gt; ja &lt;s&gt;, või 2 &lt;v&gt;-d, või 2<br />
+&lt;s&gt;-i) (nt pass: kollane pass).<br />
+näitegrupp -&gt; §(q:v and q:s) or (count(q:s) &gt; 1) or (count(q:v) &gt; 1)<br />
+<br />
+---<br />
+(1) Sellega tuleb liiga palju: ma ei taha neid, kus on ainult vallad<br />
+<ul class="quotelist"><li>(aatommass) või ainult stiilid (ahviarmastus).</li></ul>artikkel -&gt;<br />
+§.<em>*[name() = 'q:s' or name() = 'q:s1' or name() = 'q:s2']/following-sibling::*[1][name() = 'q:v' or name() = 'q:v1' or name() = 'q:v2'] | .</em>*[name() = 'q:v' or name() = 'q:v1' or name() = 'q:v2']/following-sibling::*[1][name() = 'q:s' or name() = 'q:s1' or name() = 'q:s2']<br />
+<br />
+<ul class="quotelist"><li>Üks uus tahtmine tekkis veel: näitegrupp &lt;ng&gt;, milles on &lt;v&gt; või &lt;s&gt; ja</li><li>&lt;a&gt;, mille lõpus on '/' (kõrvukas).</li></ul>artikkel -&gt;<br />
+§.//q:ng[q:a[substring(., string-length(.), 1) = '/']/preceding-sibling::*[name() = 'q:v' or name() = 'q:s']]<br />
+<br />
+---<br />
+1) artiklid, kus &lt;n&gt; või &lt;ng&gt; sees on ümarsulge ( ), mille vahel on mõni<br />
+<ul class="quotelist"><li>valla või stiili märgend. Nt sõrm.</li></ul>näitegrupp -&gt;<br />
+§.//text()[contains(.,'(')]/following-sibling::*[name() = 'q:v' or name() = 'q:s']/following-sibling::text()[contains(., ')')]<br />
+<br />
+<ul class="quotelist"><li>2) artiklid, kus leidub suurt algustähte, ilma et enne seda oleks punkt</li><li>(või hüüumärk / küsimärk). Nt inimesepoeg (Inimese Poeg), kultuur (Kunda</li><li>kultuur).</li></ul><br />
+---<br />
+1) märksõnagrupis &lt;mg&gt; on olemas vald &lt;v&gt; või stiil &lt;s&gt; ja<br />
+[artiklis v1, v2, s1 või s2]<br />
+2) näiteplokk &lt;np&gt; algab kooloniga (kirjavahemärk &lt;kvm&gt; = ':' )<br />
+Nt etüül, juurimis<br />
+<br />
+artikkel -&gt; §(.<em>q:v1 or .</em>q:v2 or .<em>q:s1 or .</em>q:s2) and starts-with(.<em>q:np, ':')</em><br />
+<br />
+<hr />
+<em>EVS:</em><br />
+<em>§.</em>x:txhgrp/@x:txhnr='2' and .//x:ms='*+*'<br />
+<br />
+_<br />
+Seletav:<br />
+<br />
+<ul><li>&lt;dg&gt;,&lt;dg&gt;</li></ul>§.//s:dg and s:kvm=',' and s:dg<br />
+<br />
+<ul><li>§.<em>s:v and s:s</em></li><li><em>&lt;dg&gt; -&gt; §.</em>s:v and s:s='van'</li></ul><br />
+<ul><li>Mitu &lt;np&gt;-d</li></ul>§count(.//s:np)&gt;1<br />
+<br />
+<ul><li>&lt;dg&gt;, mis sisaldab ainult &lt;v&gt; või &lt;s&gt; (avangard_||)</li></ul>&lt;dg&gt; -&gt; §count(*) = 1 and (s:v or s:s)<br />
+<br />
+<ul><li>&lt;dg&gt;, mis sisaldab ainult &lt;v&gt; või &lt;s&gt;, ja talle järgneb vahetult teine</li></ul>&lt;dg&gt;<br />
+&lt;dg&gt; -&gt; §count(*) = 1 and (s:v or s:s) and following-sibling::s:dg<br />
+<br />
+<ul><ul><ul><li>Veel tahaks leida &lt;n&gt;-d, mis algavad väiketähega (nt n_2).</li></ul></ul></ul>&lt;n&gt; -&gt; §contains('abcdefghijklmnopqrsšzžtuvwõäöüxy', substring(., 1, 1))<br />
+<br />
+<ul><li>elemendid, milles on ainult üks sulupaariline:</li></ul><br />
+Sulud:<br />
+&lt;A&gt; -&gt; §.<em>text()[(contains(., '(') and not(contains(., ')'))) or (contains(., ')') and not(contains(., '(')))]</em><br />
+<br />
+<em>Nurksulud:</em><br />
+<em>&lt;A&gt; -&gt; §.</em>text()[(contains(., '[') and not(contains(., ']'))) or (contains(., ']') and not(contains(., '[')))]<br />
+<br />
+Loogelised:<br />
+&lt;A&gt; -&gt; §.//text()[(contains(., '{') and not(contains(., '}'))) or (contains(., '}') and not(contains(., '{')))]<br />
+<br />
+<hr />
+<ul><ul><li>&lt;dg&gt;, mis sisaldab ainult &lt;v&gt; või &lt;s&gt;, ja talle järgneb vahetult</li></ul></ul>teine &lt;dg&gt;.<br />
+&lt;dg&gt; -&gt; §(count(*)=1 and (s:v or s:s)) and following-sibling::s:dg<br />
+(Ei näi olevat)<br />
+<br />
+<ul><ul><li>&lt;mg&gt;-s on &lt;v&gt;/&lt;s&gt;, ja artiklis on olemas ka &lt;S&gt; (asjamees)</li></ul></ul>&lt;A&gt; -&gt; §s:P/s:mg[s:v or s:s] and s:S<br />
+<br />
+<ul><ul><li>&lt;mg&gt;-s on &lt;v&gt;/&lt;s&gt;, millele järgneb &lt;S&gt;-s &lt;v&gt;/&lt;s&gt; (alto)</li></ul></ul>&lt;A&gt; -&gt; §s:P/s:mg[s:v or s:s] and s:S[.<em>s:v or .</em>s:s]<br />
+<br />
+§s:P/s:mg[s:v or s:s] and following-sibling::s:S[.<em>s:v or .</em>s:s]<br />
+<br />
+<ul><ul><li>&lt;mg&gt;-s on &lt;v&gt;/&lt;s&gt;, ja artiklis puudub &lt;S&gt; (invasioonilind)</li></ul></ul>&lt;A&gt; -&gt; §s:P/s:mg[s:v or s:s] and not(s:S)<br />
+<br />
+<ul><ul><li>pärinime artikkel, kus on ka liitsõnaplokk</li></ul></ul>Artikkel -&gt; §.<em>s:m[@s:liik='p'] and .</em>s:lsp<br />
+<br />
+<br />
+<ul><ul><li>artiklid, kus</li></ul></ul>1) @rnr=&quot;1&quot; on olemas, aga puudub &quot;2&quot;<br />
+2) @att=&quot;a&quot; on olemas, aga puudub &quot;b&quot; või vastupidi<br />
+1) A -&gt; §.<em>s:rp[@s:rnr='1'] and not(.</em>s:rp[@s:rnr='2']) (4 tk)<br />
+2) A -&gt; §.<em>s:tg[@s:att='a'] and not(.</em>s:tg[@s:att='b']) (0 tk,<br />
+teistpidi 1)<br />
+<br />
+<ul><ul><li>Artikkel on märgitud allartikliks @Al=&quot;all&quot;, aga märksõna sisaldab '|' (komp|kark), ja teistpidi: mitte &quot;all&quot; ja märksõnas '\' (?)</li></ul></ul><br />
+a) A -&gt; §@s:Al[. = 'all'] and contains(.<em>s:m, '|') (100 tk)</em><br />
+<em>b) A -&gt; §not(@s:Al[. = 'all']) and contains(.</em>s:m, '\') (14 tk)<br />
+<br />
+<ul><ul><li>muutevormis &lt;mv&gt; on mõni number (nt erk)</li></ul></ul><br />
+Mv -&gt; §contains(text(), '1') or contains(text(), '2') or contains(text(), '3') or contains(text(), '4') or contains(text(), '5') or contains(text(), '6') or contains(text(), '7') or contains(text(), '8') or contains(text(), '9') or contains(text(), '0')<br />
+(141 tk)<br />
+<br />
+<ul><ul><li>vormid on, tüüpi ei ole:</li></ul></ul>&lt;mtg&gt; -&gt; §.//s:mv and not(s:mt)<br />
+<br />
+<ul><ul><li>vald ja gki (dg-s)</li></ul></ul>&lt;dg&gt; -&gt; §.//s:v and s:gki<br />
+<br />
+<ul><ul><li>mitu tüüpi:</li></ul></ul>§count(s:mt) &gt; 1<br />
+<br />
+<ul><ul><li>ÕS-is tüübid 55 ja 51:</li></ul></ul>§q:grg/q:mtg/q:mt='55' and q:grg/q:mtg/q:mt='51'<br />
+<br />
+**<br />
+Mõlemad köidete kaupa...<br />
+<br />
+<ul><li>ma-lõpulisi märksõnu, millel puudub &lt;egr&gt;.</li></ul>artikkel -&gt; §.<em>s:m[substring(translate(., &quot;()-\_&quot;, ''), string-length(translate(., &quot;()-\_&quot;, '')) - 1) = 'ma'] and not(.</em>s:grg)<br />
+<br />
+<ul><li>ja pole ühend</li></ul>artikkel -&gt; §.<em>s:m[substring(translate(., &quot;()-\_&quot;, ''), string-length(translate(., &quot;()-\_&quot;, '')) - 1) = 'ma'][not(@s:liik)] and not(.</em>s:grg)<br />
+<br />
+<ul><li>d-lõpuline ja puudub &lt;vk&gt;=pl</li></ul>artikkel -&gt; §.<em>s:m[substring(translate(., &quot;()-\_&quot;, ''), string-length(translate(., &quot;()-\_&quot;, '')) - 1) = 'ad'][not(@s:liik)] and not(.</em>s:vk='pl')<br />
+<br />
+<ul><li>uusi sõnu, st @src=&quot;leksm&quot; või kommentaarialguses on tekst 'uus'</li></ul>artikkel -&gt; §@s:src = 'leksm' or starts-with(.//s:kom, 'uus')<br />
+<br />
+<ul><ul><li>uus sõna ja puudub grammatika</li></ul></ul>&lt;mg&gt; -&gt; §s:m[@s:mliik='uus'] and not(s:grg)<br />
+<ul><li>ja sõna sees pole liitsõna-pulki:</li></ul>&lt;mg&gt; -&gt; §s:m[@s:mliik='uus'][not(contains(., '\') or contains(., '|'))] and not(s:grg)<br />
+<br />
+<ul><ul><li>Uue artikli liitsõnal on &lt;sl&gt;:</li></ul></ul>§.<em>s:m[@s:mliik='uus'] and contains(.</em>s:m, '|') and .<em>s:sl</em><br />
+<em>§.</em>s:m[@s:mliik='uus'] and contains(.<em>s:m, '\') and .</em>s:sl<br />
+<br />
+<ul><ul><li>fras allartiklina:</li></ul></ul>§@s:Al[. = 'all'] and .//s:m[@s:liik='f'] (74)<br />
+<br />
+<ul><ul><li>tüüp ja adjektiiv</li></ul></ul>&lt;mg&gt; -&gt; §.<em>s:mt='22' and .</em>s:sl='adj'<br />
+<br />
+<ul><ul><li>uuel liitsõnal on sõnaliik</li></ul></ul>&lt;mg&gt; -&gt; §s:m[@s:mliik='uus'][(contains(., '\') or contains(., '|'))] and s:sl<br />
+<br />
+<ul><ul><li>uuel sõnal sõnaliik &lt;ig&gt;-s</li></ul></ul>§s:P/s:mg/s:m[@s:mliik='uus'] and s:S/s:rp/s:tp/s:tg/s:ig/s:sl<br />
+<br />
+<ul><ul><li>pl koos grammatikaga</li></ul></ul>&lt;mg&gt; -&gt; §.//s:vk='pl' and s:grg<br />
+<br />
+<ul><ul><li>uute tüübid</li></ul></ul>&lt;mg&gt; -&gt; §.//s:m[@s:mliik='uus'] and s:grg/s:mtg/s:mt='2'<br />
+<br />
+<ul><ul><li>tüüp on, sl puudub</li></ul></ul>&lt;mg&gt; -&gt; §.//s:grg/s:mtg/s:mt and not(s:sl)<br />
+<br />
+<ul><ul><li>mitu tähendust ja märgendit (pole õige päring)</li></ul></ul>&lt;A&gt; -&gt; §count(.<em>s:tp[.</em>s:v or .<em>s:s or .</em>s:sa]) &gt; 1<br />
+<br />
+<ul><ul><li>tüüp 22, &lt;mv&gt;-s on 'u'</li></ul></ul>&lt;grg&gt; -&gt; §.<em>s:mv[(contains(., 'u'))] and .</em>s:mt='22'<br />
+<br />
+<ul><ul><li>tüüp ja adjektiiv täh-numbri järel</li></ul></ul>&lt;A&gt; -&gt; §s:P/s:mg/s:grg/s:mtg/s:mt='22' and s:S/s:rp/s:tp/s:tg/s:ig/s:sl='adj'<br />
+<br />
+§.<em>s:mt='22' and .</em>s:sl='adj'<br />
+<br />
+<ul><ul><li>Täpsustan:</li></ul><li>märgend peab olema &lt;dg&gt;-s, mis järgneb vahetult täh-numbrile (&lt;tg @att&gt;-tagused ei tule arvesse)</li><li>märgend peab olema igas &lt;tp&gt;-s</li><li>märgend peab olema sama (seega pole vaja &lt;v&gt;, &lt;s&gt;, &lt;sa&gt;-d korraga otsida) Kahele esimesele tingimusele vastab nt artikkel 'erosioon'. Leida on vaja sellised, kus oleks kõik samad märgendid, nt kõik 'tehn'.</li></ul><br />
+Nt:<br />
+Artikkel -&gt; §.<em>s:rp[(count(s:tp[s:tg/s:dg/s:v]) = count(s:tp)) and count(s:tp) &gt; 1]</em><br />
+<em>Artikkel -&gt; §.</em>s:rp[(count(s:tp[s:tg/s:dg/s:s]) = count(s:tp)) and count(s:tp) &gt; 1]<br />
+Artikkel -&gt; §.<em>s:rp[(count(s:tp[s:tg/s:dg/s:sa]) = count(s:tp)) and count(s:tp) &gt; 1]</em><br />
+<br />
+<em>Kus kõik oleksid samad:</em><br />
+<em>Artikkel -&gt; §.</em>s:rp[(count(s:tp[s:tg/s:dg/s:v[. = 'tehn']]) = count(s:tp)) and count(s:tp) &gt; 1]<br />
+<br />
+Ilma alltähenduseta:<br />
+§.<em>s:rp[(count(s:tp[s:tg[not(@s:att)]/s:dg/s:s[. = 'kõnek']]) = count(s:tp)) and count(s:tp) &gt; 1]</em><br />
+<em>§.</em>s:rp[(count(s:tp[s:tg[not(@s:att)]/s:dg/s:s]) = count(s:tp)) and count(s:tp) &gt; 1]<br />
+§.<em>s:rp[(count(s:tp[s:tg[not(@s:att)]/s:dg/s:v]) = count(s:tp)) and count(s:tp) &gt; 1]</em><br />
+<br />
+<em>§.</em>s:mt='4' and .<em>s:mt='5'</em><br />
+<em>§.</em>s:mt='5' and not(.//s:mt='4')<br />
+<br />
+<ul><ul><li>on &lt;tygtp&gt;, aga puudub @att</li></ul></ul>artikkel - §.//s:tp[s:tygtp][not(s:tg/@s:att)]<br />
+parem (ainult see tähendus): &lt;tp&gt; - §s:tygtp and not(s:tg/@s:att)<br />
+<br />
+<ul><ul><li>on &lt;tygtp&gt;, aga pole mitut tähendust</li></ul></ul>artikkel - §.//s:rp[s:tygrp][count(s:tp) &lt; 2]<br />
+parem: &lt;rp&gt; - §s:tygrp and count(s:tp) &lt; 2<br />
+<br />
+<ul><ul><li>Allartiklis püstpulk v mitte kurakriips</li></ul></ul>Artikkel -&gt; §@s:Al = 'all' and contains(.<em>s:m, '|')</em><br />
+<em>§@s:Al = 'all' and not(contains(.</em>s:m, '\'))<br />
+<br />
+<ul><ul><li>Fras-artiklis &lt;r&gt; ja märksõnu on mitu</li></ul></ul>§.<em>s:m[@s:liik='f'] and count(.</em>s:mg/s:m) &gt; 1 and .//s:r<br />
+<br />
+<ul><ul><ul><li>sidekriipsuga märksõna, millele järgneb allartikkel:</li></ul></ul></ul>§self::node()[not(@s:Al)][contains(.//s:m[1], '-')][following-sibling::s:A[1][@s:Al = 'all']]<br />
+<br />
+<ul><ul><ul><li>Toimetanud YViks 2009 aprillis:</li></ul></ul></ul>§s:T='YViks' and starts-with(s:TA, '2009-04')<br />
+<br />
+<ul><ul><li>Märksõna lõpus ke või kene</li></ul></ul>märksõna -&gt; §§ke(ne)?$<br />
+<br />
+&quot;§§&quot;: regulaaravaldis<br />
+(ne)?: &quot;ne&quot; võib olla ja võib ka mitte olla<br />
+$: teksti lõpu märk (alguse märgiks on &quot;katus&quot; ^)<br />
+<br />
+SP<br />
+<ul><ul><li>Mitu ms/liikme gruppi ja stiil</li></ul></ul>mg - §.<em>p:s and count(p:mag) &gt; 1</em><br />
+<em>päis - §.</em>p:s and count(p:mg) &gt; 1<br />
+<br />
+<br />
+___ VSL<br />
+<br />
+<ul><ul><li>artiklid, kus on kaks märksõna ja mõlemad on tsitaatsõnad @liik=&quot;z&quot;, nt medice</li></ul></ul>Päis -&gt; §z:mg[1]/z:m[@z:liik = 'z'] and z:mg[2]/z:m[@z:liik = 'z']<br />
+<br />
+<ul><ul><li>tsitaatsõnad: prantsuse</li></ul></ul>§z:m[@z:liik='z'] and z:etg/z:etgg/z:keel='pr'<br />
+<br />
+<ul><ul><li>seletusviited atribuudiga @dvtl</li></ul></ul>&lt;dg&gt; - §.//z:dvt/@z:dvtl<br />
+<br />
+<ul><ul><li>&lt;dg&gt;-s on &lt;v&gt;, millele järgneb vahetult &lt;tvt1g&gt;</li></ul></ul>dg -&gt; §z:v[following-sibling::*[1][name()='z:tvt1g']]<br />
+<br />
+<ul><ul><li>&lt;etgg&gt;-s vahetult &lt;keel&gt; järel &lt;ed&gt;</li></ul></ul>etgg - §z:keel[following-sibling::*[1][name()='z:ed']]<br />
+<br />
+<ul><ul><li>Puuduvad &lt;etg&gt; ja &lt;mvtg&gt; ja @liik='l'</li></ul></ul>artikkel - §not(.<em>z:etg) and not(.</em>z:mvtg) and .//z:m[not(@z:liik='l')]<br />
+<ul><li>ja ka &lt;lyhg&gt;</li></ul>artikkel - §not(.<em>z:etg) and not(.</em>z:mvtg) and not(.<em>z:lyhg) and .</em>z:m[not(@z:liik='l')]<br />
+<br />
+<ul><ul><li>lühend, millel on (mittelisatud) &lt;etg&gt;</li></ul></ul>artikkel - §.<em>z:m[@z:liik='l'] and .</em>z:etg[not(@z:g='ooo')]<br />
+<br />
+<ul><ul><li>'pn' on, puudub &lt;ex&gt;, on &lt;xx&gt;</li></ul></ul>etgg - §.<em>z:vk='pn' and .</em>z:xx and not(.//z:ex)<br />
+<br />
+<ul><ul><li>hääldus on, aga pole tsitaatsõna:</li></ul></ul>mg - §z:hld and z:m[not(@z:liik = 'z')]<br />
+<br />
+<ul><ul><li>tsitaatsõnad ilma häälduseta:</li></ul></ul>mg - §.<em>z:m/@z:liik = 'z' and not(.</em>z:hld)<br />
+<br />
+<ul><ul><li>märksõna alguses 'a' ja &lt;etg&gt; on genereeritud</li></ul></ul>artikkel - §.<em>z:m[contains('a', substring(., 1, 1))] and .</em>z:etg[@z:g='ooo']<br />
+<br />
+<ul><ul><li>&lt;etgg&gt; sees on &lt;ex&gt; ',' &lt;ed&gt; (nt aatman, halleluuja, akadeemia)</li></ul></ul>&lt;etgg&gt; -&gt; §z:ex[following-sibling::node()[1][. = ',']/following-sibling::node()[1][name() = 'z:ed']]<br />
+<br />
+<ul><ul><li>sama ilma komata:</li></ul></ul>&lt;etgg&gt; -&gt; §z:ex[following-sibling::node()[1][name() = 'z:ed']]<br />
+<br />
+<ul><ul><li>&lt;etgg&gt; sisaldab vormikoodi 'pn'</li></ul></ul>etüm-allgrupp -&gt; §.//z:vk[contains(., 'pn')]<br />
+<br />
+<ul><ul><li>&lt;etgg&gt;, mis sisaldab ainult &lt;ed&gt;</li></ul></ul>&lt;etgg&gt; -&gt; §count(*) = 1 and (z:ed)<br />
+<br />
+<ul><ul><li>&lt;ed&gt; enne &lt;ex&gt;-i</li></ul></ul>etgg - §z:ed[following-sibling::z:ex]<br />
+<br />
+<br />
+_ ETY<br />
+<br />
+<ul><ul><li>Artiklid, kus &lt;xgg&gt;-s on &lt;gtx&gt;, mis järgneb &lt;glg&gt;-le</li></ul></ul>xgg -&gt; §e:glg[following-sibling::e:gtx]<br />
+<br />
+<br />
+<br />
+___ VÕÕS<br />
+<br />
+<ul><ul><li>vastegrupis seletus ja näide</li></ul></ul>&lt;xg&gt; -&gt; §.//w:xd and w:xn<br />
+<br />
+<ul><ul><li>mitu viidet:</li></ul></ul>&lt;P&gt; - §count(w:mvt) &gt; 1<br />
+<br />
+<ul><ul><li>näitetõlge = '#', aga puudub &lt;m @l&gt;</li></ul></ul>artikkel - §.<em>w:qn = '#' [not(w:m/@w:vliik = 'l')]</em><br />
+<br />
+<em>§.</em>w:qn = '#' and [not(.//w:m/@w:vliik = 'l')]<br />
+<br />
+<ul><ul><li>on &lt;tygtp&gt;, aga puudub @att</li></ul></ul>artikkel - §.//s:tp[s:tygtp][not(s:tg/@s:att)]<br />
+<br />
+§count(w:vormid) &gt; 1<br />
+<br />
+<ul><li>d-lõpuline ja puudub &lt;vk&gt;=mitm</li></ul>artikkel -&gt; §.<em>w:m[substring(translate(., &quot;()-\_&quot;, ''), string-length(translate(., &quot;()-\_&quot;, '')) - 1) = 'ad'][not(@w:liik)] and not(.</em>w:vk='mitm')<br />
+<br />
+<ul><ul><li>Tüübiti kontroll:</li></ul></ul>gram info -&gt; §.//w:tyyp[contains(., '03')]<br />
+<br />
+<ul><ul><li>kohanimed ja &lt;mv&gt; puudub</li></ul></ul>§w:m[@w:liik='k'] and not(w:mv)<br />
+<br />
+<ul><ul><li>kohanimed, mis sisaldavad '-'</li></ul></ul>§w:m[@w:liik='k'] and w:m[contains(., '-')]<br />
+<br />
+<br />
+??? mujalt korjatud:<br />
+<br />
+q:art -&gt; §q:toimetaja = 'TRehemaa' and not(q:b = 'mitm')<br />
+<br />
+1) näitegrupp -&gt; §.<em>q:k[not(contains(., 'parem'))]</em><br />
+<br />
+<em>Puudub vaste:</em><br />
+<em>Artikkel -&gt; §not(.</em>x:x) või:<br />
+Vaste -&gt; =NULL<br />
+<br />
+&lt;A&gt; -&gt; §.//text()[(contains(., '[') and not(contains(., ']'))) or (contains(., ']') and not(contains(., '[')))]<br />
+<br />
+<ul><ul><li>uus sõna ja puudub grammatika</li></ul></ul>&lt;mg&gt; -&gt; §s:m[@s:mliik='uus'] and not(s:grg)<br />
+<ul><li>ja sõna sees pole liitsõna-pulki:</li></ul>&lt;mg&gt; -&gt; §s:m[@s:mliik='uus'][not(contains(., '\') or contains(., '|'))] and not(s:grg)<br />
+<br />
+<ul><ul><li>Märksõna lõpus ke või kene</li></ul></ul>märksõna -&gt; §§ke(ne)?$<br />
+<br />
+<ul><ul><li>Märksõnas on rõhk, vormides ei ole:</li></ul></ul>§.//w:m[contains(., '¤')] and w:grg/w:vormid[not(contains(., '¤'))]<br />
+&lt;mg&gt; -&gt; §w:m[contains(., &quot;'&quot;)] and w:grg/w:vormid[not(contains(., &quot;'&quot;))]<br />
+<br />
+<ul><ul><li>ilma &lt;khk&gt;-ta, ... ei sisalda 'Tallinn':</li></ul></ul>artikkel - §not(.<em>n:khk) and .</em>n:ak='PP' and .//n:koht[not(contains(., 'Tallinn'))]<br />
+<br />
+__<br />
+ÜTB<br />
+<br />
+<ul><ul><li>venekeelsed plokid, mille koostamise 'ALoopmann' on lõpetanud</li></ul></ul>Vastete plokk -&gt; §@xml:lang = 'ru' and @h:aK = 'ALoopmann'<br />
+<br />
+<ul><ul><li>venekeelsete vastete plokid, mille koostamist ’ALoopmann’ ei ole veel jõudnud lõpetada</li></ul></ul>Vastete plokk -&gt; §@xml:lang = 'ru' and not(@h:aK = 'ALoopmann')<br />
+<br />
+<ul><ul><li>artiklid, kus venekeelsed plokid on olemas:</li></ul></ul>artikkel -&gt; §.//h:xp[@xml:lang = 'ru']<br />
+<br />
+<ul><ul><li>venekeelsed plokid puuduvad üldse:</li></ul></ul>artikkel -&gt; §not(.//h:xp[@xml:lang = 'ru'])<br />
+<br />
+<ul><ul><li>Artiklid, kus on koostamise lõpetatud venekeelsed:</li></ul></ul>artikkel -&gt; §.//h:xp[@xml:lang = 'ru' and @h:aKL]<br />
+<br />
+<ul><ul><li>Romanile:</li></ul></ul>artikkel -&gt; §not(.<em>h:xp[@xml:lang = 'ru']) or .</em>h:xp[@xml:lang = 'ru' and not(@h:aKL)]<br />
+<br />
+<ul><ul><li>+ Artikli koostamine on lõpetatud:</li></ul></ul>artikkel -&gt; §h:KL and (not(.<em>h:xp[@xml:lang = 'ru']) or .</em>h:xp[@xml:lang = 'ru' and not(@h:aKL)])<br />
+<br />
+<br />
+<ul><ul><li>kahtlased märgid</li></ul></ul>§§[^\p{L}\s\-\(\)\.,’']<br />
+§§[^\p{L}\s\-\(\)\.,’'\d]<br />
+§§[^\p{L}\s\-\(\)\.,’'–\d&amp;;]<br />
+Lisada : = &quot; !<br />
+<br />
+Mitte eesti + vene (vt Wordi fail)<br />
+<br />
+§§[^A-Za-z?-??-?ŠšŽžÕÄÖÜõäöü\(\)\-é]<br />
+§§[^A-Za-z?-??-?ŠšŽžÕÄÖÜõäöü\(\)\-éēāīōū]<br />
+<br />
+<br />
+<hr />
+EXS: (alguses vanad)<br />
+<br />
+<ul><li>Artiklis mõlemad viited:</li></ul>artikkel -&gt; §.<em>x:mvt and .</em>x:tvt<br />
+<br />
+<ul><li>hom-m ja LS:</li></ul>artikkel -&gt; §.<em>x:m/@x:i and .</em>x:LS<br />
+<br />
+<ul><li>Artiklis mitu &lt;a&gt;-d:</li></ul>Artikkel -&gt; §count(.//x:a)&gt;1<br />
+<br />
+<ul><li>Puudub vaste:</li></ul>Artikkel -&gt; §not(.//x:x) või:<br />
+Vaste -&gt; =NULL<br />
+<br />
+<ul><li>&lt;a&gt; = &lt;d&gt; (nt naelik: naelking):</li></ul>Artikkel -&gt; §.<em>x:a = .</em>x:d<br />
+<br />
+<ul><li>Ainult qqs-is:</li></ul>PÄis: §x:all='qqs' and not(x:all='ex_' or x:all='evs')<br />
+§x:all='qqs' and not(x:all='ex_' or x:all='evs' or x:all='en_')<br />
+<br />
+<ul><ul><li>ainult EVS-is:</li></ul></ul>artikkel -&gt; §count(.<em>x:all)=1 and .</em>x:all='evs'<br />
+<br />
+<ul><li>Maht märkimata:</li></ul>Päis -&gt; §not(x:maht)<br />
+<br />
+<ul><li>Märksõnas on '+', ei ole EX-s:</li></ul>päis -&gt; §contains(.<em>x:m, &quot;+&quot;) and not(.</em>x:all='ex_')<br />
+<br />
+<ul><ul><li>u-ga algavad artiklid, milles on &lt;S&gt;</li></ul></ul>§.//x:m[contains('u', substring(., 1, 1))] and x:S<br />
+<br />
+<ul><ul><li>Tühik &lt;sl&gt;-s</li></ul></ul>Sõnaliik -&gt; §contains(., ' ')<br />
+<br />
+<ul><ul><li>märksõnas on tühik, aga pole ühend:</li></ul></ul>§x:m[contains(., ' ')] and .//x:m[not(@x:liik='y')]<br />
+<br />
+<ul><ul><li>märksõna &lt;m&gt; lõpus on 'ma' või 'mine', ja liitsõnaplokk &lt;LS&gt; on olemas:</li></ul></ul>Artikkel -&gt; §.<em>x:LS and (.</em>x:m[substring(., string-length(.) -3) = 'mine' or substring(., string-length(.) -1) = 'ma'])<br />
+<br />
+<ul><ul><li>&lt;mf&gt;-s on +, aga puudub &lt;gki&gt;:</li></ul></ul>§contains(.<em>x:mf, &quot;[+]&quot;) and not(.</em>x:gki)<br />
+<br />
+<ul><ul><li>var-viide ja on ka sisu (ainult |vaste|):</li></ul></ul>§.//x:mvt/@x:mvtl='var' and x:S<br />
+<br />
+<br />
+EVS:<br />
+<ul><ul><li>märksõma lõpus + ja mitu täh-numbrit</li></ul></ul>§.<em>v:m[substring(translate(., &quot;()-\_&quot;, ''), string-length(translate(., &quot;()-\_&quot;, '')) - 0) = '+'] and .</em>v:tp[@v:tnr = '2']<br />
+<br />
+_<br />
+VSL<br />
+<br />
+<ul><ul><li>lõpus 'ad', pole tsitaatsõna, ja puudub &lt;vk&gt;='pl'</li></ul></ul>artikkel - §.<em>z:m[substring(translate(., &quot;()-\_&quot;, ''), string-length(translate(., &quot;()-\_&quot;, '')) - 1) = 'ad'][not(@z:zs)] and not(.</em>z:vk='pl')<br />
+<br />
+<ul><ul><li>n-ga algavad märksõnad, mis pole tsitaatsõnad ega lühendid ega eesliited:</li></ul></ul>§.//z:m[contains('n', substring(., 1, 1))][not(@z:zs)][not(@z:liik='el')][not(@z:liik='l')]<br />
+<br />
+<ul><ul><li>ladina sõnad, mis pole tsitaatsõnad:</li></ul></ul>artikkel - §.<em>z:keel = 'ld' and .</em>z:m[not(@z:zs)] - annab vea MySQL päringus (ainult artikli tasemel)<br />
+Artikkel -&gt; §z:P/z:mg[z:m[not(@z:zs)] and z:etg/z:etgg/z:keel = 'ld']<br />
+<br />
+<ul><ul><li>märksõnu, mille lõpus on '-', aga puudub eesliite atribuut &lt;m @liik='el'&gt; (nukl-)</li></ul></ul>Märksõna -&gt; §substring(., string-length(.), 1) = '-' and not(@z:liik = 'el')<br />
+<br />
+<ul><ul><li>&lt;m&gt; sisaldab koma (v tühikut) JA ei ole tsitaatsõna &lt;m @zs&gt; (nukle-, nukl-)</li></ul></ul>märksõna -&gt; §not(@z:zs) and (contains(., ',') or contains(., ' '))<br />
+<ul><li>JA &lt;m&gt; kuulub &lt;mg&gt;-sse</li></ul>Märksõna -&gt; §name(..) = 'z:mg' and not(@z:zs) and (contains(., ',') or contains(., ' '))<br />
+<br />
+<ul><ul><li>on tsitaatsõna ja puuduvad mõlemad hääldused (vana ja uus)</li></ul></ul>§.<em>z:m/@z:zs and not(.</em>z:hld) and not(.//z:hld2)<br />
+<br />
+<ul><ul><li>on tsitaatsõna ja puuduvad mõlemad hääldused (vana ja uus) ja puudub nooleviide</li></ul></ul>§.<em>z:m/@z:zs and not(.</em>z:hld) and not(.<em>z:hld2) and not(.</em>z:mvt[@z:mvtl='nool'])<br />
+<br />
+<ul><ul><li>&lt;keel&gt; ja &lt;ex&gt;-st tähekombinatsioon, nt &lt;keel&gt;='ld' ja &lt;ex&gt;-s *ch* (alkeemia)</li></ul></ul>etüm-allgrupp -&gt; §z:keel='ld' and contains(z:ex, 'ch')<br />
+<br />
+<ul><ul><li>Sama muuttüüp eri &lt;grg&gt;-des</li></ul></ul>&lt;mg&gt; -&gt; §z:grg[z:mt = following-sibling::z:grg/z:mt]<br />
+<br />
+<ul><ul><li>Mitmuslikud liitsõnad</li></ul></ul>§z:vk='pl' and contains(.//z:mv, '+')<br />
+<br />
+<ul><ul><li>grammatika puudub, kuigi pole viide ega märksõna atribuudiga või tühikuga (xml päring)</li></ul><li>vana: päis - §not(.<em>z:grg) and not(.</em>z:mvt) and not(.<em>z:lyhg) and not(.</em>z:vk='pn') and z:mg/z:m[not(@z:zs)][not(@z:liik)][not(contains(., ' '))]</li><li>uus: päis - §not(.<em>z:mfp) and not(.</em>z:mvt) and not(.<em>z:lyhg) and not(.</em>z:vk='pn') and z:mg/z:m[not(@z:zs)][not(@z:liik)][not(contains(., ' '))]</li></ul><br />
+<ul><ul><li>mitu &lt;mg&gt;-d, aga üks &lt;mfp&gt; (vaja lisada ka muud välistused)</li></ul></ul>päis - §count(z:mg)&gt;1 and count(z:mg/z:mfp)=1<br />
+<br />
+<ul><ul><li>uus hääldus &lt;hld2&gt; puudub, kuigi on tsitaatsõna, ei ole lühend @liik='l' ega viide &lt;mvt&gt;</li></ul></ul>&lt;mg&gt; + &lt;amg&gt; - §not(.<em>z:hld2) and not(.</em>z:mvt) and .//z:m[@z:zs][not(@z:liik='l')]<br />
+<br />
+<ul><ul><li>mitme tähendusega sõnad, kus seletus sisaldab järjendit 'sõnana'</li></ul></ul>sisu - §.<em>z:tp[@z:tnr='2'] and .</em>z:d[contains(., 'sõnana')]<br />
+<br />
+<ul><ul><li>märksõna sisaldab '-' ja on &lt;grg&gt;</li></ul></ul>mg - §z:grg and z:m[contains(., '-')]<br />
+<ul><li>&lt;m&gt;-i lõpus '-_' ja on &lt;grg&gt;:</li></ul>mg - §z:m[al_p:srch2(., '-_$', '')&gt;0] and z:grg<br />
+<br />
+<ul><ul><li>tüüp 16 ja lühike eelviimane silp</li></ul></ul>märksõna grupp - §.<em>z:mt='16' and .</em>z:m[al_p:srch2(., '[^aeiuoõäüö][aeiuoõäüö][^aeiuoõäüö][aeiuoõäüö]$', '')&gt;0]<br />
+<br />
+<ul><ul><li>17 ja 16 korraga:</li></ul></ul>grammatiline info - §contains(.<em>z:mt, '17') or contains(.</em>z:mt, '16')<br />
+<br />
+<ul><ul><li>mitte tsitaatsõna, ja on uus hääldus &lt;hld2&gt;</li></ul></ul>artikkel: märksõna grupp &lt;mg&gt; - §z:hld2 and z:m[not(@z:zs)]<br />
+allartikkel: märksõna grupp &lt;amg&gt; - §z:hld2 and z:m[not(@z:zs)]<br />
+<br />
+<ul><ul><li>morfoloogiat toimetatud märtsikuus:</li></ul></ul>morfoloogia plokk - §.//@z:aTA[contains(., '-03-')]<br />
+<br />
+<ul><ul><li>ühes &lt;mg&gt;-s mitu &lt;mfp&gt;-d ja tähendusi mitu:</li></ul></ul>artikkel - §count(.<em>z:mfp)&gt;1 and count(.</em>z:mg)=1 and .//z:tp/@z:tnr='2'<br />
+<br />
+___<br />
+FIN<br />
+<br />
+<br />
+<ul><ul><li>4. köitest lisatud artiklid:</li></ul></ul>artikkel - §.//@v:src<br />
+<br />
+<br />
+päringud:<br />
+PSV (jt) jaoks komplekspäringuid (testbaasi näitel):<br />
+<br />
+<ul><ul><li>Kasutaja ’ ALoopmann’ poolt salvestatud (toimetatud) artiklid:</li></ul></ul>Artikli toimetaja -&gt; ALoopmann<br />
+<br />
+<ul><ul><li>Veebruaris salvestatud artiklid:</li></ul></ul>Artikkel -&gt; §starts-with(c:TA, '2011-02')<br />
+<br />
+<ul><ul><li>Kasutaja ’ALoopmann’ poolt salvestatud artiklid veebruaris:</li></ul></ul>Artikkel -&gt; §c:T='ALoopmann' and starts-with(c:TA, '2011-02')<br />
+<br />
+<br />
+<ul><ul><li>Novembris, detsembris 2010 salvestatud artiklid (keskel olev punkt tähistab üht sümbolit, antud juhul ’-’; ees olev katus tähendab järjendi algust):</li></ul></ul>Toimetamisaeg -&gt; §§^2010.(11|12)<br />
+<br />
+<br />
+<br />
+PSV vaade (testbaasis):<br />
+<br />
+Tekstide (@mvtl) asendused: ’tul’ -&gt; ’tuletis’.<br />
+<br />
+<ul><ul><li>Ilma sisuta fras-artiklid SS1-s:</li></ul></ul>§.<em>s:m[@s:mliik='f'] and not(.</em>s:S)<br />
+<br />
+<ul><ul><li>sõnaliik on D v K ja pole lõpetatud (@KL)</li></ul></ul>Artikkel -&gt; §.<em>c:sl[.='D' or .='K'] and not(c:KL)</em><br />
+<em>Artikkel -&gt; §(.</em>c:sl='D' or .//c:sl='K') and not(c:KL)<br />
+<br />
+__<br />
+EXS morf:<br />
+<br />
+<ul><ul><li>tüübid</li></ul></ul>mg - §x:grp[@x:g] and .<em>x:mt='17'</em><br />
+<em>mg - §x:grp[@x:g] and .</em>x:mt[contains(., '01')]<br />
+<br />
+<ul><ul><li>genereeritud ja märksõnas on '-'</li></ul></ul>mg - §x:grp[@x:g] and contains(x:m, '-')<br />
+<br />
+§x:grp[@x:g] and .//x:sl='adv'<br />
+<br />
+<ul><ul><li>artiklid, kus tüüp &lt;mt&gt; 02 on enne kui 19 (stuudium)</li></ul></ul>&lt;mg&gt; -&gt; §x:grp[x:mfp/x:mt = '02']/following-sibling::x:grp[x:mfp/x:mt = '19']<br />
+<br />
+___<br />
+SP<br />
+<br />
+<ul><ul><li>liikmes on £, aga @mv='ko' puudub:</li></ul></ul>liikme var-grupp - §not(p:ml[@p:mv='ko']) and contains(p:ml, '£')<br />
+<br />
+<ul><ul><li>liitverbid</li></ul></ul>taane - §.//p:ml[contains(., '+') and contains(., '#ma')]<br />
+<br />
+<ul><ul><li>ms-var-grupp, kus on hom-number &lt;m @i&gt;</li></ul></ul>§p:m[@p:i]<br />
+<br />
+<ul><ul><li>liikme var-grupp hom-numbriga</li></ul></ul>§p:ml[@p:i]<br />
+<br />
+<ul><ul><li>taane - &lt;sl&gt;=S ja liikmes on #</li></ul></ul>§p:sl[@p:ge]='S' and contains(.<em>p:ml, '#')</em><br />
+<em>aga mitte #d</em><br />
+<em>§p:sl[@p:ge]='S' and .</em>p:ml[al_p:srch2(., '#[^d]', '') &gt; 0]<br />
+liikme lõpus:<br />
+§p:sl[@p:ge]='S' and .<em>p:ml[al_p:srch2(., '#[^d]$', '')&gt;0]</em><br />
+<em>trell, mis ei ole #d lõpus:</em><br />
+<em>§p:sl[@p:ge]='S' and .</em>p:ml[al_p:srch2(., '#(?!d$)', '')&gt; 0]<br />
+<br />
+<ul><ul><li>&lt;sl&gt;='A' ja &lt;ml&gt; = *üle#m</li></ul></ul>§p:sl='A' and .//p:ml[contains(., 'üle#m')]<br />
+<br />
+<ul><ul><li>mitu genereeritud sõnaliiki:</li></ul></ul>§count(p:sl[@p:ge='g']) &gt; 1<br />
+<br />
+<ul><ul><li>sõnaliik puudub:</li></ul></ul>§count(p:sl)=0<br />
+ja pole tildet:<br />
+§count(p:sl)=0 and not(.//p:ml[al_p:srch2(., '~', '')&gt;0])<br />
+<br />
+<ul><ul><li>genereeritud sõnaliigid:</li></ul></ul>taane §p:sl[@p:ge='g']='N'<br />
+<ul><li>erinevad:</li></ul>§p:sl[@p:ge='e']<br />
+<br />
+<ul><ul><li>Plokid, kus on ainult @as taanded:</li></ul></ul>Tuletusplokk -&gt; §count(p:t[not(@p:as)])=0<br />
+<br />
+<ul><ul><li>is-tuletised:</li></ul></ul>taane - §p:lag/p:ml[al_p:srch2(., '=is$', '')&gt;0]<br />
+<br />
+<ul><ul><li>ma-lõpulised mly-d:</li></ul></ul>sm2 / taane (lokaalne) - §p:mly[al_p:srch2(., 'ma$', '')&gt;0]<br />
+<br />
+<ul><ul><li>mitte-ma-lõpulised:</li></ul></ul>... - §p:mly[al_p:srch2(., '[^ma]$', '')&gt;0]<br />
+<br />
+<ul><ul><li>ma-lõpulised &lt;ml&gt;-d, kus puudub #:</li></ul></ul>taane - §p:lag/p:ml[al_p:srch2(., 'ma$', '')&gt;0] and not(.//p:ml[contains(., '#ma')])<br />
+<br />
+<ul><ul><li>&lt;tul&gt;-s 2. astmel on liikmes tühik:</li></ul></ul>tuletusplokk -&gt; §p:t/p:t/p:lag/p:ml[contains(., ' ')]<br />
+tuletusplokk -&gt; §p:t/p:t<em>p:ml[contains(., ' ')]</em><br />
+<em>tuletusplokk -&gt; §.</em>p:ml[contains(., ' ')]<br />
+<br />
+<ul><ul><li>taane &lt;mly&gt;-ga tuletusplokis:</li></ul></ul>taane - §p:mly[ancestor::p:p_tul]<br />
+<br />
+<ul><ul><li>pole püsiühend ja sisaldab tühikut</li></ul></ul>taane - §not(@p:as='py') and p:lag/p:ml[contains(., ' ')]<br />
+<ul><li>järgmistes taanetes:</li></ul>taane - §not(p:t/@p:as='py') and p:t/p:lag/p:ml[contains(., ' ')]<br />
+taane - §not(p:t/p:t/@p:as='py') and p:t/p:t/p:lag/p:ml[contains(., ' ')]<br />
+<ul><li>tuletusplokis (3. aste):</li></ul>tuletusplokk - §not(p:t/p:t/p:t/@p:as='py') and p:t/p:t/p:t/p:lag/p:ml[contains(., ' ')]<br />
+<br />
+<ul><ul><li>artiklid, kus plokid puuduvad v on kõik plokid 'AB'-ga</li></ul></ul>artikkel -&gt; §not(p:plokid/*[not(@p:as=&quot;AB&quot;)]<br />
+<ul><ul><li>artiklid, kus leidub ilma 'AB'-ta plokke</li></ul></ul>artikkel -&gt; §not(not(p:plokid/*[not(@p:as=&quot;AB&quot;)]))<br />
+<br />
+<ul><ul><li>liitsõnalised homonüümid</li></ul></ul>§p:lag/p:ml[contains(., '+')] and p:lag/p:ml/@p:i<br />
+<ul><ul><li>liitsõnalised homonüümid koos viitega</li></ul></ul>§p:lag/p:ml/@p:i and contains(p:lag/p:ml, '+') and p:lvt<br />
+<br />
+<ul><ul><li>liikmes (sõna lõpuni) on koma ja selle järel mõni märk, mis pole + =</li></ul></ul>Pereliige -&gt; §§,[^\+\=]+$<br />
+<br />
+<ul><ul><li>sõnaliik puudub ja &lt;ml&gt; ei sisalda '~' (liige) ja ':' (märksõna)</li></ul></ul>taane - §not(p:sl) and p:lag/p:ml[not(contains(., '~'))]<br />
+taane - §count(p:sl)=0 and not(.//p:ml[al_p:srch2(., '~', '')&gt;0])<br />
+&lt;mg&gt; - §not(p:sl) and p:mag/p:m[not(contains(., ':'))] and p:mag/p:m[not(contains(., '~'))]<br />
+<br />
+<ul><li>.. ja pole tildet lõpus (krüpto~)</li></ul>&lt;mg&gt; - §not(p:sl) and p:mag/p:m[not(contains(., ':'))] and p:mag/p:m[al_p:srch2(., '[^~]$', '')&gt;0]<br />
+&lt;t&gt; - §not(p:sl) and p:lag/p:ml[not(contains(., ':'))] and p:lag/p:ml[al_p:srch2(., '[^~]$', '')&gt;0]<br />
+<br />
+<ul><ul><li>&lt;m&gt; ja &lt;ml&gt; on samad:</li></ul></ul>Artikkel -&gt; §.<em>p:m = .</em>p:ml<br />
+<ul><li>täiendus:</li></ul>Artikkel -&gt; §translate(.<em>p:m, &quot;+&quot;, &quot;&quot;) = translate(.</em>p:ml,&quot;+&quot;, &quot;&quot;)<br />
+<br />
+<ul><ul><li>taanded, kus on mitu &lt;dg&gt;-d ja nende hulgas selline, milles on ainult &lt;s&gt;</li></ul></ul>Taane -&gt; §count(p:dg)&gt;1 and p:dg[count(*)=1 and p:s]<br />
+<br />
+<br />
+ÕS-13<br />
+<br />
+<ul><ul><li>Näitegrupis puudub teine soovipaarik:</li></ul></ul>§.<em>@q:soov='np' and not(.</em>@q:soov='ev')<br />
+§.<em>@q:soov='ep' and not(.</em>@q:soov='nv')<br />
+<br />
+<ul><ul><li>&lt;ng&gt;-s vahetult &lt;k&gt; järel &lt;vk&gt;</li></ul></ul>ng - §q:k[following-sibling::*[1][name()='q:vk']]<br />
+<br />
+<br />
+EKSS<br />
+<ul><ul><li>&lt;m&gt; lihtsõnad - pole fras, ei sisalda [|? -]:</li></ul></ul>mg - §s:m[not(@s:mliik='f')][not(contains(., '\') or contains(., '|') or contains(., '-') or contains(., ' '))]<br />
+<ul><ul><li>&lt;m&gt; liitsõnad - pole fras, sisaldab [|\-]</li></ul></ul>mg - §s:m[not(@s:mliik='f')][contains(., '\') or contains(., '|') or contains(., '-')]<br />
+<ul><ul><li>&lt;m&gt; on liitsõna ja artiklis on Ls-plokk:</li></ul></ul>artikkel - §.<em>s:m[contains(., '\') or contains(., '|') or contains(., '-')] and .</em>s:ls
+    </div>
+  </body>
+</html>

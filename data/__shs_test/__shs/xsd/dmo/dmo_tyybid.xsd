@@ -1,0 +1,1281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ************************************************************************************************************************ -->
+<!--  Eesti-X sõnastikupõhi (ex_tyybid.xsd)                                                                                   -->
+<!--  Prog : Ain Teesalu                                                                                                      -->
+<!--  Viimati muudetud : 01.07.2011 12:43                                                                                     -->
+<!-- ************************************************************************************************************************ -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.eki.ee/dict/schemas/dmo_tyybid" attributeFormDefault="qualified" elementFormDefault="qualified">
+	<xs:simpleType name="levik_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="hrl">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">harilikult</xs:documentation>
+					<xs:documentation xml:lang="en">usually</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ka">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">ka</xs:documentation>
+					<xs:documentation xml:lang="en">also</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="või">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">või</xs:documentation>
+					<xs:documentation xml:lang="en">or</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="mvtl_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="var">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">variandiviide</xs:documentation>
+					<xs:documentation xml:lang="en">cross-reference (from variant)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gr">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">vormiviide</xs:documentation>
+					<xs:documentation xml:lang="en">cross-reference (from inflectional form)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fr">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">fras. viide</xs:documentation>
+					<xs:documentation xml:lang="en">cross-reference (from fraseological expression)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="srj">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">sarjaviide</xs:documentation>
+					<xs:documentation xml:lang="en">sarjaviide</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lüh">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">lühendiviide</xs:documentation>
+					<xs:documentation xml:lang="en">cross-reference (abbreviation)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="liik_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="l">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">lühend</xs:documentation>
+					<xs:documentation xml:lang="en">abbreviation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="y">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">sõnaühend</xs:documentation>
+					<xs:documentation xml:lang="en">multiword expression</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="f">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">fras. väljend</xs:documentation>
+					<xs:documentation xml:lang="en">phraseological expression</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="p">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">pärisnimi</xs:documentation>
+					<xs:documentation xml:lang="en">proper name</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="k">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">kohanimi</xs:documentation>
+					<xs:documentation xml:lang="en">site name</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="z">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">tsitaatsõna</xs:documentation>
+					<xs:documentation xml:lang="en">loanword (alien)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="maht_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="S">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">suur</xs:documentation>
+					<xs:documentation xml:lang="en">large</xs:documentation>
+					<xs:documentation xml:lang="ru"/>
+					<xs:documentation xml:lang="de"/>
+					<xs:documentation xml:lang="fi"/>
+					<xs:appinfo>
+						<T>YViks</T>
+						<TA>2011-03-24T17:14:22</TA>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="K">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">keskmine</xs:documentation>
+					<xs:documentation xml:lang="en">medium</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+
+			<xs:enumeration value="V">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">väike</xs:documentation>
+					<xs:documentation xml:lang="en">small</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+
+			<xs:enumeration value="D">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">demo</xs:documentation>
+					<xs:documentation xml:lang="en">demo</xs:documentation>
+					<xs:documentation xml:lang="ru"/>
+					<xs:documentation xml:lang="de"/>
+					<xs:documentation xml:lang="fi"/>
+					<xs:appinfo>
+						<T>YViks</T>
+						<TA>2011-03-24T17:21:37</TA>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="P">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">põhisõnavara</xs:documentation>
+					<xs:documentation xml:lang="en">basic</xs:documentation>
+					<xs:documentation xml:lang="ru"/>
+					<xs:documentation xml:lang="de"/>
+					<xs:documentation xml:lang="fi"/>
+					<xs:appinfo>
+						<T>YViks</T>
+						<TA>2011-03-28T18:33:40</TA>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="allik_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="en_">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">Eesti-norra sõnaraamat</xs:documentation>
+					<xs:documentation xml:lang="en">Eesti-norra sõnaraamat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="evs">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">Eesti-vene sõnaraamat</xs:documentation>
+					<xs:documentation xml:lang="en">Eesti-vene sõnaraamat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="dmo">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">Eesti-x sõnastikupõhi</xs:documentation>
+					<xs:documentation xml:lang="en">Eesti-x sõnastikupõhi</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="psv">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">Põhisõnavara sõnastik</xs:documentation>
+					<xs:documentation xml:lang="en">Põhisõnavara sõnastik</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="qqv">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">Vene õpilase ÕS</xs:documentation>
+					<xs:documentation xml:lang="en">Vene õpilase ÕS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="qqs">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">Eesti õpilase ÕS</xs:documentation>
+					<xs:documentation xml:lang="en">Eesti õpilase ÕS</xs:documentation>
+					<xs:documentation xml:lang="ru"/>
+					<xs:documentation xml:lang="de"/>
+					<xs:documentation xml:lang="fi"/>
+					<xs:appinfo>
+						<T>ATeesalu</T>
+						<TA>2011-03-28T15:55:31</TA>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="nrl_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="var">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">variant</xs:documentation>
+					<xs:documentation xml:lang="en">variant of an expression</xs:documentation>
+					<xs:documentation xml:lang="ru">вариант</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="tvtl_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Vt">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">vaata (tugev viide)</xs:documentation>
+					<xs:documentation xml:lang="en">strong sense reference (See)</xs:documentation>
+					<xs:documentation xml:lang="ru">смотри (строгая ссылка)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vt ka">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">vaata ka (nõrk viide)</xs:documentation>
+					<xs:documentation xml:lang="en">weak sense reference (Cf., See also)</xs:documentation>
+					<xs:documentation xml:lang="ru">смотри также (слабая ссылка)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Vrd">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">võrdle</xs:documentation>
+					<xs:documentation xml:lang="en">Cf.</xs:documentation>
+					<xs:documentation xml:lang="ru">сравни</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="sl_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="adj">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">adjektiiv, omadussõna</xs:documentation>
+					<xs:documentation xml:lang="en">adjective</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="adv">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">adverb, määrsõna</xs:documentation>
+					<xs:documentation xml:lang="en">adverb</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ag">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">genitiivatribuut, omastavaline täiend</xs:documentation>
+					<xs:documentation xml:lang="en">attribute in genitive</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="interj">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">interjektsioon, hüüdsõna</xs:documentation>
+					<xs:documentation xml:lang="en">interjection</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="konj">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">konjunktsioon, sidesõna</xs:documentation>
+					<xs:documentation xml:lang="en">conjunction</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ks">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">adpositsioon, kaassõna</xs:documentation>
+					<xs:documentation xml:lang="en">postposition, preposition</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="num">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">numeraal, arvsõna</xs:documentation>
+					<xs:documentation xml:lang="en">numeral</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="postp">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">postpositsioon, tagasõna</xs:documentation>
+					<xs:documentation xml:lang="en">postposition</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="prep">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">prepositsioon, eessõna</xs:documentation>
+					<xs:documentation xml:lang="en">preposition</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pron">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">pronoomen, asesõna</xs:documentation>
+					<xs:documentation xml:lang="en">pronoun</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			
+			<xs:enumeration value="s">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">substantiiv, nimisõna</xs:documentation>
+					<xs:documentation xml:lang="en">substantive</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="v">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">verb, tegusõna</xs:documentation>
+					<xs:documentation xml:lang="en">verb</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="vk_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="dem">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">deminutiiv, vähendussõna</xs:documentation>
+					<xs:documentation xml:lang="en">diminutive</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="impers">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">impersonaal, umbisikuline tegumood</xs:documentation>
+					<xs:documentation xml:lang="en">impersonal</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="komp">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">komparatiiv, keskvõrre</xs:documentation>
+					<xs:documentation xml:lang="en">comparative (degree)</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="partits">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">partitsiip, kesksõna</xs:documentation>
+					<xs:documentation xml:lang="en">participle</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pl">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">pluural, mitmus</xs:documentation>
+					<xs:documentation xml:lang="en">plural</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sg">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">singular, ainsus</xs:documentation>
+					<xs:documentation xml:lang="en">singular</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sg gen">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">singular genitiiv, ainsuse omastav</xs:documentation>
+					<xs:documentation xml:lang="en">singular genitiv</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sup">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">superlatiiv, ülivõrre</xs:documentation>
+					<xs:documentation xml:lang="en">superlative (degree)</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tgn">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">tegijanimi</xs:documentation>
+					<xs:documentation xml:lang="en">ja-derivative</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tn">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">teonimi</xs:documentation>
+					<xs:documentation xml:lang="en">mine-derivative</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="v_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="aiand">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">aiandus</xs:documentation>
+					<xs:documentation xml:lang="en">gardening</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="aj">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">ajalugu</xs:documentation>
+					<xs:documentation xml:lang="en">history</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="anat">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">anatoomia</xs:documentation>
+					<xs:documentation xml:lang="en">anatomy</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="antr">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">antropoloogia</xs:documentation>
+					<xs:documentation xml:lang="en">anthropology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="arheol">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">arheoloogia</xs:documentation>
+					<xs:documentation xml:lang="en">archeology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="arhit">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">arhitektuur</xs:documentation>
+					<xs:documentation xml:lang="en">architecture</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="astr">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">astronoomia</xs:documentation>
+					<xs:documentation xml:lang="en">astronomy</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="auto">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">autondus</xs:documentation>
+					<xs:documentation xml:lang="en">automobile engineering</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bibl">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">bibliograafia</xs:documentation>
+					<xs:documentation xml:lang="en">bibliography</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="biol">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">bioloogia</xs:documentation>
+					<xs:documentation xml:lang="en">biology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="bot">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">botaanika</xs:documentation>
+					<xs:documentation xml:lang="en">botany</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ehit">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">ehitusala</xs:documentation>
+					<xs:documentation xml:lang="en">building</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="el">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">elekter ja elektrotehnika</xs:documentation>
+					<xs:documentation xml:lang="en">electricity</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="etn">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">etnograafia</xs:documentation>
+					<xs:documentation xml:lang="en">ethnography</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="farm">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">farmaatsia</xs:documentation>
+					<xs:documentation xml:lang="en">pharmacy</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="film">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">filmikunst</xs:documentation>
+					<xs:documentation xml:lang="en">filmography</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="filos">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">filosoofia</xs:documentation>
+					<xs:documentation xml:lang="en">philosophy</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="folkl">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">folkloor</xs:documentation>
+					<xs:documentation xml:lang="en">folklore</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="fot">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">fotograafia</xs:documentation>
+					<xs:documentation xml:lang="en">photography</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="füsiol">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">füsioloogia</xs:documentation>
+					<xs:documentation xml:lang="en">physiology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="füüs">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">füüsika</xs:documentation>
+					<xs:documentation xml:lang="en">physics</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="geod">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">geodeesia</xs:documentation>
+					<xs:documentation xml:lang="en">geodesy</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="geogr">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">geograafia</xs:documentation>
+					<xs:documentation xml:lang="en">geography</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="geol">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">geoloogia</xs:documentation>
+					<xs:documentation xml:lang="en">geology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hüdr">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">hüdraulika ja hüdrotehnika</xs:documentation>
+					<xs:documentation xml:lang="en">water engineering</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="info">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">infotöötlus ja küberneetika</xs:documentation>
+					<xs:documentation xml:lang="en">computer science</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="jur">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">jurisprudents</xs:documentation>
+					<xs:documentation xml:lang="en">law</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kal">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">kalandus</xs:documentation>
+					<xs:documentation xml:lang="en">fishery</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="keel">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">lingvistika</xs:documentation>
+					<xs:documentation xml:lang="en">linguistics</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="keem">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">keemia</xs:documentation>
+					<xs:documentation xml:lang="en">chemistry</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kirj">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">kirjandusteadus</xs:documentation>
+					<xs:documentation xml:lang="en">literature</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kok">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">kulinaaria</xs:documentation>
+					<xs:documentation xml:lang="en">cookery</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kunst">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">kujutav kunst</xs:documentation>
+					<xs:documentation xml:lang="en">art</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lenn">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">lennundus</xs:documentation>
+					<xs:documentation xml:lang="en">aviation</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="loog">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">loogika</xs:documentation>
+					<xs:documentation xml:lang="en">logic</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="maj">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">majandusteadus ja majandus</xs:documentation>
+					<xs:documentation xml:lang="en">economics</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mat">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">matemaatika</xs:documentation>
+					<xs:documentation xml:lang="en">mathematics</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="med">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">meditsiin</xs:documentation>
+					<xs:documentation xml:lang="en">medicine</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="meh">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">mehaanika</xs:documentation>
+					<xs:documentation xml:lang="en">mechanics</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mer">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">merendus</xs:documentation>
+					<xs:documentation xml:lang="en">nautical</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mes">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">mesindus</xs:documentation>
+					<xs:documentation xml:lang="en">apiculture</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="meteor">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">meteoroloogia ja klimatoloogia</xs:documentation>
+					<xs:documentation xml:lang="en">meteorology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mets">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">metsandus</xs:documentation>
+					<xs:documentation xml:lang="en">forestry</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="muus">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">muusika</xs:documentation>
+					<xs:documentation xml:lang="en">music</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="mäend">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">mäendus</xs:documentation>
+					<xs:documentation xml:lang="en">mining engineering</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="müt">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">mütoloogia</xs:documentation>
+					<xs:documentation xml:lang="en">mythology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nahat">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">nahatööstus</xs:documentation>
+					<xs:documentation xml:lang="en">leather industry</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nõuk">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">nõukogulik</xs:documentation>
+					<xs:documentation xml:lang="en">soviet</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="paberit">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">tselluloosi- ja paberitööstus</xs:documentation>
+					<xs:documentation xml:lang="en">paper industry</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="paleont">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">paleontoloogia</xs:documentation>
+					<xs:documentation xml:lang="en">paleontology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pat">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">patendindus</xs:documentation>
+					<xs:documentation xml:lang="en">patent</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ped">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">pedagoogika</xs:documentation>
+					<xs:documentation xml:lang="en">education</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pol">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">poliitika</xs:documentation>
+					<xs:documentation xml:lang="en">politics</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="psühh">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">psühholoogia</xs:documentation>
+					<xs:documentation xml:lang="en">psychology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="puidut">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">puidutööstus</xs:documentation>
+					<xs:documentation xml:lang="en">timber industry</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="põll">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">põllumajandus</xs:documentation>
+					<xs:documentation xml:lang="en">agriculture</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="raadio">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">raadiotehnika</xs:documentation>
+					<xs:documentation xml:lang="en">radio</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="raudt">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">raudtee</xs:documentation>
+					<xs:documentation xml:lang="en">railway engineering</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="relig">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">kiriklik</xs:documentation>
+					<xs:documentation xml:lang="en">ecclesiastical</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="side">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">sidendus</xs:documentation>
+					<xs:documentation xml:lang="en">communication</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sotsiol">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">sotsioloogia</xs:documentation>
+					<xs:documentation xml:lang="en">sociology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sport">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">sport ja kehakultuur</xs:documentation>
+					<xs:documentation xml:lang="en">sports</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="stat">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">statistika</xs:documentation>
+					<xs:documentation xml:lang="en">statistics</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="sõj">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">sõjandus</xs:documentation>
+					<xs:documentation xml:lang="en">military science</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="zool">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">zooloogia</xs:documentation>
+					<xs:documentation xml:lang="en">zoology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="teater">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">teatriala</xs:documentation>
+					<xs:documentation xml:lang="en">theatre</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tehn">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">tehnika</xs:documentation>
+					<xs:documentation xml:lang="en">technology</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="tekst">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">tekstiilindus</xs:documentation>
+					<xs:documentation xml:lang="en">textiles</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="trük">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">trükindus</xs:documentation>
+					<xs:documentation xml:lang="en">printing industry</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="vet">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">veterinaaria</xs:documentation>
+					<xs:documentation xml:lang="en">veterinary science</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+
+	<xs:simpleType name="s_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="hellitl">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">hellitlev</xs:documentation>
+					<xs:documentation xml:lang="en">affectionate</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hlv">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">halvustav</xs:documentation>
+					<xs:documentation xml:lang="en">derogatory</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="hrv">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">harvaesinev</xs:documentation>
+					<xs:documentation xml:lang="en">rare</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="iroon">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">irooniline</xs:documentation>
+					<xs:documentation xml:lang="en">ironic</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="kõnek">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">kõnekeelne</xs:documentation>
+					<xs:documentation xml:lang="en">colloquial</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="liter">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">literaarne, raamatukeelne</xs:documentation>
+					<xs:documentation xml:lang="en">literary</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="lastek">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">lastekeelne</xs:documentation>
+					<xs:documentation xml:lang="en">child language</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="luulek">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">luulekeelne</xs:documentation>
+					<xs:documentation xml:lang="en">poetic</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="madalk">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">madalkeelne</xs:documentation>
+					<xs:documentation xml:lang="en">nonstandard</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="murd">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">murdekeelne</xs:documentation>
+					<xs:documentation xml:lang="en">regional</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nlj">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">naljatlev</xs:documentation>
+					<xs:documentation xml:lang="en">humorous</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="pid">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">kõrgstiilne, pidulik</xs:documentation>
+					<xs:documentation xml:lang="en">festive</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="piltl">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">piltlik</xs:documentation>
+					<xs:documentation xml:lang="en">figurative</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="rhvk">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">rahvakeelne</xs:documentation>
+					<xs:documentation xml:lang="en">colloquial</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="släng">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">släng</xs:documentation>
+					<xs:documentation xml:lang="en">slang</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="van">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">vananenud</xs:documentation>
+					<xs:documentation xml:lang="en">archaic</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="vulg">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">vulgaarne</xs:documentation>
+					<xs:documentation xml:lang="en">vulgar</xs:documentation>
+					<xs:documentation xml:lang="ru">rururu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="rk_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="abess">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">abessiiv, ilmaütlev</xs:documentation>
+					<xs:documentation xml:lang="en">abessive</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ablat">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">ablatiiv, alaltütlev</xs:documentation>
+					<xs:documentation xml:lang="en">ablative</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="adess">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">adessiiv, alalütlev</xs:documentation>
+					<xs:documentation xml:lang="en">adessive</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="allat">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">allatiiv, alaleütlev</xs:documentation>
+					<xs:documentation xml:lang="en">allative</xs:documentation>
+					<xs:appinfo>
+						<T>YViks</T>
+						<TA>2008-10-31T14:27:32</TA>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="elat">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">elatiiv, seestütlev</xs:documentation>
+					<xs:documentation xml:lang="en">elative</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ess">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">essiiv, olev</xs:documentation>
+					<xs:documentation xml:lang="en">essive</xs:documentation>
+					<xs:appinfo>
+						<T>YViks</T>
+						<TA>2008-10-31T14:47:37</TA>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gen">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">genitiiv, omastav</xs:documentation>
+					<xs:documentation xml:lang="en">genitive</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="illat">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">illatiiv, sisseütlev</xs:documentation>
+					<xs:documentation xml:lang="en">illative</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="iness">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">inessiiv, seesütlev</xs:documentation>
+					<xs:documentation xml:lang="en">inessive</xs:documentation>
+					<xs:appinfo>
+						<T>YViks</T>
+						<TA>2008-10-31T14:48:12</TA>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="komit">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">komitatiiv, kaasaütlev</xs:documentation>
+					<xs:documentation xml:lang="en">comitative</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="nom">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">nominatiiv, nimetav</xs:documentation>
+					<xs:documentation xml:lang="en">nominative</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="part">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">partitiiv, osastav</xs:documentation>
+					<xs:documentation xml:lang="en">partitive</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="term">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">terminatiiv, rajav</xs:documentation>
+					<xs:documentation xml:lang="en">terminative</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="transl">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">translatiiv, saav</xs:documentation>
+					<xs:documentation xml:lang="en">translative</xs:documentation>
+					<xs:appinfo>
+						<T>YViks</T>
+						<TA>2008-10-31T14:49:11</TA>
+					</xs:appinfo>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="ASA_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AB">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">andmebaasi artikkel</xs:documentation>
+					<xs:documentation xml:lang="en">andmebaasi artikkel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xliik_tyyp">
+		<xs:annotation>
+			<xs:documentation xml:lang="et">vaste liik</xs:documentation>
+			<xs:documentation xml:lang="en"/>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="xq">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">kaudvaste</xs:documentation>
+					<xs:documentation xml:lang="en">kaudvaste</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="as_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ab">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">andmebaasi element</xs:documentation>
+					<xs:documentation xml:lang="en">andmebaasi element</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xvk_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="x">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">-</xs:documentation>
+					<xs:documentation xml:lang="en">-</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xv_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="x">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">-</xs:documentation>
+					<xs:documentation xml:lang="en">-</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xsl_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="x">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">-</xs:documentation>
+					<xs:documentation xml:lang="en">-</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xs_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="x">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">-</xs:documentation>
+					<xs:documentation xml:lang="en">-</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xgk_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="asp">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">aspektipaarik</xs:documentation>
+					<xs:documentation xml:lang="en">aspektipaarik</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gen_m">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">soovorm_meessugu</xs:documentation>
+					<xs:documentation xml:lang="en">soovorm_meessugu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gen_f">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">soovorm_naissugu</xs:documentation>
+					<xs:documentation xml:lang="en">soovorm_naissugu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="gen_n">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">soovorm_kesksugu</xs:documentation>
+					<xs:documentation xml:lang="en">soovorm_kesksugu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="def">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">määratud vorm</xs:documentation>
+					<xs:documentation xml:lang="en">määratud vorm</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="u_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="uus">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">uus märksõna</xs:documentation>
+					<xs:documentation xml:lang="en">-</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="xall_tyyp">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="x">
+				<xs:annotation>
+					<xs:documentation xml:lang="et">x</xs:documentation>
+					<xs:documentation xml:lang="en">x</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,3 @@
+22 4 * * *      /var/www/EELex/data/elgar/skriptid/esskorrastaja.pl
+28 4 * * *      /var/www/EELex/data/elgar/skriptid/koristaja.pl
+02 6-23 * * * /var/www/EELex/data/run/mySqlToXml/mySqlToXml.cgi > /dev/null 2>&1

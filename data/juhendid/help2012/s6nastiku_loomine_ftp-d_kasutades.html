@@ -1,0 +1,28 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Uue sõnastiku loomine ftp-d kasutades</h2>
+
+<ol><li>luua login fail uuslogin.cgi (775) veebi kodu kataloogi („TEMPLATElogin.cgi“ abil)</li>
+<li>luua shsconfig_uus.xml (666), („shsconfig_TEMPLATE.xml“ abil)</li>
+<li>failis „lc.xml“ kirjeldada uue sõnastiku nimetus (kui puudub)</li>
+<li>luua html kataloogis procs_dic_uus.vbs (igale sõnastikule vastavad eritehted ja kontrollid, „procs_dic_TEMPLATE.vbs“abil)</li>
+<li>luua xsd skeem: schema_uus.xsd. Sõnastiku struktuuris peavad iga artikli lõpus olemas olema nö tehnilised elemendid: G (GUID), K (koostaja), KA (koostamise aeg), KL, T, TA, TL, PT, PTA, X, XA. Guid po lihtsalt uus GUID, koostajaks tuleb ületoodud sõnastiku korral märkida ’EKI’, koostamise ajaks/alguseks aeg, millal „xml valmis sai“. Lisaks peab märksõnal m olema atribuut O (nö sorteerimisatribuut, seda kasutatakse sõnastiku järjestamiseks märksõnade järgi). </li>
+<li>O väärtus ning K ja KA (kui nad puuduvad) arvutatakse „xmlStats“ programmi abil (Tööriistad -&gt; Sort. atr + sorteerimine). Antud käsuga XML fail ühtlasi ka sorteeritakse „O“ järgi.</li>
+<li>Kontrollida, kas XML fail vastab skeemile. Saab nt teha „xmlStats“ programmi abil. Tööriistad -&gt; XML-i valideerimine.</li>
+<li>sõnastiku fail: uus_1.xml (666), kataloogi sr uus alamkataloogi.</li>
+<li>luua uus_0.xml (666) kustutatud artiklite köite jaoks, kataloogi __sr uus alamkataloogi. See peab algselt olema lihtsalt tühi XML-fail.</li>
+<li>Kui on otsustatud, et sõnastiku andmeid hoitakse ka MySQL-i andmebaasis, tuleb teha ka valmis MySQL-ile sobivad andmefailid impordiks.„xmlStats“ -&gt; Tööriistad - &gt; Eksport MySQL andmefaili.</li>
+<li>genereerida xsl2, xml ja css failid.</li>
+<li>kirjutada vaate xsl: view_uus.xsl. Või genereerida hiljem sõnastikus töötades.</li>
+<li>kirjatada vaate css: view_uus.css (vaate genereerimise korral tehakse automaatselt, siis pole vaja).</li>
+<li>luua logs kataloogi alla uus kataloog „uus“ (777).</li>
+</ol>
+    </div>
+  </body>
+</html>

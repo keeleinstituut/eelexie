@@ -1,0 +1,186 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>Illustratsioon(id)</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+		<script language="JScript" type="text/jscript" src="tools.js"></script>
+		<style type="text/css">
+		    .myDiv {padding:5mm;}
+		    .seldDiv {padding:5mm;background-color:navy;}
+		    .myText {background-color:silver;}
+		</style>
+		<script language="vbscript" type="text/vbscript">
+
+<!--
+
+Option Explicit
+
+Dim PD, dic_desc, sAppLang, usrName
+Dim seldId
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+
+PD = ChrW(&HE001)
+Dim inArr
+if IsArray(window.dialogArguments) then
+	inarr = window.dialogArguments
+else
+	inarr = Split(window.dialogArguments, PD)
+end if
+
+    Dim currId
+
+	currId = inArr(0) 'od_: '011'
+	dic_desc = inArr(1)
+	sAppLang = inArr(2)
+	usrName = inArr(4)
+
+    document.body.style.cursor = "progress,wait"
+    
+    Dim xh
+    set xh = exCGISync("../tools.cgi", "getFiles" & PD & dic_desc & PD & usrName & PD & _
+                        "__sr/" & dic_desc & "/pictures/" & PD & _
+                        "*_th.jpg")
+    
+    if (xh.statusText = "OK") then
+
+        Dim rspDOM, sta
+        set rspDOM = IDD("", "", False, False, Nothing)
+        sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+
+        Dim imgBrd
+        imgBrd = "2px solid black"
+
+        if (sta) then
+
+            Dim imgId, divClass, cellHTML
+            set picsRow = document.all("picsRow")
+
+            Dim fNodes, fNode
+            set fNodes = rspDOM.selectNodes("rsp/outDOM/f")
+
+            Dim picsRow, myCell, seldCell
+            set seldCell = Nothing
+            for each fNode in fNodes
+                set myCell = picsRow.insertCell()
+                'fNode.text: faili nimi (ilma kataloogideta)
+                imgId = Mid(fNode.text, 1, InStrRev(fNode.text, "_") - 1) 'od_: '011'
+                if (imgId = currId) then
+                    divClass = "seldDiv"
+                    seldId = currId
+                    set seldCell = myCell
+                else
+                    divClass = "myDiv"
+                end if
+                cellHTML = _
+                    "<div id='" & imgId & "' class='" & divClass & "'>" & _
+                        "<img height='192' title='" & fNode.text & "'" & _
+                            "src='../__sr/" & dic_desc & "/pictures/" & fNode.text & "'" & _
+                            "style='border:" & imgBrd & ";'>" & _
+                        "</img>" & _
+                        "<p class='myText' align='center'>" & imgId & "</p>" & _
+                    "</div>"
+                myCell.innerHTML = cellHTML
+            next
+            
+            if Not (seldCell Is Nothing) then 'uue lisamise puhul on
+                picsDiv.scrollLeft = seldCell.offsetLeft - 3 'picsTable border + tables default padding
+            end if
+            
+        end if
+
+    else
+        MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+            xh.responseText, _
+            vbCritical
+    end if
+
+    document.body.style.cursor = "auto"
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub picsTableOnClick()
+    Dim oSrc
+    set oSrc = window.event.srcElement
+    if (oSrc.tagName = "IMG" or oSrc.tagName = "P") then
+        set oSrc = oSrc.parentElement
+    end if
+    if (oSrc.tagName = "DIV") then
+        if (seldId <> "") then
+            picsRow.all(seldId).className = "myDiv"
+        end if
+        seldId = oSrc.id
+        picsRow.all(seldId).className = "seldDiv"
+    end if
+End Sub 'picsTableOnClick
+
+
+Dim largePicId
+'-----------------------------------------------------------------------------------
+Sub showLargePicture()
+Dim oSrc
+set oSrc = window.event.srcElement
+if (oSrc.tagName <> "IMG") then
+    Exit Sub
+end if
+
+largePicId = oSrc.parentElement.id
+
+Call window.open("show_pic_large.htm", "_blank", _
+    "channelmode=yes,directories=no,fullscreen=no,location=no,menubar=no,resizable=no,scrollbars=no,status=no,titlebar=no,toolbar=no")
+
+End Sub 'showLargePicture
+
+
+'-----------------------------------------------------------------------------------
+Function bodyOnKeyUp()
+    if (window.event.keyCode = 27) then
+	    window.close()
+    elseif (window.event.keyCode = 13) then
+	    SetReturnV()
+    end if
+End Function 'bodyOnKeyUp
+
+			
+'-----------------------------------------------------------------------------------
+Function OKClick()
+    SetReturnV()
+End Function 'OKClick
+
+			
+'-----------------------------------------------------------------------------------
+Function SetReturnV()
+	window.returnValue = seldId 'od_: '011'
+	window.close()
+End Function 'SetReturnV
+
+-->
+
+		</script>
+	</head>
+	<body id="imagesBody"  style="background-color:buttonface;padding:10mm;" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+
+        <div id="picsDiv" style="width:900px;height:384px;overflow-x:scroll;border:solid 2px black;background-color:white;">
+            <table id="picsTable" border="1" onclick="picsTableOnClick()" ondblclick="showLargePicture()">
+                <tr id="picsRow"></tr>
+            </table>
+        </div>
+        
+        <br />
+        
+        <input type="button" id="okButton" value="   Vali   " onclick="OKClick()" />
+
+	</body>
+</html>

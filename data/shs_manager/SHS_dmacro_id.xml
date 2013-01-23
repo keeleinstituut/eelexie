@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<r>
+    <!--
+    </>
+    <></>
+    -->
+    <templates>
+      <template id="new_dict"    user="F" parten="D|R|C|G|K|N" description="Uute sõnastike omas"/>
+      <template id="delete_dict" user="F" parten="D|B|R|C|G|L|T|K" description="shs_delete: Kogu sõnastiku kustutamiseks"/>
+      <template id="clone_dict"  user="F" parten="D|R|C|G|K|N" description="shs_clone"/>
+      <template id="" user="F" parten="" description="hardcodetud lisad on ka"/>
+      
+      <template id="" user="F" parten="" description=""/>
+    </templates>
+    <dotypes>
+        <dotype id="R" user="T" name="Root config">
+            <description>shsconfig_(id).xml</description>
+        </dotype>
+        <dotype id="C" user="T" name="Config">
+            <description>seadistusfailid</description>
+        </dotype>
+        <dotype id="G" user="T" name="Generated config">
+            <description>failid mis on teistest failidest (config) genereeritud ja on uuesti genereeritavad.</description>
+        </dotype>
+        <dotype id="D" user="T" name="Data">
+            <description>sr__/(id) kaustas olevad xml failid</description>
+        </dotype>
+        <dotype id="B" user="T" name="Backup">
+            <description>backup failid</description>
+        </dotype> 
+        <dotype id="L" user="T" name="Log">
+            <description>logi failid</description>
+        </dotype>
+        <dotype id="T" user="T" name="Temp">
+            <description>ajutised failid</description>
+        </dotype>
+        <dotype id="N" user="F" name="Shared tree">
+            <description>kui sõnastikk tühja kohta kopeeritakse siis ühise puu loomiseks, kui sõnastik kustutatakse ja samasse kohta peavad teised sõnastikud jääma siis ei tohi kasutada</description>
+        </dotype>
+        <dotype id="K" user="F" name="Dictionary tree">
+            <description>puus esinevad sõnastiku id nimelised kaustad</description>
+        </dotype>
+    </dotypes>
+</r>

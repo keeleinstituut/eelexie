@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LexList>
+    <!--
+
+      dotype= D - data,B - backup, R - rootconfig, C - config,G - generated,L - Logsm, T - temp, N - aluspuu, K - sõnastiku omad kaustad
+      Vaata ka faili SHS_dmacro_id.xml 
+      :p: - prefix
+      :op: - ord(prefix).
+      :d: - vaheta sõnasiku idga
+      - kasutuses dir item ja skipfilter väljadel
+      itemtype="F" või "D" Fail Või kaust
+      (.*?) - perlis on kasutatud $1 failinime uuesti ehitamise juures (ei tohi sisalduda item'ites kui itemtype='D')
+      ****m= macro väli, kuidas faili teisendada
+      Järjekord loeb 
+      nr Needed rights vebiserveri vaatenurgast. {r,R,}{w,W,}{x,X,} Suur täht on vajalik, Väike täht õigus peab puuduma, 
+      Veel märkimata aga võiks tähistada ka iganenud failid. 
+
+    -->
+    <do dir="" item="shsconfig_:d:.xml" itemtype="F" dotype="R" nr="RWx" atr="664" />
+
+    <do dir="" item="__sr/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="__sr/" item=":d:/" itemtype="D" dotype="K" nr="RWX" atr="775" />
+    <do dir="__sr/:d:/" item=":d:(.*).xml" itemtype="F" dotype="D" nr="RWx" atr="664" />
+    <do dir="__sr/:d:/" item=":d:_autoInc.txt" itemtype="F" dotype="D" nr="RWx" atr="664" />
+    <do dir="" item="config/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="config/" item="view/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="config/view/" item="gendViewConf_:d:(.*).xml" itemtype="F" dotype="C" nr="RWx" atr="664" />
+    <do dir="config/" item="xsl2/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="config/xsl2/" item="dxsl2config_:d:.xml" itemtype="F" dotype="C" nr="RWx" atr="664" />
+    <do dir="config/xsl2/" item="gendXsl2Conf_:d:.xml" itemtype="F" dotype="C" nr="RWx" atr="664" />
+    <do dir="" item="css/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="css/" item="edit_:d:.css" itemtype="F" dotype="C" nr="RWx" atr="664" />
+    <do dir="css/" item="view_:d:.css" itemtype="F" dotype="C" nr="RWx" atr="664" />
+    <do dir="css/" item="gendView_:d:(.*).css" itemtype="F" dotype="G" nr="RWx" atr="664" />
+    <do dir="css/" item="gendEdit_:d:.css" itemtype="F" dotype="G" nr="RWx" atr="664" />
+    <do dir="" item="html/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="html/" item="procs_dic_:d:.vbs" itemtype="F" dotype="C" nr="RWx" atr="644" />
+    <do dir="html/" item="procs_dic_:d:.js" itemtype="F" dotype="C" nr="RWx" atr="644" />
+    <do dir="" item="logs/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="logs/" item=":d:/" itemtype="D" dotype="K" nr="RWX" atr="775" />
+    <do dir="logs/:d:/" item="(.*)" itemtype="F" dotype="L" nr="RWx" atr="664" />
+    <do dir="" item="xml/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="xml/" item=":d:/" itemtype="D" dotype="K" nr="RWX" atr="775" />
+    <do dir="xml/:d:/" item="stru_:d:.xml" itemtype="F" dotype="G" nr="RWx" atr="664" />
+    
+    <do dir="" item="backup/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    
+    <do dir="backup/" item=":d:(.*).xml" itemtype="F" dotype="B" nr="RWx" atr="664" />
+    
+    <do dir="backup/" item="gendSkeem" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="backup/gendSkeem/" item="(.*?):d:(.*)" itemtype="F" dotype="B" nr="RWx" atr="664" />
+    <do dir="backup/" item="gendVaade" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="backup/gendVaade/" item="(.*?):d:(.*)" itemtype="F" dotype="B" nr="RWx" atr="664" />
+    <do dir="backup/" item="hulgi" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="backup/hulgi/" item=":d:(.*).xml" itemtype="F" dotype="B" nr="RWx" atr="664" />
+    <do dir="backup/" item="import" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="backup/import/" item=":d:(.*).xml" itemtype="F" dotype="B" nr="RWx" atr="664" />
+    
+    <!--
+    seda saab kasutada kui prefiksid ei muutu
+    <do dir="xml/:d:/" item="(.*?)" itemtype="F" skipfilter="stru_:d:.xml" dotype="G" nr="RWx" atr="664" />
+    -->
+
+    <!--
+     h => z
+     'ag_h-po_104_58_112_111.xml' => 'ag_z-po_122_58_112_111.xml'
+     58 on ka alati
+     ag_:p:(.*?):op:(.*?).xml
+    -->
+    <do dir="xml/:d:/" item="al_:p:(.*?):op:(.*).xml" itemtype="F" dotype="G" nr="RWx" atr="664" />
+    <do dir="xml/:d:/" item="aa_:p:(.*?):op:(.*).xml" itemtype="F" dotype="G" nr="RWx" atr="664" />
+    <do dir="xml/:d:/" item="ag_:p:(.*?):op:(.*).xml" itemtype="F" dotype="G" nr="RWx" atr="664" />
+    <do dir="" item="temp/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="temp/" item="(.*):d:.xml" itemtype="F" dotype="T" nr="RWx" atr="664" />
+    <do dir="temp/" item=":d:(.*).xml" itemtype="F" dotype="T" nr="RWx" atr="664" />
+    <do dir="" item="xsd/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="xsd/" item=":d:/" itemtype="D" dotype="K" nr="RWX" atr="775" />
+    <do dir="xsd/" item="schema_:d:.xsd" itemtype="F" dotype="C" nr="RWx" atr="664" />
+    <do dir="xsd/:d:/" item=":d:_tyybid.xsd" itemtype="F" dotype="C" nr="RWx" atr="664" />
+    <do dir="" item="xsl/" itemtype="D" dotype="N" nr="RWX" atr="775" />
+    <do dir="xsl/" item="xsl2_:d:_(.*).xsl" itemtype="F" dotype="G" nr="RWx" atr="664" />
+    <do dir="xsl/" item="view_:d:.xsl" itemtype="F" dotype="C" nr="RWx" atr="664" />
+    <do dir="xsl/" item="gendView_:d:(.*).xsl" itemtype="F" dotype="G" nr="RWx" atr="664" />
+    <do dir="xsl/" item="gendXsl2_:d:.xsl" itemtype="F" dotype="G" nr="RWx" atr="664" />
+</LexList>

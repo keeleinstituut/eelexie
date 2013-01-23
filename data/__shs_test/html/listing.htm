@@ -1,0 +1,254 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>Valik loetelust</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+        <link href="dhtmlx/dhtmlxCombo/codebase/dhtmlxcombo.css" rel="STYLESHEET" type="text/css" />
+        <script src="dhtmlx/dhtmlxCombo/codebase/dhtmlxcommon.js" type="text/javascript"></script>
+        <script src="dhtmlx/dhtmlxCombo/codebase/dhtmlxcombo.js" type="text/javascript"></script>
+		<script src="tools.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+            function jsGetTime() {
+                var d = new Date();
+                return d.getTime();
+            }
+        </script>
+		
+		<script language="vbscript" type="text/vbscript">
+
+		<!--
+Option Explicit
+Dim dic_desc, sLinkVols, xPath, algTekst, usrName, PD
+
+'dhtmlx Combo
+Dim dhx_globalImgPath, z
+
+'timerid
+Dim iTimerId, msViimane, msPraegu, inputValue
+Const msInterval = 750
+
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+PD = ChrW(&HE001)
+
+Dim inArr
+if IsArray(window.dialogArguments) then
+	inarr = window.dialogArguments
+else
+	inarr = Split(window.dialogArguments, PD)
+end if
+
+document.title = "'" & inArr(0) & "': "
+
+dic_desc = inArr(1)
+    
+sLinkVols = inArr(2)
+oLinkVols.outerHTML = "<select id='oLinkVols'>" & sLinkVols & "</select>"
+    
+xPath = inArr(3) 'nt 'first_default'
+algTekst = inArr(4)
+usrName = inArr(5)
+	
+dhx_globalImgPath = "dhtmlx/dhtmlxCombo/codebase/imgs/"
+    
+set z = dhtmlXComboFromSelect("oLinkSelect")
+inputValue = algTekst
+Call z.setComboText(inputValue)
+    
+Dim inp
+set inp = comboTD.getElementsByTagName("INPUT")(0)
+inp.focus()
+inp.select()
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Function bodyOnKeyUp()
+Dim oSrc, kc, currTekst
+set oSrc = window.event.srcElement
+kc = window.event.keyCode
+if (kc = 27) then
+    z.destructor()
+	window.close()
+elseif (kc = 13) then
+	SetReturnV()
+else
+    if (oSrc.tagName = "INPUT") then 'combo sees on INPUT
+        if (kc = 37 or kc = 38 or kc = 39 or kc = 40) then 'vasak, üles, paremale, alla
+        else
+            currTekst = z.getComboText()
+            if (currTekst <> inputValue) then
+                if Not IsEmpty(msViimane) then
+                    msPraegu = jsGetTime()
+                    if ((msPraegu - msViimane) < msInterval) then
+                        clearTimeOut(iTimerId)
+                    end if
+                end if
+                iTimerId = setTimeOut("uuendaCombo()", msInterval)
+                inputValue = currTekst
+                msViimane = jsGetTime()
+            end if
+        end if
+'        if (kc = 8) then 'backspace
+'        elseif (kc = 9) then 'Tab
+'        elseif (kc = 36 or kc = 35) then 'Home, End
+'        elseif (kc = 33 or kc = 34) then 'PgUp, PgDn
+'        elseif (kc = 37 or kc = 38 or kc = 39 or kc = 40) then 'vasak, üles, paremale, alla
+'        elseif (kc = 17 or kc = 18 or kc = 16 or kc = 93 or kc = 91 or kc = 20) then 'AltGr, Ctrl; Alt, Shift, ContMenu, Windows, CapsLock
+'        elseif (kc > 112 and kc < 123) then 'F1 - F12
+'        elseif (kc = 46) then 'Del
+'        elseif (kc = 19 or kc = 45 or kc = 144) then 'Pause/Break, Ins, NumLk
+'        else
+''            Call uuendaCombo()
+'        end if
+    end if
+end if
+End Function 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub uuendaCombo()
+Dim xh, seldVolId, volNr, comboTekst, optCnt
+seldVolId = oLinkVols.options(oLinkVols.selectedIndex).id
+volNr = Right(seldVolId, 1)
+comboTekst = z.getComboText()
+
+if (Len(Trim(comboTekst)) = 0) then
+    Exit Sub
+end if
+
+optCnt = 11
+
+Dim xp2, sql
+xp2 = Replace(xPath, "/", "[", 1, 1) & "[starts-with(., " & GCV(comboTekst, "", 0) & ")]]" & _
+    "[position() < " & optCnt & "]" & _
+    Mid(xPath, InStr(1, xPath, "/"))
+sql = "SELECT msid.ms AS ms, msid.G AS G FROM msid WHERE ms LIKE '" & comboTekst & "%' AND dic_code = '" & dic_desc & "' AND vol_nr = " & volNr
+    
+set xh = exCGISync("../tools.cgi", _
+    "readXMLg" & PD & _
+    dic_desc & PD & _
+    usrName & PD & _
+    "__sr/" & dic_desc & "/" & seldVolId & ".xml" & PD & _
+    xp2 & PD & _
+    sql)
+
+Dim artCount
+
+if (xh.statusText = "OK") then
+
+    Dim rspDOM, sta
+    set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDoc
+    sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+    if (sta) then
+
+        z.clearAll(false)
+        
+        Dim kirjed, m, g, xmlStr, i
+        set kirjed = rspDOM.documentElement.selectNodes("outDOM/A")
+        xmlStr = "<complete>"
+        for i = 0 to kirjed.length - 1
+            m = kirjed(i).selectSingleNode("m").text
+            g = kirjed(i).selectSingleNode("g").text
+            xmlStr = xmlStr & "<option value='" & g & "'>" & m & "</option>"
+        next
+        xmlStr = xmlStr & "</complete>"
+        Call z.loadXMLString(xmlStr)
+
+    end if
+
+else
+    MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+        xh.responseText, _
+        vbCritical
+end if
+End Sub 'uuendaCombo
+
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+Dim seldVolId, comboTekst, guid
+seldVolId = oLinkVols.options(oLinkVols.selectedIndex).id
+comboTekst = z.getComboText()
+guid = z.getSelectedValue()
+window.returnValue = seldVolId & PD & guid & PD & comboTekst
+z.destructor()
+window.close()
+End Sub 'SetReturnV
+
+
+'-----------------------------------------------------------------------------------
+Function GCV(sInpStr, lisa, kuhu)
+Dim sGCV, i, tarr
+sGCV = ""
+
+if (sInpStr = "'") then
+    if (kuhu = 0) then
+        sGCV = """" & lisa & "'"""
+    else
+        sGCV = """'" & lisa & """"
+    end if
+elseif (InStr(1, sInpStr, "'") > 0) then
+	tarr = Split(sInpStr, "'")
+	for i = 0 to UBound(tarr)
+		if Not (tarr(i) = "") then
+			sGCV = sGCV & ",'" & tarr(i) & "'"
+		end if
+		if (i < UBound(tarr)) then
+			sGCV = sGCV & ",""'"""
+		end if
+	next
+	if Not (lisa = "") then
+	    if (kuhu = 0) then
+	        sGCV = "concat('" & lisa & "', " & Mid(sGCV, 2) & ")"
+	    else
+	        sGCV = "concat(" & Mid(sGCV, 2) & ", '" & lisa & "')"
+	    end if
+	else
+	    sGCV = "concat(" & Mid(sGCV, 2) & ")"
+	end if
+else
+    if (kuhu = 0) then
+	    sGCV = "'" & lisa & sInpStr & "'"
+    else
+	    sGCV = "'" & sInpStr & lisa & "'"
+    end if
+end if
+GCV = sGCV
+End Function 'GCV
+			-->
+
+		</script>
+	</head>
+	<body  style="background-color:buttonface" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+		<div id="oLinkDiv" style="padding: 2mm;">
+		    <table style="width:100%;">
+		        <tr>
+		            <td>
+		                <select id="oLinkVols">
+		                </select>
+		            </td>
+		            <td id="comboTD" style="width:285;">
+		                <select id="oLinkSelect" name="oLinkSelect" style="width:280;">
+		                </select>
+		            </td>
+		            <td>
+		                <input id="btnOK" type="button" value="  OK  " onclick="SetReturnV()" />
+		            </td>
+		        </tr>
+		    </table>
+		</div>
+	</body>
+</html>

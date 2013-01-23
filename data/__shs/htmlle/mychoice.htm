@@ -1,0 +1,91 @@
+﻿<html>
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>Valik</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+		<script language=vbscript type="text/vbscript">
+
+		<!--
+Option Explicit
+
+Dim PD
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+Dim inArr
+Dim tarr
+Dim i, divSelectInnerHTML, valsIds
+
+PD = ChrW(&HE001)
+if IsArray(window.dialogArguments) then
+	inarr = window.dialogArguments
+else
+	inarr = Split(window.dialogArguments, PD)
+end if
+
+tarr = Split(inArr(0), ";")
+divSelectInnerHTML = "<select id='idSelect' size='10' style='width:80%;'>"
+for i = 0 to UBound(tarr)
+	valsIds = Split(tarr(i), ",")
+	divSelectInnerHTML = divSelectInnerHTML & "<option id = '" & valsIds(1) & "'>" & valsIds(0) & "</option>"
+next
+divSelectInnerHTML = divSelectInnerHTML & "</select>"
+divSelect.innerHTML = divSelectInnerHTML
+document.title = "Valik: " & inArr(1)
+
+End Sub 'bodyOnLoad
+
+		
+'-----------------------------------------------------------------------------------
+Function bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+elseif (window.event.keyCode = 13) then
+	SetReturnV()
+end if
+End Function 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+Dim idSelect
+set idSelect = document.all("idSelect")
+if (idSelect.selectedIndex > -1) then
+    Dim pathBase
+    if (testdb.checked) then
+        'tools.cgi ning srvfuncs.cgi suhtes
+        pathBase = "../__shs_test/__sr"
+    else
+        pathBase = "../__shs/__sr"
+    end if
+    window.returnValue = idSelect.options(idSelect.selectedIndex).id & PD & pathBase
+    window.close()
+end if
+End Sub 'SetReturnV
+			-->
+
+		</script>
+	</head>
+	<body  style="background-color:buttonface" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+		<div id="idBody" style="padding-left: 10mm; padding-top: 5mm; padding-right: 10mm; padding-bottom: 5mm">
+		    <div id="divSelect">
+		    </div>
+		    <div id="idButtons" align="left">
+		        <input id="testDB" type="checkbox" />
+		        <label for="testDB">testbaas</label>
+		        <br />
+		        <br />
+			    <input id="btnOk" onclick="SetReturnV()" type="button" value="   OK   ">
+			    <input id="btnCancel" onclick="window.close()" type="button" value=" Loobu ">
+		    </div>
+		</div>
+	</body>
+</html>

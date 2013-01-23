@@ -1,0 +1,410 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+	<title>Toimetajad/peatoimetajad</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+        <link rel="stylesheet" type="text/css" href="../css/script.css">
+		<script language="JScript" type="text/jscript" src="tools.js"></script>
+		<script language="vbscript" type="text/vbscript">
+
+<!--
+
+Option Explicit
+
+Dim JR
+JR = ChrW(&HE001)
+
+Dim dic_desc, usrName, confFile, confField
+Dim oRow, updated
+
+Dim idEnumsTable, idSeldRow
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+
+Dim sAppLang, parText
+
+set oRow = Nothing
+updated = false
+
+    'Array(dic_desc, sUsrName, sAppLang, parText, parConfFile, parConfField)
+    Dim inArr
+    if IsArray(window.dialogArguments) then
+	    inarr = window.dialogArguments
+    else
+	    inarr = Split(window.dialogArguments, JR)
+    end if
+        
+	dic_desc = inArr(0)
+    usrName = inArr(1)
+	sAppLang = inArr(2)
+	parText = inArr(3)
+    document.title = UCase(dic_desc) & ": " & parText
+    confFile = inArr(4)
+    confField = inArr(5)
+
+    Dim xh
+    set xh = exCGISync("../tools.cgi", "exsaGetField" & JR & dic_desc & JR & usrName & JR & confFile & JR & "items/item[@code = '" & dic_desc & "']/" & confField)
+        
+    if (xh.statusText = "OK") then
+
+	    Dim oRespDom, sta
+	    set oRespDom = xh.responseXML 'responseXML: TypeName = DomDocument
+	    sta = oRespDom.selectSingleNode("rsp/sta").text
+	    if (sta = "Success") then
+            Call fillIfrTable(oRespDom)
+        else
+            MsgBox "Väärtuste leidmine ei õnnestunud!", vbCritical, document.title
+	    end if
+
+    else
+        MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+            xh.responseText, _
+            vbCritical
+    end if
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+    if Not (window.event Is Nothing) then
+        if (window.event.keyCode = 27) then
+	        window.close()
+        elseif (window.event.keyCode = 13) then
+            Call SetReturnV()
+        end if
+    else
+        if (idIfrSisu.event.keyCode = 27) then
+	        window.close()
+        end if
+    end if
+End Sub 'bodyOnKeyUp
+
+			
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+    if (updated) then
+        Dim uRow, retStr, kn
+        retStr = ";"
+        for each uRow in idEnumsTable.rows
+            if (uRow.parentNode.tagName = "TBODY") then
+                kn = Trim(uRow.innerText)
+                if (Len(kn) > 0) then
+                    retStr = retStr & kn & ";"
+                end if
+            end if
+        next
+        
+        if (Len(retStr) > 1) then
+            Dim xh
+            set xh = exCGISync("../tools.cgi", "exsaSetField" & JR & dic_desc & JR & usrName & JR & confFile & JR & "items/item[@code = '" & dic_desc & "']/" & confField & JR & retStr)
+            
+            if (xh.statusText = "OK") then
+	            Dim oRespDom, sta
+	            set oRespDom = xh.responseXML 'responseXML: TypeName = DomDocument
+	            sta = oRespDom.selectSingleNode("rsp/sta").text
+	            if (sta <> "Success") then
+                    MsgBox "Väärtuste salvestamine ei õnnestunud!", vbCritical, document.title
+	            end if
+            else
+                MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+                    xh.responseText, _
+                    vbCritical
+            end if
+        end if
+    end if
+    window.returnValue = "" 'et procs_app -is 'document' 'refresh' ei tuleks
+	window.close()
+End Sub 'SetReturnV
+
+
+'-----------------------------------------------------------------------------------
+Sub okOnClick()
+    Call SetReturnV()
+End Sub 'okOnClick
+
+
+'-----------------------------------------------------------------------------------
+Function fillIfrTable(inDom)
+
+    Dim answer
+    answer = inDom.selectSingleNode("rsp/answer").text
+    if (Left(answer, 1) = ";") then
+        answer = Mid(answer, 2)
+    end if
+    if (Right(answer, 1) = ";") then
+        answer = Mid(answer, 1, Len(answer) - 1)
+    end if
+    if (Len(answer) = 0) then
+        answer = " "
+    end if
+
+    Dim ifrDoc, th
+    set ifrDoc = document.frames("idIfrSisu").document.open("text/html", "replace")
+
+    ifrDoc.writeln "<table id='idEnumsTable' width='100%' border='1'>"
+    th = "<thead style='background-color:navy;color:white'>" & _
+            "<tr>" & _
+                "<th>Kasutajanimi</th>" & _
+            "</tr>" & _
+         "</thead>"
+    ifrDoc.writeln th
+    
+    Dim kasutajad, kasutaja
+    kasutajad = Split(answer, ";")
+    
+    for each kasutaja in kasutajad
+        ifrDoc.writeln "<tr id='" & kasutaja & "'>" & _
+                "<td>" & _
+                    "<span style='width:100%;'>" & kasutaja & "</span>" & _
+                "</td>" & _
+            "</tr>"
+    next
+
+    ifrDoc.writeln "</table>"
+
+    ifrDoc.close
+
+    set idEnumsTable = idIfrSisu.document.all("idEnumsTable")
+    document.frames("idIfrSisu").document.body.onkeyup = GetRef("bodyOnKeyUp")
+    document.frames("idIfrSisu").document.body.onclick = GetRef("idIfrSisuOnClick")
+    document.frames("idIfrSisu").document.body.oncontextmenu = GetRef("idIfrSisuOnContextMenu")
+
+    fillIfrTable = UBound(kasutajad, 1)
+
+End Function 'fillIfrTable
+
+
+'-----------------------------------------------------------------------------------
+Sub idIfrSisuOnContextMenu()
+
+    Dim oSrc
+    set oSrc = idIfrSisu.event.srcElement
+    
+    if Not (idEnumsTable.contains(oSrc)) then
+        Exit Sub
+    end if
+
+    Call setVars(oSrc)
+    
+    Dim srcX, srcY
+    srcX = idIfrSisu.event.screenX
+    srcY = idIfrSisu.event.screenY - window.screenTop
+
+    'et idCMenu kohe onlosecapture-t ei saaks
+    idIfrSisu.event.returnValue = false
+
+    Call displayCMenu(idCMenu, srcX, srcY)
+    
+End Sub 'idIfrSisuOnContextMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub displayCMenu(menuObj, posX, posY)
+if Not (menuObj.innerHTML = "") then
+	menuObj.style.pixelLeft = posX
+	menuObj.style.pixelTop = posY
+	menuObj.style.display = ""
+	menuObj.style.cursor = "default"
+	menuObj.setCapture()
+end if
+End Sub 'displayCMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub disableContextMenu()
+window.event.returnValue = false
+End Sub 'disableContextMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub hideDivMenu()
+'menüü ise
+Dim menuObj
+set menuObj = window.event.srcElement
+menuObj.style.display = "none"
+menuObj.style.cursor = "auto"
+End Sub 'hideDivMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub setVars(oClicked)
+
+    Dim oSpans, oSpan
+    if Not (oRow Is Nothing) then
+        set oSpans = oRow.all.tags("SPAN")
+        for each oSpan in oSpans
+            if (oSpan.isContentEditable) then
+                oSpan.contentEditable = "false"
+            end if
+        next
+        oRow.style.backgroundColor = ""
+    end if
+
+    if (oClicked.tagName = "SPAN") then
+        set oRow = oClicked.parentElement.parentElement
+    elseif (oClicked.tagName = "TD") then
+        set oRow = oClicked.parentElement
+    elseif (oClicked.tagName = "INPUT") then
+        set oRow = oClicked.parentElement.parentElement
+    else
+        Exit Sub
+    end if
+
+    idSeldRow = oRow.id
+    oRow.style.backgroundColor = "silver"
+
+End Sub 'setVars
+
+
+'-----------------------------------------------------------------------------------
+Sub idIfrSisuOnClick()
+    Dim oSrc
+    set oSrc = idIfrSisu.event.srcElement
+    
+    if Not (idEnumsTable.contains(oSrc)) then
+        Exit Sub
+    end if
+
+    Call setVars(oSrc)
+
+    if (oSrc.tagName = "SPAN") then
+        if Not (oSrc.isContentEditable) then
+            updated = true
+            oSrc.contentEditable = "true"
+        end if
+        oSrc.focus()
+    end if
+
+End Sub 'idIfrSisuOnClick
+
+
+'-----------------------------------------------------------------------------------
+Function GetXSDDateTime(dNow)
+Dim sDateTime
+sDateTime = Year(dNow) & "-" & String(2-Len(Month(dNow)),"0") & Month(dNow) & "-" & _
+	String(2-Len(Day(dNow)),"0") & Day(dNow) & "T" & _
+	String(2-Len(Hour(dNow)),"0") & Hour(dNow) & ":" & _
+	String(2-Len(Minute(dNow)),"0") & Minute(dNow) & ":" & _
+	String(2-Len(Second(dNow)),"0") & Second(dNow)
+GetXSDDateTime = sDateTime
+End Function 'GetXSDDateTime
+
+
+'-----------------------------------------------------------------------------------
+Sub switchCMenuRows()
+'käsitleb idCMenu onmouseover-it ja onmouseout-i
+Dim cmel, hoverRow
+
+set cmel = window.event.srcElement
+if (cmel.tagName = "TD") then
+    set hoverRow = cmel.parentElement
+else
+    Exit Sub
+end if
+if (hoverRow.className = "mi") then
+	hoverRow.className = "hi"
+elseif (hoverRow.className = "hi") then
+	hoverRow.className = "mi"
+end if
+End Sub 'switchCMenuRows
+
+
+'-----------------------------------------------------------------------------------
+Sub clickCMenuRow()
+
+document.releaseCapture()
+
+Dim cmel, clickedRow
+set cmel = window.event.srcElement
+if (cmel.tagName = "TD") then
+    set clickedRow = cmel.parentElement
+else
+    Exit Sub
+end if
+
+if (clickedRow.id = "add_before" or clickedRow.id = "add_after") then
+
+    Dim uusEnum, newRowIndex
+
+	uusEnum = Trim(InputBox("Sisesta uus väärtus!", "Uue väärtuse lisamine'"))
+	if (uusEnum = "") then
+		Exit Sub
+	end if
+
+    if (clickedRow.id = "add_before") then
+	    newRowIndex = oRow.rowIndex
+	elseif (clickedRow.id = "add_after") then
+	    newRowIndex = oRow.rowIndex + 1
+    end if
+
+    Dim newRow, newCell
+    set newRow = idEnumsTable.insertRow(newRowIndex)
+    newRow.id = uusEnum
+    'uus kasutajanimi
+    set newCell = newRow.insertCell()
+    newCell.innerHTML = "<span style='width:100%'>" & uusEnum & "</span>"
+
+    updated = true
+
+elseif (clickedRow.id = "del_self") then
+	Call idEnumsTable.deleteRow(oRow.rowIndex)
+	set oRow = Nothing
+    updated = true
+
+end if
+
+End Sub 'clickCMenuRow
+
+-->
+
+		</script>
+	</head>
+	<body id="idBody" style="background-color:buttonface;padding:10mm;" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+
+        <div id="idDivSisu" style="width:100%;height:100%;">
+
+            <iframe id="idIfrSisu" style="width:100%;height:80%;"></iframe>
+            <br />
+
+            <div>
+                <table cellspacing='5'>
+                    <tr>
+                        <td>
+                            <input type="button" id="btnOK" value="   OK   " onclick="okOnClick()" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- kontekstmenüü -->
+        <div id="idCMenu" style="display:none; position:absolute; width:300px;
+        background-color:menu; border:outset 3px gray"
+        onmouseover="switchCMenuRows()" onmouseout="switchCMenuRows()"
+        onclick="clickCMenuRow()" oncontextmenu="disableContextMenu()"
+        onlosecapture="hideDivMenu()">
+	        <table id='tbl_CMenu' width='100%' border='0' cellSpacing='0'>
+                <tr class='mi' id='add_before'>
+	                    <td>Lisa ette</td>
+                </tr>
+                <tr class='mi' id='add_after'>
+	                    <td>Lisa järele</td>
+                </tr>
+                <tr class='mi' id='del_self'>
+	                    <td>Kustuta</td>
+                </tr>
+            </table>
+        </div>
+
+	</body>
+</html>

@@ -1,0 +1,366 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Fontide sätted</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="dhtmlx/dhtmlxCombo/codebase/dhtmlxcombo.css" />
+    <script type="text/javascript" src="dhtmlx/dhtmlxCombo/codebase/dhtmlxcommon.js"></script>
+    <script type="text/javascript" src="dhtmlx/dhtmlxCombo/codebase/dhtmlxcombo.js"></script>
+    <script type="text/javascript" src="dhtmlx/dhtmlxCombo/codebase/ext/dhtmlxcombo_whp.js"></script>
+    <!--<script type="text/javascript" src="dhtmlx/dhtmlxCombo/codebase/ext/dhtmlxcombo_extra.js"></script>-->
+    <script type="text/javascript">
+
+
+        var JR = "\uE001";
+        var dic_desc, sAppLang, usrName;
+
+//        var eeLexAdmin;
+
+        var msIE = false;
+
+        // combod
+        var cmbEditFont, cmbEditFontSize, cmbViewFont, cmbViewFontSize, cmbWordFontSize;
+
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnLoad() {
+            if (navigator.userAgent.indexOf("MSIE") > -1)
+                msIE = true;
+
+            if (!msIE)
+                return;
+
+            dhx_globalImgPath = "dhtmlx/dhtmlxCombo/codebase/imgs/";
+            var fondid = fillFonts();
+
+            cmbEditFont = dhtmlXComboFromSelect("selEditFont");
+            cmbEditFont.loadXMLString(fondid);
+            // cmbEditFont.setOptionWidth(2 * (200)); // dhtmlxcombo_whp.js
+            // cmbEditFont.setOptionHeight(400);
+            cmbEditFont.enableFilteringMode(true);
+            // cmbEditFont.DOMelem_input.setAttribute("confProp", "colorsFont/font-family");
+
+            cmbViewFont = dhtmlXComboFromSelect("selViewFont");
+            cmbViewFont.loadXMLString(fondid);
+            // cmbViewFont.setOptionWidth(2 * (200)); // dhtmlxcombo_whp.js
+            // cmbViewFont.setOptionHeight(400);
+            cmbViewFont.enableFilteringMode(true);
+            // cmbViewFont.DOMelem_input.setAttribute("confProp", "colorsFont/font-family");
+
+            var sizesStr = "<complete>";
+            sizesStr += "<option value='8'>9</option>";
+            sizesStr += "<option value='9'>9</option>";
+            sizesStr += "<option value='10'>10</option>";
+            sizesStr += "<option value='11'>11</option>";
+            sizesStr += "<option value='12'>12</option>";
+            sizesStr += "<option value='14'>14</option>";
+            sizesStr += "<option value='16'>16</option>";
+            sizesStr += "<option value='18'>18</option>";
+            sizesStr += "<option value='20'>20</option>";
+            sizesStr += "<option value='22'>22</option>";
+            sizesStr += "<option value='24'>24</option>";
+            sizesStr += "<option value='26'>26</option>";
+            sizesStr += "<option value='28'>28</option>";
+            sizesStr += "<option value='36'>36</option>";
+            sizesStr += "<option value='48'>48</option>";
+            sizesStr += "<option value='72'>72</option>";
+            sizesStr += "</complete>";
+
+            cmbEditFontSize = dhtmlXComboFromSelect("selEditFontSize");
+            cmbEditFontSize.loadXMLString(sizesStr);
+            // cmbEditFontSize.setOptionWidth(2 * (200)); // dhtmlxcombo_whp.js
+            // cmbEditFontSize.setOptionHeight(400);
+            // cmbEditFontSize.enableFilteringMode(true);
+            // cmbEditFontSize.DOMelem_input.setAttribute("confProp", "colorsFont/font-family");
+
+            cmbViewFontSize = dhtmlXComboFromSelect("selViewFontSize");
+            cmbViewFontSize.loadXMLString(sizesStr);
+            // cmbViewFontSize.setOptionWidth(2 * (200)); // dhtmlxcombo_whp.js
+            // cmbViewFontSize.setOptionHeight(400);
+            // cmbViewFontSize.enableFilteringMode(true);
+            // cmbViewFontSize.DOMelem_input.setAttribute("confProp", "colorsFont/font-family");
+
+            cmbWordFontSize = dhtmlXComboFromSelect("selWordFontSize");
+            cmbWordFontSize.loadXMLString(sizesStr);
+            // cmbWordFontSize.setOptionWidth(2 * (200)); // dhtmlxcombo_whp.js
+            // cmbWordFontSize.setOptionHeight(400);
+            // cmbWordFontSize.enableFilteringMode(true);
+            // cmbWordFontSize.DOMelem_input.setAttribute("confProp", "colorsFont/font-family");
+
+
+            var inArr = window.dialogArguments.split(JR);
+            dic_desc = inArr[0];
+            sAppLang = inArr[1];
+            usrName = inArr[2];
+
+            var ix;
+            var dicConfDom = IDD("File", "../shsconfig_" + dic_desc + ".xml", false, false, null);
+            if (!dicConfDom) {
+                alert("Puudub sõnastiku konfiguratsioonifail!");
+                return;
+            }
+            var cfgElem = dicConfDom.documentElement.selectSingleNode("colorsFonts/editArea/editFont");
+            if (cfgElem) {
+                ix = cmbEditFont.getIndexByValue(cfgElem.text);
+                cmbEditFont.selectOption(ix, false, true); // index, filter, pre/real
+                cmbEditFont.setComboText(cfgElem.text);
+            }
+            cfgElem = dicConfDom.documentElement.selectSingleNode("colorsFonts/editArea/editFontSize");
+            if (cfgElem) {
+                ix = cmbEditFontSize.getIndexByValue(cfgElem.text);
+                cmbEditFontSize.selectOption(ix, false, true); // index, filter, pre/real
+                cmbEditFontSize.setComboText(cfgElem.text);
+            }
+            cfgElem = dicConfDom.documentElement.selectSingleNode("colorsFonts/viewArea/viewFont");
+            if (cfgElem) {
+                ix = cmbViewFont.getIndexByValue(cfgElem.text);
+                cmbViewFont.selectOption(ix, false, true); // index, filter, pre/real
+                cmbViewFont.setComboText(cfgElem.text);
+            }
+            cfgElem = dicConfDom.documentElement.selectSingleNode("colorsFonts/viewArea/viewFontSize");
+            if (cfgElem) {
+                ix = cmbViewFontSize.getIndexByValue(cfgElem.text);
+                cmbViewFontSize.selectOption(ix, false, true); // index, filter, pre/real
+                cmbViewFontSize.setComboText(cfgElem.text);
+            }
+            cfgElem = dicConfDom.documentElement.selectSingleNode("colorsFonts/viewArea/wordFontSize");
+            if (cfgElem) {
+                ix = cmbWordFontSize.getIndexByValue(cfgElem.text);
+                cmbWordFontSize.selectOption(ix, false, true); // index, filter, pre/real
+                cmbWordFontSize.setComboText(cfgElem.text);
+            }
+
+
+//            var yldConfDom = IDD("File", "../shsConfig.xml", false, false, null);
+//            eeLexAdmin = xmlElementTextValue(yldConfDom.documentElement.getElementsByTagName("eeLexAdmin")[0]);
+
+//            if (eeLexAdmin.indexOf(";" + usrName + ";") > -1) {
+//            }
+
+        } //bodyOnLoad
+
+
+        //-----------------------------------------------------------------------------------
+        function SetReturnV() {
+            var retXML = "<colorsFonts>";
+
+            retXML += "<editArea>";
+            retXML += "<editFont>" + jsTrim(cmbEditFont.getComboText()) + "</editFont>";
+            retXML += "<editFontSize>" + jsTrim(cmbEditFontSize.getComboText()) + "</editFontSize>";
+            retXML += "</editArea>";
+
+            retXML += "<viewArea>";
+            retXML += "<viewFont>" + jsTrim(cmbViewFont.getComboText()) + "</viewFont>";
+            retXML += "<viewFontSize>" + jsTrim(cmbViewFontSize.getComboText()) + "</viewFontSize>";
+            retXML += "<wordFontSize>" + jsTrim(cmbWordFontSize.getComboText()) + "</wordFontSize>";
+            retXML += "</viewArea>";
+
+            retXML += "</colorsFonts>";
+
+
+            //"exsaSetField" salvestab ühe välja teksti, "updateXML" asendab DOM kaudu terve elemendi
+            var xh = exCGISync("../tools.cgi", "updateXML" + JR + dic_desc + JR + usrName + JR +
+                            "shsconfig_" + dic_desc + ".xml" + JR +
+                            "colorsFonts" + JR +
+                            retXML + JR +
+                            "1");
+
+            if (xh.statusText == "OK") {
+                var rspDOM = IDD("", "", false, false, null);
+                var loadStatus = rspDOM.load(xh.responseXML); //'responseXML: TypeName = DomDocument
+                if (loadStatus) {
+                    var sta = rspDOM.selectSingleNode("rsp/sta").text;
+                    var cnt = rspDOM.selectSingleNode("rsp/cnt").text;
+                    if (cnt == 1) {
+                        window.returnValue = "colorsFonts";
+                        window.close();
+                    } else {
+                        alert("Fontide sätete salvestamine ei õnnestunud!\r\n\r\n" + sta);
+                    }
+                } else {
+                    alert(xh.status + ": " + xh.statusText + "\r\n\r\n" + xh.responseText);
+                }
+            }
+
+        } //SetReturnV
+
+
+        //-----------------------------------------------------------------------------------
+        function getStrCharset(intCharset) {
+            var charset = "--------------------";
+            switch (intCharset) {
+                case 0:
+                    charset = "ANSI";
+                    break;
+                case 1:
+                    charset = "System default";
+                    break;
+                case 2:
+                    charset = "Standard symbols";
+                    break;
+                case 77:
+                    charset = "Apple Macintosh®";
+                    break;
+                case 128:
+                    charset = "Japanese (Shift-JIS)";
+                    break;
+                case 129:
+                    charset = "Korean (Wansung)";
+                    break;
+                case 130:
+                    charset = "Korean (Johab)";
+                    break;
+                case 134:
+                    charset = "Simplified Chinese";
+                    break;
+                case 136:
+                    charset = "Traditional Chinese";
+                    break;
+                case 161:
+                    charset = "Greek";
+                    break;
+                case 162:
+                    charset = "Turkish";
+                    break;
+                case 163:
+                    charset = "Vietnamese";
+                    break;
+                case 177:
+                    charset = "Hebrew";
+                    break;
+                case 178:
+                    charset = "Arabic";
+                    break;
+                case 186:
+                    charset = "Baltic";
+                    break;
+                case 204:
+                    charset = "Russian";
+                    break;
+                case 222:
+                    charset = "Thai";
+                    break;
+                case 238:
+                    charset = "Eastern European";
+                    break;
+                case 255:
+                    charset = "OEM";
+                    break;
+            }
+            return charset;
+        } // getStrCharset
+
+
+        //-----------------------------------------------------------------------------------
+        function fillFonts() {
+            var fontsArray = new Array();
+            var i;
+            for (i = 1; i <= dlgHelper.fonts.count; i++) {
+                fontsArray.push(dlgHelper.fonts(i));
+            }
+            fontsArray.sort();
+
+            var xmlStr = "<complete>";
+            for (i = 0; i < fontsArray.length; i++) {
+                // var intCharset = dlgHelper.getCharset(fontsArray[i]);
+                // getStrCharset(intCharset)
+                xmlStr += "<option value='" + fontsArray[i] + "'>" + fontsArray[i] + "</option>";
+            }
+            xmlStr += "</complete>";
+            return xmlStr;
+        } // fillFonts
+
+
+        //-----------------------------------------------------------------------------------
+        function btnOkOnClick() {
+            SetReturnV();
+        } //btnOkOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function btnCancelOnClick() {
+            window.close();
+        } //btnCancelOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnKeyUp() {
+            if (event.keyCode == 27) {
+                window.close();
+            }
+        } //bodyOnKeyUp
+
+
+    </script>
+</head>
+<body style="background-color: buttonface" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()">
+    <div id="divBody" style="width: 100%; padding: 5mm 10mm 0 10mm;">
+        <table id="tblFondid" border="1">
+            <thead style="background-color: navy; color: white; font-size:small;">
+                <tr>
+                    <th>
+                        -
+                    </th>
+                    <th>
+                        Font
+                    </th>
+                    <th>
+                        Suurus
+                    </th>
+                    <th>
+                        Suurus vtr
+                    </th>
+                </tr>
+            </thead>
+            <tr>
+                <td>
+                    Toimetamisala
+                </td>
+                <td>
+                    <select id="selEditFont" style='width: 245px;'>
+                    </select>
+                </td>
+                <td>
+                    <select id="selEditFontSize" style='width: 40px;'>
+                    </select>
+                </td>
+                <td>
+                    -
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Vaade
+                </td>
+                <td>
+                    <select id="selViewFont" style='width: 245px;'>
+                    </select>
+                </td>
+                <td>
+                    <select id="selViewFontSize" style='width: 40px;'>
+                    </select>
+                </td>
+                <td>
+                    <select id="selWordFontSize" style='width: 40px;'>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <input id="btnOK" onclick="btnOkOnClick()" type="button" value="    OK    " style="width: 3cm" />
+        <input id="btnCancel" onclick="btnCancelOnClick()" type="button" value="  Loobu  "
+            style="width: 3cm" />
+    </div>
+    <object id="dlgHelper" classid="clsid:3050f819-98b5-11cf-bb82-00aa00bdce0b" width="0px"
+        height="0px">
+    </object>
+</body>
+</html>

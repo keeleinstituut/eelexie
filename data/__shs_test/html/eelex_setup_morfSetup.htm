@@ -1,0 +1,716 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Morfoloogiasätted</title>
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann" />
+    <meta name="author" content="Andres Loopmann" />
+    <meta name="keywords" content="EELex" />
+    <link rel="stylesheet" type="text/css" href="dhtmlx/dhtmlxWindows/codebase/dhtmlxwindows.css">
+    <link rel="stylesheet" type="text/css" href="dhtmlx/dhtmlxWindows/codebase/skins/dhtmlxwindows_dhx_skyblue.css">
+    <script type="text/javascript" src="dhtmlx/dhtmlxWindows/codebase/dhtmlxcommon.js"></script>
+    <script type="text/javascript" src="dhtmlx/dhtmlxWindows/codebase/dhtmlxwindows.js"></script>
+    <script type="text/javascript" src="dhtmlx/dhtmlxWindows/codebase/dhtmlxcontainer.js"></script>
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+    <script type="text/javascript">
+
+        var dhxWins;
+        var dic_desc, appLang, usrName;
+        var keeled;
+
+        var DICPR, DICURI, default_query, first_default;
+
+        var yldStruDom;
+
+        var TYHI_TAANE = "\u00A0\u00A0\u00A0\u00A0";
+
+
+        //-----------------------------------------------------------------------------------
+        function chkLyhendamineOnClick() {
+            var oSrc = document.getElementById("chkLyhendamine");
+            if (oSrc.checked) {
+                tdLyhendusAlus.disabled = false;
+            } else {
+                tdLyhendusAlus.disabled = true;
+            }
+        } // chkLyhendamineOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function chkMvOnClick() {
+            var oSrc = document.getElementById("chkMv");
+            if (oSrc.checked) {
+                trForms.disabled = false;
+            } else {
+                trForms.disabled = true;
+            }
+        } // chkMvOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function chkExcludeMsTypesOnClick() {
+            var oSrc = document.getElementById("chkExcludeMsTypes");
+            if (oSrc.checked) {
+                tdExcludeMsType.disabled = false;
+            } else {
+                tdExcludeMsType.disabled = true;
+            }
+        } // chkExcludeMsTypesOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function btnMuudaVormeOnClick() {
+
+            if (trForms.disabled) {
+                return;
+            }
+
+            var tekst = "Muuda vormivalikut";
+
+            dhxWins = new dhtmlXWindows();
+            dhxWins.setImagePath("dhtmlx/dhtmlxWindows/codebase/imgs/");
+
+            //            var divBody = document.getElementById("divBody");
+            //            dhxWins.enableAutoViewport(false);
+            //            dhxWins.attachViewportTo("divBody");
+
+            var dhxWinParams = {
+                id: "winMorfSetup",
+                left: 0,
+                top: 0,
+                width: document.body.clientWidth - 20,
+                height: document.body.clientHeight + 40,
+                caption: tekst,
+                resize: false,
+                move: false,
+                park: true
+            };
+            var dhxWin = dhxWins.createWindow(dhxWinParams);
+            //            dhxWins.window("winMorfSetup").setToFullScreen(true);
+            //            dhxWins.window("winMorfSetup").centerOnScreen();
+            //            dhxWins.window("winMorfSetup").center();
+            dhxWins.window("winMorfSetup").button("minmax1").hide();
+            dhxWins.window("winMorfSetup").setModal(true);
+            //            dhxWins.window("winMorfSetup").maximize();
+//            dhxWins.window("winMorfSetup").keepInViewport(true);
+
+            dhxWins.window("winMorfSetup").attachURL("eelex_setup_vormiValik.htm?dic_desc=" + dic_desc + "&usrName=" + usrName, false); // false: mitte AJAX
+
+        } // btnMuudaVormeOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        // vormiValik 'onLoad' lõpus
+        function vormiSetup() {
+            var valitudVormidSelect;
+            if (_isIE) {
+                valitudVormidSelect = dhxWins.window("winMorfSetup").getFrame().contentWindow.document.getElementById("selValitudVormid");
+            } else {
+                valitudVormidSelect = dhxWins.window("winMorfSetup").getFrame().contentDocument.getElementById("selValitudVormid");
+            }
+            var optsStr = selMuuteVormid.innerHTML;
+//            valitudVormidSelect.outerHTML = "<select id=\"selValitudVormid\" size=\"20\" style=\"min-width:8cm;min-height:10cm\" onchange=\"selValitudVormidOnChange()\">" + optsStr + "</select>";
+                        for (var ix = 0; ix < selMuuteVormid.options.length; ix++) {
+                            var opt = selMuuteVormid.options[ix];
+                            var newOpt = document.createElement("OPTION");
+                            valitudVormidSelect.options.add(newOpt);
+                            newOpt.id = opt.id;
+                            newOpt.innerHTML = opt.innerHTML;
+                            newOpt.setAttribute("sKl", opt.getAttribute("sKl"));
+                        }
+//            valitudVormidSelect.selectedIndex = -1;
+        } // vormiSetup
+
+
+        //-----------------------------------------------------------------------------------
+        // vormiValik 'ok' nupu kood
+        function vormiValikOk() {
+            var valitudVormidSelect;
+            if (_isIE) {
+                valitudVormidSelect = dhxWins.window("winMorfSetup").getFrame().contentWindow.document.getElementById("selValitudVormid");
+            } else {
+                valitudVormidSelect = dhxWins.window("winMorfSetup").getFrame().contentDocument.getElementById("selValitudVormid");
+            }
+            while (selMuuteVormid.options.length > 0) {
+                selMuuteVormid.remove(0);
+            }
+            var optsStr = valitudVormidSelect.innerHTML;
+            selMuuteVormid.outerHTML = "<select id=\"selMuuteVormid\" size=\"5\" style=\"width: 100%;\">" + optsStr + "</select>";
+            //            for (var ix = 0; ix < valitudVormidSelect.options.length; ix++) {
+            //                var opt = valitudVormidSelect.options[ix].cloneNode(true);
+            //                selMuuteVormid.options.add(opt);
+            //            }
+            dhxWins.window("winMorfSetup").close();
+        } // vormiValikOk
+
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnLoad() {
+            var inArr = window.dialogArguments.split(PD);
+            dic_desc = inArr[0];
+            appLang = inArr[1];
+            usrName = inArr[2];
+
+            var oConfigDOM = IDD("File", "../shsconfig_" + dic_desc + ".xml", false, false, null);
+            if (!oConfigDOM.xml) {
+                alert("Puudub sõnastiku konf. fail 'shsconfig_" + dic_desc + ".xml'!");
+                return;
+            }
+
+            DICPR = oConfigDOM.documentElement.selectSingleNode("dicpr").text;
+            DICURI = oConfigDOM.documentElement.selectSingleNode("dicuri").text;
+            default_query = oConfigDOM.documentElement.selectSingleNode("default_query").text;
+            first_default = oConfigDOM.documentElement.selectSingleNode("first_default").text;
+
+            yldStruDom = IDD("File", "../xml/" + dic_desc + "/stru_" + dic_desc + ".xml", false, false, null);
+            if (!yldStruDom.xml) {
+                alert("Puudub sõnastiku struktuur!");
+                window.close();
+                return;
+            }
+            // The normalize method joins adjacent text nodes into a single text node and removes empty text nodes. 
+            // Note: in Internet Explorer, the normalize method does not remove empty text nodes.
+            yldStruDom.documentElement.normalize();
+
+
+            if (!(yldStruDom.documentElement.getAttribute("pr_sd:ver") == "2.0")) {
+                alert("Skeemi ja toimetamisala genereerimine tegemata!");
+                return;
+            }
+
+            keeled = { "et": 0, "en": 1, "ru": 2 };
+            fillSelSkeem(selSkeem, yldStruDom.documentElement.firstChild); // A-ga
+
+            var syntees = oConfigDOM.documentElement.selectSingleNode("morfoloogia/syntees"), itm, val, ix, opt, sKl;
+            if (syntees) {
+                itm = syntees.selectSingleNode("ms/locn").text;
+                selSkeem.options.item(itm).selected = true;
+
+                itm = syntees.selectSingleNode("ms/exclWSyms").text;
+                txtExcludeSymbols.value = itm;
+
+                itm = syntees.selectSingleNode("ms/exclTypes");
+                spnMsTypeExcludes.innerText = itm.text;
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkExcludeMsTypes.checked = val;
+
+                itm = syntees.selectSingleNode("out/itm[@nimi = 'vk']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkVk.checked = val;
+
+                itm = syntees.selectSingleNode("out/itm[@nimi = 'sl']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkSl.checked = val;
+
+                itm = syntees.selectSingleNode("out/itm[@nimi = 'mt']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkMt.checked = val;
+
+                itm = syntees.selectSingleNode("out/itm[@nimi = 'mv']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkMv.checked = val;
+
+                itm = syntees.selectSingleNode("out/itm[@nimi = 'mf']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkMf.checked = val;
+
+                var forms = syntees.selectNodes("formsOut/forms/form");
+                for (ix = 0; ix < forms.length; ix++) {
+                    var form = forms[ix];
+                    val = form.getAttribute("mtId");
+                    sKl = form.getAttribute("sKl");
+                    opt = document.createElement("OPTION");
+                    selMuuteVormid.options.add(opt);
+                    opt.id = val;
+                    opt.innerHTML = "(&lt;mt&gt;=" + val + "): " + form.text;
+                    opt.setAttribute("sKl", sKl);
+                }
+
+                itm = syntees.selectSingleNode("formsOut/formStyle[@nimi = 'deg3']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chk3Valde.checked = val;
+                itm = syntees.selectSingleNode("formsOut/formStyle[@nimi = 'stress']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkStress.checked = val;
+                itm = syntees.selectSingleNode("formsOut/formStyle[@nimi = 'paln']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkPalatalisation.checked = val;
+                itm = syntees.selectSingleNode("formsOut/formStyle[@nimi = 'recType']"); // vp-vormipõhine, tp-tüvepõhine, lk-lühikirje
+                selKirjeTyyp.options.item(itm.text).selected = true;
+                itm = syntees.selectSingleNode("formsOut/formStyle[@nimi = 'abbrev']"); // mv1, ms, mf
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                selLyhendusAlus.options.item(itm.text).selected = true;
+                chkLyhendamine.checked = val;
+
+                itm = syntees.selectSingleNode("bulkOpts/bulk[@nimi = 'replaceMfp']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkMfpAsendus.checked = val;
+                itm = syntees.selectSingleNode("bulkOpts/bulk[@nimi = 'delLSMorf']");
+                val = jsStringToBoolean(itm.getAttribute("val"));
+                chkDelLSMorf.checked = val;
+
+            }
+
+            chkExcludeMsTypesOnClick();
+            chkMvOnClick();
+            chkLyhendamineOnClick();
+
+        } // bodyOnLoad
+
+
+        //-----------------------------------------------------------------------------------
+        function fillSelSkeem(selObj, struNode) {
+            var opt = document.createElement("OPTION");
+            selObj.options.add(opt);
+            opt.id = struNode.nodeName;
+            var minOcc = struNode.getAttribute("pr_sd:minOcc");
+            var maxOcc = struNode.getAttribute("pr_sd:maxOcc");
+            if (maxOcc == "2000000000") {
+                maxOcc = "\u221E"; // lõpmatus
+            }
+            var kirjeldavadStr = struNode.getAttribute("pr_sd:nimi");
+            var kirjeldavad = kirjeldavadStr.split(";");
+            var tekst = "[" + minOcc + "," + maxOcc + "] - &lt;" + struNode.nodeName + "&gt; = " + kirjeldavad[keeled[appLang]];
+            opt.innerHTML = tekst;
+
+            var childs = struNode.selectNodes("*");
+            for (var ix = 0; ix < childs.length; ix++) {
+                var chNode = childs[ix];
+                if (chNode.nodeName != struNode.nodeName) {
+                    // depth == 1: vastab sõnastikule, kus <sr> == 0
+                    fillSelSkeemChilds(selObj, chNode, 1, struNode.nodeName);
+                }
+            }
+        } // fillSelSkeem
+
+
+        //-----------------------------------------------------------------------------------
+        function fillSelSkeemChilds(selObj, struNode, depth, xPath) {
+            var opt = document.createElement("OPTION");
+            selObj.options.add(opt);
+            var thisPath = xPath + "/" + struNode.nodeName;
+            opt.id = thisPath;
+            var minOcc = struNode.getAttribute("pr_sd:minOcc");
+            var maxOcc = struNode.getAttribute("pr_sd:maxOcc");
+            if (maxOcc == "2000000000") {
+                maxOcc = "&#x221E;"; // lõpmatus
+            }
+            var kirjeldavadStr = struNode.getAttribute("pr_sd:nimi");
+            var kirjeldavad = kirjeldavadStr.split(";");
+            var tekst = jsStrRepeat(depth, TYHI_TAANE) + "[" + minOcc + "," + maxOcc + "] - &lt;" + struNode.nodeName + "&gt; = " + kirjeldavad[keeled[appLang]];
+            opt.innerHTML = tekst;
+
+            if (thisPath == default_query) {
+                opt.selected = true;
+            }
+
+            var childs = struNode.selectNodes("*");
+            for (var ix = 0; ix < childs.length; ix++) {
+                var chNode = childs[ix];
+                if (chNode.nodeName != struNode.nodeName) {
+                    fillSelSkeemChilds(selObj, chNode, depth + 1, thisPath);
+                }
+            }
+        } // fillSelSkeemChilds
+
+
+        //-----------------------------------------------------------------------------------
+        function btnAddMsTypeExcludeOnClick() {
+            var liik = selExcludeMsType.options[selExcludeMsType.selectedIndex].id;
+            var lisaTing;
+            if (liik == "z") {
+                //                lisaTing = "(@" + DICPR + ":liik = 'z' or @" + DICPR + ":zs = 'z')";
+                lisaTing = "(@" + DICPR + ":liik = 'z' or @" + DICPR + ":zs)";
+            } else {
+                lisaTing = "(@" + DICPR + ":liik = '" + liik + "')";
+            }
+            var tekst = spnMsTypeExcludes.innerText;
+            if (tekst.indexOf(lisaTing) < 0) {
+                if (tekst) {
+                    tekst += " or ";
+                }
+                tekst += lisaTing;
+                spnMsTypeExcludes.innerText = tekst;
+            }
+        } // btnAddMsTypeExcludeOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function btnClearMsTypeExcludesOnClick() {
+            spnMsTypeExcludes.innerText = "";
+        } // btnClearMsTypeExcludesOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function btnSalvestaSynOnClick() {
+
+            var synteesXml = "<syntees>";
+
+            synteesXml += "<ms>";
+            var msId = selSkeem.options[selSkeem.selectedIndex].id;
+            synteesXml += "<locn>" + msId + "</locn>";
+            var msExcludeSymbols = txtExcludeSymbols.value;
+            var msExcludeWithSymbols = true;
+            if (!msExcludeSymbols) {
+                msExcludeWithSymbols = false;
+            }
+            synteesXml += "<exclWSyms val='" + msExcludeWithSymbols + "' xml:space='preserve'>" + msExcludeSymbols + "</exclWSyms>";
+            var msExclLiik = spnMsTypeExcludes.innerText;
+            var msExclWithLiik = chkExcludeMsTypes.checked;
+            if (!msExclLiik) {
+                msExclWithLiik = false;
+            }
+            synteesXml += "<exclTypes val='" + msExclWithLiik.toString() + "'>" + msExclLiik + "</exclTypes>";
+            synteesXml += "</ms>";
+
+            synteesXml += "<out>";
+            var outVk = chkVk.checked;
+            synteesXml += "<itm val='" + outVk.toString() + "' nimi='vk' />";
+            var outSl = chkSl.checked;
+            synteesXml += "<itm val='" + outSl.toString() + "' nimi='sl' />";
+            var outMt = chkMt.checked;
+            synteesXml += "<itm val='" + outMt.toString() + "' nimi='mt' />";
+            var outMv = chkMv.checked;
+            synteesXml += "<itm val='" + outMv.toString() + "' nimi='mv' />";
+            var outMf = chkMf.checked;
+            synteesXml += "<itm val='" + outMf.toString() + "' nimi='mf' />";
+            synteesXml += "</out>";
+
+            synteesXml += "<formsOut>";
+            synteesXml += "<forms>";
+            for (var ix = 0; ix < selMuuteVormid.options.length; ix++) {
+                var opt = selMuuteVormid.options[ix];
+                var mtId = opt.id;
+                var tekst = opt.innerText;
+                var valitudVormid = jsTrim(tekst.substr(tekst.indexOf(":") + 1));
+                var sKl = opt.getAttribute("sKl");
+                synteesXml += "<form mtId='" + mtId + "' sKl='" + sKl + "'>" + valitudVormid + "</form>";
+            }
+            synteesXml += "</forms>";
+            var degree3 = chk3Valde.checked;
+            synteesXml += "<formStyle val='" + degree3.toString() + "' nimi='deg3' />";
+            var stress = chkStress.checked;
+            synteesXml += "<formStyle val='" + stress.toString() + "' nimi='stress' />";
+            var paln = chkPalatalisation.checked;
+            synteesXml += "<formStyle val='" + paln.toString() + "' nimi='paln' />";
+            var kirjeTyyp = selKirjeTyyp.options[selKirjeTyyp.selectedIndex].id; // vp-vormipõhine, tp-tüvepõhine, lk-lühikirje
+            synteesXml += "<formStyle val='true' nimi='recType'>" + kirjeTyyp + "</formStyle>";
+            var lyhendamine = chkLyhendamine.checked;
+            var lyhendusAlus = selLyhendusAlus.options[selLyhendusAlus.selectedIndex].id; // mv1, ms, mf
+            synteesXml += "<formStyle val='" + lyhendamine.toString() + "' nimi='abbrev'>" + lyhendusAlus + "</formStyle>";
+            synteesXml += "</formsOut>";
+
+            synteesXml += "<bulkOpts>";
+            var mfpAsendus = chkMfpAsendus.checked;
+            synteesXml += "<bulk val='" + mfpAsendus.toString() + "' nimi='replaceMfp' />";
+            var delLSMorf = chkDelLSMorf.checked;
+            synteesXml += "<bulk val='" + delLSMorf.toString() + "' nimi='delLSMorf' />";
+            synteesXml += "</bulkOpts>";
+
+            synteesXml += "</syntees>";
+
+            var synteesXmlDom = IDD("String", synteesXml, false, false, null)
+            if (synteesXmlDom.parseError.errorCode != 0) {
+                alert(synteesXmlDom.parseError.reason);
+                return;
+            }
+
+            var xslIndented = IDD("File", "../xsl/tools/indented_copy.xsl", false, false, null)
+            if (xslIndented.parseError.errorCode != 0) {
+                alert(xslIndented.parseError.reason);
+                return;
+            }
+            var indDom = IDD("", "", false, false, null);
+            //            indDom.preserveWhiteSpace = true;
+            synteesXmlDom.transformNodeToObject(xslIndented, indDom);
+            var uusSynteesXml = indDom.xml;
+
+            //            alert(uusSynteesXml);
+            //            return;
+
+            var xh = exCGISync("../tools.cgi", "updateXML" + PD + dic_desc + PD + usrName + PD +
+                "shsconfig_" + dic_desc + ".xml" + PD +
+                "morfoloogia/syntees" + PD +
+                uusSynteesXml + PD +
+                "1");
+
+            if (xh.statusText == "OK") {
+                var rspDOM, loadStatus, sta;
+                rspDOM = IDD("", "", false, false, null);
+                loadStatus = rspDOM.load(xh.responseXML); //'responseXML: TypeName = DomDocument
+
+                if (loadStatus) {
+                    sta = rspDOM.selectSingleNode("rsp/sta").text;
+                    if (sta == "Success") {
+                        //                        alert("’morfoloogia/syntees’ kirjutamine OK!");
+                        window.returnValue = "morfoloogia/syntees";
+                        window.close();
+                        return;
+                    } else {
+                        alert(sta);
+                    }
+                } else {
+                    alert(xh.status + ": " + xh.statusText + "\n" + xh.responseText + "\n" + rspDOM.parseError.reason);
+                }
+            } else {
+                alert(xh.status + ": " + xh.statusText + "\n" + xh.responseText);
+            }
+        } // btnSalvestaSynOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnKeyUp() {
+            if (window.event.keyCode == 27) {
+                window.close();
+            }
+            else if (window.event.keyCode == 13) {
+                btnSalvestaSynOnClick();
+            }
+        } //'bodyOnKeyUp
+
+
+    </script>
+    <style type="text/css">
+        .style1
+        {
+            font-family: Cambria;
+            font-size: large;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body style="background-color: buttonface;" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()">
+    <div id="divBody" style="padding:5mm; width:95%;">
+        <table id="tblMorfOutput" border="1" style="width:100%;">
+            <tr>
+                <td colspan="2">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td class="style1">
+                                Morf. süntees
+                            </td>
+                            <td style="text-align: right;">
+                                <input id="btnSalvestaSyn" onclick="btnSalvestaSynOnClick()" type="button" value="Salvesta"
+                                    style="width: 3cm;" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Märksõna
+                    <br />
+                    valik
+                </td>
+                <td>
+                    <table id="tblMsOptions" style="width: 100%;" border="1">
+                        <tr>
+                            <td style="width: 20%;">
+                                <label for="selSkeem">
+                                    Asukoht</label>
+                            </td>
+                            <td>
+                                <select id="selSkeem" style="width: 100%;">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="txtExcludeSymbols">
+                                    Välista
+                                    <br />
+                                    märkidega</label>
+                            </td>
+                            <td>
+                                <input id="txtExcludeSymbols" type="text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="chkExcludeMsTypes" type="checkbox" onclick="chkExcludeMsTypesOnClick()">
+                                <label for="chkExcludeMsTypes">
+                                    Välista liik</label>
+                            </td>
+                            <td id="tdExcludeMsType">
+                                <select id="selExcludeMsType">
+                                    <option id="l">l - lühend</option>
+                                    <option id="y">y - sõnaühend</option>
+                                    <option id="f">f - fras. väljend</option>
+                                    <option id="p">p - pärisnimi</option>
+                                    <option id="k">k - kohanimi</option>
+                                    <option id="z">z - tsitaatsõna</option>
+                                </select>
+                                <input id="btnAddMsTypeExclude" onclick="btnAddMsTypeExcludeOnClick()" type="button"
+                                    value="Lisa" />
+                                <input id="btnClearMsTypeExcludes" onclick="btnClearMsTypeExcludesOnClick()" type="button"
+                                    value="Puhasta" />
+                                <span id="spnMsTypeExcludes" style="font-size: small;"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Väljundis:
+                </td>
+                <td>
+                    <table id="tblMorfInfo">
+                        <tr>
+                            <td>
+                                <input id="chkVk" type="checkbox">
+                            </td>
+                            <td>
+                                <label for="chkVk">
+                                    Vormikood</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="chkSl" type="checkbox">
+                            </td>
+                            <td>
+                                <label for="chkSl">
+                                    Sõnaliik</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="chkMt" type="checkbox">
+                            </td>
+                            <td>
+                                <label for="chkMt">
+                                    Muuttüüp</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="chkMv" type="checkbox" onclick="chkMvOnClick()">
+                            </td>
+                            <td>
+                                <label for="chkMv">
+                                    Muutevormid</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="chkMf" type="checkbox">
+                            </td>
+                            <td>
+                                <label for="chkMf">
+                                    Morfofonoloogiline kuju</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr id="trForms">
+                <td>
+                    Muutevormid
+                </td>
+                <td>
+                    <table id="tblForms" style="width: 100%;" border="1">
+                        <tr>
+                            <td style="width: 20%;">
+                                <label for="selMuuteVormid">
+                                    Vormivalikud</label>
+                            </td>
+                            <td style="width: 50%;">
+                                <select id="selMuuteVormid" size="5" style="width: 100%;">
+                                </select>
+                            </td>
+                            <td style="vertical-align: top;">
+                                <table id="tblVormideNupud">
+                                    <tr>
+                                        <td>
+                                            <input id="btnMuudaVorme" onclick="btnMuudaVormeOnClick()" type="button" value="Muuda"
+                                                style="width: 3cm;" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <input id="chk3Valde" type="checkbox">
+                                <label for="chk3Valde">
+                                    3. välde</label>
+                                <input id="chkStress" type="checkbox">
+                                <label for="chkStress">
+                                    rõhk</label>
+                                <input id="chkPalatalisation" type="checkbox">
+                                <label for="chkPalatalisation">
+                                    palatalisatsioon</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="chkLyhendamine" type="checkbox" onclick="chkLyhendamineOnClick()">
+                                <label for="chkLyhendamine">
+                                    Lühendamine</label>
+                            </td>
+                            <td id="tdLyhendusAlus" colspan="2">
+                                <label for="selLyhendusAlus">
+                                    Alus:
+                                </label>
+                                <select id="selLyhendusAlus">
+                                    <option id="mv1">1. muutevorm</option>
+                                    <option id="ms">märksõna</option>
+                                    <option id="mf">morfofon. kuju</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="selKirjeTyyp">
+                        Kirje tüüp</label>
+                </td>
+                <td>
+                    <select id="selKirjeTyyp">
+                        <option id="vp">vormipõhine</option>
+                        <option id="tp">tüvepõhine</option>
+                        <option id="lk">lühikirje</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Hulgi puhul
+                </td>
+                <td>
+                    <table id="tblHulgiSetup">
+                        <tr>
+                            <td>
+                                <input id="chkMfpAsendus" type="checkbox">
+                            </td>
+                            <td>
+                                <label for="chkMfpAsendus">
+                                    Olemasolevad morfoloogiaplokid (&lt;mfp&gt;) asendatakse</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input id="chkDelLSMorf" type="checkbox">
+                            </td>
+                            <td>
+                                <label for="chkDelLSMorf">
+                                    Liitsõna-morfoloogia eemaldatakse</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

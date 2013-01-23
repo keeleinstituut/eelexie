@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>lisad.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/dxf.html">dxf</a></li>
+            
+                <li><a href="..&#x2F;classes/komponendid.html">komponendid</a></li>
+            
+                <li><a href="..&#x2F;classes/kontrollid.html">kontrollid</a></li>
+            
+                <li><a href="..&#x2F;classes/lisad.html">lisad</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_app.html">procs_app</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_edt.html">procs_edt</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_TextContMenu.html">procs_TextContMenu</a></li>
+            
+                <li><a href="..&#x2F;classes/tools.html">tools</a></li>
+            
+                <li><a href="..&#x2F;classes/tools_dx.html">tools_dx</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: lisad.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+* lisad.js.
+*
+* @class lisad
+*&#x2F;
+
+&#x2F;**
+* Hoiab erimärke.
+* 
+* @property specCh
+* @type {String}
+* @default \|(){}[]-+.?*^$
+*&#x2F;
+var specCh = &quot;\\|(){}[]-+.?*^$&quot;;
+
+&#x2F;**
+* Hoiab eraldusmärki. Sama, mis PD.
+* 
+* @property JR
+* @type {String}
+* @default uE001
+*&#x2F;
+var PD = &quot;\uE001&quot;;
+
+&#x2F;**
+* Hoiab eraldusmärki. Sama, mis JR.
+* 
+* @property PD
+* @type {String}
+* @default uE001
+*&#x2F;
+var JR = &quot;\uE001&quot;;
+
+&#x2F;**
+* Hoiab laiendatud ladina tähestikku.
+* 
+* @property REG_LETT_LA
+* @type {String}
+* @default tähestik
+*&#x2F;
+var REG_LETT_LA = &quot;aàáâãåāăąǎǡǻȁȃḁạảấầẩẫậắằẳẵặbƃƅḃḅḇcçćĉċčƈḉdðďđƌḋḍḏḑḓeèéêëēĕėęěȅȇḕḗḙḛḝẹẻẽếềểễệfƒḟgĝğġģǥǧǵḡhĥħḣḥḧḩḫiìíîïĩīĭįıǐȉȋḭḯỉịjĵkķƙǩḱḳḵlĺļľŀłḷḹḻḽmḿṁṃnñńņňŋṅṇṉṋoòóôøōŏőơǒǫǭǿȍȏṑṓọỏốồổỗộớờởỡợpƥṕṗqrŕŗřȑȓṙṛṝṟsśŝşṡṣṥṩšṧzźżƶẑẓẕžtţťŧƭṫṭṯṱuùúûũūŭůűųưǔȕȗṳṵṷṹṻụủứừửữựvṽṿwŵẁẃẅẇẉõṍṏäǟöüǖǘǚǜxẋẍyýŷÿƴẏỳỵỷỹ&quot;;
+
+&#x2F;**
+* Hoiab vene tähestikku.
+* 
+* @property REG_LETT_RU
+* @type {String}
+* @default tähestik
+*&#x2F;
+var REG_LETT_RU = &quot;абвгдеёжзийклмнопрстуфхцчшщъыьэюя&quot;;
+
+&#x2F;&#x2F; FSO konstandid
+var ForReading = 1; &#x2F;&#x2F; 	Open a file for reading only. You can&#x27;t write to this file.
+var ForWriting = 2; &#x2F;&#x2F; 	Open a file for writing. If a file with the same name exists, its previous contents are overwritten.
+var ForAppending = 8; &#x2F;&#x2F; Open a file and write to the end of the file.
+var TristateUseDefault = -2; &#x2F;&#x2F; Opens the file using the system default.
+var TristateTrue = -1; &#x2F;&#x2F; 	Opens the file as Unicode.
+var TristateFalse = 0; &#x2F;&#x2F; Opens the file as ASCII.
+
+
+&#x2F;**
+* TODO
+*
+* @method getReqValue
+* @param {Object} uusNode 
+* @param {Object} origNode
+* @return {Boolean} eitea
+*&#x2F;
+function getReqValue(uusNode, origNode) {
+    var xh, answer, rspDOM, status, reks;
+    var org = jsTrim(getXmlNodeValue(origNode));
+    switch (org) {
+        case &quot;|GUID|&quot;:
+            xh = exCGISync(&quot;tools.cgi&quot;, &quot;getGUID&quot; + PD + dic_desc + PD + sUsrName);
+            answer = &quot;lähen nüüd GUID-i saama ...&quot;;
+            if (xh.statusText == &quot;OK&quot;) {
+                rspDOM = ParseHTTPResponse(xh);
+                if (rspDOM) {
+                    status = getXmlSingleNodeValue(rspDOM, &quot;rsp&#x2F;sta&quot;);
+                    if (status == &quot;Success&quot;) {
+                        answer = getXmlSingleNodeValue(rspDOM, &quot;rsp&#x2F;answer&quot;);
+                    }
+                }
+            }
+            setXmlNodeValue(uusNode, answer);
+            break;
+        case &quot;|DATETIME|&quot;:
+            setXmlNodeValue(uusNode, GetXSDDateTime(new Date()));
+            break;
+        case &quot;|USER|&quot;:
+            setXmlNodeValue(uusNode, sUsrName);
+            break;
+        default:
+            if (org) {
+                reks = &#x2F;^\|\w+\+\+\|$&#x2F;; &#x2F;&#x2F; |kirje_id++|, |m++|
+                if (reks.test(org)) {
+                    var nimi = org.substr(1, org.length - 4);
+                    xh = exCGISync(&quot;tools.cgi&quot;, &quot;getAutoInc&quot; + PD + dic_desc + PD + sUsrName + PD + nimi);
+                    answer = &quot;lähen nüüd autoinc-i saama ...&quot;;
+                    if (xh.statusText == &quot;OK&quot;) {
+                        rspDOM = ParseHTTPResponse(xh);
+                        if (rspDOM) {
+                            status = getXmlSingleNodeValue(rspDOM, &quot;rsp&#x2F;sta&quot;);
+                            if (status == &quot;Success&quot;) {
+                                answer = getXmlSingleNodeValue(rspDOM, &quot;rsp&#x2F;answer&quot;);
+                            }
+                        }
+                    }
+                    setXmlNodeValue(uusNode, answer);
+                }
+                else {
+                    setXmlNodeValue(uusNode, org);
+                }
+            }
+            else {
+                if (window.ActiveXObject) {
+                    setXmlNodeValue(uusNode, org);
+                } else {
+                    &#x2F;&#x2F; mitte MS XML dokumendis puudub asi nagu preservewhitespace
+                    if (uusNode.nodeType == Node.ELEMENT_NODE) {
+                        uusNode.appendChild(oEditDOM.createTextNode(&quot; &quot;));
+                    }
+                }
+            }
+            break;
+    }
+} &#x2F;&#x2F; getReqValue
+
+
+&#x2F;**
+* Tagastab brauseri versiooni.
+*
+* @method getBrowserData
+* @return {String} kujul: browser + &quot;;&quot; + verNr + &quot;;&quot; + opSys
+*&#x2F;
+function getBrowserData() {
+    var agent = navigator.userAgent.toLowerCase();
+    var browser = &quot;Unknown browser&quot;, verStr = &quot;Unknown&quot;, brLang = &quot;xx-YY&quot;, winStr = &quot;Unknown&quot;;
+    if (agent.search(&quot;msie&quot;) &gt; -1) {
+        browser = &quot;Internet Explorer&quot;;
+        verStr = &quot;MSIE &quot;;
+        brLang = navigator.browserLanguage;
+        winStr = &quot;Windows&quot;; &#x2F;&#x2F;;
+    }
+    else {
+        if (agent.search(&quot;firefox&quot;) &gt; -1) {
+            browser = &quot;Firefox&quot;;
+            verStr = &quot;Firefox\&#x2F;&quot;;
+            brLang = navigator.language;
+            winStr = &quot;Windows&quot;; &#x2F;&#x2F;;
+        }
+        else {
+            if (agent.search(&quot;opera&quot;) &gt; -1) {
+                browser = &quot;Opera&quot;;
+                verStr = &quot;Version\&#x2F;&quot;;
+                brLang = navigator.language;
+                winStr = &quot;Windows&quot;; &#x2F;&#x2F;;
+            }
+            else {
+                if (agent.search(&quot;safari&quot;) &gt; -1) {
+                    if (agent.search(&quot;chrome&quot;) &gt; -1) {
+                        browser = &quot;Chrome&quot;;
+                        verStr = &quot;Chrome\&#x2F;&quot;;
+                        brLang = navigator.language;
+                        winStr = &quot;Windows&quot;; &#x2F;&#x2F;)
+                    }
+                    else {
+                        browser = &quot;Safari&quot;;
+                        verStr = &quot;Version\&#x2F;&quot;;
+                        brLang = navigator.language;
+                        winStr = &quot;Windows&quot;; &#x2F;&#x2F;)
+                    }
+                }
+            }
+        }
+    }
+    var verNr = &quot;x.y&quot;;
+    var re = new RegExp(verStr + &quot;(\[\\d\\.\]\+)&quot;);
+    if (re.test(navigator.userAgent)) {
+        verNr = RegExp.$1;
+    }
+    var opSys = &quot;Juku&quot;;
+    re = new RegExp(&quot;(&quot; + winStr + &quot;\.\+\?)(;\|\\))&quot;);
+    if (re.test(navigator.userAgent)) {
+        opSys = RegExp.$1;
+    }
+    return (browser + &quot;;&quot; + verNr + &quot;;&quot; + opSys);
+} &#x2F;&#x2F; getBrowserData
+
+
+&#x2F;**
+* Sisendstringist kustutatakse ära kõik sümbolid, mis ei kuulu tähestikku msAlpha ega muutujasse voivadOlla.
+*
+* @method RemoveSymbols
+* @param {String} inpstr Sisendstring, millest kustutatakse. Kustutatakse ka &amp;amp; järjendid. 
+* @param {String} voivadOlla Nimekiri sümbolitest, mis alles jäävad.
+* @return {String} Puhastatud string.
+*&#x2F;
+function RemoveSymbols(inpstr, voivadOlla) {
+    var inps = inpstr.replace(&#x2F;(&amp;amp;)&#x2F;g, &#x27;&amp;&#x27;);
+    inps = inps.replace(&#x2F;(&amp;\w+;)&#x2F;g, &quot;&quot;);
+
+    var rsstr = &#x27;&#x27;;
+    var tahed = msAlpha + voivadOlla;
+    for (var i = 0; i &lt; inps.length; i++) {
+        if (tahed.indexOf(inps.charAt(i).toLowerCase()) &gt; -1) {
+            rsstr += inps.charAt(i);
+        }
+    }
+    return rsstr;
+} &#x2F;&#x2F;RemoveSymbols
+
+&#x2F;**
+* Leiab elemendi õed-vennad.
+*
+* @method getFollowingSiblings
+* @param {String} elId Rada elemendini.
+* @param {String} qn xPath.
+* @return {String} Siblingite nimed loeteluna. Või &quot;Ei saa&quot; või &quot;&quot;. 
+*&#x2F;
+function getFollowingSiblings(elId, qn) {
+    var yldStruAsukoht, yldStruNode, i;
+    var yldStruNodePath = elId.replace(&#x2F;(\[\d+\])&#x2F;g, &quot;&quot;);
+    yldStruAsukoht = getXmlSingleNode(yldStruDom.documentElement, yldStruNodePath);
+    if (yldStruAsukoht) {
+        yldStruNode = getXmlSingleNode(yldStruAsukoht, qn);
+        if (yldStruNode) {
+            var follSibls = getXmlNodes(yldStruNode, &quot;following-sibling::*&quot;);
+            if (follSibls) {
+                var nimed = &quot;&quot;;
+                if (follSibls.iterateNext) {
+                    var iter = follSibls.iterateNext();
+                    while (iter) {
+                        if (nimed.length &gt; 0) {
+                            nimed += &quot;|&quot;;
+                        }
+                        nimed += iter.nodeName;
+                        iter = follSibls.iterateNext();
+                    }
+                } else if (&#x27;length&#x27; in follSibls) { &#x2F;&#x2F; nodeList, MSXML
+                    for (i = 0; i &lt; follSibls.length; i++) {
+                        if (nimed.length &gt; 0) {
+                            nimed += &quot;|&quot;;
+                        }
+                        nimed += follSibls[i].nodeName;
+                    }
+                }
+                return nimed;
+            }
+            else {
+                return &quot;&quot;;
+            }
+        }
+        else {
+            return &quot;Ei saa&quot;;
+        }
+    }
+    else {
+        return &quot;Ei saa&quot;;
+    }
+} &#x2F;&#x2F; getFollowingSiblings
+
+
+&#x2F;**
+* Teeb xml-nodest sellise xml-stringi, mis on xml.
+*
+* @method getXmlString
+* @param {Object} node 
+* @return {String} xml teksti kujul.
+*&#x2F;
+function getXmlString(node) {
+    var xmlString;
+    &#x2F;&#x2F; IE MSXML esimesena, kuigi &quot;if (window.XMLSerializer)&quot; läheb IE9 all läbi.
+    &#x2F;&#x2F; IE9-s toetab ainult xmldocument objekti, mitte elementi,
+    &#x2F;&#x2F; IE8-s muidugi ei olegi &quot;XMLSerializer&quot; tuge
+    if (&#x27;xml&#x27; in node) {
+        xmlString = node.xml;
+    } else if (window.XMLSerializer) {
+        var serializer = new XMLSerializer();
+        xmlString = serializer.serializeToString(node);
+    }
+    return xmlString;
+} &#x2F;&#x2F; getXmlString
+
+
+&#x2F;**
+* Tehakse xPath päring ja väljastatakse nodede nimekiri. XPathResult.ORDERED_NODE_ITERATOR_TYPE,
+*
+* @method getXmlNodes
+* @param {Object} xmlElement Element, millelt päring tehakse.
+* @param {String} xPath 
+* @return {Object} null või nodelist. 
+*&#x2F;
+function getXmlNodes(xmlElement, xPath) {
+    var xmlDom;
+    if (xmlElement.ownerDocument) {
+        xmlDom = xmlElement.ownerDocument;
+    }
+    else {
+        xmlDom = xmlElement;
+    }
+    &#x2F;&#x2F; IE test tagapool
+    if (xmlDom.evaluate) {
+        var xpathResult = xmlDom.evaluate(xPath, xmlElement, NSResolver, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+        if (xpathResult.resultType == XPathResult.ORDERED_NODE_ITERATOR_TYPE) {
+            return xpathResult;
+        }
+        else {
+            return null;
+        }
+    } else if (&#x27;selectNodes&#x27; in xmlDom) {
+        return xmlElement.selectNodes(xPath);
+    }
+    else {
+        return null;
+    }
+} &#x2F;&#x2F; getXmlNodes
+
+
+&#x2F;**
+* Tehakse xPath päring ja väljastatakse nodede nimekiri. XPathResult.ORDERED_NODE_SNAPSHOT_TYPE
+* 
+* @method getXmlNodesSnapshot
+* @param {Object} xmlElement Element, millelt päring tehakse.
+* @param {String} xPath 
+* @return {Object} null või nodelist. 
+*&#x2F;
+function getXmlNodesSnapshot(xmlElement, xPath) {
+    var xmlDom;
+    if (xmlElement.ownerDocument) {
+        xmlDom = xmlElement.ownerDocument;
+    }
+    else {
+        xmlDom = xmlElement;
+    }
+    if (xmlDom.evaluate) {
+        var xpathResult = xmlDom.evaluate(xPath, xmlElement, NSResolver, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+        if (xpathResult.resultType == XPathResult.ORDERED_NODE_SNAPSHOT_TYPE) {
+            return xpathResult;
+        }
+        else {
+            return null;
+        }
+    } else if (&#x27;selectNodes&#x27; in xmlDom) {
+        return xmlElement.selectNodes(xPath);
+    }
+    else {
+        return null;
+    }
+} &#x2F;&#x2F; getXmlNodesSnapshot
+
+
+&#x2F;**
+* Teeb xPath päringu ja vastab ühe node&#x27;i.
+*
+* @method getXmlSingleNode
+* @param {Object} xmlElement Algpunkt, kust päring tehakse.
+* @param {String} xPath Rada.
+* @return {Object} Leitud node või null. 
+*&#x2F;
+function getXmlSingleNode(xmlElement, xPath) {
+    var xmlDom;
+    if (xmlElement.ownerDocument) {
+        xmlDom = xmlElement.ownerDocument;
+    }
+    else {
+        xmlDom = xmlElement;
+    }
+    &#x2F;&#x2F; IE test tagapool
+    if (xmlDom.evaluate) {
+        var xpathResult = xmlDom.evaluate(xPath, xmlElement, NSResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        if (xpathResult.singleNodeValue) {
+            return xpathResult.singleNodeValue;
+        }
+        else {
+            return null;
+        }
+    } else if (&#x27;selectSingleNode&#x27; in xmlDom) {
+        return xmlElement.selectSingleNode(xPath);
+    } else {
+        return null;
+    }
+} &#x2F;&#x2F; getXmlSingleNode
+
+
+&#x2F;**
+* Teeb xPath päringu ja vastab ühe node&#x27;i väärtuse.
+*
+* @method getXmlSingleNodeValue
+* @param {Object} xmlElement Algpunkt, kust päring tehakse.
+* @param {String} xPath Rada.
+* @return {String} Väärtus stringina või tühi string.
+*&#x2F;
+function getXmlSingleNodeValue(xmlElement, xPath) {
+    var xmlNode = getXmlSingleNode(xmlElement, xPath);
+    if (xmlNode) {
+        return getXmlNodeValue(xmlNode);
+    } else {
+        return &quot;&quot;;
+    }
+} &#x2F;&#x2F; getXmlSingleNodeValue
+
+
+&#x2F;**
+* Tagastab sisendnode&#x27;i väärtuse.
+*
+* @method getXmlNodeValue
+* @param {Object} xmlElement Sisendnode.
+* @return {String} Väärtus stringina.
+*&#x2F;
+function getXmlNodeValue(xmlElement) {
+    if (&#x27;textContent&#x27; in xmlElement) {
+        return xmlElement.textContent;
+    } else {
+        return xmlElement.text;
+    }
+} &#x2F;&#x2F; getXmlNodeValue
+
+
+&#x2F;**
+* Omistab sisendnode&#x27;ile etteantud väärtuse.
+*
+* @method setXmlNodeValue
+* @param {Object} xmlElement Sisendnode, millele väärtust omistatakse.
+* @param {String} tekst Väärtus, mis node&#x27;le omistatakse.
+*&#x2F;
+function setXmlNodeValue(xmlElement, tekst) {
+    if (&#x27;textContent&#x27; in xmlElement) {
+        xmlElement.textContent = tekst;
+    } else {
+        xmlElement.text = tekst;
+    }
+} &#x2F;&#x2F; setXmlNodeValue
+
+
+&#x2F;**
+* xPathi päringu esimesele vastele omistatakse argumendi thisText väärtus. 
+*
+* @method setXmlSingleNodeValue
+* @param {Object} xmlElement Sisendnode.
+* @param {String} xPath Rada.
+* @param {String} thisText Väärtus, mis node&#x27;ile omistatakse.
+*&#x2F;
+function setXmlSingleNodeValue(xmlElement, xPath, thisText) {
+    var xmlNode = getXmlSingleNode(xmlElement, xPath);
+    if (xmlNode) {
+        setXmlNodeValue(xmlNode, thisText);
+    }
+} &#x2F;&#x2F; setXmlSingleNodeValue
+
+
+&#x2F;**
+* Loob uue elemendi.
+*
+* @method createMyNSElement
+* @param {Object} xmlDom Element, kes saab endale uue lapse.
+* @param {String} qn Loodava elemendi nimi.
+* @param {String} uri Nimeruum.
+* @return {Object} Uus element või null.
+*&#x2F;
+function createMyNSElement(xmlDom, qn, uri) {
+    if (xmlDom.createElementNS) { &#x2F;&#x2F; IE korral on, aga ainult HTML jaoks
+        return xmlDom.createElementNS(uri, qn);
+    } else if (&#x27;createNode&#x27; in xmlDom) { &#x2F;&#x2F; MSXML, IE
+        return xmlDom.createNode(NODE_ELEMENT, qn, uri);
+    }
+    return null;
+} &#x2F;&#x2F; createMyNSElement
+
+
+&#x2F;**
+* Loob elemendile uue atribuudi.
+*
+* @method createMyNSAttribute
+* @param {Object} xmlDom Element, millele luuakse atribuut.
+* @param {String} qn Loodava atribuudi nimi.
+* @param {String} uri Nimeruum.
+* @return {Object} Uus atribuut või null.
+*&#x2F;
+function createMyNSAttribute(xmlDom, qn, uri) {
+    if (xmlDom.createAttributeNS) {
+        return oEditDOM.createAttributeNS(uri, qn);
+    } else if (&#x27;createNode&#x27; in xmlDom) { &#x2F;&#x2F; MSXML, IE
+        return xmlDom.createNode(NODE_ATTRIBUTE, qn, uri);
+    }
+    return null;
+} &#x2F;&#x2F; createMyNSAttribute
+
+
+&#x2F;**
+* xmlElement.attributes.setNamedItem(attNode); Kas see tähendab atribuudi loomist? 
+*
+* @method setMyNSNamedItem
+* @param {Object} xmlElement Element, millele liidetakse 
+* @param {Object} attNode
+*&#x2F;
+function setMyNSNamedItem(xmlElement, attNode) {
+    if (xmlElement.attributes.setNamedItemNS) {
+        xmlElement.attributes.setNamedItemNS(attNode);
+    } else if (&#x27;setNamedItem&#x27; in xmlElement.attributes) {
+        xmlElement.attributes.setNamedItem(attNode);
+    }
+} &#x2F;&#x2F; setMyNSNamedItem
+
+
+&#x2F;**
+* Loob elemendile atribuudi või kirjutab vanale uue väärtuse.
+* @example
+	setMyNSAttribute(selectedNode, DICURI, DICPR + &quot;:maut&quot;, sUsrName); 
+	setMyNSAttribute(selectedNode, DICURI, DICPR + &quot;:maeg&quot;, GetXSDDateTime(new Date()));
+* @method setMyNSAttribute
+* @param {Object} xmlElement Element, millele tehakse atribuut.
+* @param {String} uri Nimeruum.
+* @param {String} qn Atribuudi nimi.
+* @param {String} val Väärtus.
+*&#x2F;
+function setMyNSAttribute(xmlElement, uri, qn, val) {
+
+    var boundNode = createMyNSAttribute(xmlElement.ownerDocument, qn, uri);
+    setXmlNodeValue(boundNode, val);
+    setMyNSNamedItem(xmlElement, boundNode);
+    &#x2F;&#x2F;        selectedNode.setAttributeNS(DICURI, DICPR + &quot;:maut&quot;, sUsrName);
+    &#x2F;&#x2F;        selectedNode.setAttributeNS(DICURI, DICPR + &quot;:maeg&quot;, GetXSDDateTime(new Date()));
+} &#x2F;&#x2F; setMyNSAttribute
+
+
+&#x2F;**
+* Võtab stringi algusest ja lõpust tühikud ära.
+*
+* @method setMyNSAttribute
+* @param {String} mystring 
+* @return {String} mystring.replace(&#x2F;^\s+|\s+$&#x2F;g, &quot;&quot;);
+*&#x2F;
+function jsTrim(mystring) {
+    var r = &#x2F;^\s+|\s+$&#x2F;g;
+    return mystring.replace(r, &quot;&quot;);
+} &#x2F;&#x2F; jsTrim
+
+
+&#x2F;**
+* Korrutab sisendstringi n korda.
+*
+* @method jsStrRepeat
+* @param {String} n Niimitu korda kordab stringi s.
+* @param {String} s Sisendstring, mida korrutatakse n korda.
+* @return {String} n korda korrutatud s-i.
+*&#x2F;
+function jsStrRepeat(n, s) { 
+	var r = &quot;&quot;; 
+	for (var a = 0; a &lt; n; a++) {
+		r += s; 
+		}
+	return r; 
+	}
+
+
+&#x2F;**
+* Väljastab esimese positsiooni järjendis, kus asub val.
+*
+* @method jsArrIndex
+* @param {Array} arr Stringide järjend.
+* @param {String} val Otsitav string.
+* @return {Int} Mitmendal positsioonil oli otsitav string. Kui ei leia, siis -1.
+*&#x2F;
+function jsArrIndex(arr, val) {
+    for (var ix = 0; ix &lt; arr.length; ix++) {
+        if (arr[ix] == val) {
+            return ix;
+        }
+    }
+    return -1;
+} &#x2F;&#x2F; jsArrIndex
+
+
+&#x2F;**
+* Teeb stringist booleani. True, yes, 1 lähevad true&#x27;ks. False, no, 0, tühi string, null lähevad false&#x27;ks.
+*
+* @method jsStringToBoolean
+* @param {String} string
+* @return {Boolean} true või false.
+*&#x2F;
+function jsStringToBoolean(string) {
+    switch (string.toLowerCase()) {
+        case &quot;true&quot;: case &quot;yes&quot;: case &quot;1&quot;: return true;
+        case &quot;false&quot;: case &quot;no&quot;: case &quot;0&quot;: case &quot;&quot;: case null: return false;
+        default: return Boolean(string);
+    }
+} &#x2F;&#x2F; jsStringToBoolean
+
+
+&#x2F;**
+* Võrdleb sisendstringe, arvestab tõstutundlikkust.
+*
+* @method jsStrComp
+* @param {String} s1 Sisendstring 1.
+* @param {String} s2 Sisendstring 2. 
+* @param {Int} cs Case sensitive. Kui 1, siis case insensitive. 
+* @return {Int}  0 : It string matches 100% &lt;br&#x2F;&gt;
+*  1 : no match, and the parameter value comes before the string object&#x27;s value in the locale sort order&lt;br&#x2F;&gt;
+*   -1 : no match, and the parameter value comes after the string object&#x27;s value in the locale sort order
+*&#x2F;
+function jsStrComp(s1, s2, cs) {
+    var str1, str2;
+    if (cs == 1) {
+        str1 = s1.toLowerCase();
+        str2 = s2.toLowerCase();
+    }
+    else {
+        str1 = s1;
+        str2 = s2;
+    }
+    &#x2F;&#x2F;    return ((str1 == str2) ? 0 : ((str1 &gt; str2) ? 1 : -1));
+    &#x2F;&#x2F; nt Türgi-eesti sõnastiku korral mis teeb??
+    if (msLang != &quot;et&quot;) {
+        &#x2F;&#x2F; alert(&quot;localeCompare:\n&quot; + msLang);
+    }
+    return str1.localeCompare(str2);
+} &#x2F;&#x2F; jsStrComp
+
+
+&#x2F;**
+* Unikaalse nime koostamiseks tõstutundetule keskkonnale (näiteks css). Koolonid muutuvad sidekriipsudeks, tähed teisendatakse numbrilisteks koodideks. 
+*
+* @method unName 
+* @param {String} inpStr Sisendstring
+* @return {String} 
+*&#x2F;
+function unName(inpStr) {
+    var unStr, i;
+    unStr = inpStr.replace(&#x2F;:&#x2F;, &quot;-&quot;);
+    for (i = 0; i &lt; inpStr.length; i++) {
+        unStr += &#x27;_&#x27; + inpStr.charCodeAt(i);
+    }
+    return unStr;
+} &#x2F;&#x2F; unName
+
+
+&#x2F;**
+* Teisendab numbri 16-süsteemi.
+*
+* @method hex
+* @param {Int} nmb Sisendnumber.
+* @param {Boolean} uCase TRUE puhul on väljundis suured tähed.
+* @return {String} 16-süsteemis väljund.
+*&#x2F;
+function hex(nmb, uCase) {
+    var hexNmb;
+    if (nmb &gt; 0)
+        hexNmb = nmb.toString(16);
+    else
+        hexNmb = (nmb + 0x100000000).toString(16);
+    if (uCase)
+        return hexNmb.toUpperCase();
+    else
+        return hexNmb;
+} &#x2F;&#x2F; hex
+
+
+&#x2F;**
+* Vahetab sisendstringis ampersandid (&amp;) &amp;amp;-ide vastu.
+* XML-is ei tohi peale nende &amp;amp; eriti midagi olla. Näiteks &amp;amp;br; (leia parem näitelause).
+* 
+* @method toXmlString
+* @param {String} tekst Sisendiks po tekst.
+* @return {String} Teisendatud tekst.
+*&#x2F;
+function toXmlString(tekst) { &#x2F;&#x2F; sisendiks po tekst
+    return tekst.replace(&#x2F;&amp;&#x2F;g, &quot;&amp;amp;&quot;);
+} &#x2F;&#x2F; toXmlString
+
+
+&#x2F;**
+* Teisendab numbrid rooma numbriteks.
+*
+* @method romanize
+* @param {Int} num Number.
+* @return {String} Rooma number.
+*&#x2F;
+function romanize(num) {
+    var lookup = { M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1 },
+      roman = &#x27;&#x27;,
+      i;
+    for (i in lookup) {
+        while (num &gt;= lookup[i]) {
+            roman += i;
+            num -= lookup[i];
+        }
+    }
+    return roman;
+} &#x2F;&#x2F; romanize
+
+&#x2F;**
+* Teisendab rooma numbri numbriks. 
+*
+* @method deromanize
+* @param {String} romanIn Rooma number.
+* @return {Int} Number.
+*&#x2F;
+function deromanize(romanIn) {
+    var roman = romanIn.toUpperCase(),
+      lookup = { I: 1, V: 5, X: 10, L: 50, C: 100, D: 500, M: 1000 },
+      arabic = 0,
+      i = roman.length;
+    while (i--) {
+        if (lookup[roman[i]] &lt; lookup[roman[i + 1]])
+            arabic -= lookup[roman[i]];
+        else
+            arabic += lookup[roman[i]];
+    }
+    return arabic;
+} &#x2F;&#x2F; deromanize
+
+
+&#x2F;**
+* Teisendab entity&#x27;d html-iks. Näiteks replace(&#x2F;(&amp;br;)&#x2F;g, &quot;&lt;br&#x2F;&gt;&quot;); ja palju muud.
+*
+* @method entitiesToHtml
+* @param {String} tekst Sisendstring.
+* @return {String} HTML-ilaadsem string.
+*&#x2F;
+function entitiesToHtml(tekst) {
+    var rets = tekst;
+
+    var erisus = &quot;color:red;&quot;;
+
+    rets = rets.replace(&#x2F;(&amp;suba;(.+?)&amp;subl;)&#x2F;g, &quot;&lt;sub style=&#x27;&quot; + erisus + &quot;&#x27;&gt;$2&lt;&#x2F;sub&gt;&quot;);
+    rets = rets.replace(&#x2F;(&amp;supa;(.+?)&amp;supl;)&#x2F;g, &quot;&lt;sup style=&#x27;&quot; + erisus + &quot;&#x27;&gt;$2&lt;&#x2F;sup&gt;&quot;);
+    rets = rets.replace(&#x2F;(&amp;la;(.+?)&amp;ll;)&#x2F;g, &quot;&lt;u style=&#x27;&quot; + erisus + &quot;&#x27;&gt;$2&lt;&#x2F;u&gt;&quot;);
+    rets = rets.replace(&#x2F;(&amp;capa;(.+?)&amp;capl;)&#x2F;g, &quot;&lt;i style=&#x27;&quot; + erisus + &quot;font-weight:bold;font-variant:small-caps;&#x27;&gt;$2&lt;&#x2F;i&gt;&quot;);
+    rets = rets.replace(&#x2F;(&amp;br;)&#x2F;g, &quot;&lt;br&#x2F;&gt;&quot;);
+
+    rets = rets.replace(&#x2F;(&amp;ba;(.+?)&amp;bl;)&#x2F;g, &quot;&lt;b style=&#x27;&quot; + erisus + &quot;&#x27;&gt;$2&lt;&#x2F;b&gt;&quot;);
+    &#x2F;&#x2F;    if (paksud.indexOf(&#x27;;etvw_&#x27; + ln + &#x27;;&#x27;) &gt; -1) { &#x2F;&#x2F;paksus mitte-paks
+    &#x2F;&#x2F;        rets = rets.replace(&#x2F;(&amp;ba;(.+?)&amp;bl;)&#x2F;g, &quot;&lt;b style=&#x27;font-weight:normal;&#x27;&gt;$2&lt;&#x2F;b&gt;&quot;);
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;    else {
+    &#x2F;&#x2F;        rets = rets.replace(&#x2F;(&amp;ba;(.+?)&amp;bl;)&#x2F;g, &quot;&lt;b style=&#x27;font-weight:bold;&#x27;&gt;$2&lt;&#x2F;b&gt;&quot;);
+    &#x2F;&#x2F;    }
+
+    rets = rets.replace(&#x2F;(&amp;ema;(.+?)&amp;eml;)&#x2F;g, &quot;&lt;i style=&#x27;&quot; + erisus + &quot;&#x27;&gt;$2&lt;&#x2F;i&gt;&quot;);
+    &#x2F;&#x2F;     if (itad.indexOf(&#x27;;etvw_&#x27; + ln + &#x27;;&#x27;) &gt; -1) { &#x2F;&#x2F;kursiivis pöörata kursiiv tagasi
+    &#x2F;&#x2F;        rets = rets.replace(&#x2F;(&amp;ema;(.+?)&amp;eml;)&#x2F;g, &quot;&lt;i style=&#x27;font-style:normal;&#x27;&gt;$2&lt;&#x2F;i&gt;&quot;);
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;    else {
+    &#x2F;&#x2F;        rets = rets.replace(&#x2F;(&amp;ema;(.+?)&amp;eml;)&#x2F;g, &quot;$2&quot;.italics());
+    &#x2F;&#x2F;    }
+
+    &#x2F;&#x2F; muutujad (entities)
+    &#x2F;&#x2F; rets = rets.replace(&#x2F;(&amp;(\w+?);)&#x2F;g, &quot;$2&quot;.italics());
+    rets = rets.replace(&#x2F;(&amp;(ehk|Hrl|hrl|ja|jne|jt|ka|nt|puudub|v|vm|vms|vrd|vt|напр\.|и др\.|и т\. п\.|г\.);)&#x2F;g, &quot;&lt;i style=&#x27;&quot; + erisus + &quot;&#x27;&gt;$2&lt;&#x2F;i&gt;&quot;);
+
+    &#x2F;&#x2F;    &#x2F;&#x2F; 0x1D100 - 0x1D126
+    &#x2F;&#x2F;    var muss = &#x27;&#x27;;
+    &#x2F;&#x2F;    for (i = 0xDD00; i &lt;= 0xDD26; i++) {
+    &#x2F;&#x2F;        muss += String.fromCharCode(0xD834, i);
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;([&quot; + muss + &quot;])&#x2F;g, &quot;&lt;span style=&#x27;&quot; + erisus + &quot;font-family:symbola;font-size:x-large&#x27;&gt;$1&lt;&#x2F;span&gt;&quot;);
+
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;gclef;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#xA0;&amp;#xA0;&amp;#xA0;&amp;#x1D11E;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;gclefottavaalta;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#x1D11F;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;gclefottavabassa;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#x1D120;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;cclef;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#xA0;&amp;#xA0;&amp;#xA0;&amp;#x1D121;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;fclef;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#xA0;&amp;#xA0;&amp;#xA0;&amp;#x1D122;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;fclefottavaalta;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#x1D123;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;fclefottavabassa;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#x1D124;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;drumclef1;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#x1D125;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;drumclef2;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#x1D126;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;brevis;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#x1D1B8;&lt;&#x2F;span&gt;&quot;);
+
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;fermata;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#x1D110;&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;    rets = rets.replace(&#x2F;&amp;segno;&#x2F;g, &quot;&lt;span style=&#x27;font-family:symbola;font-size:x-large&#x27;&gt;&amp;#x1D10B;&lt;&#x2F;span&gt;&quot;);
+
+    rets = rets.replace(&#x2F;(&amp;\w+?;)&#x2F;g, &quot;&quot;);
+
+    return rets;
+
+} &#x2F;&#x2F; entitiesToHtml
+
+
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

@@ -1,0 +1,2912 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>-</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+
+    <script type="text/javascript" src="res_var.js"></script>
+
+    <script type="text/javascript" src="res_xml.js"></script>
+
+    <script type="text/javascript" src="res_lang_et.js"></script>
+
+    <script type="text/vbscript">
+
+<!--
+
+Option Explicit
+
+Const CHK_COL = 0
+Const MS_COL = 1
+Const LOCATION_COL = 2
+Const GRANDFATHER_COL = 3
+Const UPDELEM_COL = 4
+Const VALUE_COL = 5
+Const DELELEM_COL = 6
+
+Const updBgColor = "yellow"
+Const deldBgColor = "coral"
+Const directDeldBgColor = "fuchsia"
+Const artDeldBgColor = "red"
+Const TYHI = "&nbsp;"
+Const TYHI_KAST = "&nbsp;&nbsp;&nbsp;"
+
+'lubatud on *, ?, eesti, vene, udmurdi tähed ning tühik
+Const MITTE_TAHED_OTSITAV = "[^*?A-Za-z0-9šŠžŽõÕäÄöÖüÜабвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯӝӜӟӞӥӤӵӴӧӦ ]"
+
+Dim TYHI_TAANE
+
+Dim dic_desc, sAppLang, PD, PD2, DICPR, DICURI
+Dim usrName, seldName, fatherName, grandFatherName
+Dim oXslView, indentedView
+Dim leidudeTabel
+
+Dim kutsuja, schSeldPath, msSeldPath
+
+Dim valituid, dtOpStart
+
+Dim xsdDom, xmlNsm, xsdSc, schRootElems, schRootAttrs, importedSchemas, oPopup
+
+Dim currTdObj, lastTdObj
+Dim currClickedObj, lastClickedObj
+Dim gfDomNsList
+
+Dim qmMySql, ainultMySql
+Dim otsinguteArv
+
+Dim msAlpha
+
+
+'Põhiliselt käib loogika siin, selles ekraanis. 'Otsi' käsuga leitakse otsitud grupid.
+
+'Muuda väärtusi: element on koos oma XPath-iga leitud, cgi-s leitakse see element XPath järgi ja lihtsalt antakse talle uus teksti väärtus.
+
+'Lisa puuduvatele (ainult elemendi lisamise korral): kontrollitakse (HTML tabeli kasti "Asendamine/Lisamine" 'algXml' atrbuudi järgi), 
+'kas leitud grupi 'isaNimi' all on lisatav olemas v mitte. Sellega pannakse linnukesed nende ette, millel seda elementi pole.
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+
+TYHI_TAANE = String(4, ChrW(&HA0))
+
+set kutsuja = window.opener
+
+dic_desc = kutsuja.dic_desc
+sAppLang = kutsuja.sAppLang
+usrName = kutsuja.sUsrName
+
+DICPR = kutsuja.DICPR
+DICURI = kutsuja.DICURI
+
+msAlpha = kutsuja.msAlpha
+
+Dim eeLexConfig, eeLexAMS, qM
+set eeLexConfig = IDD("File", "../shsConfig.xml", False, False, Nothing)
+eeLexAMS = eeLexConfig.documentElement.selectSingleNode("ainultMySql").text
+qM = eeLexConfig.documentElement.selectSingleNode("qmMySql").text
+
+ainultMySql = false
+if (InStr(1, eeLexAMS, ";" & dic_desc & ";") > 0) then
+	ainultMySql = true
+end if
+qmMySql = false
+if (InStr(1, qM, ";" & dic_desc & ";") > 0) then
+	qmMySql = true
+end if
+
+PD = ChrW(&HE001)
+PD2 = ChrW(&HE002)
+
+document.title = UCase(dic_desc)
+if (InStr(1, window.location.href, "/__shs_test/") > 0) then
+    document.title = document.title & " [T E S T A N D M E B A A S]"
+    tdMiscInfo.innerHTML = "<span style='font-weight:bold;color:maroon'>[T E S T A N D M E B A A S] </span>"
+end if
+
+Dim rex, elems
+set rex = New RegExp
+rex.Global = True 'default is False
+'rex.IgnoreCase = True 'default is False
+rex.Pattern = "(\[\d+\])" 'nodePath - st numbrid maha
+
+seldName = ""
+fatherName = ""
+grandFatherName = ""
+schSeldPath = ""
+
+if (window.location.search = "?valitud=1") then
+    schSeldPath = DICPR & ":sr/" & rex.Replace(kutsuja.nodePath, "")
+    elems = Split(schSeldPath, "/")
+    seldName = elems(UBound(elems, 1))
+    fatherName = elems(UBound(elems, 1) - 1)
+    grandFatherName = elems(UBound(elems, 1) - 2)
+end if
+
+
+if (Len(seldName) > 0) then
+    document.title = document.title & ": <" & seldName & ">"
+end if
+
+Dim xsdFile, nsList, i, tarr, ns
+xsdFile = "../xsd/schema_" & dic_desc & ".xsd"
+nsList = "xmlns:" & DICPR & "='" & DICURI & "' xmlns:xs='" & NS_XS & "'"
+
+set xsdDom = IDD("File", xsdFile, False, False, Nothing)
+xsdDom.setProperty "SelectionLanguage", "XPath"
+xsdDom.setProperty "SelectionNamespaces", Trim(nsList)
+
+set xsdSc = CreateObject("Msxml2.XMLSchemaCache.6.0")
+xsdSc.validateOnLoad = True
+Call xsdSc.Add(DICURI, xsdFile)
+
+set schRootElems = xsdSc.getSchema(DICURI).elements
+set schRootAttrs = xsdSc.getSchema(DICURI).attributes
+
+set xmlNsm = CreateObject("Msxml2.MXNamespaceManager.6.0")
+xmlNsm.allowOverride = True
+tarr = Split(nsList, " ")
+for i = 0 to UBound(tarr, 1)
+    ns = Split(tarr(i), "=")
+    Call xmlNsm.declarePrefix(Mid(ns(0), InStr(1, ns(0), ":") + 1), Mid(ns(1), 2, Len(ns(1)) - 2))
+next
+
+set importedSchemas = CreateObject("Scripting.Dictionary")
+Dim xsdImports, xsdImport
+set xsdImports = xsdDOM.documentElement.selectNodes(NS_XS_PR & ":import")
+for each xsdImport in xsdImports
+    Call importedSchemas.Add(xsdImport.getAttribute("namespace"), xsdImport.getAttribute("schemaLocation"))
+next
+
+Call fillSetup()
+
+Dim msName
+Call fillSchSelect(milleSuhtes, "sr") 'siit tuleb valituks "A"
+msSeldPath = milleSuhtes.options(milleSuhtes.selectedIndex).value
+msName = Mid(msSeldPath, InStrRev(msSeldPath, "/") + 1)
+Call fillSchSelect(schElems, Mid(msName, InStr(1, msName, ":") + 1))
+
+
+set oXslView = IDD("File", "../xsl/view_" & dic_desc & ".xsl", true, false, Nothing)
+if (oXslView.parseError.errorCode <> 0) then
+    Exit Sub
+end if
+oXslView.setProperty "AllowXsltScript", true
+oXslView.setProperty "SelectionLanguage", "XPath"
+oXslView.setProperty "SelectionNamespaces", kutsuja.oXslView.getProperty("SelectionNamespaces")
+oXslView.documentElement.selectSingleNode("xsl:variable[@name = 'itad']").text = kutsuja.oXslView.documentElement.selectSingleNode("xsl:variable[@name = 'itad']").text
+if (dic_desc = "sp_") then
+    oXslView.documentElement.selectSingleNode("xsl:variable[@name = 'showQsg']").text = "1"
+end if
+
+set indentedView = IDD("File", "../xsl/tools/indented_copy.xsl", false, false, Nothing)
+
+Dim mida
+if (window.location.search = "?valitud=1") then
+    inpTxt.value = kutsuja.selectedNode.text
+    'milleSuhtes on valitud "A", sellest alates
+    mida = rex.Replace(kutsuja.nodePath, "")
+else
+    'milleSuhtes on valitud "A", sellest alates
+'    mida = "p:A/p:plokid/p:p_tul/p:t/p:lag/p:ml"
+    mida = kutsuja.default_query
+end if
+for i = 0 to schElems.options.length - 1
+    if (schElems.options(i).value = mida) then
+        schElems.selectedIndex = i
+        Call schElemChanged()
+        Exit For
+    end if
+next
+
+gfDomNsList = "xmlns:" & DICPR & "='" & DICURI & "'"
+
+otsinguteArv = 0
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub fillSetup()
+Dim configDom, configElement
+set configDom = IDD("File", "../shsconfig_" & dic_desc & ".xml", False, False, Nothing)
+if Not (configDom Is Nothing) then
+
+    Dim rida, kast, tekst
+    set rida = tblQrySetup.insertRow
+
+    set kast = rida.insertCell
+    kast.colSpan = 2
+    tekst = "<u>Otsitav piirkond</u>"
+    kast.innerHTML = tekst
+
+    set kast = rida.insertCell
+    tekst = "<select id='milleSuhtes' onchange='milleSuhtesChanged()' style='width:100%'></select>"
+    kast.innerHTML = tekst
+
+    set kast = rida.insertCell
+    kast.colSpan = 3
+    tekst = "<select id='opType' onchange='opTypeChanged()' style='width:100%;'></select>"
+    kast.innerHTML = tekst
+
+
+    set rida = tblQrySetup.insertRow
+
+    'skeemi elemendid
+    set kast = rida.insertCell
+    kast.colSpan = 2
+    tekst = "<u>Otsitav element</u>"
+    kast.innerHTML = tekst
+
+    set kast = rida.insertCell
+    tekst = "<select id='schElems' onchange='schElemChanged()' style='width:100%'></select>"
+    kast.innerHTML = tekst
+
+    'tegevuse tüüp
+    set kast = rida.insertCell
+    kast.colSpan = 3
+    tekst = "<select id='selElToChange' title='Vali asendatav/lisatav/kustutatav element' onchange='selElToChangeChanged()' style='width:100%;'></select>"
+    kast.innerHTML = tekst
+
+    Dim vols
+    set vols = configDom.documentElement.selectNodes("vols/vol")
+    if (vols.length > 0) then
+        Dim i, volnr
+        for i = 0 to vols.length - 1
+            set rida = tblQrySetup.insertRow
+            set kast = rida.insertCell
+            kast.valign = "top"
+            volnr = vols(i).getAttribute("nr")
+            tekst = vols(i).text
+            kast.innerHTML = "<input id='" & dic_desc & volnr & "' name='köide' type='checkbox' checked />" & _
+                "<label for='" & dic_desc & volnr & "'>" & tekst & "</label>"
+            if (i = 0) then
+
+                'otsingu linnukesed
+                set kast = rida.insertCell
+                kast.rowSpan = vols.length
+                kast.valign = "top"
+                tekst = "<input id='chkCaseIns' type='checkbox' checked />" & _
+                    "<label for='chkCaseIns'>tõstutundetu</label>"
+                tekst = tekst & "<br/><input id='chkSymbols' type='checkbox' />" & _
+                    "<label for='chkSymbols'>märkidega</label>"
+                tekst = tekst & "<br/><input id='chkGlobal' type='checkbox' checked />" & _
+                    "<label for='chkGlobal'>globaalselt</label>"
+                kast.innerHTML = tekst
+
+                'otsing
+                set kast = rida.insertCell
+                kast.rowSpan = vols.length
+                kast.valign = "top"
+                tekst = "<table id='tblQrySetupOps'>"
+                tekst = tekst & "<tr>"
+                    tekst = tekst & "<td><input id='inpTxt' type='text' value='' style='width:7cm;' /></td>"
+                    tekst = tekst & "<td><input id='btnOtsitavaLoend' type='button' onclick='btnOtsitavaLoendOnClick()' style='width:24; height:24; background:ButtonFace url(../graphics/downarrow 16-16.ico) no-repeat center center;' /></td>"
+                    tekst = tekst & "<td>"
+                    if (qmMySql) then
+                        tekst = tekst & "<input id='btnOtsi' type='button' value='Otsi' onclick='otsiOnClickMySQL()' />"
+                    else
+                        tekst = tekst & "<input id='btnOtsi' type='button' value='Otsi' onclick='otsiOnClickMySQL()' style='display:none;' />"
+                    end if
+                    if Not (ainultMySql) then
+                        tekst = tekst & "<input id='btnOtsiXML' type='button' value='XML' onclick='otsiOnClickXML()' />"
+                    end if
+                    tekst = tekst & "</td>"
+                tekst = tekst & "</tr>"
+                tekst = tekst & "<tr id='trAttrValik' style='visibility:hidden;'>"
+                    tekst = tekst & "<td><select id='selAttrValik'></select></td>"
+                    tekst = tekst & "<td><input id='inpAttr' type='text' value='' style='width:1cm;' /></td>"
+                    tekst = tekst & "<td>&nbsp;</td>"
+                tekst = tekst & "</tr>"
+                tekst = tekst & "<tr>"
+                    tekst = tekst & "<td colSpan='3'>"
+                    if (dic_desc = "sp_") then
+                        tekst = tekst & "<input id='btnCompare' type='button' value=' Võrdle taandeid ' onclick='btnCompareOnClick()' />"
+                    end if
+                    tekst = tekst & "</td>"
+                tekst = tekst & "</tr>"
+                tekst = tekst & "</table>"
+                kast.innerHTML = tekst
+
+                'asendatav, lisatav, kustutatav element; uued väärtused
+                set kast = rida.insertCell
+                kast.rowSpan = vols.length
+                kast.valign = "top"
+                tekst = "<table id='tblQrySetupValues'>"
+                tekst = tekst & "<tr>"
+                tekst = tekst & "<td colSpan='2'><select id='selAttrToChange' title='Vali asendatav/lisatav/kustutatav atribuut' onchange='selAttrToChangeChanged()' style='width:8cm;'></select></td>"
+                tekst = tekst & "</tr>"
+                tekst = tekst & "<tr title='Vana väärtus' id='trOldVal'>"
+                tekst = tekst & "<td><input id='oldVal' type='text' value='' style='width:7cm;' /></td>"
+                tekst = tekst & "<td>&nbsp;</td>"
+                tekst = tekst & "</tr>"
+                tekst = tekst & "<tr title='Uus väärtus' id='trNewVal'>"
+                tekst = tekst & "<td><input id='newVal' type='text' value='' style='width:7cm;' /></td>"
+                tekst = tekst & "<td><input id='btnAsendatavaLoend' type='button' onclick='btnAsendatavaLoendOnClick()' style='width:24; height:24; background:ButtonFace url(../graphics/downarrow 16-16.ico) no-repeat center center;' /></td>"
+                tekst = tekst & "</tr>"
+                tekst = tekst & "</table>"
+                kast.innerHTML = tekst
+
+                'Rakenda, rakenda puuduvatele, tühista nupud
+                set kast = rida.insertCell
+                kast.rowSpan = vols.length
+                kast.valign = "top"
+                tekst = "<table id='tblQrySetupApply'>"
+                tekst = tekst & "<tr>"
+                tekst = tekst & "<td><input type='button' id='btnRakenda' title='Rakenda' value=' Rakenda ' onclick='asendaOnClick()' /></td>"
+                tekst = tekst & "</tr>"
+                tekst = tekst & "<tr>"
+                tekst = tekst & "<td><input type='button' id='btnRakendaPuuduvatele' disabled title='Rakenda puuduvatele' value='Rak.puud.' onclick='asendaPuuduvateleOnClick()' /></td>"
+                tekst = tekst & "</tr>"
+                tekst = tekst & "<tr>"
+                tekst = tekst & "<td><input type='button' id='btnUndo' title='Tühista' value=' Tühista   ' onclick='tyhistaOnClick()' /></td>"
+                tekst = tekst & "</tr>"
+                tekst = tekst & "</table>"
+                kast.innerHTML = tekst
+            end if 'if (i = 0) then (kõik peale köidete on "rowSpan" vols.length)
+        next
+    end if 'if (vols.length > 0) then
+end if 'if Not (configDom Is Nothing) then
+End Sub 'fillSetup
+
+
+'-----------------------------------------------------------------------------------
+Sub milleSuhtesChanged()
+Dim msName
+msSeldPath = milleSuhtes.options(milleSuhtes.selectedIndex).value
+msName = Mid(msSeldPath, InStrRev(msSeldPath, "/") + 1)
+Call fillSchSelect(schElems, Mid(msName, InStr(1, msName, ":") + 1))
+End Sub 'milleSuhtesChanged
+
+
+'-----------------------------------------------------------------------------------
+Sub schElemChanged()
+do while (selAttrToChange.options.length > 0)
+    Call selAttrToChange.options.remove(0)
+loop
+selAttrToChange.disabled = true
+selAttrToChange.style.visibility = "hidden"
+do while (selElToChange.options.length > 0)
+    Call selElToChange.options.remove(0)
+loop
+do while (opType.options.length > 0)
+    Call opType.options.remove(0)
+loop
+trAttrValik.style.visibility = "hidden"
+do while (selAttrValik.options.length > 0)
+    Call selAttrValik.options.remove(0)
+loop
+
+schSeldPath = schElems.options(schElems.selectedIndex).value
+
+Dim elems, opt, yleAare
+elems = Split(schSeldPath, "/")
+seldName = elems(UBound(elems, 1))
+fatherName = elems(UBound(elems, 1) - 1)
+if (UBound(elems, 1) > 1) then
+    grandFatherName = elems(UBound(elems, 1) - 2)
+else
+    yleAare = Mid(msSeldPath, 1, InStrRev(msSeldPath, "/") - 1)
+    yleAare = Mid(yleAare, InStrRev(yleAare, "/") + 1)
+    grandFatherName = yleAare
+end if
+
+if  (fatherName = "") then
+    if (seldName = DICPR & ":A") then
+        fatherName = DICPR & ":sr"
+    end if
+end if
+
+if (opType.options.length = 0) then
+
+    Dim seldDecl, pr, ln, uri, attr, qn, obl, i, onTeksti
+    Dim dokpath, doku, kirjeldav
+    i = InStr(1, seldName, ":")
+    if (i > 0) then
+        pr = Mid(seldName, 1, i - 1)
+        ln = Mid(seldName, i + 1)
+    else
+        pr = ""
+        ln = seldName
+    end if
+    uri = xmlNsm.getURI(pr)
+    set seldDecl = schRootElems.itemByQName(ln, uri)
+
+    onTeksti = false
+    if (TypeName(seldDecl.type) = "ISchemaType") then
+        onTeksti = true
+    elseif (TypeName(seldDecl.type) = "ISchemaComplexType") then
+        if (seldDecl.type.contentType = SCHEMACONTENTTYPE_MIXED or seldDecl.type.contentType = SCHEMACONTENTTYPE_TEXTONLY) then
+            onTeksti = true
+        end if
+    end if
+
+    if (onTeksti) then
+        set opt = document.createElement("OPTION")
+        Call opType.options.add(opt)
+        opt.id = "idUpdate"
+        opt.innerHTML = "muuda väärtusi (" & seldName & ")"
+    end if
+
+    set opt = document.createElement("OPTION")
+    Call opType.options.add(opt)
+    opt.id = "idDeleteDirect"
+    opt.innerHTML = "kustuta (" & seldName & ")"
+    opt.value = seldName
+    Dim fDecl, fPr, fLn, fUri, osake
+    i = InStr(1, fatherName, ":")
+    if (i > 0) then
+        fPr = Mid(fatherName, 1, i - 1)
+        fLn = Mid(fatherName, i + 1)
+    else
+        fPr = ""
+        fLn = fatherName
+    end if
+    fUri = xmlNsm.getURI(fPr)
+    set fDecl = schRootElems.itemByQName(fLn, fUri)
+    for each osake in fDecl.type.contentModel.particles
+        if (osake.name = ln and osake.namespaceURI = uri) then
+            Call opt.setAttribute("minOcc", osake.minOccurs)
+            Exit For
+        end if
+    next
+
+
+    'atribuudid
+    if (TypeName(seldDecl.type) = "ISchemaComplexType") then
+        if (seldDecl.type.attributes.length > 0) then
+
+            '2013 - mõttekriips, String(2, ChrW(&H2013))
+            set opt = document.createElement("OPTION")
+            Call opType.options.add(opt)
+            opt.innerHTML = String(50, ChrW(&H2013))
+            opt.disabled = true
+
+            set opt = document.createElement("OPTION")
+            Call opType.options.add(opt)
+            opt.id = "idReplaceAttr"
+            opt.innerHTML = "asenda/lisa atribuut"
+
+            set opt = document.createElement("OPTION")
+            Call opType.options.add(opt)
+            opt.id = "idDeleteAttr"
+            opt.innerHTML = "kustuta atribuut"
+
+            selAttrToChange.style.visibility = "visible"
+            selAttrToChange.disabled = false
+
+            set opt = document.createElement("OPTION")
+            Call selAttrToChange.options.add(opt)
+            opt.innerText = "---"
+
+            trAttrValik.style.visibility = "visible"
+            set opt = document.createElement("OPTION")
+            Call selAttrValik.options.add(opt)
+            opt.innerText = "---"
+            opt.id = ""
+
+            for i = 0 to seldDecl.type.attributes.length - 1
+                set attr = seldDecl.type.attributes(i)
+                ln = attr.name
+                qn = ln
+                pr = xmlNsm.getPrefixes(attr.namespaceURI).item(0)
+                if (Len(pr) > 0) then
+                    qn = pr & ":" & qn
+                end if
+                dokpath = ".//" & NS_XS_PR & ":attribute[@name = '" & ln & "']/" & NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang = '" & sAppLang & "']"
+                set doku = xsdDOM.documentElement.selectSingleNode(dokpath)
+                if Not (doku Is Nothing) then
+                    kirjeldav = Trim(doku.text)
+                else
+                    kirjeldav = qn
+                end if
+                
+                obl = TYHI_TAANE & TYHI_TAANE
+                if (attr.use = SCHEMAUSE_REQUIRED) then
+                    obl = "[obl]" & String(2, ChrW(&HA0)) 'pool TYHI_TAANE - st
+                end if
+
+                set opt = document.createElement("OPTION")
+                Call selAttrToChange.options.add(opt)
+                opt.innerText = obl & " @" & qn & " - " & kirjeldav
+                opt.value = qn
+
+                'trAttrValik
+                set opt = document.createElement("OPTION")
+                Call selAttrValik.options.add(opt)
+                opt.innerText = obl & " @" & qn & " - " & kirjeldav
+                opt.value = qn
+                opt.id = "@" & qn
+
+'                if (InStr(1, ";O;", ";" & ln & ";") > 0) then
+'                    opt.disabled = true
+'                end if
+
+            next 'for i = 0 to seldDecl.type.attributes.length - 1
+        end if' if (seldDecl.type.attributes.length > 0) then
+    end if 'if (TypeName(snDecl.type) = "ISchemaComplexType") then
+
+    if Not (grandFatherName = DICPR & ":sr") then
+        '2013 - mõttekriips, String(2, ChrW(&H2013))
+        set opt = document.createElement("OPTION")
+        Call opType.options.add(opt)
+        opt.innerHTML = String(50, ChrW(&H2013))
+        opt.disabled = true
+
+        set opt = document.createElement("OPTION")
+        Call opType.options.add(opt)
+        opt.id = "idReplace"
+        opt.innerHTML = "asenda element (" & grandFatherName & ") grupis"
+
+        set opt = document.createElement("OPTION")
+        Call opType.options.add(opt)
+        opt.id = "idAdd"
+        opt.innerHTML = "lisa element (" & grandFatherName & ") grupis"
+
+        set opt = document.createElement("OPTION")
+        Call opType.options.add(opt)
+        opt.id = "idDelete"
+        opt.innerHTML = "kustuta element (" & grandFatherName & ") grupis"
+    end if
+
+    '2013 - mõttekriips, String(2, ChrW(&H2013))
+    set opt = document.createElement("OPTION")
+    Call opType.options.add(opt)
+    opt.innerHTML = String(50, ChrW(&H2013))
+    opt.disabled = true
+
+    set opt = document.createElement("OPTION")
+    Call opType.options.add(opt)
+    opt.id = "idSaveGroups"
+    opt.innerHTML = "muuda gruppe ("
+    if (grandFatherName = DICPR & ":sr") then '<P> jne korral
+        opt.innerHTML = opt.innerHTML & seldName
+    elseif (grandFatherName = DICPR & ":A") then '<mg> jne korral
+        opt.innerHTML = opt.innerHTML & fatherName
+    else
+        opt.innerHTML = opt.innerHTML & grandFatherName
+    end if
+    opt.innerHTML = opt.innerHTML & ")"
+
+    '2013 - mõttekriips, String(2, ChrW(&H2013))
+    set opt = document.createElement("OPTION")
+    Call opType.options.add(opt)
+    opt.innerHTML = String(50, ChrW(&H2013))
+    opt.disabled = true
+
+    set opt = document.createElement("OPTION")
+    Call opType.options.add(opt)
+    opt.id = "idDeleteArtDirect"
+    opt.innerHTML = "kustuta artikkel (" & DICPR & ":A)"
+
+end if
+
+opType.selectedIndex = 0
+Call opTypeChanged()
+
+Call setLoend(seldName, "otsitavaKontekstSisu", "e")
+
+inpTxt.focus
+
+End Sub 'schElemChanged
+
+
+'-----------------------------------------------------------------------------------
+Sub fillSchSelect(selObj, schObjLN)
+Dim decl, opt, msOpt, chElem, qn, qn1
+
+do while (selObj.options.length > 0)
+    Call selObj.options.remove(0)
+loop
+
+set decl = schRootElems.itemByQName(schObjLN, DICURI)
+
+set opt = document.createElement("OPTION")
+Call selObj.options.add(opt)
+qn1 = setOptAttributes(decl, opt, 0, "", "", "")
+if (selObj.id = "milleSuhtes") then
+    opt.disabled = true
+end if
+
+if (TypeName(decl.type) = "ISchemaComplexType") then
+    if (decl.type.contentType > SCHEMACONTENTTYPE_TEXTONLY) then
+        if (decl.type.contentModel.particles.length > 0) then
+            for each chElem in decl.type.contentModel.particles
+                set opt = document.createElement("OPTION")
+                Call selObj.options.add(opt)
+                qn = setOptAttributes(chElem, opt, 1, qn1, "", "")
+                if (selObj.id = "schElems") then
+                else
+                    if (chElem.name = "A") then
+                        opt.selected = true
+                    end if
+                end if
+                if Not ((chElem.name = decl.name) and (chElem.namespaceUri = decl.namespaceUri)) then
+                    Call fillSchChildElems(selObj, chElem, 2, qn1 & "/" & qn)
+                end if
+            next
+        end if 'particles.length > 0
+    end if ' > SCHEMACONTENTTYPE_TEXTONLY
+end if 'ISchemaComplexType
+
+End Sub 'fillSchSelect
+
+
+'-----------------------------------------------------------------------------------
+Sub fillSchChildElems(selObj, schElem, depth, np)
+Dim opt, msOpt, chElem, qn
+
+if (TypeName(schElem.type) = "ISchemaComplexType") then
+    if (schElem.type.contentType > SCHEMACONTENTTYPE_TEXTONLY) then
+        if (schElem.type.contentModel.particles.length > 0) then
+            if (TypeName(schElem.type.contentModel.particles(0)) = "ISchemaAny") then
+                Dim parQn, parPr, anyElemsDom, anyNames, ix, itmQn, itmPr, itmLName, itmUri, itm, maxOcc, maxOccInt
+                if (schElem.type.contentModel.particles(0).maxOccurs = "-1") then
+                    maxOcc = ChrW(&H221E) 'lõpmatus
+                    maxOccInt = 2000000000
+                else
+                    maxOcc = schElem.type.contentModel.particles(0).maxOccurs
+                    maxOccInt = CLng(maxOcc)
+                end if
+                parQn = schElem.name
+                parPr = xmlNsm.getPrefixes(schElem.namespaceURI).item(0)
+                if (Len(parPr) > 0) then
+                    parQn = parPr & ":" & parQn
+                end if
+                'aa: "add any"
+                set anyElemsDom = IDD("file", "../xml/" & dic_desc & "/aa_" & unName(parQn) & ".xml",  False, False, Nothing)
+                if (anyElemsDom.parseError.errorCode = 0) then
+                    anyNames = Split(anyElemsDom.documentElement.text, "|")
+                    for ix = 0 to UBound(anyNames, 1)
+                        itmQn = anyNames(ix)
+                        if (InStr(1, itmQn, ":") > 0) then
+                            itmPr = Mid(itmQn, 1, InStr(1, itmQn, ":") - 1)
+                            itmLName = Mid(itmQn, InStr(1, itmQn, ":") + 1)
+                            itmUri = xmlNsm.getURI(itmPr)
+                        else
+                            itmPr = ""
+                            itmLName = itmQn
+                            itmUri = xmlNsm.getURI("")
+                        end if
+                        set itm = schRootElems.itemByQName(itmLName, itmUri)
+                        set opt = document.createElement("OPTION")
+                        Call selObj.options.add(opt)
+                        qn = setOptAttributes(itm, opt, depth, np, schElem.type.contentModel.particles(0).minOccurs, maxOccInt)
+                        opt.style.backgroundColor = "peachpuff"
+                        if Not ((itm.name = schElem.name) and (itm.namespaceUri = schElem.namespaceUri)) then
+                            Call fillSchChildElems(selObj, itm, depth + 1, np & "/" & qn)
+                        end if
+                    next
+                end if
+            else
+                for each chElem in schElem.type.contentModel.particles
+                    set opt = document.createElement("OPTION")
+                    Call selObj.options.add(opt)
+                    qn = setOptAttributes(chElem, opt, depth, np, "", "")
+                    if Not ((chElem.name = schElem.name) and (chElem.namespaceUri = schElem.namespaceUri)) then
+                        Call fillSchChildElems(selObj, chElem, depth + 1, np & "/" & qn)
+                    end if
+                next
+            end if
+        end if 'particles.length > 0
+    end if ' > SCHEMACONTENTTYPE_TEXTONLY
+end if 'ISchemaComplexType
+End Sub 'fillSchChildElems
+
+
+'-----------------------------------------------------------------------------------
+Function setOptAttributes(schElem, opt, d, np, anyMinOcc, anyMaxOcc)
+Dim maxOcc, maxOccInt, minOccInt
+if (Len(anyMinOcc) > 0) then
+    if (anyMaxOcc = 2000000000) then
+        maxOcc = ChrW(&H221E) 'lõpmatus
+    else
+        maxOcc = anyMaxOcc
+    end if
+    maxOccInt = anyMaxOcc
+    minOccInt = anyMinOcc
+else
+    if (schElem.maxOccurs = "-1") then
+        maxOcc = ChrW(&H221E) 'lõpmatus
+        maxOccInt = 2000000000
+    else
+        maxOcc = schElem.maxOccurs
+        maxOccInt = CLng(maxOcc)
+    end if
+    minOccInt = schElem.minOccurs
+end if
+
+Dim pr, qn
+qn = schElem.name
+pr = xmlNsm.getPrefixes(schElem.namespaceURI).item(0)
+if (Len(pr) > 0) then
+    qn = pr & ":" & qn
+end if
+
+Dim dokpath, doku, kirjeldav, newPath
+dokpath = ".//xs:element[@name='" & schElem.name & "']/xs:annotation/xs:documentation[@xml:lang = '" & sAppLang & "']"
+set doku = xsdDom.documentElement.selectSingleNode(dokpath)
+if Not (doku Is Nothing) then
+    kirjeldav = doku.text
+else
+    kirjeldav = qn
+end if
+
+opt.innerText = String(4 * d, TYHI_TAANE) & "[" & minOccInt & "," & maxOcc & "] - <" & qn & "> - " & kirjeldav
+newPath = np & "/" & qn
+opt.value = newPath
+opt.title = newPath
+Call opt.setAttribute("minOcc", minOccInt)
+Call opt.setAttribute("maxOcc", maxOccInt)
+
+setOptAttributes = qn
+
+End Function 'setOptAttributes
+
+
+'-----------------------------------------------------------------------------------
+Function getChildElements(xmlNode)
+Dim nodeDecl, i
+if (TypeName(xmlNode) = "ISchemaElement") then
+    set nodeDecl = xmlNode
+end if
+
+if (TypeName(nodeDecl) = "ISchemaAny") then
+    getChildElements = ""
+    Exit Function
+else
+    Dim partCount, subElems(), subElem, qn, pr
+    partCount = nodeDecl.type.contentModel.particles.length
+    ReDim subElems(partCount - 1)
+    for i = 0 to partCount - 1
+        set subElem = nodeDecl.type.contentModel.particles(i)
+        if (TypeName(subElem) = "ISchemaAny") then
+            getChildElements = ""
+            Exit Function
+        end if
+        qn = subElem.name
+        pr = xmlNsm.getPrefixes(subElem.namespaceURI).item(0)
+        if (Len(pr) > 0) then
+            qn = pr & ":" & qn
+        end if
+        subElems(i) = qn
+    next
+    getChildElements = Join(subElems, "|")
+end if
+End Function 'getChildElements
+
+
+'-----------------------------------------------------------------------------------
+Sub opTypeChanged()
+Dim opt, i
+
+if (selElToChange.options.length = 0) then
+    Dim gfDecl, pr, ln, uri
+    i = InStr(1, grandFatherName, ":")
+    if (i > 0) then
+        pr = Mid(grandFatherName, 1, i - 1)
+        ln = Mid(grandFatherName, i + 1)
+    else
+        pr = ""
+        ln = grandFatherName
+    end if
+    uri = xmlNsm.getURI(pr)
+    On Error Resume Next
+    'juhul, kui elementi skeemis pole ...
+    set gfDecl = schRootElems.itemByQName(ln, uri)
+    On Error Goto 0
+    if (err.number <> 0 or IsEmpty(gfDecl)) then
+        Exit Sub
+    end if
+
+    set opt = document.createElement("OPTION")
+    Call selElToChange.options.add(opt)
+    opt.innerText = "---"
+    opt.value = ""
+
+    Dim partCount, elemendid, refElStr, refPos, prp, prp2, prp3 'parentRefPath
+    partCount = gfDecl.type.contentModel.particles.length
+    'postiga eraldatud täisnimed
+    elemendid = getChildElements(gfDecl)
+    Dim subElem, qn, dokpath, doku, kirjeldav, maxOcc, maxOccInt
+    Dim oParticle, partQn, partPr
+    for i = 0 to partCount - 1
+        set subElem = gfDecl.type.contentModel.particles(i)
+        if (TypeName(subElem) = "ISchemaAny") then
+            Exit Sub
+        end if
+        qn = subElem.name
+        pr = xmlNsm.getPrefixes(subElem.namespaceURI).item(0)
+        if (Len(pr) > 0) then
+            qn = pr & ":" & qn
+        end if
+        if (qn <> grandFatherName) then
+            if (subelem.maxOccurs = "-1") then
+                maxOcc = ChrW(&H221E) 'lõpmatus
+                maxOccInt = 2000000000
+            else
+                maxOcc = subelem.maxOccurs
+                maxOccInt = CLng(maxOcc)
+            end if
+            dokpath = ".//xs:element[@name='" & subelem.name & "']/xs:annotation/xs:documentation[@xml:lang='" & sAppLang & "']"
+            set doku = xsdDOM.documentElement.selectSingleNode(dokpath)
+            if Not (doku Is Nothing) then
+                kirjeldav = Replace(Trim(doku.firstChild.nodeValue), ";", "")
+            else
+                kirjeldav = qn
+            end if
+            '
+            set opt = document.createElement("OPTION")
+            Call selElToChange.options.add(opt)
+            opt.innerText = "[" & subelem.minOccurs & "," & maxOcc & "] <" & qn & "> " & kirjeldav
+            refElStr = qn & "|"
+            refPos = InStr(1, elemendid, refElStr)
+            if (refPos > 0) then
+                prp = Mid(elemendid, refPos + Len(refElStr))
+            else
+                prp = ""
+            end if
+            Call opt.setAttribute("refPath", prp)
+            opt.value = qn
+            opt.title = qn
+            Call opt.setAttribute("isaNimi", grandFatherName)
+            Call opt.setAttribute("minOcc", subelem.minOccurs)
+            Call opt.setAttribute("maxOcc", maxOccInt)
+
+            if (InStr(1, ";kaut;kaeg;G;K;KA;KL;T;TA;TL;PT;PTA;X;XA;", ";" & subElem.name & ";") > 0) then
+                opt.disabled = true
+            end if
+            '
+            if (TypeName(subElem.type) = "ISchemaComplexType") then
+                if (subElem.type.contentType > SCHEMACONTENTTYPE_TEXTONLY) then
+'                    opt.disabled = true
+                    if (subElem.type.contentModel.particles.length > 0) then
+                        Dim alamElemendid
+                        alamElemendid = getChildElements(subElem)
+                        for each oParticle in subElem.type.contentModel.particles
+                            if (TypeName(oParticle) = "ISchemaAny") then
+                                Exit Sub
+                            end if
+                            partQn = oParticle.name
+                            partPr = xmlNsm.getPrefixes(oParticle.namespaceURI).item(0)
+                            if (Len(partPr) > 0) then
+                                partQn = partPr & ":" & partQn
+                            end if
+                            if (oParticle.maxOccurs = "-1") then
+                                maxOcc = ChrW(&H221E) 'lõpmatus
+                                maxOccInt = 2000000000
+                            else
+                                maxOcc = oParticle.maxOccurs
+                                maxOccInt = CLng(maxOcc)
+                            end if
+                            dokpath = ".//xs:element[@name='" & oParticle.name & "']/xs:annotation/xs:documentation[@xml:lang='" & sAppLang & "']"
+                            set doku = xsdDOM.documentElement.selectSingleNode(dokpath)
+                            if Not (doku Is Nothing) then
+                                kirjeldav = Replace(Trim(doku.firstChild.nodeValue), ";", "")
+                            else
+                                kirjeldav = partQn
+                            end if
+                            '
+                            set opt = document.createElement("OPTION")
+                            Call selElToChange.options.add(opt)
+                            opt.innerText = TYHI_TAANE & "[" & oParticle.minOccurs & "," & maxOcc & "] <" & partQn & "> " & kirjeldav
+                            '
+                            Call opt.setAttribute("parentRefPath", prp)
+                            refElStr = partQn & "|"
+                            refPos = InStr(1, alamElemendid, refElStr)
+                            if (refPos > 0) then
+                                prp2 = Mid(alamElemendid, refPos + Len(refElStr))
+                            else
+                                prp2 = ""
+                            end if
+                            Call opt.setAttribute("refPath", prp2)
+                            Call opt.setAttribute("minOcc", oParticle.minOccurs)
+                            Call opt.setAttribute("maxOcc", maxOccInt)
+
+                            if (InStr(1, ";kaut;kaeg;G;K;KA;KL;T;TA;TL;PT;PTA;X;XA;", ";" & oParticle.name & ";") > 0) then
+                                opt.disabled = true
+                            end if
+
+                            if (qn = fatherName) then
+                                'otsitava oma grupis
+                                Call opt.setAttribute("isaNimi", fatherName)
+                                opt.value = partQn
+                                opt.title = partQn
+                                if (TypeName(oParticle.type) = "ISchemaComplexType") then
+                                    if (oParticle.type.contentType > SCHEMACONTENTTYPE_TEXTONLY) then
+                                        if (oParticle.type.contentModel.particles.length > 0) then
+                                            Dim alamAlamElemendid, osake, osakeQn, osakePr
+                                            alamAlamElemendid = getChildElements(oParticle)
+                                            for each osake in oParticle.type.contentModel.particles
+                                                if (TypeName(osake) = "ISchemaAny") then
+                                                    Exit Sub
+                                                end if
+                                                osakeQn = osake.name
+                                                osakePr = xmlNsm.getPrefixes(osake.namespaceURI).item(0)
+                                                if (Len(osakePr) > 0) then
+                                                    osakeQn = osakePr & ":" & osakeQn
+                                                end if
+                                                if (osake.maxOccurs = "-1") then
+                                                    maxOcc = ChrW(&H221E) 'lõpmatus
+                                                    maxOccInt = 2000000000
+                                                else
+                                                    maxOcc = osake.maxOccurs
+                                                    maxOccInt = CLng(maxOcc)
+                                                end if
+                                                dokpath = ".//xs:element[@name='" & osake.name & "']/xs:annotation/xs:documentation[@xml:lang='" & sAppLang & "']"
+                                                set doku = xsdDOM.documentElement.selectSingleNode(dokpath)
+                                                if Not (doku Is Nothing) then
+                                                    kirjeldav = Replace(Trim(doku.firstChild.nodeValue), ";", "")
+                                                else
+                                                    kirjeldav = osakeQn
+                                                end if
+                                                '
+                                                set opt = document.createElement("OPTION")
+                                                Call selElToChange.options.add(opt)
+                                                opt.innerText = TYHI_TAANE & TYHI_TAANE & "[" & osake.minOccurs & "," & maxOcc & "] <" & osakeQn & "> " & kirjeldav
+                                                '
+                                                Call opt.setAttribute("parentRefPath", prp2)
+                                                refElStr = osakeQn & "|"
+                                                refPos = InStr(1, alamAlamElemendid, refElStr)
+                                                if (refPos > 0) then
+                                                    prp3 = Mid(alamAlamElemendid, refPos + Len(refElStr))
+                                                else
+                                                    prp3 = ""
+                                                end if
+                                                Call opt.setAttribute("refPath", prp3)
+                                                Call opt.setAttribute("minOcc", osake.minOccurs)
+                                                Call opt.setAttribute("maxOcc", maxOccInt)
+
+                                                'otsitava oma grupi alamgrupis
+                                                Call opt.setAttribute("isaNimi", fatherName)
+                                                opt.value = partQn & "/" & osakeQn
+                                                opt.title = partQn & "/" & osakeQn
+                                            next
+                                        end if
+                                    end if
+                                end if
+                            else
+                                'mingis teises - mitte oma - grupis
+                                Call opt.setAttribute("isaNimi", grandFatherName)
+                                opt.value = qn & "/" & partQn
+                                opt.title = qn & "/" & partQn
+                            end if
+
+                        next
+                    end if
+                end if
+            end if
+        end if
+    next
+end if 'if (selElToChange.options.length = 0) then
+
+Dim seldOpId
+seldOpId = opType.options(opType.selectedIndex).id
+if (seldOpId = "idReplace" or seldOpId = "idAdd" or seldOpId = "idDelete") then 'elementide asendamine, lisamine, kustutamine
+    selElToChange.disabled = false
+else
+    selElToChange.selectedIndex = 0
+    selElToChange.disabled = true
+end if
+if (seldOpId = "idAdd" or seldOpId = "idReplaceAttr") then 'elementide lisamine v atribuutide asendamine
+    btnRakendaPuuduvatele.disabled = false
+else
+    btnRakendaPuuduvatele.disabled = true
+end if
+if (seldOpId = "idReplaceAttr" or seldOpId = "idDeleteAttr") then
+    selAttrToChange.disabled = false
+else
+    selAttrToChange.selectedIndex = 0
+    selAttrToChange.disabled = true
+end if
+
+Call selElToChangeChanged()
+
+if (seldOpId = "idUpdate") then 'väärtuste muutmine
+    Call setLoend(seldName, "asendatavaKontekstSisu", "e")
+end if
+
+End Sub 'opTypeChanged
+
+
+'-----------------------------------------------------------------------------------
+Sub selElToChangeChanged()
+Dim seldOpId
+seldOpId = opType.options(opType.selectedIndex).id
+if Not (seldOpId = "idReplace" or seldOpId = "idAdd" or seldOpId = "idDelete") then 'elementide asendamine, lisamine, kustutamine
+    Exit Sub
+end if
+
+Dim valitudElement
+valitudElement = selElToChange.options(selElToChange.selectedIndex).value 'p:qsg/p:qs, p:kom_k ...
+
+if (Len(valitudElement) > 0) then
+    Call setLoend(valitudElement, "asendatavaKontekstSisu", "e")
+else
+'    oldVal.value = ""
+'    newVal.value = ""
+'    oldVal.disabled = false
+    newVal.disabled = false
+    btnAsendatavaLoend.style.background = "ButtonFace"
+    btnAsendatavaLoend.disabled = true
+end if
+
+if (window.event.ctrlLeft) then
+    Dim isaNimi, parentRefPath, refPath, minOcc, maxOcc
+    isaNimi = selElToChange.options(selElToChange.selectedIndex).getAttribute("isaNimi")
+    parentRefPath = selElToChange.options(selElToChange.selectedIndex).getAttribute("parentRefPath")
+    refPath = selElToChange.options(selElToChange.selectedIndex).getAttribute("refPath")
+    minOcc = selElToChange.options(selElToChange.selectedIndex).getAttribute("minOcc")
+    maxOcc = selElToChange.options(selElToChange.selectedIndex).getAttribute("maxOcc")
+    MsgBox "'isaNimi': " & isaNimi & vbCrLf & _
+        "'parentRefPath': " & parentRefPath & vbCrLf & _
+        "'refPath': " & refPath & vbCrLf & _
+        "'minOcc': " & minOcc & vbCrLf & _
+        "'maxOcc': " & maxOcc & vbCrLf & _
+        "'value (= title)': " & valitudElement _
+        , vbInformation, "Asendatav, lisatav, kustutatav element"
+end if
+
+End Sub 'selElToChangeChanged
+
+
+'-----------------------------------------------------------------------------------
+Sub selAttrToChangeChanged()
+Dim valitudAtribuut
+valitudAtribuut = selAttrToChange.options(selAttrToChange.selectedIndex).value
+
+if (Len(valitudAtribuut) > 0) then
+    Call setLoend(valitudAtribuut, "asendatavaKontekstSisu", "a")
+else
+'    oldVal.value = ""
+'    newVal.value = ""
+'    oldVal.disabled = false
+    newVal.disabled = false
+    btnAsendatavaLoend.style.background = "ButtonFace"
+    btnAsendatavaLoend.disabled = true
+end if
+End Sub 'selAttrToChangeChanged
+
+
+'-----------------------------------------------------------------------------------
+Sub setLoend(elemQn, divObjName, t)
+
+Dim pr, ln, qn, colPos, uri, nodeDecl
+qn = Mid(elemQn, InStrRev(elemQn, "/") + 1)
+colPos = InStr(1, qn, ":")
+if (colPos > 0) then
+    pr = Mid(qn, 1, colPos - 1)
+    ln = Mid(qn, colPos + 1)
+else
+    pr = ""
+    ln = qn
+end if
+uri = xmlNsm.getURI(pr)
+
+if (t = "e") then
+    set nodeDecl = schRootElems.itemByQName(ln, uri)
+else
+    set nodeDecl = schRootAttrs.itemByQName(ln, uri)
+end if
+
+Dim i, oType, importDOM, xsdPath, xsdNode, kirjeldav, loendStr, divObj, btnObj
+
+loendStr = ""
+
+if (divObjName = "otsitavaKontekstSisu") then
+    set btnObj = btnOtsitavaLoend
+elseif (divObjName = "asendatavaKontekstSisu") then
+    set btnObj = btnAsendatavaLoend
+end if
+
+'oldVal.value = ""
+'newVal.value = ""
+
+if (nodeDecl.type.enumeration.length > 0) then
+    if (nodeDecl.type.name = "") then
+        set oType = nodeDecl.type.baseTypes(0)
+    else
+        set oType = nodeDecl.type
+    end if
+    if (oType.namespaceURI <> DICURI) then
+        set importDOM = IDD("File", "../xsd/" & importedSchemas.Item(oType.namespaceURI), False, False, Nothing)
+        importDOM.setProperty "SelectionLanguage", "XPath"
+        importDOM.setProperty "SelectionNamespaces", "xmlns:xs='" & NS_XS & "'"
+    else
+        set importDOM = xsdDOM
+    end if
+    for i = 0 to nodeDecl.type.enumeration.length - 1
+        xsdPath = "xs:simpleType[@name = '" & oType.name & "']//xs:enumeration[@value = '" & nodeDecl.type.enumeration(i) & "']/xs:annotation/" & _
+            "xs:documentation[@xml:lang = '" & sAppLang & "']"
+        set xsdNode = importDOM.documentElement.selectSingleNode(xsdPath)
+        if Not (xsdNode Is Nothing) then
+            kirjeldav = xsdNode.text
+        else
+            kirjeldav = nodeDecl.type.enumeration(i)
+        end if
+        loendStr = loendStr & "<div value='" & nodeDecl.type.enumeration(i) & "' onmouseover=""this.style.background='gold';"" onmouseout=""this.style.background='menu';"">" & _
+                kirjeldav & " - " & nodeDecl.type.enumeration(i) & _
+                "</div>"
+    next
+    set divObj = document.all(divObjName)
+    divObj.innerHTML = loendStr
+    'background:ButtonFace url(../graphics/downarrow 16-16.ico) no-repeat center center
+    btnObj.style.background = "ButtonFace url(../graphics/downarrow 16-16.ico) no-repeat center center"
+    btnObj.disabled = false
+else
+    btnObj.style.background = "ButtonFace"
+    btnObj.disabled = true
+end if
+
+End Sub 'setLoend
+
+
+'-----------------------------------------------------------------------------------
+Sub btnCompareOnClick()
+Dim srchPtrn, substPtrn, xmlCond
+srchPtrn = inpTxt.value
+substPtrn = ""
+
+xmlCond = srchPtrn
+xmlCond = Replace(xmlCond, "\\", ChrW(&HE003))
+xmlCond = Replace(xmlCond, "\*", ChrW(&HE001))
+xmlCond = Replace(xmlCond, "\?", ChrW(&HE002))
+if (Left(xmlCond, 1) = "*") then 'algab tärniga
+    if (Right(xmlCond, 1) = "*") then 'ka lõpeb tärniga
+        xmlCond = Mid(xmlCond, 2, Len(xmlCond) - 2)
+        xmlCond = "contains(., '" & xmlCond & "')"
+    else
+        xmlCond = Replace(Mid(xmlCond, 2), "*", "")
+        xmlCond = "contains(concat(., '~~~'), '" & xmlCond & "~~~')"
+    end if
+elseif (Right(xmlCond, 1) = "*") then 'lõpeb tärniga
+    xmlCond = Replace(Mid(xmlCond, 1, Len(xmlCond) - 1), "*", "")
+    xmlCond = "contains(concat('~~~', .), '~~~" & xmlCond & "')"
+else
+    xmlCond = ". = '" & xmlCond & "'"
+end if
+xmlCond = Replace(xmlCond, ChrW(&HE001), "*")
+xmlCond = Replace(xmlCond, ChrW(&HE002), "?")
+xmlCond = Replace(xmlCond, ChrW(&HE003), "\\")
+xmlCond = "[" & xmlCond & "]"
+
+Dim volsStr
+volsStr = ""
+Dim koited, koide
+set koited = tblQrySetup.all.tags("INPUT")
+if Not koited Is Nothing then
+    for each koide in koited
+        if (koide.name = "köide") then
+            if (koide.checked = true) then
+                if (Len(volsStr) > 0) then
+                    volsStr = volsStr & " OR "
+                end if
+                volsStr = volsStr & dic_desc & ".vol_nr = " & Mid(koide.id, 4, 1)
+            end if
+        end if
+    next
+end if
+
+Dim alg, lopp, elpred, elm_xpath
+if (srchPtrn = "*") then
+    elpred = ""
+else
+    alg = ""
+    lopp = ""
+    if (Left(srchPtrn, 1) = "*") then
+        srchPtrn = Mid(srchPtrn, 2)
+    else
+        alg = "^"
+    end if
+    if (Right(srchPtrn, 1) = "*") then
+        srchPtrn = Mid(srchPtrn, 1, Len(srchPtrn) - 1)
+    else
+        lopp = "$"
+    end if
+
+    Dim rex
+    set rex = New RegExp
+    rex.Global = true 'default is False
+    'rex.IgnoreCase = True 'default is False
+
+    if Not (chkSymbols.checked) then
+        rex.Pattern = MITTE_TAHED_OTSITAV
+        srchPtrn = rex.Replace(srchPtrn, "")
+        substPtrn = "x?"
+    else
+        rex.Pattern = "(^|[^\\])([\/+.])"
+        srchPtrn = rex.Replace(srchPtrn, "$1\$2")
+    end if
+    rex.Pattern = "(^|[^\\])([*])"
+    srchPtrn = rex.Replace(srchPtrn, "$1.*?")
+    rex.Pattern = "(^|[^\\])([?])"
+    srchPtrn = rex.Replace(srchPtrn, "$1.")
+    srchPtrn = alg & srchPtrn & lopp
+    if (chkCaseIns.checked) then
+        srchPtrn = "(?i)" & srchPtrn
+    end if
+    elpred = "[al_p:srch(.) > 0]"
+end if
+
+Dim ifrDoc
+set ifrDoc = document.frames("idIfrSisu").document.open("text/html", "replace")
+ifrDoc.close
+
+if (Len(volsStr) = 0 or Len(srchPtrn) = 0) then
+    Exit Sub
+end if
+
+
+Call startOperation()
+
+'alati globaalne ...
+elm_xpath = ".//" & DICPR & ":ml" & xmlCond
+'valitudSeldName = seldName
+
+Dim artField, leid, sqlClause
+artField = "art"
+if Not (chkSymbols.checked) then
+    artField = "art_alt"
+end if
+artField = dic_desc & "." & artField
+leid = "ExtractValue(" & artField & ", """ & elm_xpath & """)"
+sqlClause = "SELECT " & dic_desc & ".md AS md, " & _
+                        dic_desc & ".vol_nr AS vol_nr, " & _
+                        dic_desc & ".G AS G, " & _
+                        dic_desc & ".art AS art " & _
+                        "FROM " & dic_desc & " WHERE " & leid & " != '' AND (" & volsStr & ") "
+
+Dim xmlRegexCond
+xmlRegexCond = ".//" & dicPr & ":ml[xmlRegex(.) > 0]"
+
+if (window.event.ctrlLeft) then
+    Dim cmdLine
+    cmdLine = "volsStr: " & volsStr & vbNewLine & _
+            "sqlClause: " & sqlClause & vbNewLine & _
+            "xmlRegexCond: " & xmlRegexCond & vbNewLine & _
+            "srchPtrn: " & srchPtrn & vbNewLine & _
+            "substPtrn: " & substPtrn
+    MsgBox cmdLine, vbInformation, "findReplace_CompElements"
+    Exit Sub
+end if
+Call exCGIASync("../tools.cgi", "findReplace_CompElements" & PD & dic_desc & PD & usrName & PD & _
+                                    volsStr & PD & _
+                                    sqlClause & PD & _
+                                    xmlRegexCond & PD & _
+                                    srchPtrn & PD & _
+                                    substPtrn)
+End Sub 'btnCompareOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub otsiOnClickMySQL()
+
+Dim volsStr, koited, koide
+volsStr = ""
+set koited = tblQrySetup.all.tags("INPUT")
+if Not koited Is Nothing then
+    for each koide in koited
+        if (koide.name = "köide") then
+            if (koide.checked = true) then
+                if (Len(volsStr) > 0) then
+                    volsStr = volsStr & " OR "
+                end if
+                volsStr = volsStr & dic_desc & ".vol_nr = " & Mid(koide.id, 4, 1)
+            end if
+        end if
+    next
+end if
+
+Dim ifrDoc
+set ifrDoc = document.frames("idIfrSisu").document.open("text/html", "replace")
+ifrDoc.close
+
+if (Len(volsStr) = 0) then
+    Exit Sub
+end if
+
+Dim srchPtrn, attrPtrn, substBool
+srchPtrn = inpTxt.value
+attrPtrn = inpAttr.value
+substBool = "0"
+if Not (chkSymbols.checked) then
+    if (CheckForSymbols(srchPtrn, "*? ")) then
+        alert(CONT_QUERY_Q & vbCrLf & QUERY_WORD & ": <" & srchPtrn & ">")
+        Exit Sub
+    end if
+    if (CheckForSymbols(attrPtrn, "*? ")) then
+        alert(CONT_QUERY_Q & vbCrLf & QUERY_WORD & ": <" & attrPtrn & ">")
+        Exit Sub
+    end if
+    substBool = "1"
+end if
+
+Dim elm_xpath, xmlXpcPath
+'see, mis tuleb peale artiklit
+elm_xpath = Mid(msSeldPath, InStr(1, msSeldPath, DICPR & ":A") + Len(DICPR & ":A") + 1)
+if (chkGlobal.checked) then
+    if (elm_xpath = "") then 'artiklist alates
+        if (seldName = DICPR & ":A") then 'ongi otsitavaks valitud artikkel ise
+            elm_xpath = seldName
+            xmlXpcPath = "self::node()"
+        else
+            elm_xpath = ".//" & seldName
+            xmlXpcPath = elm_xpath
+        end if
+    else
+        xmlXpcPath = elm_xpath & "//" & seldName
+        elm_xpath = DICPR & ":A/" & xmlXpcPath
+    end if
+else
+    if (elm_xpath = "") then 'artiklist alates
+        if (seldName = DICPR & ":A") then 'ongi otsitavaks valitud artikkel ise
+            elm_xpath = seldName
+            xmlXpcPath = "self::node()"
+        else
+            'MySql ExtractValue nõuab kogu teed xml algusest, xPath aga mitte
+'            elm_xpath = Mid(schSeldPath, InStr(1, schSeldPath, "/") + 1)
+            elm_xpath = schSeldPath
+            xmlXpcPath = Mid(schSeldPath, InStr(1, schSeldPath, "/") + 1)
+        end if
+    else
+        xmlXpcPath = elm_xpath & Mid(schSeldPath, InStr(1, schSeldPath, "/"))
+        elm_xpath = DICPR & ":A/" & xmlXpcPath
+    end if
+end if
+
+Dim mySqlRegexpCond, elXmlXpcPred
+if (srchPtrn = "*") then
+    mySqlRegexpCond = "!= ''"
+    elXmlXpcPred = ""
+else
+    srchPtrn = Replace(inpTxt.value, "&amp;", "&")
+    srchPtrn = getSrPn2(srchPtrn, "MySql")
+    '//need kuradi ^ või [:<:] EI OLE MySQL-is üks ja sama stringi alguse korral!
+    srchPtrn = Replace(srchPtrn, "^", "(^|[[:<:]])")
+    srchPtrn = Replace(srchPtrn, "$", "($|[[:>:]])")
+    mySqlRegexpCond = "regexp"
+    if Not (chkCaseIns.checked) then
+        mySqlRegexpCond = mySqlRegexpCond & " BINARY"
+    end if
+    mySqlRegexpCond = mySqlRegexpCond & " '" & srchPtrn & "'"
+
+    srchPtrn = Replace(inpTxt.value, "&amp;", "&")
+    srchPtrn = getSrPn2(srchPtrn, "XML")
+    if (chkCaseIns.checked) then
+        srchPtrn = "(?i)" & srchPtrn
+    end if
+    elXmlXpcPred = "[xmlXpcRex(., '" & srchPtrn & "', '" & substBool & "') > 0]"
+end if
+xmlXpcPath = xmlXpcPath & elXmlXpcPred
+
+Dim attId, attrCond
+'see "xmlCond", "attrCond" värk on tõstutundlik!
+if (trAttrValik.style.visibility = "visible") then
+    attId = selAttrValik.options(selAttrValik.selectedIndex).id 'koos @
+    if Not (attId = "") then
+        attrCond = attrPtrn
+        attrCond = Replace(attrCond, "\*", ChrW(&HE001))
+        attrCond = Replace(attrCond, "\?", ChrW(&HE002))
+        if (attrCond = "*") then
+            attrCond = attId
+        elseif (Left(attrCond, 1) = "*") then 'algab tärniga
+            if (Right(attrCond, 1) = "*") then 'ka lõpeb tärniga
+                attrCond = Mid(attrCond, 2, Len(attrCond) - 2)
+                attrCond = "contains(" & attId & ", '" & attrCond & "')"
+            else
+                attrCond = Replace(Mid(attrCond, 2), "*", "")
+                'substring() ja string-length() EI TÖÖTA MySql XML funktsioonides õigesti !
+                'xmlCond = "substring(., string-length(.) - " & (Len(xmlCond) - 1) & ") = '" & xmlCond & "'"
+                attrCond = "contains(concat(" & attId & ", '~~~'), '" & attrCond & "~~~')"
+            end if
+        elseif (Right(attrCond, 1) = "*") then 'lõpeb tärniga
+            attrCond = Replace(Mid(attrCond, 1, Len(attrCond) - 1), "*", "")
+            'xmlCond = "substring(., 1, " & Len(xmlCond) & ") = '" & xmlCond & "'"
+            attrCond = "contains(concat('~~~', " & attId & "), '~~~" & attrCond & "')"
+        else
+            attrCond = attId & " = '" & attrCond & "'"
+        end if
+        if (Len(attrCond) > 0) then
+            attrCond = Replace(attrCond, ChrW(&HE001), "*")
+            attrCond = Replace(attrCond, ChrW(&HE002), "?")
+            attrCond = "[" & attrCond & "]"
+            elm_xpath = elm_xpath & attrCond
+
+            srchPtrn = Replace(inpAttr.value, "&amp;", "&")
+            srchPtrn = getSrPn2(srchPtrn, "XML")
+            if (chkCaseIns.checked) then
+                srchPtrn = "(?i)" & srchPtrn
+            end if
+            elXmlXpcPred = "[xmlXpcRex(" & attId & ", '" & srchPtrn & "', '" & substBool & "') > 0]"
+            xmlXpcPath = xmlXpcPath & elXmlXpcPred
+        end if
+    end if
+end if
+elm_xpath = elm_xpath & "//text()"
+
+Dim sqlClause, artField, leid
+artField = "art"
+if Not (chkSymbols.checked) then
+    artField = "art_alt"
+end if
+artField = dic_desc & "." & artField
+leid = "(ExtractValue(" & artField & ", """ & elm_xpath & """) " & mySqlRegexpCond & ")"
+sqlClause = "SELECT " & dic_desc & ".md AS md, " & _
+                        dic_desc & ".vol_nr AS vol_nr, " & _
+                        dic_desc & ".G AS G, " & _
+                        dic_desc & ".art AS art " & _
+                        "FROM " & dic_desc & " WHERE " & leid & " AND (" & volsStr & ") " & _
+                        "ORDER BY " & dic_desc & ".ms_att_OO"
+
+if (window.event.ctrlLeft) then
+    Dim cmdLine
+    cmdLine = "volsStr: " & volsStr & vbNewLine & _
+            "sqlClause: " & sqlClause & vbNewLine & _
+            "xmlXpcPath: " & xmlXpcPath
+    MsgBox cmdLine, vbInformation, "hulgi_Otsi_MySQL"
+    Exit Sub
+end if
+
+Call startOperation()
+
+Call exCGIASync("../tools.cgi", "hulgi_Otsi_MySQL" & PD & dic_desc & PD & usrName & PD & _
+                                    volsStr & PD & _
+                                    sqlClause & PD & _
+                                    xmlXpcPath)
+
+End Sub 'otsiOnClickMySQL
+
+
+'-----------------------------------------------------------------------------------
+Sub otsiOnClickXML()
+
+Dim srchPtrn, substBool, attrPtrn
+srchPtrn = inpTxt.value
+attrPtrn = inpAttr.value
+
+substBool = "0"
+if Not (chkSymbols.checked) then
+    if (CheckForSymbols(srchPtrn, "*? ")) then
+        alert(CONT_QUERY_Q & vbCrLf & QUERY_WORD & ": <" & srchPtrn & ">")
+        Exit Sub
+    end if
+    if (CheckForSymbols(attrPtrn, "*? ")) then
+        alert(CONT_QUERY_Q & vbCrLf & QUERY_WORD & ": <" & attrPtrn & ">")
+        Exit Sub
+    end if
+    substBool = "1"
+end if
+
+Dim alg, lopp, elpred, attId
+if (srchPtrn = "*") then
+    elpred = ""
+else
+    srchPtrn = Replace(srchPtrn, "&amp;", "&")
+    srchPtrn = getSrPn2(srchPtrn, "XML")
+    if (chkCaseIns.checked) then
+        srchPtrn = "(?i)" & srchPtrn
+    end if
+    elpred = "[al_p:xmlRex(., '" & srchPtrn & "', '" & substBool & "') > 0]"
+end if
+
+if (trAttrValik.style.visibility = "visible") then
+    attId = selAttrValik.options(selAttrValik.selectedIndex).id 'koos @
+    if Not (attId = "") then
+        if (attrPtrn = "*") then
+            elpred = elpred & "[" & attId & "]"
+        else
+            attrPtrn = Replace(attrPtrn, "&amp;", "&")
+            attrPtrn = getSrPn2(attrPtrn, "XML")
+            if (chkCaseIns.checked) then
+                attrPtrn = "(?i)" & attrPtrn
+            end if
+            elpred = elpred & "[al_p:xmlRex(" & attId & ", '" & attrPtrn & "', '" & substBool & "') > 0]"
+        end if
+    end if
+end if
+
+Dim volsStr
+volsStr = ""
+Dim koited, koide
+set koited = tblQrySetup.all.tags("INPUT")
+if Not (koited Is Nothing) then
+    for each koide in koited
+        if (koide.name = "köide") then
+            if (koide.checked = true) then
+                volsStr = volsStr & "|" & koide.id
+            end if
+        end if
+    next
+    volsStr = Mid(volsStr, 2)
+end if
+
+Dim ifrDoc
+set ifrDoc = document.frames("idIfrSisu").document.open("text/html", "replace")
+ifrDoc.close
+
+if (Len(volsStr) = 0 or Len(srchPtrn) = 0) then
+    Exit Sub
+end if
+
+Dim elm_xpath, art_xpath
+
+elm_xpath = Mid(msSeldPath, InStr(1, msSeldPath, DICPR & ":A") + Len(DICPR & ":A") + 1)
+if (chkGlobal.checked) then
+    if (elm_xpath = "") then 'artiklist alates
+        if (seldName = DICPR & ":A") then 'ongi otsitavaks valitud artikkel ise
+            elm_xpath = "self::node()"
+        else
+            elm_xpath = ".//" & seldName
+        end if
+    else
+        elm_xpath = elm_xpath & "//" & seldName
+    end if
+else
+    if (elm_xpath = "") then 'artiklist alates
+        if (seldName = DICPR & ":A") then 'ongi otsitavaks valitud artikkel ise
+            elm_xpath = "self::node()"
+        else
+            elm_xpath = Mid(schSeldPath, InStr(1, schSeldPath, "/") + 1)
+        end if
+    else
+        elm_xpath = elm_xpath & Mid(schSeldPath, InStr(1, schSeldPath, "/"))
+    end if
+end if
+elm_xpath = elm_xpath & elpred
+
+art_xpath = DICPR & ":A[" & elm_xpath & "]"
+
+if (window.event.ctrlLeft) then
+    Dim cmdLine
+    cmdLine = "volsStr: " & volsStr & vbNewLine & _
+            "art_xpath: " & art_xpath & vbNewLine & _
+            "elm_xpath: " & elm_xpath & vbNewLine & _
+            "srchPtrn: '" & srchPtrn & "'" & vbNewLine & _
+            "substBool: '" & substBool & "'"
+    MsgBox cmdLine, vbInformation, "hulgi_Otsi_XML"
+    Exit Sub
+end if
+
+Call startOperation()
+
+Call exCGIASync("../tools.cgi", "hulgi_Otsi_XML" & PD & dic_desc & PD & usrName & PD & _
+                                    volsStr & PD & _
+                                    art_xpath & PD & _
+                                    elm_xpath)
+
+End Sub 'otsiOnClickXML
+
+
+'-----------------------------------------------------------------------------------
+Sub asendaOnClick()
+if (IsEmpty(leidudeTabel)) then
+    Exit Sub
+end if
+
+Dim nVal, oVal
+oVal = oldVal.value
+nVal = newVal.value
+
+Dim rida, kast, tekst, uusTekst, i
+Dim valitudElement
+Dim valitudQN, valitudXML, refPath, parentRefPath, minOcc, maxOcc, opt
+
+Dim seldOpId
+seldOpId = opType.options(opType.selectedIndex).id
+
+Dim isaNimi, gfXml, gfDom, isaNode, asendaTingimus
+
+if (seldOpId = "idUpdate") then 'antud elemendi väärtuste muutmine
+    for i = 1 to leidudeTabel.rows.length - 1 'pealkiri!
+        set rida = leidudeTabel.rows(i)
+        tekst = rida.cells(VALUE_COL).innerHTML
+        if (Len(oVal) > 0) then
+            uusTekst = Replace(tekst, oVal, nVal)
+        else
+            uusTekst = nVal
+        end if
+        uusTekst = Trim(uusTekst)
+        if (uusTekst <> tekst and Len(uusTekst) > 0) then
+            Call rida.setAttribute("cmdName", seldOpId)
+'            Call rida.setAttribute("oldTextVal", tekst)
+            if (Len(oVal) > 0) then
+                Call rida.setAttribute("oldTextVal", oVal)
+            else
+                Call rida.setAttribute("oldTextVal", tekst)
+            end if
+            Call rida.setAttribute("newTextVal", nVal)
+'            Call rida.setAttribute("newTextVal", uusTekst)
+            rida.cells(VALUE_COL).innerHTML = uusTekst
+            rida.cells(VALUE_COL).style.backgroundColor = updBgColor
+            rida.cells(CHK_COL).all("chkUpdate").checked = true
+        end if
+    next
+elseif (seldOpId = "idDeleteDirect") then 'leitud asja kustutamine
+    set opt = opType.options(opType.selectedIndex)
+    for i = 1 to leidudeTabel.rows.length - 1 'pealkiri!
+        set rida = leidudeTabel.rows(i)
+        Call rida.cells(DELELEM_COL).setAttribute("cmdTxt", Escape(opt.getAttribute("minOcc")))
+        Call rida.setAttribute("cmdName", seldOpId)
+        rida.cells(DELELEM_COL).innerHTML = "- &lt;" & opt.value & "&gt;"
+        rida.cells(DELELEM_COL).style.backgroundColor = directDeldBgColor
+        rida.cells(CHK_COL).all("chkUpdate").checked = true
+    next
+elseif (seldOpId = "idReplaceAttr") then 'asenda/lisa atribuut
+    set opt = selAttrToChange.options(selAttrToChange.selectedIndex)
+    nVal = Trim(nVal)
+    if (Len(opt.value) > 0 and Len(nVal) > 0) then 'mitte esimene: ---
+        asendaTingimus = ""
+        if (Len(oVal) > 0) then
+            asendaTingimus = "[@" & opt.value & "[. = " & kutsuja.GCV(oVal, "", 2) & "]]"
+        end if
+        for i = 1 to leidudeTabel.rows.length - 1
+            set rida = leidudeTabel.rows(i)
+            gfXml = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algXml"))
+            set gfDom = IDD("String", gfXml, False, False, Nothing)
+            gfDom.setProperty "SelectionLanguage", "XPath"
+            gfDom.setProperty "SelectionNamespaces", gfDomNsList
+            '"algTekst" on XSL-ist saadud teksti tühikutega 'ilustatud' tekst
+            set isaNode = gfDom.documentElement.childNodes(0).selectSingleNode("descendant-or-self::" & _
+                rida.cells(GRANDFATHER_COL).getAttribute("algNimi") & "[. = " & _
+                kutsuja.GCV(Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algTekst")), "", 2) & "]" & asendaTingimus)
+            if Not (isaNode Is Nothing) then
+                if (Len(oVal) > 0) then
+                    rida.cells(UPDELEM_COL).innerHTML = "= @" & opt.value & " = &quot;" & oVal & "&quot; -&gt; &quot;" & _
+                        nVal & "&quot;"
+                else
+                    rida.cells(UPDELEM_COL).innerHTML = "= @" & opt.value & " -&gt; &quot;" & _
+                        nVal & "&quot;"
+                end if
+                Call rida.cells(UPDELEM_COL).setAttribute("cmdTxt", Escape(opt.value & PD2 & nVal & PD2 & oVal))
+                Call rida.setAttribute("cmdName", seldOpId)
+                rida.cells(UPDELEM_COL).style.backgroundColor = updBgColor
+                rida.cells(CHK_COL).all("chkUpdate").checked = true
+            end if
+        next
+    end if
+elseif (seldOpId = "idDeleteAttr") then 'kustuta atribuut
+    set opt = selAttrToChange.options(selAttrToChange.selectedIndex)
+    nVal = Trim(nVal)
+    if (Len(opt.value) > 0) then 'mitte esimene: ---
+        asendaTingimus = ""
+        if (Len(oVal) > 0) then
+            asendaTingimus = "[@" & opt.value & "[. = " & kutsuja.GCV(oVal, "", 2) & "]]"
+        end if
+        for i = 1 to leidudeTabel.rows.length - 1
+            set rida = leidudeTabel.rows(i)
+            gfXml = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algXml"))
+            set gfDom = IDD("String", gfXml, False, False, Nothing)
+            gfDom.setProperty "SelectionLanguage", "XPath"
+            gfDom.setProperty "SelectionNamespaces", gfDomNsList
+            set isaNode = gfDom.documentElement.childNodes(0).selectSingleNode("descendant-or-self::" & _
+                rida.cells(GRANDFATHER_COL).getAttribute("algNimi") & "[. = " & _
+                kutsuja.GCV(Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algTekst")), "", 2) & "]" & asendaTingimus)
+            if Not (isaNode Is Nothing) then
+                if (Len(oVal) > 0) then
+                    rida.cells(DELELEM_COL).innerHTML = "- @" & opt.value & " = &quot;" & oVal & "&quot;"
+                else
+                    rida.cells(DELELEM_COL).innerHTML = "- @" & opt.value
+                end if
+                Call rida.cells(DELELEM_COL).setAttribute("cmdTxt", Escape(opt.value & PD2 & nVal & PD2 & oVal))
+                Call rida.setAttribute("cmdName", seldOpId)
+                rida.cells(DELELEM_COL).style.backgroundColor = deldBgColor
+                rida.cells(CHK_COL).all("chkUpdate").checked = true
+            end if
+        next
+    end if
+elseif (seldOpId = "idReplace") then 'elemendi asendamine
+    set opt = selElToChange.options(selElToChange.selectedIndex)
+    nVal = Trim(nVal)
+    if (Len(opt.value) > 0 and Len(nVal) > 0) then 'mitte esimene: ---
+        asendaTingimus = ""
+        if (Len(oVal) > 0) then
+            asendaTingimus = "[. = " & kutsuja.GCV(oVal, "", 2) & "]"
+        end if
+        for i = 1 to leidudeTabel.rows.length - 1
+            set rida = leidudeTabel.rows(i)
+            'gfXml sisu ei pruugi tingimata vastata 'vanaisa' nood sisule, nt <A> asemel antakse tagasi <P> sisu
+            if (Len(asendaTingimus) > 0) then
+                isaNimi = opt.getAttribute("isaNimi")
+                gfXml = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algXml"))
+                set gfDom = IDD("String", gfXml, False, False, Nothing)
+                gfDom.setProperty "SelectionLanguage", "XPath"
+                gfDom.setProperty "SelectionNamespaces", gfDomNsList
+                if Not (gfDom.documentElement.childNodes(0).selectSingleNode("descendant-or-self::" & isanimi & "/" & opt.value & asendaTingimus) Is Nothing) then
+                    Call tsekkaAsendamine(opt, rida, rida.cells(UPDELEM_COL), nVal, oVal)
+                end if
+            else
+                Call tsekkaAsendamine(opt, rida, rida.cells(UPDELEM_COL), nVal, oVal)
+            end if
+        next
+    end if
+elseif (seldOpId = "idAdd") then 'elemendi lisamine
+    set opt = selElToChange.options(selElToChange.selectedIndex)
+    nVal = Trim(nVal)
+    if (Len(opt.value) > 0 and Len(nVal) > 0) then 'mitte esimene: ---
+        for i = 1 to leidudeTabel.rows.length - 1
+            set rida = leidudeTabel.rows(i)
+            Call tsekkaLisamine(opt, rida, rida.cells(UPDELEM_COL), nVal)
+        next
+    end if
+elseif (seldOpId = "idDelete") then 'elemendi kustutamine
+    set opt = selElToChange.options(selElToChange.selectedIndex)
+    if (Len(opt.value) > 0) then 'mitte esimene: ---
+        asendaTingimus = ""
+        if (Len(oVal) > 0) then
+            asendaTingimus = "[. = " & kutsuja.GCV(oVal, "", 2) & "]"
+        end if
+        for i = 1 to leidudeTabel.rows.length - 1
+            set rida = leidudeTabel.rows(i)
+            'gfXml sisu ei pruugi tingimata vastata 'vanaisa' nood sisule, nt <A> asemel antakse tagasi <P> sisu
+            if (Len(asendaTingimus) > 0) then
+                isaNimi = opt.getAttribute("isaNimi")
+                gfXml = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algXml"))
+                set gfDom = IDD("String", gfXml, False, False, Nothing)
+                gfDom.setProperty "SelectionLanguage", "XPath"
+                gfDom.setProperty "SelectionNamespaces", gfDomNsList
+                if Not (gfDom.documentElement.childNodes(0).selectSingleNode("descendant-or-self::" & isanimi & "/" & opt.value & asendaTingimus) Is Nothing) then
+                    Call tsekkaKustutamine(opt, rida, rida.cells(DELELEM_COL), oVal)
+                end if
+            else
+                Call tsekkaKustutamine(opt, rida, rida.cells(DELELEM_COL), oVal)
+            end if
+        next
+    end if
+elseif (seldOpId = "idDeleteArtDirect") then 'artikli kustutamine
+    for i = 1 to leidudeTabel.rows.length - 1 'pealkiri!
+        set rida = leidudeTabel.rows(i)
+        Call rida.setAttribute("cmdName", seldOpId)
+        rida.cells(DELELEM_COL).innerHTML = "- &lt;" & DICPR & ":A&gt;"
+        rida.cells(DELELEM_COL).style.backgroundColor = artDeldBgColor
+        rida.cells(CHK_COL).all("chkUpdate").checked = true
+    next
+end if
+End Sub 'asendaOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub asendaPuuduvateleOnClick()
+if (IsEmpty(leidudeTabel)) then
+    Exit Sub
+end if
+
+Dim seldOpId
+seldOpId = opType.options(opType.selectedIndex).id
+
+Dim nVal
+nVal = newVal.value
+
+Dim rida, tekst, uusTekst, i
+Dim valitudElement, gfXml, gfDom
+Dim isaNimi, isaNode, valitudQN, valitudXML, refPath, parentRefPath, minOcc, maxOcc, opt, asendaTingimus
+
+if (seldOpId = "idAdd") then
+    set opt = selElToChange.options(selElToChange.selectedIndex)
+    nVal = Trim(nVal)
+    if (Len(opt.value) > 0 and Len(nVal) > 0) then 'mitte esimene: ---
+        for i = 1 to leidudeTabel.rows.length - 1 'pealkiri!
+            isaNimi = opt.getAttribute("isaNimi")
+            set rida = leidudeTabel.rows(i)
+            gfXml = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algXml"))
+            set gfDom = IDD("String", gfXml, False, False, Nothing)
+            gfDom.setProperty "SelectionLanguage", "XPath"
+            gfDom.setProperty "SelectionNamespaces", gfDomNsList
+            set isaNode = gfDom.documentElement.childNodes(0).selectSingleNode("descendant-or-self::" & isanimi)
+            if Not (isaNode Is Nothing) then
+                if (isaNode.selectSingleNode(opt.value) Is Nothing) then
+                    Call tsekkaLisamine(opt, rida, rida.cells(UPDELEM_COL), nVal)
+                end if
+            end if
+        next
+    end if
+elseif (seldOpId = "idReplaceAttr") then
+    set opt = selAttrToChange.options(selAttrToChange.selectedIndex)
+    nVal = Trim(nVal)
+    if (Len(opt.value) > 0 and Len(nVal) > 0) then 'mitte esimene: ---
+        asendaTingimus = "[not(@" & opt.value
+        if (Len(oldVal.value) > 0) then
+            asendaTingimus = asendaTingimus & "[. = " & kutsuja.GCV(oldVal.value, "", 2) & "]"
+        end if
+        asendaTingimus = asendaTingimus & ")]"
+        for i = 1 to leidudeTabel.rows.length - 1
+            set rida = leidudeTabel.rows(i)
+            gfXml = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algXml"))
+            set gfDom = IDD("String", gfXml, False, False, Nothing)
+            gfDom.setProperty "SelectionLanguage", "XPath"
+            gfDom.setProperty "SelectionNamespaces", gfDomNsList
+            set isaNode = gfDom.documentElement.childNodes(0).selectSingleNode("descendant-or-self::" & _
+                rida.cells(GRANDFATHER_COL).getAttribute("algNimi") & "[. = " & _
+                kutsuja.GCV(Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algTekst")), "", 2) & "]" & asendaTingimus)
+            if Not (isaNode Is Nothing) then
+                if (Len(oldVal.value) > 0) then
+                    rida.cells(UPDELEM_COL).innerHTML = "= @" & opt.value & " = &quot;" & oldVal.value & "&quot; -&gt; &quot;" & _
+                        nVal & "&quot;"
+                else
+                    rida.cells(UPDELEM_COL).innerHTML = "= @" & opt.value & " -&gt; &quot;" & _
+                        nVal & "&quot;"
+                end if
+                Call rida.cells(UPDELEM_COL).setAttribute("cmdTxt", Escape(opt.value & PD2 & nVal & PD2 & oldVal.value))
+                Call rida.setAttribute("cmdName", seldOpId)
+                rida.cells(UPDELEM_COL).style.backgroundColor = updBgColor
+                rida.cells(CHK_COL).all("chkUpdate").checked = true
+            end if
+        next
+    end if
+end if
+End Sub 'asendaPuuduvateleOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub tyhistaOnClick()
+if (IsEmpty(leidudeTabel)) then
+    Exit Sub
+end if
+
+Dim rida, chk
+for each rida in leidudeTabel.rows
+    set chk = rida.cells(CHK_COL).all("chkUpdate")
+    if Not (chk Is Nothing) then 'pealkiri!
+        if (chk.checked) then
+            Call reaAlgOlek(rida)
+        end if
+    end if
+next
+End Sub 'tyhistaOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+if Not (window.event Is Nothing) then
+    if (window.event.keyCode = 27) then
+        window.close()
+    elseif (window.event.keyCode = 13) then
+        Call SetReturnV()
+    end if
+else
+    if (idIfrSisu.event.keyCode = 27) then
+        window.close()
+    end if
+end if
+End Sub 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+'window.close()
+End Sub 'SetReturnV
+
+
+'-----------------------------------------------------------------------------------
+Sub runOp()
+
+Dim vf, art_xpath, elm_xpath
+
+Dim seldOpId
+seldOpId = opType.options(opType.selectedIndex).id
+
+if (IsEmpty(leidudeTabel)) then
+    Exit Sub
+end if
+
+Call startOperation()
+
+Dim rida, chk, tekst, algTekst, gfXml, gfDom, grpNode, grpXml
+Dim cmdTxt
+
+Dim cmd, g, lastG
+lastG = ""
+
+cmd = "<cs"
+
+if (seldOpId = "idUpdate") then 'antud elemendi väärtuste muutmine
+    cmd = cmd & " a='U'"
+elseif (seldOpId = "idDeleteDirect") then 'elemendi otse kustutamine
+    cmd = cmd & " a='DD'"
+elseif (seldOpId = "idReplace") then 'elemendi asendamine
+    cmd = cmd & " a='R'"
+elseif (seldOpId = "idAdd") then 'elemendi lisamine
+    cmd = cmd & " a='A'"
+elseif (seldOpId = "idDelete") then 'elemendi kustutamine
+    cmd = cmd & " a='D'"
+elseif (seldOpId = "idSaveGroups") then 'taanete salvestamine
+    cmd = cmd & " a='G'"
+elseif (seldOpId = "idReplaceAttr") then
+    cmd = cmd & " a='Rattr'"
+elseif (seldOpId = "idDeleteAttr") then
+    cmd = cmd & " a='Dattr'"
+elseif (seldOpId = "idDeleteArtDirect") then 'artikli kustutamine
+    cmd = cmd & " a='DA'"
+end if
+cmd = cmd & ">"
+
+Dim maxArts
+maxArts = 300
+
+Dim artikleid
+artikleid = 0
+
+valituid = 0
+
+for each rida in leidudeTabel.rows
+    set chk = rida.cells(CHK_COL).all("chkUpdate")
+    if Not (chk Is Nothing) then 'pealkiri!
+        if (chk.checked and seldOpId = rida.getAttribute("cmdName")) then
+            algTekst = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algTekst"))
+            elm_xpath = rida.cells(GRANDFATHER_COL).getAttribute("algRada")
+            vf = rida.getAttribute("kf")
+            g = rida.id
+            if (g <> lastG) then
+                if (artikleid = maxArts) then
+                    Exit For
+                end if
+                if (Len(lastG) > 0) then
+                    cmd = cmd & "</cA>"
+                end if ' Len(lastG) > 0
+                artikleid = artikleid + 1
+                cmd = cmd & "<cA vf='" & vf & "' g='" & g & "'>"
+            end if 'g <> lastG
+            if (seldOpId = "idUpdate") then 'antud elemendi väärtuste muutmine
+                tekst = Trim(rida.cells(VALUE_COL).innerHTML)
+                if (tekst <> algTekst) then
+                    cmd = cmd & "<c>" & _
+                                    elm_xpath & PD2 & _
+                                    rida.getAttribute("oldTextVal") & PD2 & _
+                                    rida.getAttribute("newTextVal") & _
+                                "</c>"
+                    valituid = valituid + 1
+                    leidudeTabel.deleteRow(rida.rowIndex)
+                end if
+            elseif (seldOpId = "idDeleteDirect") then
+                'minOcc
+                cmdTxt = Unescape(rida.cells(DELELEM_COL).getAttribute("cmdTxt"))
+                if (Len(cmdTxt) > 0) then
+                    cmd = cmd & "<c>" & _
+                                    elm_xpath & PD2 & _
+                                    cmdTxt & _
+                                "</c>"
+                    valituid = valituid + 1
+                    leidudeTabel.deleteRow(rida.rowIndex)
+                end if
+            elseif (seldOpId = "idReplaceAttr") then
+                'qn & PD2 & nVal & PD2 & oldVal.value
+                cmdTxt = Unescape(rida.cells(UPDELEM_COL).getAttribute("cmdTxt")) 'UPDELEM_COL : Asendamine/lisamine
+                tekst = Trim(rida.cells(UPDELEM_COL).innerHTML)
+                if (Len(tekst) > 0 and Len(cmdTxt) > 0) then
+                    cmd = cmd & "<c>" & _
+                                    elm_xpath & PD2 & _
+                                    cmdTxt & _
+                                "</c>"
+                    valituid = valituid + 1
+                    leidudeTabel.deleteRow(rida.rowIndex)
+                end if
+            elseif (seldOpId = "idDeleteAttr") then
+                'qn & PD2 & nVal & PD2 & oldVal.value
+                cmdTxt = Unescape(rida.cells(DELELEM_COL).getAttribute("cmdTxt"))
+                tekst = Trim(rida.cells(DELELEM_COL).innerHTML)
+                if (Len(tekst) > 0 and Len(cmdTxt) > 0) then
+                    cmd = cmd & "<c>" & _
+                                    elm_xpath & PD2 & _
+                                    cmdTxt & _
+                                "</c>"
+                    valituid = valituid + 1
+                    leidudeTabel.deleteRow(rida.rowIndex)
+                end if
+            elseif (seldOpId = "idAdd") then 'elemendi lisamine
+                'isaNimi, valitudQN, valitudXML, refPath, parentRefPath, minOcc, maxOcc, oldVal (asendamine/kustutamine), newVal (lisamine)
+                cmdTxt = Unescape(rida.cells(UPDELEM_COL).getAttribute("cmdTxt")) 'UPDELEM_COL : Asendamine/lisamine
+                tekst = Trim(rida.cells(UPDELEM_COL).innerHTML)
+                if (Len(tekst) > 0 and Len(cmdTxt) > 0) then
+                    cmd = cmd & "<c>" & _
+                                    elm_xpath & PD2 & _
+                                    cmdTxt & _
+                                "</c>"
+                    valituid = valituid + 1
+                    leidudeTabel.deleteRow(rida.rowIndex)
+                end if
+            elseif (seldOpId = "idReplace") then 'elemendi asendamine
+                'isaNimi, valitudQN, valitudXML, refPath, parentRefPath, minOcc, maxOcc, oldVal (asendamine/kustutamine), newVal (lisamine)
+                cmdTxt = Unescape(rida.cells(UPDELEM_COL).getAttribute("cmdTxt")) 'UPDELEM_COL : Asendamine/lisamine
+                tekst = Trim(rida.cells(UPDELEM_COL).innerHTML)
+                if (Len(tekst) > 0 and Len(cmdTxt) > 0) then
+                    cmd = cmd & "<c>" & _
+                                    elm_xpath & PD2 & _
+                                    cmdTxt & _
+                                "</c>"
+                    valituid = valituid + 1
+                    leidudeTabel.deleteRow(rida.rowIndex)
+                end if
+            elseif (seldOpId = "idDelete") then 'elemendi kustutamine
+                'isaNimi, valitudQN, valitudXML, refPath, parentRefPath, minOcc, maxOcc, oldVal (asendamine/kustutamine), newVal (lisamine)
+                cmdTxt = Unescape(rida.cells(DELELEM_COL).getAttribute("cmdTxt"))
+                tekst = Trim(rida.cells(DELELEM_COL).innerHTML)
+                if (Len(tekst) > 0 and Len(cmdTxt) > 0) then
+                    cmd = cmd & "<c>" & _
+                                    elm_xpath & PD2 & _
+                                    cmdTxt & _
+                                "</c>"
+                    valituid = valituid + 1
+                    leidudeTabel.deleteRow(rida.rowIndex)
+                end if
+            elseif (seldOpId = "idSaveGroups") then 'taanete salvestamine
+                gfXml = rida.cells(GRANDFATHER_COL).getAttribute("uusXml")
+                if Not (IsNull(gfXml)) then
+                    gfXml = Unescape(gfXml)
+                    set gfDom = IDD("String", gfXml, False, False, Nothing)
+                    set grpNode = gfDom.documentElement.childNodes(0)
+                    grpXml = ""
+                    if Not (grpNode Is Nothing) then
+                        grpXml = grpNode.xml
+                        grpXml = Replace(grpXml, "&", "&amp;")
+                        grpXml = Replace(grpXml, "<", "&lt;")
+                        grpXml = Replace(grpXml, ">", "&gt;")
+                    end if
+                    cmd = cmd & "<c>" & _
+                                    elm_xpath & PD2 & _
+                                    rida.cells(LOCATION_COL).all("gfChName").innerText & PD2 & _
+                                    grpXml & _
+                                "</c>"
+                    valituid = valituid + 1
+                    leidudeTabel.deleteRow(rida.rowIndex)
+                end if
+            elseif (seldOpId = "idDeleteArtDirect") then
+                'siia ilmselt polegi midagi lisada vaja, eelnevalt kõik olemas ...
+                valituid = valituid + 1
+                leidudeTabel.deleteRow(rida.rowIndex)
+            end if
+            lastG = g
+        end if 'chk.checked
+    end if 'Not chk Is Nothing
+next
+
+cmd = cmd & "</cA></cs>"
+
+if (valituid > 0) then
+    if window.event.ctrlLeft then
+        MsgBox "hulgi_Käivita" & PD & dic_desc & PD & usrName & PD & cmd, vbInformation, "Käivita"
+        Call endOperation("-: ", TYHI)
+        Exit Sub
+    end if
+    Call exCGIASync("../tools.cgi", "hulgi_Käivita" & PD & dic_desc & PD & usrName & PD & cmd)
+else
+    Call endOperation("-: ", TYHI)
+end if
+
+End Sub 'runOp
+
+
+'-----------------------------------------------------------------------------------
+Function fillIfrTable(inDom)
+
+    Dim koited, koide, artiklid, artikkel, leiud, leid, gfNode, qn
+
+    set koited = inDom.selectNodes("rsp/outDOM/sr")
+
+    Dim ifrDoc, rida, md, g, gfHtml, vf, objekte, tekst, gfXml, gfChName, rada
+    set ifrDoc = document.frames("idIfrSisu").document.open("text/html", "replace")
+
+    ifrDoc.writeln "<table id='tblLeiud' cmdSrc='hulgi_Otsi' width='100%' border='1'>"
+    Dim hdr
+    hdr = "<thead style='background-color:navy;color:white;display:table-header-group;'>" & _
+            "<tr>" & _
+                "<th>&nbsp;</th>" & _
+                "<th>Märksõna</th>" & _
+                "<th>Asukoht</th>" & _
+                "<th>Grupp</th>" & _
+                "<th>Asendamine / lisamine</th>" & _
+                "<th style='width:20%;'>Otsitav</th>" & _
+                "<th>Kustutamine</th>" & _
+            "</tr>" & _
+          "</thead>"
+    ifrDoc.writeln hdr
+    
+    objekte = 0
+    
+    for each koide in koited
+        set artiklid = koide.selectNodes("A")
+        for each artikkel in artiklid
+            md = artikkel.selectSingleNode("md").text
+            g = artikkel.selectSingleNode("G").text
+            vf = artikkel.selectSingleNode("vf").text
+            set leiud = artikkel.selectNodes("l")
+            for each leid in leiud
+                objekte = objekte + 1
+                qn = leid.selectSingleNode("e").text '<e>, "element"
+                set gfNode = leid.selectSingleNode("gf") '"grandfather", mis alati ei ole 'grandfather', <P> korral <P>, <mg> korral <P>, teiste korral on.
+                gfChName = gfNode.childNodes(0).nodeName
+                gfXml = gfNode.xml
+                gfHtml = gfNode.transformNode(oXslView)
+                tekst = leid.selectSingleNode("t").text 'XSL-ist <t>, "tekst"
+                'rada on alates artiklist <A>
+                rada = leid.selectSingleNode("r").text
+                rida = "<tr id='" & g & "' kf='" & vf & "'>"
+                rida = rida & "<td><span style='font-weight:bold;text-decoration:underline;'>" & objekte & "</span><br/><input name='chkUpdate' type='checkbox' /></td>"
+                rida = rida & "<td>" & md & "</td>"
+                rida = rida & "<td style='color:maroon;font-weight:bold;'>&lt;<span id='gfChName'>" & gfChName & "</span>&gt;</td>"
+                rida = rida & "<td algNimi='" & qn & "' algTekst='" & Escape(tekst) & "' algXml='" & Escape(gfXml) & "' algRada='" & rada & "'>" & gfHtml & "</td>"
+                rida = rida & "<td>" & TYHI_KAST & "</td>" 'elemendi asendamise/lisamise jaoks
+                rida = rida & "<td title='" & rada & "'>" & tekst & "</td>" 'teksti asendamise jaoks
+                rida = rida & "<td>" & TYHI_KAST & "</td>" 'elemendi kustutamise jaoks
+                rida = rida & "</tr>"
+                ifrDoc.writeln rida
+            next
+        next
+    next
+    
+    ifrDoc.writeln "</table>"
+
+    ifrDoc.close
+
+    set leidudeTabel = idIfrSisu.document.all("tblLeiud")
+    document.frames("idIfrSisu").document.body.onclick = GetRef("idIfrSisuOnClick")
+    document.frames("idIfrSisu").document.body.oncontextmenu = GetRef("idIfrSisuOnContextMenu")
+
+    fillIfrTable = objekte
+
+End Function 'fillIfrTable
+
+
+'-----------------------------------------------------------------------------------
+Sub toCaller(xh)
+Dim rspDOM, sta, status, cmdInfo, artCount, objCount, cmdName, lss, seldOpId, errs
+cmdInfo = opType.options(opType.selectedIndex).innerText
+
+if (xh.statusText = "OK") then
+    set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDoc
+    sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+    if (sta) then
+        rspDOM.setProperty "SelectionLanguage", "XPath"
+        rspDOM.setProperty "SelectionNamespaces", gfDomNsList
+        status = rspDOM.selectSingleNode("rsp/sta").text
+        if (status = "Success") then
+            lss = ""
+            artCount = rspDOM.selectSingleNode("rsp/cnt").text
+            if (InStr(1, artCount, "+") > 0) then
+                lss = Mid(artCount, InStr(1, artCount, "+"))
+                artCount = Left(artCount, InStr(1, artCount, "+") - 1)
+            end if
+            cmdName = rspDOM.selectSingleNode("rsp/cmd").text
+            if (cmdName = "hulgi_Käivita") then
+                errs = rspDOM.selectSingleNode("rsp/errs").text
+                if (errs <> "-") then
+                    MsgBox errs, vbExclamation, "Leidus vigu!"
+                end if
+                '1 - jutt aja ees, 2 - info semikooloni järel
+                Call endOperation("Operatsioon: ", _
+                    "valitud " & FormatNumber(valituid ,0 ,-2 ,-2 ,-2) & " objekti, uuendatud " & _
+                    FormatNumber(artCount ,0 ,-2 ,-2 ,-2) & " art.")
+            elseif (cmdName = "hulgi_Otsi_MySQL") then
+                seldOpId = opType.options(opType.selectedIndex).id
+                if (seldOpId = "idUpdate") then 'antud elemendi väärtuste muutmine
+                    if (otsinguteArv = 0) then
+                        oldVal.value = Replace(Replace(inpTxt.value, "*", ""), "?", "")
+                        newVal.value = oldVal.value
+                    end if
+                end if
+                objCount = fillIfrTable(rspDOM)
+                Call endOperation("MySQL Otsing: ", _
+                    FormatNumber(objCount ,0 ,-2 ,-2 ,-2) & " objekti, " & _
+                    FormatNumber(artCount ,0 ,-2 ,-2 ,-2) & lss & " art.")
+                otsinguteArv = otsinguteArv + 1
+            elseif (cmdName = "hulgi_Otsi_XML") then
+                seldOpId = opType.options(opType.selectedIndex).id
+                if (seldOpId = "idUpdate") then 'antud elemendi väärtuste muutmine
+                    if (otsinguteArv = 0) then
+                        oldVal.value = Replace(Replace(inpTxt.value, "*", ""), "?", "")
+                        newVal.value = oldVal.value
+                    end if
+                end if
+                objCount = fillIfrTable(rspDOM)
+                Call endOperation("XML Otsing: ", _
+                    FormatNumber(objCount ,0 ,-2 ,-2 ,-2) & " objekti, " & _
+                    FormatNumber(artCount ,0 ,-2 ,-2 ,-2) & lss & " art.")
+                otsinguteArv = otsinguteArv + 1
+            elseif (cmdName = "findReplace_CompElements") then
+                objCount = fillIfrTable(rspDOM)
+                'FormatNumber(Expression [,NumDigitsAfterDecimal [,IncludeLeadingDigit [,UseParensForNegativeNumbers [,GroupDigits]]]])
+                'IncludeLeadingDigit, UseParensForNegativeNumbers, and GroupDigits: TristateUseDefault -2 Use the setting from the computer's regional settings. 
+                Call endOperation("Võrdlemine: ", _
+                    objCount & " objekti, " & _
+                    FormatNumber(artCount ,0 ,-2 ,-2 ,-2) & lss & _
+                    " erinevat.")
+                otsinguteArv = otsinguteArv + 1
+            else
+                Call endOperation(cmdInfo & ": ", "Tundmatu operatsioon!: " & status)
+            end if
+        else
+            Call endOperation(cmdInfo & ": ", "Operatsioon ei õnnestunud!: " & status)
+            MsgBox "Operatsioon ei õnnestunud!" & vbNewLine & vbNewLine & status, vbExclamation, cmdInfo
+        end if
+    else
+        MsgBox "Load responseXML", vbCritical, cmdInfo
+    end if
+else
+    MsgBox xh.status & ": " & xh.statusText & vbNewLine & vbNewLine & _
+        xh.responseText, _
+        vbCritical, cmdInfo
+end if
+
+set lastTdObj = Nothing
+set currTdObj = Nothing
+set currClickedObj = Nothing
+set lastClickedObj = Nothing
+
+End Sub 'toCaller
+
+
+'-----------------------------------------------------------------------------------
+Sub startOperation()
+dtOpStart = Now
+imgWorking.style.visibility = ""
+tdElapsedTime.innerHTML = TYHI
+tdArtCount.innerHTML = TYHI
+btnOtsi.disabled = true
+if Not (document.all("btnOtsiXML") Is Nothing) then
+    btnOtsiXML.disabled = true
+end if
+btnRakenda.disabled = true
+btnRakendaPuuduvatele.disabled = true
+btnUndo.disabled = true
+btnOK.disabled = true
+End Sub 'startOperation
+
+
+'-----------------------------------------------------------------------------------
+Sub endOperation(opName, opInfo)
+Dim nOpSpan
+nOpSpan = DateDiff("s", dtOpStart, Now, vbMonday, vbFirstJan1)
+tdElapsedTime.innerHTML = opName & (nOpSpan \ 60) & "m, " & (nOpSpan Mod 60) & "s;"
+tdArtCount.innerHTML = opInfo
+btnOtsi.disabled = false
+if Not (document.all("btnOtsiXML") Is Nothing) then
+    btnOtsiXML.disabled = false
+end if
+btnRakenda.disabled = false
+if (opType.options(opType.selectedIndex).id = "idAdd") then 'lisamine
+    btnRakendaPuuduvatele.disabled = false
+end if
+btnUndo.disabled = false
+btnOK.disabled = false
+imgWorking.style.visibility = "hidden"
+End Sub 'endOperation
+
+
+'-----------------------------------------------------------------------------------
+Sub idIfrSisuOnClick()
+
+if Not (currClickedObj Is Nothing) then
+    currClickedObj.style.backgroundColor = ""
+end if
+
+Dim oSrc
+set oSrc = idIfrSisu.event.srcElement
+
+if Not (leidudeTabel.contains(oSrc)) then
+    Exit Sub
+end if
+
+Dim tekst, nVal, rida, valitudElement
+Dim valitudQN, valitudXML, refPath, parentRefPath, minOcc, maxOcc, opt
+
+nVal = Trim(newVal.value)
+
+Dim seldOpId
+seldOpId = opType.options(opType.selectedIndex).id
+
+if (oSrc.tagName = "TD") then
+    if (oSrc.cellIndex = LOCATION_COL) then
+        set rida = oSrc.parentElement
+        Call showGroupXml(rida)
+    elseif (oSrc.cellIndex = VALUE_COL) then
+        if (seldOpId = "idUpdate") then 'antud elemendi väärtuste muutmine
+            tekst = oSrc.innerHTML
+            set rida = oSrc.parentElement
+            'InputBox: prompt, title, default
+            nVal = InputBox("Sisesta uus väärtus!" & vbCrLf & vbCrLf & rida.id, "Uue väärtuse omistamine", tekst)
+            if (nVal = "" or nVal = tekst) then
+                Exit Sub
+            end if
+            oSrc.innerHTML = nVal
+            Call rida.setAttribute("cmdName", seldOpId)
+            Call rida.setAttribute("oldTextVal", tekst)
+            Call rida.setAttribute("newTextVal", nVal)
+            oSrc.style.backgroundColor = updBgColor
+            rida.cells(CHK_COL).all("chkUpdate").checked = true
+        end if
+    elseif (oSrc.cellIndex = UPDELEM_COL) then
+        set rida = oSrc.parentElement
+        if (seldOpId = "idReplaceAttr") then
+            set opt = selAttrToChange.options(selAttrToChange.selectedIndex)
+        else
+            set opt = selElToChange.options(selElToChange.selectedIndex)
+        end if
+        if (Len(opt.value) > 0 and Len(nVal) > 0) then 'mitte esimene
+            if (seldOpId = "idReplace") then 'elemendi asendamine
+                Call tsekkaAsendamine(opt, rida, oSrc, nVal, oldVal.value)
+            elseif (seldOpId = "idAdd") then 'elemendi lisamine
+                Call tsekkaLisamine(opt, rida, oSrc, nVal)
+            elseif (seldOpId = "idReplaceAttr") then
+                valitudQN = opt.value 'qn
+                if (Len(oldVal.value) > 0) then
+                    oSrc.innerHTML = "= @" & valitudQN & " = &quot;" & oldVal.value & "&quot; -&gt; &quot;" & _
+                        nVal & "&quot;"
+                else
+                    oSrc.innerHTML = "= @" & valitudQN & " -&gt; &quot;" & _
+                        nVal & "&quot;"
+                end if
+                Call oSrc.setAttribute("cmdTxt", Escape(valitudQN & PD2 & nVal & PD2 & oldVal.value))
+                Call rida.setAttribute("cmdName", seldOpId)
+                oSrc.style.backgroundColor = updBgColor
+                rida.cells(CHK_COL).all("chkUpdate").checked = true
+            end if
+        end if
+    elseif (oSrc.cellIndex = DELELEM_COL) then
+        set rida = oSrc.parentElement
+        if (seldOpId = "idDelete") then 'elemendi kustutamine
+            set opt = selElToChange.options(selElToChange.selectedIndex)
+            if (Len(opt.value) > 0) then 'mitte esimene: ---
+                Call tsekkaKustutamine(opt, rida, oSrc, oldVal.value)
+            end if
+        elseif (seldOpId = "idDeleteAttr") then
+            set opt = selAttrToChange.options(selAttrToChange.selectedIndex)
+            if (Len(opt.value) > 0) then 'mitte esimene: ---
+                valitudQN = opt.value 'qn
+                if (Len(oldVal.value) > 0) then
+                    oSrc.innerHTML = "- @" & valitudQN & " = &quot;" & oldVal.value & "&quot;"
+                else
+                    oSrc.innerHTML = "- @" & valitudQN
+                end if
+                Call oSrc.setAttribute("cmdTxt", Escape(valitudQN & PD2 & nVal & PD2 & oldVal.value))
+                Call rida.setAttribute("cmdName", seldOpId)
+                oSrc.style.backgroundColor = deldBgColor
+                rida.cells(CHK_COL).all("chkUpdate").checked = true
+            end if
+        elseif (seldOpId = "idDeleteDirect") then
+            set opt = opType.options(opType.selectedIndex)
+            Call oSrc.setAttribute("cmdTxt", opt.getAttribute("minOcc"))
+            Call rida.setAttribute("cmdName", seldOpId)
+            oSrc.innerHTML = "- &lt;" & opt.value & "&gt;"
+            oSrc.style.backgroundColor = directDeldBgColor
+            rida.cells(CHK_COL).all("chkUpdate").checked = true
+        elseif (seldOpId = "idDeleteArtDirect") then
+            Call rida.setAttribute("cmdName", seldOpId)
+            oSrc.innerHTML = "- &lt;" & DICPR & ":A&gt;"
+            oSrc.style.backgroundColor = artDeldBgColor
+            rida.cells(CHK_COL).all("chkUpdate").checked = true
+        end if
+    end if
+elseif (oSrc.tagName = "INPUT") then
+    if (oSrc.checked = false) then 'alguses käib kohe "uncheck"
+        set rida = oSrc.parentElement.parentElement
+        Call reaAlgOlek(rida)
+    end if
+elseif (oSrc.tagName = "SPAN") then
+    if (oSrc.parentElement.tagName = "TD") then
+        if (oSrc.parentElement.cellIndex = LOCATION_COL) then
+            set rida = oSrc.parentElement.parentElement
+            Call showGroupXml(rida)
+        end if
+    end if
+elseif (oSrc.tagName = "A") then
+    idIfrSisu.event.returnValue = False
+end if
+
+End Sub 'idIfrSisuOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub showGroupXml(rida)
+Dim gfXml, gfDom, indDom, algTekst, msTekst
+gfXml = rida.cells(GRANDFATHER_COL).getAttribute("uusXml")
+if (IsNull(gfXml)) then
+    gfXml = rida.cells(GRANDFATHER_COL).getAttribute("algXml")
+end if
+gfXml = Unescape(gfXml)
+set gfDom = IDD("String", gfXml, False, False, Nothing)
+set indDom = IDD("", "", False, False, Nothing)
+Call gfDom.transformNodeToObject(indentedView, indDom)
+algTekst = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algTekst"))
+msTekst = rida.cells(MS_COL).innerText
+MsgBox indDom.xml, vbInformation, "'" & msTekst & "': '" & algTekst & "' grupp"
+End Sub 'showGroupXml
+
+
+'-----------------------------------------------------------------------------------
+Sub reaAlgOlek(rida)
+'asendamine v lisamine
+rida.cells(UPDELEM_COL).innerHTML = TYHI_KAST
+Call rida.cells(UPDELEM_COL).removeAttribute("cmdTxt")
+rida.cells(UPDELEM_COL).style.backgroundColor = ""
+'väärtuse muutmine
+rida.cells(VALUE_COL).innerHTML = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algTekst"))
+rida.cells(VALUE_COL).style.backgroundColor = ""
+'kustutamine
+rida.cells(DELELEM_COL).innerHTML = TYHI_KAST
+Call rida.cells(DELELEM_COL).removeAttribute("cmdTxt")
+rida.cells(DELELEM_COL).style.backgroundColor = ""
+'taanete muutmine
+if (rida.getAttribute("cmdName") = "idSaveGroups") then 'võtab teine aega ...
+    Dim gfXml, gfDom, gfHtml
+    gfXml = Unescape(rida.cells(GRANDFATHER_COL).getAttribute("algXml"))
+    set gfDom = IDD("String", gfXml, False, False, Nothing)
+    gfDom.setProperty "SelectionLanguage", "XPath"
+    gfDom.setProperty "SelectionNamespaces", gfDomNsList
+    gfHtml = gfDom.transformNode(oXslView)
+    rida.cells(GRANDFATHER_COL).innerHTML = gfHtml
+    rida.cells(GRANDFATHER_COL).removeAttribute("uusXml")
+    rida.cells(GRANDFATHER_COL).style.backgroundColor = ""
+end if
+'käsk ise
+Call rida.removeAttribute("cmdName")
+Call rida.removeAttribute("oldTextVal")
+Call rida.removeAttribute("newTextVal")
+'tsekka maha
+rida.cells(CHK_COL).all("chkUpdate").checked = false
+End Sub 'reaAlgOlek
+
+
+'-----------------------------------------------------------------------------------
+Sub idIfrSisuOnContextMenu()
+Dim oSrc
+set oSrc = idIfrSisu.event.srcElement
+
+idIfrSisu.event.returnValue = False
+
+if Not (leidudeTabel.contains(oSrc)) then
+    Exit Sub
+end if
+if Not (opType.options(opType.selectedIndex).id = "idSaveGroups") then
+    Exit Sub
+end if
+
+if Not (currClickedObj Is Nothing) then
+    currClickedObj.style.backgroundColor = ""
+end if
+
+if (oSrc.tagName = "LI" or oSrc.tagName = "SPAN") then
+    Dim tdObj, clickedObj
+    set tdObj = oSrc
+    do until (tdObj.tagName = "TD")
+        set tdObj = tdObj.parentElement
+    loop
+    if (tdObj.cellIndex = GRANDFATHER_COL) then
+        Dim tid, gfXml, gfDom, seldNode
+        set clickedObj = oSrc
+        if (clickedObj.tagName = "LI") then
+            tid = Mid(clickedObj.id, 9) 'alguses "HTML:LI/"
+        elseif (clickedObj.tagName = "SPAN") then
+            tid = Mid(clickedObj.id, 1 ,InStrRev(clickedObj.id, "/") - 1) 'SPAN annab alati elemendi teksti
+        end if
+        gfXml = tdObj.getAttribute("uusXml")
+        if (IsNull(gfXml)) then
+            gfXml = tdObj.getAttribute("algXml")
+        end if
+        gfXml = Unescape(gfXml)
+        set gfDom = IDD("String", gfXml, False, False, Nothing)
+        gfDom.setProperty "SelectionLanguage", "XPath"
+        gfDom.setProperty "SelectionNamespaces", gfDomNsList
+        set seldNode = gfDom.selectSingleNode(tid)
+        if Not (seldNode Is Nothing) then
+
+            set currTdObj = tdObj
+            set currClickedObj = clickedObj
+
+            currClickedObj.style.backgroundColor = "Highlight"
+
+            Dim lefter, topper, popupBody, realHeight, sisuObj
+            set oPopup = window.createPopup()
+            set popupBody = oPopup.document.body
+            lefter = idIfrSisu.event.screenX + 10
+            topper = idIfrSisu.event.screenY + 10
+            popupBody.innerHTML = contextMenu.innerHTML
+            set sisuObj = popupBody.all("contextMenuContent")
+            if (lastTdObj Is Nothing or lastClickedObj Is Nothing) then
+                sisuObj.all("nodeReplace").style.display = "none"
+                sisuObj.all("nodeAddBefore").style.display = "none"
+                sisuObj.all("nodeAddChild").style.display = "none"
+                sisuObj.all("nodeAddAfter").style.display = "none"
+            else
+                sisuObj.all("nodeReplace").style.display = ""
+                sisuObj.all("nodeAddBefore").style.display = ""
+                sisuObj.all("nodeAddChild").style.display = ""
+                sisuObj.all("nodeAddAfter").style.display = ""
+            end if
+            Call oPopup.show(0, 0, 300, 0)
+            realHeight = popupBody.scrollHeight 'border otsitavaKontekstSisu ümber
+            '// Hides the dimension detector popup object.
+            Call oPopup.hide()
+            'document body height
+            sisuObj.onclick = GetRef("contextMenuClicked")
+            '// Shows the actual popup object with correct height.
+            Call oPopup.show(lefter, topper, 300, realHeight + 6, oSrc)
+        
+        else
+            set currTdObj = Nothing
+            set currClickedObj = Nothing
+        end if
+    else
+        set currTdObj = Nothing
+        set currClickedObj = Nothing
+    end if
+end if
+End Sub 'idIfrSisuOnContextMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub contextMenuClicked()
+Dim oSrc
+set oSrc = oPopup.document.parentWindow.event.srcElement
+
+Dim gfXml, gfDom, tid, srcNode, destNode, gfHtml
+Dim fathNode, parNode
+
+currClickedObj.style.backgroundColor = ""
+
+if (oSrc.id = "nodeCopy") then
+    set lastTdObj = currTdObj
+    set lastClickedObj = currClickedObj
+elseif (oSrc.id = "nodeReplace" or oSrc.id = "nodeAddBefore" or oSrc.id = "nodeAddChild" or oSrc.id = "nodeAddAfter") then
+    if Not (lastTdObj Is Nothing or lastClickedObj Is Nothing) then
+        gfXml = lastTdObj.getAttribute("uusXml")
+        if (IsNull(gfXml)) then
+            gfXml = lastTdObj.getAttribute("algXml")
+        end if
+        gfXml = Unescape(gfXml)
+        set gfDom = IDD("String", gfXml, False, False, Nothing)
+        gfDom.setProperty "SelectionLanguage", "XPath"
+        gfDom.setProperty "SelectionNamespaces", gfDomNsList
+
+        if (lastClickedObj.tagName = "LI") then
+            tid = Mid(lastClickedObj.id, 9) 'alguses "HTML:LI/"
+        elseif (lastClickedObj.tagName = "SPAN") then
+            tid = Mid(lastClickedObj.id, 1 ,InStrRev(lastClickedObj.id, "/") - 1) 'SPAN annab alati elemendi teksti
+        end if
+        set srcNode = gfDom.selectSingleNode(tid)
+        
+        gfXml = currTdObj.getAttribute("uusXml")
+        if (IsNull(gfXml)) then
+            gfXml = currTdObj.getAttribute("algXml")
+        end if
+        gfXml = Unescape(gfXml)
+        set gfDom = IDD("String", gfXml, False, False, Nothing)
+        gfDom.setProperty "SelectionLanguage", "XPath"
+        gfDom.setProperty "SelectionNamespaces", gfDomNsList
+
+        if (currClickedObj.tagName = "LI") then
+            tid = Mid(currClickedObj.id, 9) 'alguses "HTML:LI/"
+        elseif (currClickedObj.tagName = "SPAN") then
+            tid = Mid(currClickedObj.id, 1 ,InStrRev(currClickedObj.id, "/") - 1) 'SPAN annab alati elemendi teksti
+        end if
+        set destNode = gfDom.selectSingleNode(tid)
+        
+        set parNode = destNode.parentNode
+        if (oSrc.id = "nodeReplace") then
+            Call parNode.replaceChild(gfDom.importNode(srcNode, true), destNode)
+        elseif (oSrc.id = "nodeAddBefore") then
+            Call parNode.insertBefore(gfDom.importNode(srcNode, true), destNode)
+        elseif (oSrc.id = "nodeAddChild") then
+            Call destNode.appendChild(gfDom.importNode(srcNode, true))
+        elseif (oSrc.id = "nodeAddAfter") then
+            Call parNode.insertBefore(gfDom.importNode(srcNode, true), destNode.nextSibling)
+        end if
+        Call parNode.normalize
+
+	    if (ValidateXML(parNode, xsdSc)) then
+            Call currTdObj.setAttribute("uusXml", Escape(gfXml))
+            gfHtml = gfDom.transformNode(oXslView)
+            currTdObj.innerHTML = gfHtml
+            
+            Call currTdObj.parentElement.setAttribute("cmdName", "idSaveGroups")
+            currTdObj.style.backgroundColor = updBgColor
+            currTdObj.parentElement.cells(CHK_COL).all("chkUpdate").checked = true
+	    end if
+
+    end if
+elseif (oSrc.id = "nodeDelete") then
+    gfXml = currTdObj.getAttribute("uusXml")
+    if (IsNull(gfXml)) then
+        gfXml = currTdObj.getAttribute("algXml")
+    end if
+    gfXml = Unescape(gfXml)
+    set gfDom = IDD("String", gfXml, False, False, Nothing)
+    gfDom.setProperty "SelectionLanguage", "XPath"
+    gfDom.setProperty "SelectionNamespaces", gfDomNsList
+
+    if (currClickedObj.tagName = "LI") then
+        set destNode = gfDom.selectSingleNode(Mid(currClickedObj.id, 9)) 'alguses "HTML:LI/"
+    elseif (currClickedObj.tagName = "SPAN") then
+        'SPAN annab alati elemendi teksti v atribuudi väärtuse
+        set destNode = gfDom.selectSingleNode(currClickedObj.id)
+    end if
+    if (destNode.nodeType = NODE_TEXT or destNode.nodeType = NODE_ATTRIBUTE) then
+        set parNode = destNode.selectSingleNode("..") 'atribuudil ei ole parentNode-t
+    elseif (destNode.nodeType = NODE_ELEMENT) then
+        set parNode = destNode
+    end if
+
+    set fathNode = parNode.parentNode.parentNode
+    if (destNode.nodeType = NODE_TEXT or destNode.nodeType = NODE_ELEMENT) then
+        Call parNode.parentNode.removeChild(parNode)
+        Call kutsuja.DeleteEmptys(fathNode)
+    elseif (destNode.nodeType = NODE_ATTRIBUTE) then
+        Call parNode.removeAttributeNode(destNode)
+    end if
+    
+    Call fathNode.normalize
+
+    if (ValidateXML(fathNode, xsdSc)) then
+        Call currTdObj.setAttribute("uusXml", Escape(gfDom.xml))
+        gfHtml = gfDom.transformNode(oXslView)
+        currTdObj.innerHTML = gfHtml
+        
+        Call currTdObj.parentElement.setAttribute("cmdName", "idSaveGroups")
+        currTdObj.style.backgroundColor = updBgColor
+        currTdObj.parentElement.cells(CHK_COL).all("chkUpdate").checked = true
+    end if
+
+end if
+
+Call oPopup.hide()
+
+End Sub 'contextMenuClicked
+
+
+'Ainult elementide korral ...
+'-----------------------------------------------------------------------------------
+Sub tsekkaAsendamine(myOpt, myRow, myCell, myVal, oVal)
+Dim valitudElement, isaNimi, valitudQN, valitudXML, refPath, parentRefPath, minOcc, maxOcc
+
+valitudElement = myOpt.value 'p:qsg/p:qs, p:kom_k ...
+isaNimi = myOpt.getAttribute("isaNimi")
+valitudQN = Mid(valitudElement, InStr(1, valitudElement, "/") + 1)
+valitudXML = "&lt;" & valitudQN & " xmlns:" & DICPR & "='" & DICURI & "'&gt;" & myVal & "&lt;/" & valitudQN & "&gt;"
+refPath = myOpt.getAttribute("refPath")
+parentRefPath = myOpt.getAttribute("parentRefPath")
+minOcc = myOpt.getAttribute("minOcc")
+maxOcc = myOpt.getAttribute("maxOcc")
+if (Len(oVal) > 0) then
+    myCell.innerHTML = "= &lt;" & valitudElement & "&gt; = &quot;" & oVal & "&quot; -&gt; &quot;" & _
+        myVal & "&quot;"
+else
+    myCell.innerHTML = "= &lt;" & valitudElement & "&gt; -&gt; &quot;" & _
+        myVal & "&quot;"
+end if
+'GCV - "get concatvalue"
+'GCV - teeb teksti concat() funktsiooni jaoks kasutatavaks juhul kui tekstis on apostroofe. Kui pole, lisab ette/taha apostroofid.
+'tekst, mida lisada (praegu ei kasutata, on alati tühi), kuhu lisada (0, ette; teisiti, järele)
+'GCV(sInpStr, lisa, kuhu)
+Dim gcvTekst
+gcvTekst = ""
+if (Len(oVal) > 0) then
+    gcvTekst = "[. = " & kutsuja.GCV(oVal, "", 2) & "]"
+end if
+Call myCell.setAttribute("cmdTxt", _
+    Escape(isaNimi & PD2 & _
+    valitudElement & PD2 & _
+    valitudXML & PD2 & _
+    refPath & PD2 & _
+    parentRefPath & PD2 & _
+    minOcc & PD2 & _
+    maxOcc & PD2 & _
+    gcvTekst))
+Call myRow.setAttribute("cmdName", "idReplace")
+myCell.style.backgroundColor = updBgColor
+myRow.cells(CHK_COL).all("chkUpdate").checked = true
+End Sub 'tsekkaAsendamine
+
+
+'-----------------------------------------------------------------------------------
+Sub tsekkaLisamine(myOpt, myRow, myCell, myVal)
+'myOpt: valitud lisatava elemendi <option> obj
+'myRow: tabeli rea <tr> obj
+'myCell: klõpsatud <td> obj
+'myVal: uus väärtus tekstina
+Dim valitudElement, isaNimi, valitudQN, valitudXML, refPath, parentRefPath, minOcc, maxOcc
+
+valitudElement = myOpt.value 'p:qsg/p:qs, p:kom_k ...
+isaNimi = myOpt.getAttribute("isaNimi")
+valitudQN = Mid(valitudElement, InStr(1, valitudElement, "/") + 1)
+valitudXML = "&lt;" & valitudQN & " xmlns:" & DICPR & "='" & DICURI & "'&gt;" & myVal & "&lt;/" & valitudQN & "&gt;"
+refPath = myOpt.getAttribute("refPath")
+parentRefPath = myOpt.getAttribute("parentRefPath")
+minOcc = myOpt.getAttribute("minOcc")
+maxOcc = myOpt.getAttribute("maxOcc")
+myCell.innerHTML = "+ &lt;" & valitudElement & "&gt; = &quot;" & myVal & "&quot;"
+'GCV - "get concatvalue"
+'GCV - teeb teksti concat() funktsiooni jaoks kasutatavaks juhul kui tekstis on apostroofe. Kui pole, lisab ette/taha apostroofid.
+'tekst, mida lisada (praegu ei kasutata, on alati tühi), kuhu lisada (0, ette; teisiti, järele)
+'GCV(sInpStr, lisa, kuhu)
+Dim gcvTekst
+gcvTekst = ""
+if (Len(myVal) > 0) then
+    gcvTekst = "[. = " & kutsuja.GCV(myVal, "", 2) & "]"
+end if
+Call myCell.setAttribute("cmdTxt", _
+    Escape(isaNimi & PD2 & _
+    valitudElement & PD2 & _
+    valitudXML & PD2 & _
+    refPath & PD2 & _
+    parentRefPath & PD2 & _
+    minOcc & PD2 & _
+    maxOcc & PD2 & _
+    gcvTekst))
+Call myRow.setAttribute("cmdName", "idAdd")
+myCell.style.backgroundColor = updBgColor
+myRow.cells(CHK_COL).all("chkUpdate").checked = true
+End Sub 'tsekkaLisamine
+
+
+'-----------------------------------------------------------------------------------
+Sub tsekkaKustutamine(myOpt, myRow, myCell, oVal)
+Dim valitudElement, isaNimi, valitudQN, valitudXML, refPath, parentRefPath, minOcc, maxOcc
+
+valitudElement = myOpt.value 'p:qsg/p:qs, p:kom_k ...
+isaNimi = myOpt.getAttribute("isaNimi")
+valitudQN = Mid(valitudElement, InStr(1, valitudElement, "/") + 1)
+valitudXML = ""
+refPath = myOpt.getAttribute("refPath")
+parentRefPath = myOpt.getAttribute("parentRefPath")
+minOcc = myOpt.getAttribute("minOcc")
+maxOcc = myOpt.getAttribute("maxOcc")
+if (Len(oVal) > 0) then
+    myCell.innerHTML = "- &lt;" & valitudElement & "&gt; = &quot;" & oVal & "&quot;"
+else
+    myCell.innerHTML = "- &lt;" & valitudElement & "&gt;"
+end if
+'GCV - "get concatvalue"
+'GCV - teeb teksti concat() funktsiooni jaoks kasutatavaks juhul kui tekstis on apostroofe. Kui pole, lisab ette/taha apostroofid.
+'tekst, mida lisada (praegu ei kasutata, on alati tühi), kuhu lisada (0, ette; teisiti, järele)
+'GCV(sInpStr, lisa, kuhu)
+Dim gcvTekst
+gcvTekst = ""
+if (Len(oVal) > 0) then
+    gcvTekst = "[. = " & kutsuja.GCV(oVal, "", 2) & "]"
+end if
+Call myCell.setAttribute("cmdTxt", _
+    Escape(isaNimi & PD2 & _
+    valitudElement & PD2 & _
+    valitudXML & PD2 & _
+    refPath & PD2 & _
+    parentRefPath & PD2 & _
+    minOcc & PD2 & _
+    maxOcc & PD2 & _
+    gcvTekst))
+Call myRow.setAttribute("cmdName", "idDelete")
+myCell.style.backgroundColor = deldBgColor
+myRow.cells(CHK_COL).all("chkUpdate").checked = true
+End Sub 'tsekkaKustutamine
+
+
+'-----------------------------------------------------------------------------------
+Sub btnOtsitavaLoendOnClick()
+Dim lefter, topper, popupBody, realHeight, docBodyHeight, sisuObj
+set oPopup = window.createPopup()
+set popupBody = oPopup.document.body
+lefter = window.event.offsetX + 10
+topper = window.event.offsetY + 10
+popupBody.innerHTML = otsitavaKontekst.innerHTML
+Call oPopup.show(0, 0, 300, 0)
+realHeight = popupBody.scrollHeight 'border otsitavaKontekstSisu ümber
+'// Hides the dimension detector popup object.
+Call oPopup.hide()
+'document body height
+set sisuObj = popupBody.all("otsitavaKontekstSisu")
+sisuObj.onclick = GetRef("otsitavaLoendClicked")
+docBodyHeight = document.body.offsetHeight
+if (realHeight > docBodyHeight) then
+    realHeight = docBodyHeight - 6
+    sisuObj.style.height = realHeight
+end if
+'// Shows the actual popup object with correct height.
+Call oPopup.show(lefter, topper, 300, realHeight + 6, btnOtsitavaLoend)
+End Sub 'btnOtsitavaLoendOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub otsitavaLoendClicked()
+Dim oSrc
+set oSrc = oPopup.document.parentWindow.event.srcElement
+inpTxt.value = oSrc.value
+Call oPopup.hide()
+End Sub 'otsitavaLoendClicked
+
+
+'-----------------------------------------------------------------------------------
+Sub btnAsendatavaLoendOnClick()
+Dim lefter, topper, popupBody, realHeight, docBodyHeight, sisuObj
+set oPopup = window.createPopup()
+set popupBody = oPopup.document.body
+lefter = window.event.offsetX + 10
+topper = window.event.offsetY + 10
+popupBody.innerHTML = asendatavaKontekst.innerHTML
+Call oPopup.show(0, 0, 300, 0)
+realHeight = popupBody.scrollHeight 'border otsitavaKontekstSisu ümber
+'// Hides the dimension detector popup object.
+Call oPopup.hide()
+'document body height
+set sisuObj = popupBody.all("asendatavaKontekstSisu")
+sisuObj.onclick = GetRef("asendatavaLoendClicked")
+docBodyHeight = document.body.offsetHeight
+if (realHeight > docBodyHeight) then
+    realHeight = docBodyHeight - 6
+    sisuObj.style.height = realHeight
+end if
+'// Shows the actual popup object with correct height.
+Call oPopup.show(lefter, topper, 300, realHeight + 6, btnAsendatavaLoend)
+End Sub 'btnAsendatavaLoendOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub asendatavaLoendClicked()
+Dim oSrc
+set oSrc = oPopup.document.parentWindow.event.srcElement
+newVal.value = oSrc.value
+Call oPopup.hide()
+End Sub 'asendatavaLoendClicked
+
+
+-->
+
+    </script>
+
+</head>
+<body id="idBody" style="background-color: buttonface; padding: 2mm;" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+    <div id="idDivSisu" style="width: 100%; height: 100%;">
+        <table id="tblQrySetup" border="1">
+        </table>
+        <iframe id="idIfrSisu" style="width: 100%; height: 70%;"></iframe>
+        <br />
+        <div>
+            <table cellspacing='5'>
+                <tr>
+                    <td>
+                        <input type="button" id="btnOK" value=" Käivita op. " onclick="runOp()" />
+                    </td>
+                    <td id="tdMiscInfo">&nbsp;</td>
+                    <td>
+                        <img id="imgWorking" src="../graphics/Progress.gif" style="visibility:hidden;width: 4cm;" alt="töötan..." />
+                    </td>
+                    <td id="tdElapsedTime">&nbsp;</td>
+                    <td id="tdArtCount">&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div id="otsitavaKontekst" style="display:none;">
+        <div id="otsitavaKontekstSisu" style='background-color:Menu; border:outset 3px gray; padding:0 5 0; overflow-y:auto;'>
+            <div onmouseover="this.style.background='gold';" 
+                 onmouseout="this.style.background='menu';">
+            <span onclick="parent.location.href='http://msdn.microsoft.com'">msdn web workshop</span> 
+            </div>
+            <div onmouseover="this.style.background='gold';" 
+                 onmouseout="this.style.background='menu';">
+            <span onclick="parent.location.href='http://search.microsoft.com'">search</span>
+            </div>
+        </div>
+    </div>
+    <div id="asendatavaKontekst" style="display:none;">
+        <div id="asendatavaKontekstSisu" style='background-color:Menu; border:outset 3px gray; padding:0 5 0; overflow-y:auto;'>
+        </div>
+    </div>
+    <div id="contextMenu" style="display:none;">
+        <div id="contextMenuContent" style='background-color:Menu; border:outset 3px gray; padding:0 5 0; overflow-y:auto;'>
+            <div id="nodeCopy" onmouseover="this.style.background='highlight';" onmouseout="this.style.background='menu';">Kopeeri</div>
+            <div id="nodeReplace" onmouseover="this.style.background='highlight';" onmouseout="this.style.background='menu';">Asenda</div>
+            <div id="nodeAddBefore" onmouseover="this.style.background='highlight';" onmouseout="this.style.background='menu';">Lisa ette</div>
+            <div id="nodeAddChild" onmouseover="this.style.background='highlight';" onmouseout="this.style.background='menu';">Lisa sisse</div>
+            <div id="nodeAddAfter" onmouseover="this.style.background='highlight';" onmouseout="this.style.background='menu';">Lisa järele</div>
+            <div id="nodeDelete" onmouseover="this.style.background='highlight';" onmouseout="this.style.background='menu';">Kustuta</div>
+        </div>
+    </div>
+</body>
+</html>

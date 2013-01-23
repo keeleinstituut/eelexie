@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Sõnaartikli kustutamine</h2>
+	
+Avatud sõnaartiklit saab kustutada Toimetamisalal nupuga Kustuta artikkel <img src="files/nupp_kustutaartikkel.png" alt="nupp_kustutaartikkel.png" title="nupp_kustutaartikkel.png" />. See kustutab artikli baasist lõplikult. <br />
+<br />
+Kui aga on soov artikkel alles hoida, ent näiteks Wordi väljatrükki (pabersõnastikku) teda mitte trükkida, siis määra see artikkel mittetrükitavaks ehk EELexi kõnepruugis &quot;<strong>andmebaasi artikliks</strong>&quot; ja sõnastiku vaade säti selliseks, et andmebaasi artikleid ei trükita. Selleks:<br />
+<ol><li>Ava <strong>Skeemieditor</strong> (Sõnastiku tööriistad -- Skeemi genereerimine) ja seal pane <strong>linnuke</strong> elemendi artikkel atribuudi <strong>artikli staatus</strong> ette.</li><li>Pane linnuke <strong>Luua</strong> ette (Skeemieditori vasakus osas). Kindlasti <strong>Salvesta</strong> ja <strong>Ok</strong>.</li><li>Ava <strong>Vaategeneraator</strong> (Sõnastiku tööriistad -- Vaate genereerimine) ja seal element <strong>artikkel</strong>. Pane sellele elemendile linnuke <strong>Ei trüki</strong>. Tee paremklõps tekstil Ei trüki ja avanevasse aknasse kirjuta tingimus: @pref:AS</li><li>Toimetamisalal ilmub nüüd artikli järele nähtavale tema atribuut, mille väärtuseks on vaikimisi HS - sõnastiku artikkel. Klõpsa sellele ja vali <strong>AB - andmebaasi artikkel</strong>.</li></ol>
+    </div>
+  </body>
+</html>

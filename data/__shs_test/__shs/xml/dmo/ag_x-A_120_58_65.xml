@@ -1,0 +1,34 @@
+﻿<?xml version="1.0"?>
+<x:A xmlns:x="http://www.eki.ee/dict/dmo">
+	<x:P>
+		<x:mg>
+			<x:m x:u="uus" x:O=""></x:m>
+		</x:mg>
+	</x:P>
+	<x:S>
+		<x:tp x:tnr="1">
+			<x:tg>
+				<x:xp>
+					<x:xg xml:lang="ex">
+						<x:x></x:x>
+					</x:xg>
+				</x:xp>
+			</x:tg>
+			<x:np>
+				<x:ng>
+					<x:n></x:n>
+					<x:qnp x:ntnr="1">
+						<x:qng xml:lang="ex">
+							<x:qn></x:qn>
+						</x:qng>
+					</x:qnp>
+				</x:ng>
+			</x:np>
+		</x:tp>
+	</x:S>
+	<x:G></x:G>
+	<x:K></x:K>
+	<x:KA></x:KA>
+	<x:T></x:T>
+	<x:TA></x:TA>
+</x:A>

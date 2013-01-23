@@ -1,0 +1,251 @@
+<?xml version="1.0"?>
+<x:sr xmlns:x="http://www.eki.ee/dict/dmo" xmlns:pr_sd="http://www.eo.ee/dev/xml/names" xml:lang="et" pr_sd:ver="2.0" pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+	<x:A pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:KF="" pr_sd:att_x_KF_tn="xs:string" x:AS="" pr_sd:att_x_AS_tn="tyybid:ASA_tyyp">
+		<x:maht pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:maht_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+		</x:maht>
+		<x:P pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+			<x:mg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1">
+				<x:m pr_sd:it="9216" pr_sd:ct="3" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1" x:i="" pr_sd:att_x_i_tn="xs:positiveInteger" x:liik="" pr_sd:att_x_liik_tn="tyybid:liik_tyyp" x:ps="" pr_sd:att_x_ps_tn="xs:string" x:u="" pr_sd:att_x_u_tn="tyybid:u_tyyp" x:O="" pr_sd:att_x_O_tn="xs:string" pr_sd:useRequired=";x:O;">
+					<x:r pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+					</x:r>
+				</x:m>
+				<x:hld pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+				</x:hld>
+				<x:vk pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:vk_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+				</x:vk>
+				<x:grp pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+					<x:mfp pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+						<x:mkg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+							<x:mkl pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+							</x:mkl>
+							<x:mk pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+							</x:mk>
+						</x:mkg>
+						<x:mvg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+							<x:vk pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:vk_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+							</x:vk>
+							<x:mv pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+							</x:mv>
+						</x:mvg>
+						<x:mt pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+						</x:mt>
+					</x:mfp>
+					<x:gri pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+						<x:sl pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:sl_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:rk="" pr_sd:att_x_rk_tn="tyybid:rk_tyyp">
+						</x:sl>
+						<x:gki pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+						</x:gki>
+						<x:r pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+						</x:r>
+					</x:gri>
+				</x:grp>
+				<x:v pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:v_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+				</x:v>
+				<x:s pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:s_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+				</x:s>
+			</x:mg>
+			<x:a pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:i="" pr_sd:att_x_i_tn="xs:positiveInteger">
+			</x:a>
+			<x:mvt pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:i="" pr_sd:att_x_i_tn="xs:positiveInteger" x:t="" pr_sd:att_x_t_tn="xs:string" x:mvtl="" pr_sd:att_x_mvtl_tn="tyybid:mvtl_tyyp" pr_sd:useRequired=";x:mvtl;">
+			</x:mvt>
+		</x:P>
+		<x:S pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+			<x:tp pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" x:tnr="" pr_sd:att_x_tnr_tn="xs:positiveInteger" x:as="" pr_sd:att_x_as_tn="tyybid:as_tyyp" pr_sd:useRequired=";x:tnr;">
+				<x:mmg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+					<x:mm pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+					</x:mm>
+					<x:vk pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:vk_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+					</x:vk>
+				</x:mmg>
+				<x:gri pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+					<x:sl pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:sl_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:rk="" pr_sd:att_x_rk_tn="tyybid:rk_tyyp">
+					</x:sl>
+					<x:gki pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+					</x:gki>
+					<x:r pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+					</x:r>
+				</x:gri>
+				<x:tg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:as="" pr_sd:att_x_as_tn="tyybid:as_tyyp">
+					<x:dg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+						<x:v pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:v_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+						</x:v>
+						<x:s pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:s_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+						</x:s>
+						<x:dt pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="" x:i="" pr_sd:att_x_i_tn="xs:positiveInteger" x:t="" pr_sd:att_x_t_tn="xs:string">
+						</x:dt>
+						<x:d pr_sd:it="9216" pr_sd:ct="3" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+							<x:ld pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" xml:lang="" pr_sd:att_xml_lang_tn="xs:language" pr_sd:useRequired=";xml:lang;">
+							</x:ld>
+						</x:d>
+					</x:dg>
+					<x:xp pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+						<x:xg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" xml:lang="" pr_sd:att_xml_lang_tn="xs:language" x:as="" pr_sd:att_x_as_tn="tyybid:as_tyyp" pr_sd:useRequired=";xml:lang;">
+							<x:xtx pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+							</x:xtx>
+							<x:x pr_sd:it="9216" pr_sd:ct="3" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1" x:xliik="" pr_sd:att_x_xliik_tn="tyybid:xliik_tyyp" x:xall="" pr_sd:att_x_xall_tn="tyybid:xall_tyyp">
+								<x:xr pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								</x:xr>
+							</x:x>
+							<x:hld pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+							</x:hld>
+							<x:xvk pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:xvk_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+							</x:xvk>
+							<x:xgrp pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								<x:xmfp pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									<x:xmvg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+										<x:xvk pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:xvk_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+										</x:xvk>
+										<x:xmv pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+										</x:xmv>
+									</x:xmvg>
+									<x:xag pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+										<x:xa pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="" x:xgk="" pr_sd:att_x_xgk_tn="tyybid:xgk_tyyp">
+										</x:xa>
+										<x:xmv pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+										</x:xmv>
+									</x:xag>
+									<x:xmt pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									</x:xmt>
+								</x:xmfp>
+								<x:xgri pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									<x:xsl pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:xsl_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									</x:xsl>
+									<x:xz pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									</x:xz>
+									<x:xgki pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									</x:xgki>
+									<x:xr pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									</x:xr>
+								</x:xgri>
+							</x:xgrp>
+							<x:xdg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								<x:xv pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:xv_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								</x:xv>
+								<x:xs pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:xs_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								</x:xs>
+								<x:xd pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+								</x:xd>
+								<x:xn pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+								</x:xn>
+							</x:xdg>
+						</x:xg>
+					</x:xp>
+				</x:tg>
+				<x:np pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+					<x:ng pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" x:as="" pr_sd:att_x_as_tn="tyybid:as_tyyp">
+						<x:n pr_sd:it="9216" pr_sd:ct="3" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" x:nrl="" pr_sd:att_x_nrl_tn="tyybid:nrl_tyyp">
+							<x:r pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+							</x:r>
+						</x:n>
+						<x:qnp pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" x:ntnr="" pr_sd:att_x_ntnr_tn="xs:positiveInteger" pr_sd:useRequired=";x:ntnr;">
+							<x:ndg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								<x:v pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:v_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+								</x:v>
+								<x:s pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:s_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+								</x:s>
+								<x:nd pr_sd:it="9216" pr_sd:ct="3" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									<x:ld pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" xml:lang="" pr_sd:att_xml_lang_tn="xs:language" pr_sd:useRequired=";xml:lang;">
+									</x:ld>
+								</x:nd>
+							</x:ndg>
+							<x:qng pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" xml:lang="" pr_sd:att_xml_lang_tn="xs:language" pr_sd:useRequired=";xml:lang;">
+								<x:xtx pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								</x:xtx>
+								<x:qn pr_sd:it="9216" pr_sd:ct="3" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+									<x:xr pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									</x:xr>
+								</x:qn>
+								<x:xv pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:xv_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								</x:xv>
+								<x:xs pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:xs_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								</x:xs>
+							</x:qng>
+						</x:qnp>
+					</x:ng>
+				</x:np>
+				<x:tvt pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:i="" pr_sd:att_x_i_tn="xs:positiveInteger" x:t="" pr_sd:att_x_t_tn="xs:string" x:tvtl="" pr_sd:att_x_tvtl_tn="tyybid:tvtl_tyyp" pr_sd:useRequired=";x:tvtl;">
+				</x:tvt>
+			</x:tp>
+			<x:LS pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:lso="" pr_sd:att_x_lso_tn="xs:string" x:as="" pr_sd:att_x_as_tn="tyybid:as_tyyp" pr_sd:useRequired=";x:lso;">
+				<x:lsdg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+					<x:v pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:v_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+					</x:v>
+					<x:s pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:s_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+					</x:s>
+					<x:lsd pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+					</x:lsd>
+				</x:lsdg>
+				<x:np pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+					<x:ng pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" x:as="" pr_sd:att_x_as_tn="tyybid:as_tyyp">
+						<x:n pr_sd:it="9216" pr_sd:ct="3" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" x:nrl="" pr_sd:att_x_nrl_tn="tyybid:nrl_tyyp">
+							<x:r pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+							</x:r>
+						</x:n>
+						<x:qnp pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" x:ntnr="" pr_sd:att_x_ntnr_tn="xs:positiveInteger" pr_sd:useRequired=";x:ntnr;">
+							<x:ndg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								<x:v pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:v_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+								</x:v>
+								<x:s pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="tyybid:s_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:l="" pr_sd:att_x_l_tn="tyybid:levik_tyyp">
+								</x:s>
+								<x:nd pr_sd:it="9216" pr_sd:ct="3" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									<x:ld pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" xml:lang="" pr_sd:att_xml_lang_tn="xs:language" pr_sd:useRequired=";xml:lang;">
+									</x:ld>
+								</x:nd>
+							</x:ndg>
+							<x:qng pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1" xml:lang="" pr_sd:att_xml_lang_tn="xs:language" pr_sd:useRequired=";xml:lang;">
+								<x:xtx pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								</x:xtx>
+								<x:qn pr_sd:it="9216" pr_sd:ct="3" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+									<x:xr pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+									</x:xr>
+								</x:qn>
+								<x:xv pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:xv_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								</x:xv>
+								<x:xs pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="tyybid:xs_tyyp" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+								</x:xs>
+							</x:qng>
+						</x:qnp>
+					</x:ng>
+				</x:np>
+				<x:tvt pr_sd:it="9216" pr_sd:ct="1" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="" x:i="" pr_sd:att_x_i_tn="xs:positiveInteger" x:t="" pr_sd:att_x_t_tn="xs:string" x:tvtl="" pr_sd:att_x_tvtl_tn="tyybid:tvtl_tyyp" pr_sd:useRequired=";x:tvtl;">
+				</x:tvt>
+			</x:LS>
+		</x:S>
+		<x:KOM pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+			<x:komg pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="1" pr_sd:maxOcc="2000000000" pr_sd:major="1">
+				<x:kom pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+				</x:kom>
+				<x:kaut pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+				</x:kaut>
+				<x:kaeg pr_sd:it="8455" pr_sd:ct="" pr_sd:tn="xs:dateTime" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+				</x:kaeg>
+			</x:komg>
+		</x:KOM>
+		<x:I pr_sd:it="9216" pr_sd:ct="2" pr_sd:tn="" pr_sd:minOcc="0" pr_sd:maxOcc="2000000000" pr_sd:major="">
+			<x:any pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+			</x:any>
+		</x:I>
+		<x:G pr_sd:it="8704" pr_sd:ct="" pr_sd:tn="ec_2:G_tyyp" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+		</x:G>
+		<x:K pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+		</x:K>
+		<x:KA pr_sd:it="8455" pr_sd:ct="" pr_sd:tn="xs:dateTime" pr_sd:minOcc="1" pr_sd:maxOcc="1" pr_sd:major="1">
+		</x:KA>
+		<x:KL pr_sd:it="8455" pr_sd:ct="" pr_sd:tn="xs:dateTime" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+		</x:KL>
+		<x:T pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+		</x:T>
+		<x:TA pr_sd:it="8455" pr_sd:ct="" pr_sd:tn="xs:dateTime" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+		</x:TA>
+		<x:TL pr_sd:it="8455" pr_sd:ct="" pr_sd:tn="xs:dateTime" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+		</x:TL>
+		<x:PT pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+		</x:PT>
+		<x:PTA pr_sd:it="8455" pr_sd:ct="" pr_sd:tn="xs:dateTime" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+		</x:PTA>
+		<x:X pr_sd:it="8485" pr_sd:ct="" pr_sd:tn="xs:string" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+		</x:X>
+		<x:XA pr_sd:it="8455" pr_sd:ct="" pr_sd:tn="xs:dateTime" pr_sd:minOcc="0" pr_sd:maxOcc="1" pr_sd:major="">
+		</x:XA>
+	</x:A>
+</x:sr>

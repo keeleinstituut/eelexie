@@ -1,0 +1,339 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Morfoloogilise sünteesi sätted</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script language="JScript" type="text/jscript" src="tools.js"></script>
+    <script language="vbscript" type="text/vbscript">
+
+		<!--
+Option Explicit
+
+Const ForReading = 1
+Const TristateUseDefault = -2
+
+Dim dic_desc, sAppLang, PD, usrName
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+PD = ChrW(&HE001)
+Dim inArr, myObj
+
+inArr = Split(window.dialogArguments, PD)
+dic_desc = inArr(0)
+sAppLang = inArr(1)
+usrName = inArr(2)
+
+set myObj = eelexSWCtl
+if (myObj Is Nothing) then
+    Exit Sub
+end if
+
+Dim configDom, configElement, radioElement, salvestatudVormid
+salvestatudVormid = vbNullString
+set configDom = IDD("File", "../shsconfig_" & dic_desc & ".xml", False, False, Nothing)
+if Not (configDom Is Nothing) then
+    set configElement = configDom.documentElement.selectSingleNode("morf_syn/valde") 'välte märkimisega
+    if Not (configElement Is Nothing) then
+        chkMorfSynValtega.checked = CBool(configElement.text)
+    end if
+'    set configElement = configDom.documentElement.selectSingleNode("morf_syn/svkkuju")
+'    if Not (configElement Is Nothing) then
+'        set radioElement = document.all("radVkKuju", CInt(configElement.text))
+'    else
+'        set radioElement = document.all("radVkKuju", 1)
+'    end if
+    set radioElement = document.all("radVkKuju", 1)
+    radioElement.checked = true
+    set configElement = configDom.documentElement.selectSingleNode("morf_syn/vormid") 'muutevormidesse pandavad vormid
+    if Not (configElement Is Nothing) then
+        Dim sv
+        for each sv in configElement.selectNodes("itm")
+            salvestatudVormid = salvestatudVormid & "," & sv.getAttribute("code")
+        next
+        salvestatudVormid = salvestatudVormid & ","
+    end if
+end if
+
+'tekstifaili serverist lugemiseks kasuta 'tools.cgi' f-ni "getTextFileContent"
+'lokaalse faili lugemiseks võid kasutada 'eelexSWCtl' objekti "readFromTextFile" f-ni
+Dim failiSisu, sta
+failiSisu = String(8192, vbNullChar)
+On Error Resume Next
+sta = myObj.getFCodesIni(failiSisu)
+On Error Goto 0
+if (err.number <> 0 or sta <> 1) then
+    MsgBox "Andmete lugemine ei õnnestunud!", vbCritical, document.title
+    Exit Sub
+end if
+
+Dim ridad, reaNr, rida, trow, tcol, alustatud, vormid, trowId, thisChk
+'For some reason, vbNewline is a little bit faster than vbCrLf. (http://www.aivosto.com/vbtips/stringopt.html)
+ridad = Split(failiSisu, vbNewline)
+
+alustatud = false
+for reaNr = 0 to UBound(ridad, 1)
+    rida = Trim(ridad(reaNr))
+    if (Len(rida) > 0) then
+        if Not (alustatud) then
+            if (Left(rida, 1) <> ";") then
+                alustatud = true
+            end if
+        end if
+        if (alustatud) then
+            if (Left(rida, 1) = ";" or Left(rida, 1) = "@") then
+                set trow = tblMorfSynVormid.insertRow()
+                set tcol = trow.insertCell()
+                tcol.colSpan = 6
+                if (Left(rida, 1) = "@") then
+                    tcol.innerHTML = "<span style='font-weight:bold;font-size:large'>" & rida & "</span>"
+                else
+                    tcol.innerHTML = "<span style='font-weight:bold'>" & rida & "</span>"
+                end if
+            else
+                vormid = Split(rida, ",")
+                set trow = tblMorfSynVormid.insertRow()
+                '"fcodes.ini" failis on nad: vorminimi, klaarkood, sisekood, FS-kood
+                'sisekood, vorminimi, klaarkood, FS-kood
+                trowId = vormid(2) & "," & vormid(0) & "," & vormid(1) & "," & vormid(3)
+                trow.id = trowId
+                set tcol = trow.insertCell()
+                tcol.innerText = vormid(2) 'sisekood
+                set tcol = trow.insertCell()
+                tcol.innerText = vormid(0) 'vorminimi
+                set tcol = trow.insertCell()
+                tcol.innerText = vormid(1) 'klaarkood
+                set tcol = trow.insertCell()
+                if (vormid(3) = "") then 'FS-kood
+                    tcol.innerText = " "
+                else
+                    tcol.innerText = vormid(3)
+                end if
+                set tcol = trow.insertCell()
+                tcol.innerText = Trim(vormid(4)) 'selgitus
+                set tcol = trow.insertCell()
+                tcol.innerHTML = "<input name='seldForm' type='checkbox'>"
+                set thisChk = tcol.all("seldForm")
+                if (InStr(1, salvestatudVormid, "," & Split(trowId, ",")(CInt(radioElement.value)) & ",") > 0) then
+                    thisChk.checked = true
+                end if
+            end if
+        end if
+    end if
+next
+
+btnOK.focus()
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+elseif (window.event.keyCode = 13) then
+	Call SetReturnV()
+end if
+End Sub 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+Dim morfSynXML, retVal, i, trow, chkElem, radioValue, rad
+morfSynXML = "<morf_syn>"
+'VB-s True = -1 !!!
+morfSynXML = morfSynXML & "<valde>" & Abs(CInt(chkMorfSynValtega.checked)) & "</valde>"
+radioValue = "1"
+for each rad in document.all("radVkKuju")
+    if (rad.checked) then
+        radioValue = rad.value
+        Exit For
+    end if
+next
+morfSynXML = morfSynXML & "<svkkuju>" & radioValue & "</svkkuju>"
+morfSynXML = morfSynXML & "<vormid>"
+for i = 0 to tblMorfSynVormid.rows.length - 1
+    set trow = tblMorfSynVormid.rows(i)
+    set chkElem = trow.all("seldForm")
+    if Not (chkElem Is Nothing) then
+        if (chkElem.checked) then
+            morfSynXML = morfSynXML & "<itm code='" & Split(trow.id, ",")(CInt(radioValue)) & "'"
+            morfSynXML = morfSynXML & " name='" & trow.cells(4).innerText & "'></itm>"
+        end if
+    end if
+next
+morfSynXML = morfSynXML & "</vormid>"
+morfSynXML = morfSynXML & "</morf_syn>"
+
+retVal = "morf_syn" & PD & _
+    Abs(CInt(chkMorfSynValtega.checked)) & PD & _
+    radioValue
+
+Dim xh
+set xh = exCGISync("../tools.cgi", "updateXML" & PD & dic_desc & PD & usrName & PD & "shsconfig_" & dic_desc & ".xml" & PD & "morf_syn" & PD & morfSynXML & PD & "1")
+
+if (xh.statusText = "OK") then
+
+    Dim rspDOM, sta
+    set rspDOM = IDD("", "", False, False, Nothing)
+    sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+    if (sta) then
+        Dim updCount
+        updCount = rspDOM.selectSingleNode("rsp/cnt").text
+        if (CInt(updCount) = 1) then
+            window.returnValue = retVal
+            window.close()
+            exit sub
+        else
+            MsgBox "Morfoloogilise sünteesi sätete salvestamine ei õnnestunud!" & vbCrLf & _
+                rspDOM.selectSingleNode("rsp/sta").text, _
+                vbCritical, _
+                "Morfoloogilise sünteesi sätted"
+        end if
+    end if
+
+else
+    MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+        xh.responseText, _
+        vbCritical
+end if
+End Sub 'SetReturnV
+
+
+'-----------------------------------------------------------------------------------
+Sub btnOkOnClick()
+	Call SetReturnV()
+End Sub 'btnOkOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub btnCancelOnClick()
+window.close()
+End Sub 'btnCancelOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub btnChkAllOnClick()
+Dim i, allChks, thisChk
+set allChks = document.all("seldForm")
+for i = 0 to allChks.length - 1
+    set thisChk = allChks(i)
+    thisChk.checked = true
+next
+End Sub 'btnChkAllOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub btnUnCheckAllOnClick()
+Dim i, allChks, thisChk
+set allChks = document.all("seldForm")
+for i = 0 to allChks.length - 1
+    set thisChk = allChks(i)
+    thisChk.checked = false
+next
+End Sub 'btnUnCheckAllOnClick
+
+			-->
+
+    </script>
+</head>
+<body style="background-color: buttonface" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()">
+    <!--[if gte IE 8]>
+        <OBJECT ID="eelexSWCtl"
+        CLASSID="CLSID:A8C1E9B0-99B1-41B0-975B-1A194BC1D3C0"
+        CODEBASE="../install/eelexSWCtl.CAB#version=-1,-1,-1,-1"
+        STYLE="display:none;" VIEWASTEXT>
+	        <PARAM NAME="propDd" VALUE="___">
+        </OBJECT>
+        <![endif]-->
+    <div id="id_body" style="padding-left: 10mm; padding-top: 5mm">
+        <table id="tblMorfSynSetup" border="0">
+            <tr>
+                <td id="tdMorfAnaTuletusega" valign="top">
+                    <input tabindex="1" id="chkMorfSynValtega" type="checkbox" checked>
+                    <label for="chkMorfSynValtega">
+                        koos vältega</label>
+                </td>
+                <td id="tdVkKuju">
+                    <table id="tblMorfSynVkKuju" border="0">
+                        <tr>
+                            <td>
+                                <input tabindex="2" id="radVkKujuSiseKood" name="radVkKuju" type="radio" value="0"
+                                    disabled>
+                            </td>
+                            <td>
+                                <label for="radVkKujuSiseKood">
+                                    sisekood</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input tabindex="3" id="radVkKujuVormiNimi" name="radVkKuju" type="radio" value="1"
+                                    checked>
+                            </td>
+                            <td>
+                                <label for="radVkKujuVormiNimi">
+                                    vorminimi</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input tabindex="4" id="radVkKujuKlaarKood" name="radVkKuju" type="radio" value="2"
+                                    disabled>
+                            </td>
+                            <td>
+                                <label for="radVkKujuKlaarKood">
+                                    klaarkood</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <table id="tblMorfSynVormid" border="1">
+            <tr style="background-color: Navy; color: White">
+                <th>
+                    Sisekood
+                </th>
+                <th>
+                    Vorminimi
+                </th>
+                <th>
+                    Klaarkood
+                </th>
+                <th>
+                    FS-kood
+                </th>
+                <th>
+                    Selgitus
+                </th>
+                <th>
+                    Valitud
+                </th>
+            </tr>
+            <tr>
+                <td colspan="6" align="right">
+                    <input id="chkAll" onclick="btnChkAllOnClick()" type="button" value="Vali kõik" />
+                    <input id="unCheckAll" onclick="btnUnCheckAllOnClick()" type="button" value="Ära vali ühtegi" />
+                </td>
+            </tr>
+        </table>
+        <br />
+        <input id="btnOK" onclick="btnOkOnClick()" type="button" value="    OK    " />
+        <input id="btnCancel" onclick="btnCancelOnClick()" type="button" value="  Loobu  " />
+        <br />
+        <br />
+        <br />
+    </div>
+</body>
+</html>

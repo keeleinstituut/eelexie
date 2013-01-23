@@ -1,0 +1,56 @@
+//tools
+
+if ($cmdId eq "readArtByGuid") {
+elsif ($cmdId eq "readXMLg") {
+elsif ($cmdId eq "hulgi_Otsi_MySQL") {
+elsif ($cmdId eq "hulgi_Otsi_XML") {
+elsif ($cmdId eq "hulgi_Käivita") {
+elsif ($cmdId eq 'exsaGetField') {
+elsif ($cmdId eq 'exsaSetField') {
+elsif ($cmdId eq 'exsaCompPw') {
+elsif ($cmdId eq 'exsaGetInfo') {
+elsif ($cmdId eq 'exsaUusSqnastik') {
+elsif ($cmdId eq 'exsaKustutaSqnastik') {
+elsif ($cmdId eq 'getTextFileContent') {
+elsif ($cmdId eq 'getTextFileCDATA') {
+elsif ($cmdId eq 'getGUID') {
+elsif ($cmdId eq 'getAutoInc') {
+elsif ($cmdId eq 'deleteFile') {
+elsif ($cmdId eq 'getFilesInfo') {
+elsif ($cmdId eq 'getFiles') {
+elsif ($cmdId eq "readXML") {
+elsif ($cmdId eq "findReplace_Find_MySQL") { # sõnapered
+elsif ($cmdId eq "findReplace_Find_XML") { # sõnapered
+elsif ($cmdId eq "findReplace_CompElements") { # sp_
+elsif ($cmdId eq "findReplace_Yksikud") { # sp_
+elsif ($cmdId eq "findReplace_RunOps") { # SÕNAPERED
+elsif ($cmdId eq "updateXML") {
+elsif ($cmdId eq "insertBefore" || $cmdId eq "insertAfter") {
+elsif ($cmdId eq "removeNode") {
+elsif ($cmdId eq "getHeadWords") {
+elsif ($cmdId eq "getHeadWordsChunk") {
+elsif ($cmdId eq "xmlCopy") {
+elsif ($cmdId eq "msLoend") {
+elsif ($cmdId eq "oxfordDudenSisukord") {
+elsif ($cmdId eq "oxfordDudenIndeksEng") {
+elsif ($cmdId eq "oxfordDudenIndeksEst") {
+elsif ($cmdId eq "saveGendView") {
+elsif ($cmdId eq "saveGendXSD") {
+elsif ($cmdId eq 'getAddElements') {
+elsif ($cmdId eq 'getAddAllElements') {
+elsif ($cmdId eq "appOpen") {
+
+//srv functs
+
+if ($cmdId eq "BrowseRead") {
+elsif ($cmdId eq "srvXmlValidate") {
+elsif ($cmdId eq "prevNextRead") {
+elsif ($cmdId eq "tyhjadViited") {
+elsif ($cmdId eq "msSarnased") {
+elsif ($cmdId eq "ClientRead") {
+elsif (($cmdId eq "ClientWrite") && $nEditAllowed) {
+elsif (($cmdId eq "ClientAdd") && $nEditAllowed) {
+elsif (($cmdId eq "ClientDelete") && $nEditAllowed) {
+elsif (($cmdId eq "ClientRestore") && $nEditAllowed) {
+elsif ($cmdId eq "ImportRead") {
+elsif ($cmdId eq "SaveList") {

@@ -1,0 +1,101 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Lisatöövahend xmlStats</h2>
+	
+xmlStats on (pea)toimetaja tööriist, soovitame selle abil analüüsida ja kontrollida sõnastiku XML faili ning teha skeemi otstarbekuse kohta järeldusi. xmlStats:<br />
+<ul><li>näitab, millise elemendi sees millised teised elemendid paiknevad (ehk esitab kõigi leiduvate struktuurigruppide koostise)</li><li>loetleb kõik sõnastikus kasutusel olevad elemendid koos esinemissagedusega</li><li>näitab, millised atribuudid elemendi juurde kuuluvad</li><li>näitab loendite sisu ning leiab potentsiaalsed loendid</li><li>leiab struktuuripuu ‍lehed‍</li><li>võimaldab elemente/atribuute analüüsist välja jätta (et tulemus oleks ülevaatlikum)</li><li>jms.</li></ul><br />
+Lisaks võimaldab xmlStats (Tööriistade menüüst):<br />
+<ul><li>XML faili tükeldada</li><li>XML faile ühendada</li><li>sorteerida (Sort.atr ja sorteerimine)</li><li>XML faili valideerida</li><li>XML eksportida MySQLi andmefaili.</li></ul><br />
+xmlStatsi saab laadida <a class="wiki_link_ext" href="http://eelextest.eki.ee" rel="nofollow">EELexi avalehelt</a> jaotusest Lisatöövahendid: <a class="wiki_link_ext" href="http://eelextest.eki.ee/pub/Install/" rel="nofollow" target="_blank">/pub/Install</a>. Samas arvutis peab asuma ka analüüsitav XML fail.<br />
+
+
+<h3 id="toc0"><a name="x--Programmiaken"></a>Programmiaken</h3>
+ Programmiaknal on kaks poolt: vasakul poolel on sisendfaili XML puu; paremal on suvandinupud ja tulemuste aken (väljundi kuvamise ‍‍ala).‍‍ Vaikimisi näidatakse puus ainult nimelisi elemente (linnuke <strong>Ainult nimed</strong>); kliki <strong>Kõik elemendid</strong>, et näha, mis võimalusi veel on. Nupp <strong>Otsi</strong> on kasulik siis, kui väljund on pikk, selle abil saab tulemustest leida soovitud sümbolijada.<br />
+<br />
+Linnuke <strong>globaalne</strong> - kui on linnuke, siis annab elemendi kohta infot (vanemad, lapsed) läbi kogu skeemi; lokaalse puhul liigutakse läbi skeemi elementide kaupa ja elemendi iga esinemise kohta kuvatakse eraldi kokkuvõte (lapsed, näha on konkreetse elemendi rada e vanemad). Lokaalse analüüsi abil saab kontrollida skeemi otstarbekust. Globaalne analüüs annab üldpildi sõnastikust ja elementide esinemisest temas.<br />
+<br />
+Kui on pandud linnuke <strong>Loendid</strong>, siis programm esitab väljundis kõik loendid, kaasa aravtdu potentsiaalsed loendid. Millisest esinemissagedusest alates sisu loendiks pidama hakata, saad määrata linnukese järel oleva arvuga.<br />
+<br />
+Ülejäänud suvandinuppudel ilmub kursoriga peale liikudes lühike abitekst.<br />
+<br />
+<h3 id="toc1"><a name="x--Elemendi analüüsimine"></a>Elemendi analüüsimine</h3>
+ Nupp <strong>Info</strong> näitab statistikat selle elemendi või atribuudi kohta, mis puus (vasakus aknapooles) aktiivne on. Väljundis esitatakse kokkuvõte, kui palju seda elementi kokku on, millised elemenid on tema &quot;vanemad&quot; ja millised on tema &quot;lapsed&quot;. Samuti esitatakse sõnastikus esinevad erinevad struktuuriread, s.t elementide kombinatsioonid struktuuripuus. Struktuurirea koostis on: sagedus | elementide kombinatsioon | näide. Näide on esimene sellist struktuuri sisaldava artikli märksõna (õigemini märksõna rollis olev element, selle kohta vt allpool). Kui elementide kombinatsiooni sees on kuvatud ++, siis see näitab korduvat elementi selle koha peal.<br />
+<br />
+<h4 id="toc2"><a name="x--Elemendi analüüsimine-Näide. Analüüsisin elementi z:mg (märksõna grupp):"></a>Näide. Analüüsisin elementi z:mg (märksõna grupp):</h4>
+ <br />
+<span style="font-family: 'Courier New',Courier,monospace;">Silt: .//z:mg</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> # kokku 34 419</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> # sisaldab silte: ( z:m z:ki z:etg z:hld z:lyhg z:mvtg z:grg z:mfp z:ths z:vk z:hld2 z:s z:v )</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> 24 |&lt;z:ki&gt;&lt;z:m&gt;| ab-</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> 19 |&lt;z:ki&gt;&lt;z:m&gt;&lt;z:etg&gt;| a-</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> 28 |&lt;z:ki&gt;&lt;z:m&gt;&lt;z:grg&gt;&lt;z:mfp&gt;| AIDS</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> 1 |&lt;z:ki&gt;&lt;z:m&gt;&lt;z:grg&gt;&lt;z:mfp&gt;&lt;z:ths&gt;| stooks</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> 1 |&lt;z:ki&gt;&lt;z:m&gt;&lt;z:hld&gt;&lt;z:etg&gt;| sui iuris</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> 26 |&lt;z:m&gt;&lt;z:vk&gt;&lt;z:mvtg&gt;| aarialased</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> 1 |&lt;z:m&gt;&lt;z:vk&gt;&lt;z:ths&gt;| santo</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> # asetseb:</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"> 34 419 &lt;z:P&gt;</span><br />
+<br />
+Konkreetset struktuuri sisaldavaid sõnaartikleid saab kuvada, kui väljundis tähistada vastav struktuuririda (sisestades tulemuste aknas vastava rea esimeseks sümboliks kas + või ?). Päring käivitub, kui vajutad nuppu <strong>Kõik</strong>.<br />
+<span style="font-family: 'Courier New',Courier,monospace;">Silt: .z:etg</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"># kokku 27 430</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"># sisaldab silte: ( z:etgg )</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;">15 027 |&lt;z:etgg&gt;|<strong><span style="color: #800000;">a-</span></strong></span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"><span style="color: #ff0000;">?</span> 12 403 |&lt;z:etgg&gt;++|<strong><span style="color: #800000;">aaderdus</span></strong></span><br />
+<span style="font-family: 'Courier New',Courier,monospace;"># asetseb:</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;">27 175 &lt;z:mg&gt;</span><br />
+<span style="font-family: 'Courier New',Courier,monospace;">255 &lt;z:amg&gt;</span><br />
+<br />
+<h3 id="toc3"><a name="x--Elemendi/atribuudi analüüsist välja jätmine"></a>Elemendi/atribuudi analüüsist välja jätmine</h3>
+ Kõige silmanähtavam mõte on välja jätta nn tehnilised elemendid nagu guid G, koostaja K, koostamise ajad KA, KL jne. <br />
+<strong>Tööriistad</strong> -- <strong>Eelistused</strong> -- <strong>Välja jäetavad elemendid/atribuudid</strong>. Avanevas aknas on vasemas veerus kõik selle sõnastiku elemendid koos nimeruumiga ja paremas veerus on need elemendid, mis vaikimisi analüüsist välja jäetakse. Seega saab tekitada paremasse veergu loetelu elementidest ja atribuutidest, mida programm peaks analüüsi käigus ignoreerima. Kui eelistad elementi tippides sisestad (veerust otsime ja valimise asemel), saab seda teha nupu <strong>Lisa</strong> abil. <br />
+<br />
+<h3 id="toc4"><a name="x--Elemendid tekstina"></a>Elemendid tekstina</h3>
+ Mõnikord on otstarbekas kuvada xmlStatsi väljundi inforeas elemendi/atribuudi asemel tema sisu. Näiteks tüüpiliselt elementi &lt;kvm&gt; ehk kirjavahemärk on mõtet esitada tema endana. Siis saad otsustada, kas element &lt;kvm&gt; on mõtet skeemist ja sõnastiku andmebaasist kustutada ja määrata kirjavahemärgid hoopis küljendusvaate suvandite abil.<br />
+<br />
+Vali menüüst <strong>Tööriistad</strong> -- <strong>Eelistused</strong> -- <strong>Elemendid tekstina</strong>, määra elemenid ja atribuudid, mis järgmise päringu inforeas kuvatakse mitte elemendina/atribuudina, vaid oma sisuna. Sulge dialoogiaken ning pane xmlStatsi suvandinuppude seas linnuke <strong>El. tekstina</strong> ning määra kuvatava teksti pikkus (sisu algus).<br />
+<br />
+<h3 id="toc5"><a name="x--Märksõna rollis oleva elemendi määramine"></a>Märksõna rollis oleva elemendi määramine</h3>
+ Märksõna rollis olevat elemendi sisu näidatakse struktuurireas näitena. Märksõna rollis on vaikimisi element m. Kui analüüsitavas XML failis on teisiti, siis seda saab muuta, valides menüüst <strong>Tööriistad</strong> -- <strong>Eelistused</strong> -- <strong>Märksõna rollis oleva elemendi nimi</strong>.<br />
+<br />
+<h3 id="toc6"><a name="x--Artikli rollis oleva elemendi määramine"></a>Artikli rollis oleva elemendi määramine</h3>
+ Artikli rollis on vaikimis element A. Kui analüüsitavas XML failis on teisiti, siis seda saab muuta, valides menüüst <strong>Tööriistad</strong> -- <strong>Eelistused</strong> -- <strong>Artikli rollis oleva elemendi nimi</strong>.<br />
+<br />
+<h3 id="toc7"><a name="x--XML faili tükeldamine"></a>XML faili tükeldamine</h3>
+ Avatud xml-faili saab tükeldada, valides menüüst Tööriistad -- XML-i tükeldamine. Fail peab enne xmlStatsis avatud olema. Määra numbriga, mitmeks tükiks fail jagada, ning kas soovid taandega või taandeta väljundit. Uued failid tekivad samasse kataloogi, kus oli originaalfail.<br />
+<br />
+<h3 id="toc8"><a name="x--XMLide ühendamine"></a>XMLide ühendamine</h3>
+ Ühendada saab vaid EELexist eksporditud XML faile (mitmeköitelise sõnastiku köiteid näiteks). Failid asugu failiga xmlStats.exe samas kataloogis ja olgu laiendiga .xml.<br />
+<br />
+Vali menüüst <strong>Tööriistad</strong> -- <strong>XML-ide ühendamine</strong>. Avanevas aknas vali failid, mida liita (hoia all Ctrl klahv klaviatuuril ja hiirega klõpsa liidetavad failid aktiivseks. NB! Vali failid n-ö tagantpoolt ettepoole ehk tulemusfaili lõpp kõigepealt ja algus viimasena) ja Ok. Järgmises aknas näita ära koht kataloogipuus, kuhu uus fail ja millise nimega salvestada tuleks.<br />
+<br />
+<h3 id="toc9"><a name="x--XMLi sorteerimine"></a>XMLi sorteerimine</h3>
+ <strong>Tööriistad</strong> -- <strong>Sort. atr. ja sorteerimine</strong>. Ilmub dialoogiaken &quot;Sisend: Mingi XML-fail&quot;, mille abil ava sorteeritav fail. Järgmisena ilmuvas aknas &quot;Salvesta kui...&quot; anna tulevasele, sorteeritud failile nimi (ja soovi korral asukoht kataloogipuus). Seejärel ilmub aken &quot;Kontrolli, kas kõik on õige!&quot;, siin saab muuta sõnastiku algandmeid (<strong>koodi</strong>, <strong>prefiksit</strong> ja nimeruumi e <strong>URI</strong>) ning määrata suvandid selle kohta, kuidas programm sotreerimisel sisendit &quot;loeb&quot;:<br />
+<strong>fakultatiivjärjendite eraldajad (nt ´[]´, ´()´)</strong> on ...<br />
+<strong>liitsõnapiiri eraldaja (nt ´+´, ´/´)</strong> - kui märksõnadel on liitsõnapiir tähistatud, siis tuleb seda programmile ütelda, et ta teaks vastavat märki sorteerimisel ignoreerida.<br />
+<strong>homonüüminumbri arvestamine</strong> -<br />
+<strong>põhisõna atribuudi arvestamine</strong> -<br />
+<strong>märksõna asukoht artiklis (nt ´x:P/x:mg/x:m´, ´t:kp/t:terg/t:ter´)</strong> - kirjuta märksõna rollis oleva elemendi xml-rada, et programm leiaks märksõna või termini üles<br />
+<strong>mySqlDataVer</strong> - #<br />
+<strong>XML-väljund trepitud</strong> - kui linnuke, siis väljund-XML trepitakse taanetega mugavamaks lugemiseks, kui linnuke puudub, siis kogu väljund on ilma ühegi taandeta ühel real<br />
+<br />
+Vajuta OK ja kontrolli uus fail üle.<br />
+<br />
+<h3 id="toc10"><a name="x--XML faili valideerimine"></a>XML faili valideerimine</h3>
+ <strong>Tööriistad</strong> -- <strong>XML-i valideerimine</strong> ja määra avanenud aknas nii XML kui XSD fail. Kliki Valideeri. Kui valideerimisel leidus vigu, siis kuvatakse tabel, kus on näidatud vea tekkimise koht ning antud vea või hoiatuse kirjeldus.<br />
+<br />
+<h3 id="toc11"><a name="x--XMLi eksportimine MySQL andmefailidesse"></a>XMLi eksportimine MySQL andmefailidesse</h3>
+ <strong>Tööriistad</strong> -- <strong>Eksport MySQL andmebaasi</strong>, avanevas aknas (pealkirjaga Sisend: köited) vali XML fail(id), mis failidesse eksportida vaja on. Soovitame originaalfaili nimele lisada lõppu _org, sest programm kirjutab originaali üle. Edasises aknas saab muuta sõnastiku andmeid (<strong>koodi</strong>, <strong>prefiksit</strong> ja nimeruumi e <strong>URI</strong>) ning määrata suvandid selle kohta, kuidas programm käsitleb fakultatiivloendite eraldajaid, liitsõnapiiri, märksõna asukohta artiklis jms (vt suvandite tutvustust eespool: XML-i sorteerimine). Kõik need andmed sõnastiku kohta loetakse sõnastiku konfiguratsioonifailist ’ shsconfig_xxx.xml’ üle võrgu ja nad on informatsioonilise iseloomuga.<br />
+<br />
+<strong>Taustainfo ja ajalugu</strong><br />
+Läbi aegade on EKI käsutuses olnud kümneid XML vormingus sõnastikke, nii oma majas tehtuid kui ka väljast saaduid. Tekkis vajadus sõnastike struktuure uurida ja võrrelda. Struktuure tuleb eelkõige lihtsustada ja samas ka ühtlustada, kui kasutame sõnastikke sõnastikuhaldussüsteemis. <br />
+EKI-s kasutatav sõnastikuhaldussüsteem nimetati hiljem ametlikult nimega EELex. Ühtlustatud struktuuride korral on EELex-i lihtsam hallata ning uusi toimetajaid uutes sõnastikes kergem koolitada. Lihtsustatud struktuuride korral omandab toimetaja töö kiiremini töö on tulemuslikum ja kergemini mõistetav.
+    </div>
+  </body>
+</html>

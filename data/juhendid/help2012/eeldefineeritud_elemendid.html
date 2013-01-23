@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Eeldefineeritud elemendid</h2>
+	
+Sõltumata sõnastiku struktuurist, keeltest jms leidub alati teatud andmeid, mida alati on vaja talletada. Näiteks logielemendid nagu artikli koostaja ja koostamise aeg, kustutamise aeg jms. EELexi on sisse ehitatud elemendid, mis on uue sõnastiku skeemis kohe algusest peale sees. (NB! Selleks, et sõnastiku sisu edukalt failist importida, peavad selleski sisalduma ja osade puhul olema täidetud need elemendid!)<br />
+<br />
+<h3 id="toc0"><a name="x--Automaatselt tekkivad elemendid ja atribuudid"></a>Automaatselt tekkivad elemendid ja atribuudid</h3>
+ Alljärgneva kohta võid vaadata veel <a class="wiki_link_new" href="s6nastiku_sisu_import.html">Sõnastiku sisu import</a> ja <a class="wiki_link_new" href="artikli_tooriistad.html">Artikli tööriistad</a>.<br />
+<br />
+xmlLang - keele lühend (täitub sõnaartikli lisandudes ise)<br />
+x:O - sorteerimisväärtus (täitub ise)<br />
+x:G - artikli GUID, vt lähemalt nt <a class="wiki_link_ext" href="http://en.wikipedia.org/wiki/Guid" rel="nofollow" target="_blank">http://en.wikipedia.org/wiki/Guid</a> (täitub ise, <span class="etl1etl1gnoedit">kasutatakse meil nt artikli leidmisel otsingutulemuste nimekirjast, artikli salvestamisel ja kustutamisel</span>)<br />
+x:K - artikli koostaja (EELexi kasutajanimi, kes lisas uue artikli) (täitub ise)<br />
+x:KA - koostamise aeg (täitub ise)<br />
+x:KL - koostamise lõpp - koostaja teatab selle abil, et tema töö on lõpetatud; tekib, kui toimetaja valib Artikli tööriistadest <img src="files/artiklitooriistad.png" alt="artiklitooriistad.png" title="artiklitooriistad.png" /> Lisa koostamise lõpu märge.<br />
+x:T - artikli viimane toimetaja (täitub ise)<br />
+x:TA - viimase toimetamise aeg (täitub ise)<br />
+x:TL - toimetamise lõpp - tekib, kui valida Artikli tööriistade<img src="files/artiklitooriistad.png" alt="artiklitooriistad.png" title="artiklitooriistad.png" /> nupust Lisa toimetamise lõpu märge.<br />
+x:PT - peatoimetaja (täitub ise, kui lisatakse peatoimetamise märge)<br />
+x:PTA - peatoimetamise aeg - tekib Artikli tööriistade <img src="files/artiklitooriistad.png" alt="artiklitooriistad.png" title="artiklitooriistad.png" /> nupust Lisa peatoimetamise märge abil.<br />
+x:X - artikli kustutaja (täitub kustutamisel ise)<br />
+x:XA - kustutamise aeg (täitub kustutamisel ise).<br />
+<br />
+Lisaks neile on veel mugav võimalus lisada artiklile kommentaare (mis on mitme toimetaja puhul omavahelise suhtlemise vahendiks): kommentaari grupp x:KOM/x:komg/ ja elemendid temas:<br />
+x:kom - kommentaari tekst (täidab kasutaja)<br />
+x:kaut - kommentaari autor (täitub ise)<br />
+x:kaeg - kommentaari aeg (täitub ise).<br />
+<br />
+Morfoloogiaplokis (x:mfp) tehtud muutuse järel ja märkuse (x:mrk) lisamisel tekivad ja täituvad automaatselt:<br />
+x:aT - toimetaja (ehk muutuse tegija või märkuse lisaja kasutajanimi) (täitub ise)<br />
+x:aTA - toimetamise aeg (täitub ise).
+    </div>
+  </body>
+</html>

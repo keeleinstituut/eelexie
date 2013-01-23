@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shsconfig>
+  <rootLang>et</rootLang>
+  <dicpr>x</dicpr>
+  <dicuri>http://www.eki.ee/dict/dmo</dicuri>
+  <default_query>x:A/x:P/x:mg/x:m</default_query>
+  <first_default>x:A/x:P[1]/x:mg[1]/x:m[1]</first_default>
+  <qn_sort_attr>x:O</qn_sort_attr>
+  <fakult>[]</fakult>
+  <msLsp>+</msLsp>
+  <max_leiud>20000</max_leiud>
+  <max_print_arts>2000</max_print_arts>
+  <vols>
+    <vol nr="1">A - K</vol>
+    <vol nr="2">L - Q</vol>
+    <vol nr="3">R - Y</vol>
+  </vols>
+  <neelems>;x:kaut;x:kaeg;x:G;x:K;x:KA;x:KL;x:T;x:TA;x:TL;x:PT;x:PTA;x:X;x:XA;</neelems>
+  <neattribs>;x:KF;x:O;</neattribs>
+  <ptd>;;</ptd>
+  <koopia>;;</koopia>
+  <vaateGen>;;</vaateGen>
+  <hulgi>;;</hulgi>
+  <skeemiGen>;;</skeemiGen>
+  <do_spellcheck>false</do_spellcheck>
+  <cfgSetKeyboard>true</cfgSetKeyboard>
+  <cfgUseMorfo>false</cfgUseMorfo>
+  <msg type="error">Andmebaasi hooldustööd...</msg>
+  <mySqlDataVer>2</mySqlDataVer>
+  <VERS_DB></VERS_DB>
+</shsconfig>

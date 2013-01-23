@@ -1,0 +1,64 @@
+	A  {
+	font-size : 10px; 
+	font-family : verdana, arial, helvetica, sans-serif;
+	font-style : normal;
+	color : Black;
+	text-decoration : none
+	}
+
+A:Active,A:Hover {
+	color : #000000
+	}
+
+table {
+	border-style : none
+	}
+body, p, td, ul {
+	font-family: Verdana, Helvetica, Arial, sans-serif ;
+	font-size:10px;
+	text-decoration: none;
+	scrollbar-face-color       : white;
+	scrollbar-highlight-color  : gray;
+	scrollbar-shadow-color     : black;
+	scrollbar-3dlight-color    : none;
+	scrollbar-arrow-color      : black;
+	scrollbar-track-color      : white;
+	scrollbar-darkshadow-color : white;
+	}
+td.menuTD1
+    {
+	border-left: 1px solid #96BEC8;
+ 	}
+td.menuTD2
+    {
+	border-right: 1px solid #96BEC8;
+ 	}
+table.menuTable1 
+    {
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+	border-left: 1px solid #000000;
+ 	} 
+table.menuTable2 {
+	border-right:1px solid #000000;
+	border-bottom:1px solid #000000;
+	border-left: 1px solid #000000;
+	border-top: 1px solid #000000;
+ 	} 
+.style1 {
+	font-family: Verdana, Helvetica, Arial, sans-serif ;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 10px;
+}
+.style2 {
+	font-family: Verdana, Helvetica, Arial, sans-serif ;
+	font-size: 10px;
+	color: #000000;
+	font-weight: bold;
+}
+.style3 {
+	font-family: Verdana, Helvetica, Arial, sans-serif ;
+	font-size: 10px;
+	color: #000000;
+}

@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Mis on EELex</h2>
+Sõnastike haldussüsteem <img src="files/eelex.png" alt="eelex.png" title="eelex.png" style="height: 15px; width: 84px;" /> (edaspidi EELex) on Eesti Keele Instituudis loodud veebipõhiste töövahendite kompleks, mis ühendab sõnastike koostajatele ja toimetajatele vajaliku tarkvara ja keeleressursid, toetab rühmatööd ja pakub eesti keele tuge. EELexi võimaldab<br />
+<ul><li>sõnastikku koostada ja toimetada</li><li>luua sõnastiku skeem EELexi skeemieditori abil</li><li>sõnastikku küljendada</li><li>ekportida valmis sõnastik MS Wordi</li><li>teha lihtsaid ja keerulisi struktuuripõhiseid päringuid</li><li>sortida päringutulemusi</li><li>kontrollida ristviiteid</li><li>hoida sõnaartiklid järjekorras</li><li>teha hulgiparandusi kogu sõnastikus</li><li>luua ja hallata loendeid (nt sõnaliikide või valdkondade loendid)</li><li>jälgida sõnastikutöö edenemist (etappide kaupa) ja saada andmeid aruande jaoks</li><li>jälgida sõnaartikli toimetamise logi</li><li>jätta sõnaartikli juurde kommentaar ning lugeda kaastoimetajate kommentaare</li><li>jms.</li></ul><br />
+Koostaja näeb korraga nii artikli struktuuri kui ka sama artikli lõplikku vormistust küljendusvaates. Lihtsad tehnilised apsakad on välistatud, sest lisada ja muuta saab vaid artikli struktuuri rangelt järgides. Vormistuse, kirjavahemärkide paneku, sortimise, viitamise, ligipääsuõiguste eest artikli eri osadele ja tööetappidele jm mittesisulise poole eest hoolitseb EELex.<br />
+<br />
+Maailmas olemasolevatest elektroonilistest sõnastikusüsteemidest eristab EELexi eesti keele toe olemasolu (integreeritud automaatne morfoloogia, Eesti-X sõnastiku andmebaas), suur paindlikkus sõnastiku struktuuri suhtes, rikkalik valik toimetamise tööriistu ja vaba kasutus.<br />
+<br />
+Eelista EELexi, kui<br />
+<ul><li>koostad ühe- või mitmekeelset üldkeelesõnastikku või oskussõnastikku</li><li>soovid ühispäringu kaudu näha sama sõnaartiklit teistes EELexis tehtud sõnastikes</li><li>sõnastik on väga suur (mitmes köites või ühes suures köites)</li><li>soovid sõnastiku veebilehel avaldada ja ta peab garanteeritult olema korras (valideeruma)</li><li>sõnastikuga peab saama samaaegselt töötada mitu toimetajat</li><li>on vaja teha sõnastikust väljavõtteid (näiteks erivaldkondade terminid, et need erialaspetsialistidele ülevaatamiseks anda)</li><li>importida andmeid teistest sõnastikest</li><li>soovid sõnastiku aluseks võtta kakskeelsete sõnastike põhja — Eesti-X sõnastiku andmebaasi, kus on juba olemas eesti märksõna kohta käivad andmed, nt sõnaliik, muutevormid, tähendusjaotus, näitelaused jm</li><li>soovid genereerida eesti morfoloogia andmeid</li><li>lisada audio- või videofaile</li><li>jne.</li></ul><br />
+<h3 id="toc0"><a name="x--XML ja MySQL"></a>XML ja MySQL</h3>
+ Sõnastikuandmeid hoitakse XML vormingu kujul (UTF-8) ning paralleelselt MySQL-is (kui mõlemad versioonid olemas, siis automaatselt sünkroniseeritakse). Sõnastikus koostatavate artiklite struktuur on määratud XSD skeemiga. XSD skeemi abil on võimalik kirjeldada XML faili struktuuri, määrata elemendi korduvust oma vanemelemendis, määrata elementide andmetüüpi (järjend e string, ajahetk, täisarv, elemendi väärtuste võimalikud loendid), defineerida uusi andmetüüpe jm.<br />
+<br />
+<h3 id="toc1"><a name="x--Lokaalne või kauge"></a>Lokaalne või kauge</h3>
+ EELex on nn klient-server tüüpi rakendus, andmevahetus veebiserveri ja tööjaama vahel toimub samuti XML-vormingus andmete abil. Kõik serveri komponendid on vabavaralised. ELexi sisenetakse kasutajanime ja parooli abil. On kasutaja valida, kas eelistab Eesti Keele Instituudi serverisse eelex.eki.ee installeeritud EELexi ning seal ka oma sõnastikuandmeid hoida või laadida alla kogu rakendus ning server oma masinas püsti panna. Eesti Keele Instituudi serveri EELex on muidugi alati kõige uuem.<br />
+<br />
+EELexi serveri võib oma masinasse installeerida igaüks, kel on kasutada Perli interpretaator ja veebiserver; vt täpsemalt <a class="wiki_link_new" href="server_ja_selle_pystipanek.html">Server ja selle püstipanek</a>.<br />
+<br />
+<h3 id="toc2"><a name="x--Juriidilist"></a>Juriidilist</h3>
+ EELex-i loomist on rahastanud programmid Eesti keele tehnoloogiline tugi (2006-2010) ja Eesti keele tehnoloogiline tugi (2011-2013) ning selle kasutamine on vaba. Leping on vajalik Eesti-X sõnastikupõhja kasutamiseks; kontakteeru eelex@eki.ee.<br />
+<br />
+<h3 id="toc3"><a name="x--Abi"></a>Abi</h3>
+ Tehnilist abi saab Eesti Keele Instituudi EELexi meeskonnalt (eelex@eki.ee), leksikoloogilist abi saab Eesti Keele Instituudi leksikoloogidelt. Kasutajaks registreerimiseks vt <a class="wiki_link_new" href="kasutajaks_registreerimine.html">Kasutajaks registreerimine</a>.
+    </div>
+  </body>
+</html>

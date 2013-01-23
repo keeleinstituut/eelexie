@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Artikli tööriistad</h2>
+	
+Sõnastikutöös saab jagada kolme etappi: sõnaartikli koostamine, toimetamine ja peatoimetamine. Tavaliselt kasutatakse kahekihilist tööstiili (koostamine ja peatoimetamine või toimetamine ja peatoimetamine - vastavalt toimetuse kokkuleppele). EELex võimaldab eristada kõiki kolme etappi vastavate etapi lõpu märgetega, mida nimetatakse Artikli tööriistadeks. Vajalikud on need sõnastikutöö seisu hindamiseks (nt aruandluse jaoks andmete hankimiseks või teisele töötajale tööjärje üle andmiseks). Päringuga (näiteks Toimetamisala ülaservas valides otsitavaks elemendiks näiteks koostamise lõpp ja tippides otsiaknase tärni *) saab välja võtta kõik artiklid, mille koostamine on lõpetatud või mis on täiesti valmise ehk peatoimetatud jne. Lisaks on siia alla toodud ka artikli ühest köitest teise liigutamise tööriist.<br />
+Olemasolevaid koostamise, toimetamise ja peatoimetamise märkeid saab näha artikli XML-vaates, mille avab nupp XML Toimetamisalal <img src="files/nupp_toimetamisala_xml.png" alt="nupp_toimetamisala_xml.png" title="nupp_toimetamisala_xml.png" />.<br />
+Artikli tööriistade menüü avaneb EELexi süsteemis nupule<img src="files/artiklitooriistad.png" alt="artiklitooriistad.png" title="artiklitooriistad.png" />klõpsamisel ja selles menüüs on järgmised valikud.<br />
+<br />
+<strong>Lisa koostamise lõpu märge</strong> - Koostamise lõpu märget kasutatakse siis, kui koostaja on oma töö lõpetanud ja soovib sellest toimetaja(te)le märku anda. Artiklisse lisatakse element x:KL (koostamise lõpu aeg).<br />
+<br />
+<strong>Eemaldakoostamise lõpu märge</strong> - Mõnikord on vaja tagasi pöörduda algse koostatud variandi juurde, selleks tuleb koostamise lõpu märge selle menüü abil artiklist kustutada. Seda saab teha ainult artikli koostaja (x:K) või peatoimetaja (x:PT). Seda funktsiooni kasutatakse vastavalt vajadusele.<br />
+<br />
+<strong>Lisa toimetamise lõpu märge</strong> - Kui toimetaja on toimetamise lõpetanud, lisab ta artikli tööriistade menüü abil toimetamise lõpu märke, mille peale süsteem lisab ning täidab elemendi x:TL (toimetamise lõpu aeg). <br />
+<br />
+<strong>Eemalda toimetamise lõpu märge</strong> - Toimetamise lõpu märge (element x:TL) kustutatakse artiklist.<br />
+<br />
+<strong>Lisa peatoimetaja märge</strong> - Artiklisse lisanduvad ja täituvad elemendid x:PT (peatoimetaja kasutajanimi) ja x:PTA (peatoimetamise aeg) ja artiklit enam muuta ei saa. Seda märget saab artiklis olla vaid üks.<br />
+<br />
+<strong>Eemalda peatoimetaja märge</strong> - Artiklist kustutatakse elemendid x:PT (peatoimetaja kasutajanimi) ja x:PTA (peatoimetamise aeg) ning artiklit saab jälle muuta. Vajalik näiteks korrektuuri lugemise käigus leitud vigade parandamiseks.<br />
+<br />
+<strong>Vii teise köitesse</strong> - Artikli liigutamiseks ühest köitest teise. Valiku valimisel avaneb dialoogiaken, milles saad valida köite, millesse artiklit soovid üle viia. Üheköitelise sõnastiku puhul on valikus vaid üks köide.<br />
+<br />
+Seotud tekstid: <a class="wiki_link_new" href="eeldefineeritud_elemendid.html">Eeldefineeritud elemendid</a>.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,711 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="pragma" content="no-cache">
+        <!--<meta http-equiv="refresh" content="10">-->
+
+        <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+        <meta name="author" content="Andres Loopmann">
+        <meta name="keywords" content="EELex">
+    
+		<title>Valdkonnad</title>
+        <link rel="stylesheet" type="text/css" href="../css/script.css">
+		<script type="text/javascript" src="tools.js"></script>
+		<script type="text/javascript" src="res_xml.js"></script>
+		<script type="text/vbscript">
+
+<!--
+
+Option Explicit
+
+Const ENUMVAL = 1
+Const ET_COL = 2
+Const EN_COL = 3
+
+Const T_COL = 4
+Const TA_COL = 5
+
+Dim dic_desc, sAppLang, sDestlang, PD, xsdFile, xsdType, usrName, docnDestColHead
+Dim idEnumsTable
+Dim idSeldRow, oRow
+
+Dim vaikimisi
+Dim enumValues
+
+Dim updated
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+
+    updated = false
+    PD = ChrW(&HE001)
+
+    Dim inArr
+    if IsArray(window.dialogArguments) then
+	    inarr = window.dialogArguments
+    else
+	    inarr = Split(window.dialogArguments, PD)
+    end if
+    
+    '☺ - white smiling face, 0x263a
+    vaikimisi = ChrW(&H263A)
+        
+    set enumValues = CreateObject("Scripting.Dictionary")
+        
+	dic_desc = inArr(0)
+	sAppLang = inArr(1)
+    document.title = UCase(dic_desc) & ": " & inArr(3) '<tr> innerText
+    xsdFile = inArr(4) '<tr> value, xsd faili nimi
+    xsdType = inArr(5) '<tr> id, xsd tüübi nimi
+    usrName = inArr(6)
+
+    Dim oConfigDOM, cfgElem
+    set oConfigDOM = IDD("File", "../shsconfig_" & dic_desc & ".xml", False, False, Nothing)
+    if (oConfigDOM.parseError.errorCode <> 0) then
+	    MsgBox "Puudub konf fail!", vbCritical, "../shsconfig_" & dic_desc & ".xml"
+	    Exit Sub
+    end if
+    set cfgElem = oConfigDOM.documentElement.selectSingleNode("destLang")
+    if Not (cfgElem Is Nothing) then
+        sDestlang = cfgElem.text
+    else
+        sDestlang = ""
+    end if
+
+    Dim xh
+    set xh = exCGISync("../tools.cgi", "readXML" & PD & dic_desc & PD & usrName & PD & _
+                        xsdFile & PD & _
+                        "xs:simpleType[@name = '" & xsdType & "']")
+        
+    Dim artCount
+
+    if (xh.statusText = "OK") then
+
+        Dim rspDOM, sta
+        set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDoc
+        sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+            
+        if (sta) then
+
+            Dim nsList
+            nsList = "xmlns:" & NS_XS_PR & "='" & NS_XS & "'"
+                
+            rspDOM.setProperty "SelectionLanguage", "XPath"
+            rspDOM.setProperty "SelectionNamespaces", Trim(nsList)
+
+            set oRow = Nothing
+            Call fillIfrTable(rspDOM)
+                
+        end if
+
+    else
+        MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+            xh.responseText, _
+            vbCritical
+    end if
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+    if Not (window.event Is Nothing) then
+        if (window.event.keyCode = 27) then
+	        window.close()
+        elseif (window.event.keyCode = 13) then
+            Call SetReturnV()
+        end if
+    else
+        if (idIfrSisu.event.keyCode = 27) then
+	        window.close()
+        end if
+    end if
+End Sub 'bodyOnKeyUp
+
+			
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+	window.close()
+End Sub 'SetReturnV
+
+
+'-----------------------------------------------------------------------------------
+Sub okOnClick()
+    Call SetReturnV()
+End Sub 'okOnClick
+
+
+'-----------------------------------------------------------------------------------
+Function fillIfrTable(inDom)
+
+    Dim myenums, myenum, mydocn_et, mydocn_en, idEnum, t, ta, aiElem
+    set myenums = inDom.selectNodes("rsp/outDOM/xs:simpleType/xs:restriction/xs:enumeration")
+    
+    Dim docnEt, docnEn, docnRu, docnFr,docnDe, docnFi, docnDest, docnDestVal
+    if (sDestlang = "") then
+        docnDestColHead = ""
+    else
+        if (sDestlang = "en") then
+            docnDestColHead = ""
+        else
+            docnDestColHead = "<th>Seletus sihtkeel</th>"
+        end if
+    end if
+
+    Dim ifrDoc
+    set ifrDoc = document.frames("idIfrSisu").document.open("text/html", "replace")
+
+    ifrDoc.writeln "<table id='idEnumsTable' width='100%' border='1'>"
+    ifrDoc.writeln "<thead style='background-color:navy;color:white'>" & _
+                        "<tr>" & _
+                            "<th><img src='../graphics/validate 16-16.ico'></img></th>" & _
+                            "<th>Väärtus</th>" & _
+                            "<th>Seletus eesti</th>" & _
+                            "<th>Seletus ingl</th>" & _
+                            docnDestColHead & _
+                            "<th>Parandaja</th>" & _
+                            "<th>Parandamise aeg</th>" & _
+                        "</tr>" & _
+                    "</thead>"
+    
+    for each myenum in myenums
+        idEnum = myenum.getAttribute("value")
+        docnEt = getLangDocn(myenum, "et")
+        docnEn = getLangDocn(myenum, "en")
+        docnDest = getLangDocn(myenum, sDestlang)
+
+        Call enumValues.Add(idEnum, docnEt)
+
+        if (docnDestColHead = "") then
+            docnDestVal = ""
+        else
+            docnDestVal = "<td><span style='width:100%'>" & docnDest & "</span></td>"
+        end if
+        
+        t = "-"
+        set aiElem = myenum.selectSingleNode("xs:annotation/xs:appinfo/T")
+        if Not (aiElem Is Nothing) then
+            t = aiElem.text
+        end if
+        ta = "-"
+        set aiElem = myenum.selectSingleNode("xs:annotation/xs:appinfo/TA")
+        if Not (aiElem Is Nothing) then
+            ta = aiElem.text
+        end if
+        '<input type='button' value='OK' style='width:100%'>
+        'Ok_16x16.ico
+        ifrDoc.writeln "<tr id='" & idEnum & "'>" & _
+                "<td><img name='sta' src='../graphics/Ok_16x16.ico' style='visibility:hidden'></img></td>" & _
+                "<td>" & idEnum & "</td>" & _
+                "<td><span style='width:100%'>" & docnEt & "</span></td>" & _
+                "<td><span style='width:100%'>" & docnEn & "</span></td>" & _
+                docnDestVal & _
+                "<td style='color:gray;font-size:x-small'>" & t & "</td>" & _
+                "<td style='color:gray;font-size:xx-small'>" & Replace(ta, "T", " ") & "</td>" & _
+            "</tr>"
+    next
+
+    ifrDoc.writeln "</table>"
+
+    ifrDoc.close
+
+    set idEnumsTable = idIfrSisu.document.all("idEnumsTable")
+    document.frames("idIfrSisu").document.body.onkeyup = GetRef("bodyOnKeyUp")
+    document.frames("idIfrSisu").document.body.onclick = GetRef("idIfrSisuOnClick")
+    document.frames("idIfrSisu").document.body.oncontextmenu = GetRef("idIfrSisuOnContextMenu")
+
+    fillIfrTable = myenums.length
+
+End Function 'fillIfrTable
+
+
+'-----------------------------------------------------------------------------------
+Function getLangDocn(node, lang)
+Dim tekst, nood
+tekst = ""
+set nood = node.selectSingleNode("xs:annotation/xs:documentation[@xml:lang='" & lang & "']")
+if Not (nood Is Nothing) then
+    tekst = nood.text
+end if
+getLangDocn = tekst
+End Function 'getLangDocn
+
+
+'-----------------------------------------------------------------------------------
+Sub idIfrSisuOnContextMenu()
+
+    Dim oSrc
+    set oSrc = idIfrSisu.event.srcElement
+    
+    if Not (idEnumsTable.contains(oSrc)) then
+        Exit Sub
+    end if
+    if (oSrc.tagName = "TH") then
+        Exit Sub
+    end if
+
+    Call setVars(oSrc)
+    
+    Dim srcX, srcY
+    srcX = idIfrSisu.event.clientX
+    if (srcX + idCMenu.clientWidth > document.body.clientWidth) then
+        srcX = srcX - idCMenu.clientWidth
+    end if
+    srcY = idIfrSisu.event.screenY - window.screenTop
+
+    'et idCMenu kohe onlosecapture-t ei saaks
+    idIfrSisu.event.returnValue = false
+
+    Call displayCMenu(idCMenu, srcX, srcY)
+    
+End Sub 'idIfrSisuOnContextMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub displayCMenu(menuObj, posX, posY)
+if Not (menuObj.innerHTML = "") then
+	menuObj.style.pixelLeft = posX
+	menuObj.style.pixelTop = posY
+	menuObj.style.display = ""
+	menuObj.style.cursor = "default"
+	menuObj.setCapture()
+end if
+End Sub 'displayCMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub disableContextMenu()
+window.event.returnValue = false
+End Sub 'disableContextMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub hideDivMenu()
+'menüü ise
+Dim menuObj
+set menuObj = window.event.srcElement
+menuObj.style.display = "none"
+menuObj.style.cursor = "auto"
+End Sub 'hideDivMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub setVars(oClicked)
+
+    if Not (oRow Is Nothing) then
+        oRow.style.backgroundColor = ""
+    end if
+
+    if (oClicked.tagName = "SPAN") then
+        set oRow = oClicked.parentElement.parentElement
+    elseif (oClicked.tagName = "TD") then
+        set oRow = oClicked.parentElement
+    else
+        Exit Sub
+    end if
+
+    idSeldRow = oRow.id
+    oRow.style.backgroundColor = "silver"
+
+End Sub 'setVars
+
+
+'-----------------------------------------------------------------------------------
+Sub idIfrSisuOnClick()
+    Dim oSrc, tekst, nVal, ci
+    set oSrc = idIfrSisu.event.srcElement
+    
+    if Not (idEnumsTable.contains(oSrc)) then
+        Exit Sub
+    end if
+
+    Call setVars(oSrc)
+
+    if (oSrc.tagName = "SPAN") then
+
+        tekst = oSrc.innerText
+        ci = oSrc.parentElement.cellIndex
+'        'InputBox: prompt, title, default
+'        nVal = InputBox("Sisesta '" & oRow.cells(ENUMVAL).innerText & "' " & UCase(keel) & " - keelne seletus!", "'" & oRow.cells(ENUMVAL).innerText & "' seletus " & keel & " keeles:", tekst)
+
+        Dim smdArgs
+        smdArgs = Array(tekst, sAppLang, "'" & oRow.cells(ENUMVAL).innerText & "'" & idEnumsTable.rows(0).cells(ci).innerText & "'")
+        nVal = window.showModalDialog("getValue.htm", _
+            smdArgs, _
+            "dialogHeight:300px;dialogWidth:1024px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no")
+        if (nVal = tekst) then
+            Exit Sub
+        end if
+
+        oSrc.innerText = nVal
+
+        Dim t, ta
+        t = usrName
+        ta = GetXSDDateTime(Now)
+
+        Dim docnEt, docnEn, docnDestVal, tcol, tacol
+        docnEt = Trim(oRow.cells(ET_COL).innerText)
+        if (Len(docnEt) = 0) then
+            MsgBox "Kohustuslik on täita eestikeelne seletus!", vbCritical, "Salvestamine"
+            Exit Sub
+        end if
+
+        if (docnDestColHead = "") then
+            docnDestVal = ""
+            docnEn = Trim(oRow.cells(EN_COL).innerText)
+            tcol = T_COL
+            tacol = TA_COL
+        else
+            docnDestVal = "<xs:documentation xml:lang='" & sDestLang & "'>" & Trim(oRow.cells(EN_COL + 1).innerText) & "</xs:documentation>" & vbLf
+            docnEn = Trim(oRow.cells(EN_COL).innerText)
+            tcol = T_COL + 1
+            tacol = TA_COL + 1
+        end if
+
+        Dim newXML, xPath
+        xPath = "xs:simpleType[@name = '" & xsdType & "']/xs:restriction/xs:enumeration[@value = '" & idSeldRow & "']"
+        newXML = "<xs:enumeration value='" & idSeldRow & "' xmlns:xs='" & NS_XS & "'" & ">" & vbLf & _
+                    "<xs:annotation>" & vbLf & _
+                        "<xs:documentation xml:lang='et'>" & docnEt & "</xs:documentation>" & vbLf & _
+                        "<xs:documentation xml:lang='en'>" & docnEn & "</xs:documentation>" & vbLf & _
+                        docnDestVal & _
+                        "<xs:appinfo>" & vbLf & _
+                            "<T>" & t & "</T>" & vbLf & _
+                            "<TA>" & ta & "</TA>" & vbLf & _
+                        "</xs:appinfo>" & vbLf & _
+                    "</xs:annotation>" & vbLf & _
+                 "</xs:enumeration>"
+
+        Dim xh
+        set xh = exCGISync("../tools.cgi", "updateXML" & PD & dic_desc & PD & usrName & PD & _
+                        xsdFile & PD & _
+                        xPath & PD & _
+                        newXML & PD & _
+                        "")
+
+        if (xh.statusText = "OK") then
+
+            Dim rspDOM, sta, status, updCount
+            set rspDOM = IDD("", "", False, False, Nothing)
+            sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+            
+            if (sta) then
+                status = rspDOM.selectSingleNode("rsp/sta").text
+                if (status = "Success") then
+                    updCount = rspDOM.selectSingleNode("rsp/cnt").text
+                    if (CInt(updCount) = 1) then
+'                        modal korral pole nagunii midagi status-el näha
+'                        window.status = "Salvestamine OK."
+                        oRow.cells(tcol).innerText = t
+                        oRow.cells(tacol).innerText = Replace(ta, "T", " ")
+                        oRow.cells(0).all("sta").style.visibility = "visible"
+                        updated = true
+                    else
+                        MsgBox "Salvestamine ei õnnestunud!" & vbCrLf & status, vbCritical, "Salvestamine"
+                        Exit Sub
+                    end if
+                else
+                    MsgBox "Salvestamine ei õnnestunud!" & vbCrLf & status, vbCritical, "Salvestamine"
+                    Exit Sub
+                end if
+            else
+                Exit Sub
+            end if
+
+        else
+            MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & xh.responseText, vbCritical
+            Exit Sub
+        end if
+
+    end if
+    
+End Sub 'idIfrSisuOnClick
+
+
+'-----------------------------------------------------------------------------------
+Function GetXSDDateTime(dNow)
+Dim sDateTime
+sDateTime = Year(dNow) & "-" & String(2-Len(Month(dNow)),"0") & Month(dNow) & "-" & _
+	String(2-Len(Day(dNow)),"0") & Day(dNow) & "T" & _
+	String(2-Len(Hour(dNow)),"0") & Hour(dNow) & ":" & _
+	String(2-Len(Minute(dNow)),"0") & Minute(dNow) & ":" & _
+	String(2-Len(Second(dNow)),"0") & Second(dNow)
+GetXSDDateTime = sDateTime
+End Function 'GetXSDDateTime
+
+
+'-----------------------------------------------------------------------------------
+Sub switchCMenuRows()
+'käsitleb idCMenu onmouseover-it ja onmouseout-i
+Dim cmel, hoverRow
+
+set cmel = window.event.srcElement
+if (cmel.tagName = "TD") then
+    set hoverRow = cmel.parentElement
+else
+    Exit Sub
+end if
+if (hoverRow.className = "mi") then
+	hoverRow.className = "hi"
+elseif (hoverRow.className = "hi") then
+	hoverRow.className = "mi"
+end if
+End Sub 'switchCMenuRows
+
+
+'-----------------------------------------------------------------------------------
+Sub clickCMenuRow()
+
+document.releaseCapture()
+
+Dim cmel, clickedRow
+set cmel = window.event.srcElement
+if (cmel.tagName = "TD") then
+    set clickedRow = cmel.parentElement
+else
+    Exit Sub
+end if
+
+
+Dim t, ta
+t = usrName
+ta = GetXSDDateTime(Now)
+
+Dim newXML, xPath, xh, rspDOM, sta, status, updCount
+xPath = "xs:simpleType[@name = '" & xsdType & "']/xs:restriction/xs:enumeration[@value = '" & idSeldRow & "']"
+
+if (clickedRow.id = "add_before" or clickedRow.id = "add_after") then
+
+    Dim uusEnum, docnEt, remoteCmd, newRowIndex
+
+	uusEnum = Trim(InputBox("Sisesta uus väärtus!", "Uue väärtuse lisamine'"))
+    if (uusEnum = "-") then
+        uusEnum = ""
+    end if
+	if (uusEnum = "") then
+		Exit Sub
+	end if
+	if (enumValues.Exists(uusEnum)) then
+        MsgBox "Selline väärtus juba olemas!", vbCritical, "Lisamine"
+        Exit Sub
+	end if
+
+    'InputBox: prompt, title, default
+    docnEt = Trim(InputBox("Sisesta '" & uusEnum & "' EESTI - keelne seletus!", "'" & uusEnum & "' seletus eesti keeles:", ""))
+    if (docnEt = "-") then
+        docnEt = ""
+    end if
+    if (docnEt = "") then
+        Exit Sub
+    end if
+
+    Dim docnDestVal
+    if (docnDestColHead = "") then
+        docnDestVal = ""
+    else
+        docnDestVal = "<xs:documentation xml:lang='" & sDestLang & "' />" & vbLf
+    end if
+
+    newXML = "<xs:enumeration value='" & uusEnum & "' xmlns:xs='" & NS_XS & "'>" & vbLf & _
+                "<xs:annotation>" & vbLf & _
+                    "<xs:documentation xml:lang='et'>" & docnEt & "</xs:documentation>" & vbLf & _
+                    "<xs:documentation xml:lang='en' />" & vbLf & _
+                    docnDestVal & _
+                    "<xs:appinfo>" & vbLf & _
+                        "<T>" & t & "</T>" & vbLf & _
+                        "<TA>" & ta & "</TA>" & vbLf & _
+                    "</xs:appinfo>" & vbLf & _
+                "</xs:annotation>" & vbLf & _
+             "</xs:enumeration>"
+
+    if (clickedRow.id = "add_before") then
+	    remoteCmd = "insertBefore"
+	    newRowIndex = oRow.rowIndex
+	elseif (clickedRow.id = "add_after") then
+	    remoteCmd = "insertAfter"
+	    newRowIndex = oRow.rowIndex + 1
+    end if
+
+    set xh = exCGISync("../tools.cgi", remoteCmd & PD & dic_desc & PD & usrName & PD & _
+                    xsdFile & PD & _
+                    xPath & PD & _
+                    newXML)
+                    
+    if (xh.statusText = "OK") then
+
+        set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDocument
+        sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+        
+        if (sta) then
+            status = rspDOM.selectSingleNode("rsp/sta").text
+            if (status = "Success") then
+                updCount = rspDOM.selectSingleNode("rsp/cnt").text
+                if (CInt(updCount) = 1) then
+'                    modal korral pole nagunii midagi status-el näha
+'                    window.status = "Lisamine OK."
+                    updated = true
+                else
+                    MsgBox "Lisamine ei õnnestunud!" & vbCrLf & status, vbCritical, "Lisamine"
+                    Exit Sub
+                end if
+            else
+                MsgBox "Lisamine ei õnnestunud!" & vbCrLf & status, vbCritical, "Lisamine"
+                Exit Sub
+            end if
+        else
+            Exit Sub
+        end if
+
+    else
+        MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & xh.responseText, vbCritical
+        Exit Sub
+    end if
+
+	Call enumValues.Add(uusEnum, docnEt)
+
+    Dim newRow, newCell
+    set newRow = idEnumsTable.insertRow(newRowIndex)
+    newRow.id = uusEnum
+    'linnuke
+    set newCell = newRow.insertCell()
+    newCell.style.backgroundColor = "yellow"
+    newCell.innerHTML = "<img name='sta' src='../graphics/Ok_16x16.ico' style='visibility:hidden'></img>"
+    'väärtus
+    set newCell = newRow.insertCell()
+    newCell.innerText = uusEnum
+    'seletus eesti
+    set newCell = newRow.insertCell()
+    newCell.innerHTML = "<span style='width:100%'>" & docnEt & "</span>"
+    'seletus inglise
+    set newCell = newRow.insertCell()
+    newCell.innerHTML = "<span style='width:100%'></span>"
+    'seletus sihtkeel
+    if Not (docnDestColHead = "") then
+        set newCell = newRow.insertCell()
+        newCell.innerHTML = "<span style='width:100%'></span>"
+    end if
+    'parandaja
+    set newCell = newRow.insertCell()
+    newCell.style.color = "grey"
+    newCell.style.fontSize = "x-small"
+    newCell.innerText = t
+    'parandamise aeg
+    set newCell = newRow.insertCell()
+    newCell.style.color = "grey"
+    newCell.style.fontSize = "xx-small"
+    newCell.innerText = Replace(ta, "T", " ")
+
+elseif (clickedRow.id = "del_self") then
+    set xh = exCGISync("../tools.cgi", "removeNode" & PD & dic_desc & PD & usrName & PD & _
+                    xsdFile & PD & _
+                    xPath)
+                    
+    if (xh.statusText = "OK") then
+
+        set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDocument
+        sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+        
+        if (sta) then
+            status = rspDOM.selectSingleNode("rsp/sta").text
+            if (status = "Success") then
+                updCount = rspDOM.selectSingleNode("rsp/cnt").text
+                if (CInt(updCount) = 1) then
+'                    modal korral pole nagunii midagi status-el näha
+'                    window.status = "Kustutamine OK."
+                    updated = true
+                else
+                    MsgBox "Kustutamine ei õnnestunud!" & vbCrLf & status, vbCritical, "Kustutamine"
+                    Exit Sub
+                end if
+            else
+                MsgBox "Kustutamine ei õnnestunud!" & vbCrLf & status, vbCritical, "Kustutamine"
+                Exit Sub
+            end if
+        else
+            Exit Sub
+        end if
+
+    else
+        MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & xh.responseText, vbCritical
+        Exit Sub
+    end if
+
+	Call enumValues.Remove(idSeldRow)
+	Call idEnumsTable.deleteRow(oRow.rowIndex)
+	set oRow = Nothing
+
+end if
+
+End Sub 'clickCMenuRow
+
+
+'-----------------------------------------------------------------------------------
+Sub copyOnClick()
+Dim ctlRng, tbl, dokk
+set dokk = document.frames("idIfrSisu").document
+set tbl = dokk.getElementById("idEnumsTable")
+if Not (tbl Is Nothing) then
+    set ctlRng = dokk.body.createControlRange()
+    ctlRng.add(tbl)
+    ctlRng.select()
+    ctlRng.execCommand("Copy")
+end if
+End Sub 'copyOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnUnLoad()
+if (updated) then
+    window.returnValue = "updated"
+end if
+End Sub 'bodyOnUnLoad
+
+-->
+
+		</script>
+	</head>
+	<body id="idBody" style="background-color:buttonface;padding:10mm;" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()" onunload="bodyOnUnLoad()">
+
+        <div id="idDivSisu" style="width:100%;height:100%;">
+
+            <iframe id="idIfrSisu" style="width:100%;height:80%;"></iframe>
+            <br />
+
+            <div>
+                <table cellspacing='5'>
+                    <tr>
+                        <td>
+                            <input type="button" id="btnOK" value="   OK   " onclick="okOnClick()" />
+                        </td>
+                        <td>
+                            <input type="button" id="btnCopy" value=" Kopeeri " onclick="copyOnClick()" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- kontekstmenüü -->
+        <div id="idCMenu" style="display:none; position:absolute; width:300px;
+        background-color:menu; border:outset 3px gray"
+        onmouseover="switchCMenuRows()" onmouseout="switchCMenuRows()"
+        onclick="clickCMenuRow()" oncontextmenu="disableContextMenu()"
+        onlosecapture="hideDivMenu()">
+	        <table id='tbl_CMenu' width='100%' border='0' cellSpacing='0'>
+                <tr class='mi' id='add_before'>
+	                    <td>Lisa ette</td>
+                </tr>
+                <tr class='mi' id='add_after'>
+	                    <td>Lisa järele</td>
+                </tr>
+                <tr class='mi' id='del_self'>
+	                    <td>Kustuta</td>
+                </tr>
+            </table>
+        </div>
+
+	</body>
+</html>

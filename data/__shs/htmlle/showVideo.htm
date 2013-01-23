@@ -1,0 +1,99 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Video</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="jwplayer/jwplayer.js"></script>
+    <script type="text/javascript">
+            <!--
+        var flv, dic_desc, appLang, usrName, baseDir, flvFile, opts;
+
+        function bodyOnLoad() {
+            var inArr = window.dialogArguments;
+            dic_desc = inArr[0];
+            appLang = inArr[1];
+            usrName = inArr[2];
+            flv = inArr[3];
+            baseDir = inArr[4];
+
+            var flpWMode = "opaque";
+            if (baseDir == "/__heli/")
+                flpWMode = "transparent";
+            if (flv == "") {
+                flv = "tyhivideo.flv";
+            }
+            flvName.innerHTML = flv;
+            flvFile = "../__sr/" + dic_desc + baseDir + flv;
+            opts = {
+                autostart: true,
+                flashplayer: "jwplayer/player.swf",
+                file: flvFile,
+                width: 640,
+                wmode: flpWMode
+            };
+            // ’9.0.115’
+            jwplayer("flvContainer").setup(opts);
+        }
+
+        function valiFail() {
+            var smdArgs = new Object;
+            smdArgs.dic_desc = dic_desc;
+            smdArgs.appLang = appLang;
+            smdArgs.usrName = usrName;
+            smdArgs.fBase = baseDir;
+            smdArgs.fDir = flv.substr(0, flv.lastIndexOf("/") + 1); //koos '/'
+            smdArgs.fPtrn = "*.*";
+            var retVal = window.showModalDialog("valiFail.htm", smdArgs,
+                        "dialogHeight:600px;dialogWidth:800px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no");
+            if (retVal != null) {
+                flv = retVal; // koos kataloogiga
+                flvName.innerHTML = flv;
+                flvFile = "../__sr/" + dic_desc + baseDir + flv;
+                opts.file = flvFile;
+                jwplayer("flvContainer").setup(opts);
+            }
+        }
+
+        //                function val1257(s) {
+        //                    var arg1257 = s;
+        //                    arg1257 = arg1257.replace(/ž/g, "%FE");
+        //                    arg1257 = arg1257.replace(/Ž/g, "%DE");
+        //                    arg1257 = arg1257.replace(/š/g, "%F0");
+        //                    arg1257 = arg1257.replace(/Š/g, "%D0");
+        //                    return arg1257;
+        //                }
+
+        function setReturnVal() {
+            window.returnValue = flv;
+            window.close();
+        }
+            -->
+    </script>
+</head>
+<body style="background-color: buttonface" onload="bodyOnLoad()">
+    <div id="idBody" style="padding: 5mm 10mm 5mm 10mm;">
+        <span id="flvName" style="font-weight: bold; font-size: large"></span>
+        <div>
+            <a href="http://get.adobe.com/flashplayer/">Paigalda Flash mängija (http://get.adobe.com/flashplayer/),
+                kui pildi/video esitamisega on probleeme.</a>
+        </div>
+        <br />
+        <br />
+        <p id="flvContainer" style="position:fixed;">
+            Vali viipevideo ...</p>
+        <br />
+        <br />
+        <input id="btnChoose" type="button" value=" Vali ..." onclick="valiFail()" />
+        <br />
+        <br />
+        <input type="button" id="btnSave" value=" Kinnita " onclick="setReturnVal()" />
+    </div>
+</body>
+</html>

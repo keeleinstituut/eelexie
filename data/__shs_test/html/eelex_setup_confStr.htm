@@ -1,0 +1,299 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Konfiguratsioonisätte muutmine</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script language="JScript" type="text/jscript" src="tools.js"></script>
+    <script language="vbscript" type="text/vbscript">
+
+		<!--
+Option Explicit
+
+ dim x, oig
+
+Dim PD
+Dim dic_desc, sAppLang, usrName, Admin
+dim i
+
+'
+Const mituoigust = 6
+'kõigil sama number (mituoigust)
+Dim oigus(6) ' mituoigust
+Dim oigusCfg(6) ' 
+'nimed ja seletused
+Dim oigustext(6) ' 
+Dim oigusnimi(6) ' 
+    
+    dim korras
+    
+  '<ptd>;;</ptd>
+  '<koopia>;;</koopia>
+  '<vaateGen>;;</vaateGen>
+  '<hulgi>;;</hulgi>
+  '<skeemiGen>;;</skeemiGen>
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+PD = ChrW(&HE001)
+Dim inArr
+
+inArr = Split(window.dialogArguments, PD)
+dic_desc = inArr(0)
+sAppLang = inArr(1)
+usrName = inArr(2)
+'Admin = inArr(3)
+
+'keel
+dim cnf_ptd,  cnf_koopia,  cnf_vaateGen,  cnf_skeemiGen,  cnf_loendid,  cnf_import,  cnf_hulgi
+dim cnft_ptd, cnft_koopia, cnft_vaateGen, cnft_skeemiGen, cnft_loendid, cnft_import, cnft_hulgi
+
+cnf_ptd = "Peatoimetaja"
+cnf_koopia = "Eksport"
+cnf_vaateGen = "Vaade"
+cnf_skeemiGen = "Skeem"
+cnf_loendid = "Loendid"
+cnf_import = "Import"
+cnf_hulgi = "Hulgi"
+
+cnft_ptd = "Peatoimetajad - pt märge tegemine ja teised õigused"
+cnft_koopia = "Eksport- XML koopia, märksõnadeloend"
+cnft_vaateGen = "Vaate Genereerimine"
+cnft_skeemiGen = "Skeemi Genereerimine"
+cnft_loendid = "Loendite muutmine"
+cnft_import = "Impordi õigus"
+cnft_hulgi = "Hulgiparanduste tegemine ja köite valideerimine"
+'/keel
+
+'päisest dim'ka
+oigus(0) = "ptd"
+oigus(1) = "koopia"
+oigus(2) = "vaateGen"
+oigus(3) = "skeemiGen"
+oigus(4) = "hulgi"
+oigus(5) = "loendid"
+oigus(6) = "import"
+
+
+i=0
+for each oig in oigus
+    oigusnimi(i) = Eval("cnf_"&oigus(i))
+    oigustext(i) = Eval("cnft_"&oigus(i))
+    if oigustext(i) = "" then 
+        oigustext(i) = oig
+    end if
+    if oigusnimi(i) = "" then 
+        oigusnimi(i) = oig
+    end if
+    'MsgBox oigustext(i), vbCritical,"kuulub"
+    i= i + 1
+next
+
+
+dim tmpel
+Dim configDom, configElement, radioElement
+set configDom = IDD("File", "../shsconfig_" & dic_desc & ".xml", False, False, Nothing)
+if Not (configDom Is Nothing) then
+
+
+    i = 0
+    for each oig in oigus
+        set tmpel = configDom.documentElement.selectSingleNode(oig)
+        if tmpel is nothing then
+            oigusCfg(i) = ";;"
+        else
+            oigusCfg(i) = tmpel.text
+        end if
+        i=i+1
+    next 
+    
+else
+    MsgBox "Viga lugemisel: ../shsconfig_" & dic_desc & ".xml", vbCritical, "error"
+    Exit Sub
+end if
+document.title = document.title & ": Õigused"
+Dim userlist
+set userlist = exCGISync("../getusers.cgi",  "id" & PD & dic_desc )
+
+call makeTable(userlist.responseText)
+End Sub 'bodyOnLoad
+
+
+
+Sub makeTable(usrs)
+
+
+dim lusers
+lusers = Split(usrs, ";")
+
+dim trow, tcol, thisChk
+
+set trow = tblUsers.rows(0)
+
+for each oig in oigusnimi
+    set tcol = trow.insertCell()
+    tcol.innerHTML = oig
+next 
+
+for each x in lusers
+    if not x = "" then
+        set trow = tblUsers.insertRow()
+        'trow.id = ""
+        set tcol = trow.insertCell()
+        tcol.innerHTML = "<label for='"& x &"pt'>"& x &"</label>"'nimi
+        i=0
+        for each oig in oigus
+            set tcol = trow.insertCell()
+            tcol.innerHTML = "<div onmouseover='setnoteText("&i&")'><input name='seld"&oig&"' id='"& x &oig&"' value='"& x &"' onmouseover='setnoteText("&i&")' type='checkbox'></div>"
+            'tcol.innerHTML = "<input name='seld"&oig&"' id='"& x &oig&"' value='"& x &"' onmouseover='setnoteText("&i&")' type='checkbox'>"
+            'tcol.onmouseover = "call setnoteText("&i&")"
+            if isPT(x,i) = true then
+
+                set thisChk = tcol.all("seld"&oig)
+                thisChk.checked = true
+            end if
+            i=i+1
+         next 
+    end if
+next
+
+end sub
+
+sub setnoteText(oId)
+    noteText.innerHTML = oigustext(oId)
+end sub
+
+Function isPT(usr,oig)
+
+    if InStr(oigusCfg(oig),  ";"&usr& ";") > 0 then
+    
+        isPT=true
+    else
+        isPT=false
+    end if
+    
+End Function
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV(sisu,silt)
+Dim xh
+'set xh = exCGISync("../tools.cgi", "updateXML" & PD & dic_desc & PD & usrName & PD & "shsconfig_" & dic_desc & ".xml" & PD & silt & PD &  "<"&silt&">" & sisu & "</"&silt&">")
+set xh = exCGISync("../tools.cgi", "exsaSetField" & PD & dic_desc & PD & usrName & PD & "shsconfig_" & dic_desc & ".xml" & PD & silt & PD & sisu)
+
+if (xh.statusText = "OK") then
+
+    Dim rspDOM, sta
+    set rspDOM = IDD("", "", False, False, Nothing)
+    sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+    if (sta) then
+        Dim updCount
+        updCount = rspDOM.selectSingleNode("rsp/cnt").text
+        if (CInt(updCount) = 1) then
+            
+            exit sub
+        else
+            MsgBox " sätete salvestamine ei õnnestunud!" & vbCrLf & _
+                rspDOM.selectSingleNode("rsp/sta").text, _
+                vbCritical, _
+                "sätted"
+             korras = 0
+        end if
+    end if
+
+else
+    MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+        xh.responseText, _
+        vbCritical
+    korras = 0
+end if
+
+
+
+End Sub 'SetReturnV
+
+'-----------------------------------------------------------------------------------
+Sub btnOkOnClick()
+	Dim i, allChks, thisChk
+	
+	dim koosta
+
+    korras = 1
+	
+	for each oig in oigus
+        koosta =";"
+        set allChks = document.all("seld"&oig)
+        
+        if TypeName(allChks)= "DispHTMLElementCollection" then 
+            for i = 0 to allChks.length - 1
+                set thisChk = allChks(i)
+                if thisChk.checked = true then
+                    koosta = koosta & thisChk.value & ";" 
+                end if
+            next
+        else
+            if allChks.checked = true then
+                koosta = koosta & allChks.value & ";" 
+            end if
+        end if
+        
+        if koosta = ";" then
+            koosta = ";;"
+        end if
+        
+          
+        call SetReturnV(koosta, oig) 
+
+    next
+	 
+    if korras = 1 then
+        window.returnValue = "OK"
+        window.close()
+    end if
+	
+End Sub 'btnOkOnClick
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+elseif (window.event.keyCode = 13) then
+	Call SetReturnV()
+end if
+End Sub 'bodyOnKeyUp
+
+'-----------------------------------------------------------------------------------
+Sub btnCancelOnClick()
+    window.close()
+End Sub 'btnCancelOnClick
+
+			-->
+
+    </script>
+</head>
+<body style="background-color: buttonface" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()">
+    <div id="id_body" style="padding-left: 10mm; padding-top: 5mm">
+        
+        <br />
+        <br />
+        <span id="noteText">Õiguste märkimine</span>
+        <table id="tblUsers" border="1">
+            <tr style="background-color: Navy; color: White">
+                <th>
+                    Kasutajanimi
+                </th>
+
+            </tr>
+            
+        </table>
+        <br />
+        <input id="btnOK" onclick="btnOkOnClick()" type="button" value="    OK    " />
+        <input id="btnCancel" onclick="btnCancelOnClick()" type="button" value="  Loobu  " />
+    </div>
+</body>
+</html>

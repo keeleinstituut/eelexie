@@ -1,0 +1,540 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Vormivalik</title>
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <!--<meta http-equiv="refresh" content="10">-->    
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann" />
+    <meta name="author" content="Andres Loopmann" />
+    <meta name="keywords" content="EELex" />
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+    <script type="text/javascript">
+
+        var fCodesArr = {};
+        var dic_desc, usrName;
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnLoad() {
+
+            //            var opt = document.createElement("OPTION");
+            //            opt.id = "-1";
+            //            opt.innerHTML = "";
+            //            selTyypAlates.options.add(opt.cloneNode(true));
+            //            selTyypKuni.options.add(opt);
+
+            var optsStr = "<option id='-1'></option>";
+
+            var ix, ixStr;
+            for (ix = 0; ix < 42; ix++) {
+                ixStr = ix.toString();
+                if (ixStr.length < 2) {
+                    ixStr = "0" + ixStr;
+                }
+                //                opt = document.createElement("OPTION");
+                //                opt.id = ixStr;
+                //                opt.innerHTML = ixStr;
+                //                selTyypAlates.options.add(opt.cloneNode(true));
+                //                selTyypKuni.options.add(opt);
+                optsStr += "<option id='" + ixStr + "'>" + ixStr + "</option>";
+            }
+            selTyypAlates.outerHTML = "<select id=\"selTyypAlates\">" + optsStr + "</select>"
+            selTyypKuni.outerHTML = "<select id=\"selTyypKuni\">" + optsStr + "</select>"
+
+            if (window.location.search) {
+                var params = decodeURIComponent(window.location.search.substr(1)).split("&");
+                for (ix = 0; ix < params.length; ix++) {
+                    var cmdParams = params[ix].split("=");
+                    var cmd = jsTrim(cmdParams[0]);
+                    var val = jsTrim(cmdParams[1]);
+                    if (cmd == "dic_desc") {
+                        dic_desc = val;
+                    }
+                    if (cmd == "usrName") {
+                        usrName = val;
+                    }
+                }
+            }
+            if (!(dic_desc && usrName)) {
+                alert("Puuduvad parameetrid!");
+                return;
+            }
+
+            var xh, rspDOM, loadStatus, sta, fCodesIniText;
+            xh = exCGISync("../tools.cgi", "getTextFileContent" + PD + dic_desc + PD + usrName + PD +
+                    "config/morf/fcodes.ini");
+            if (xh.statusText == "OK") {
+                rspDOM = IDD("", "", false, false, null);
+                loadStatus = rspDOM.load(xh.responseXML); //'responseXML: TypeName = DomDocument
+                if (loadStatus) {
+                    sta = rspDOM.selectSingleNode("rsp/sta").text;
+                    if (sta == "Success") {
+                        fCodesIniText = rspDOM.selectSingleNode("rsp/answer").text;
+                    }
+                    else {
+                        alert(sta);
+                    }
+                }
+            }
+            else {
+                alert(xh.status + ": " + xh.statusText + xh.responseText);
+            }
+            if (!fCodesIniText) {
+                alert("Puudub 'fcodes.ini' fail!");
+                return;
+            }
+
+            var fCodesRidad = fCodesIniText.split("\n"), textLine, kategooria = "@id", jnr = 0, tempArr, onParadigmas = true;
+            // alguse kommentaarid
+            for (ix = 0; ix < fCodesRidad.length; ix++) {
+                textLine = jsTrim(fCodesRidad[ix]);
+                if (textLine) {
+                    if (textLine.substr(0, 1) != ";") {
+                        break;
+                    }
+                }
+            }
+
+            addFCodesHeader();
+
+            // '"fcodes.ini" failis on nad: vorminimi, klaarkood, sisekood, FS-kood, selgitus, näited
+            // ID,_,--------,, muutumatu sõna, homme
+            if (textLine.substr(0, 1) == "@") {
+                kategooria = sqnaKlass(textLine.replace(/\s+/g, ''));
+                onParadigmas = true;
+            } else {
+                tempArr = textLine.split(',');
+                fCodesArr[tempArr[2]] = [kategooria, tempArr[0], tempArr[1], tempArr[3], tempArr[4], tempArr[5], jnr++];
+                //                addFCodesRow(tempArr[2]);
+            }
+
+            for (ix = ix + 1; ix < fCodesRidad.length; ix++) {
+                textLine = jsTrim(fCodesRidad[ix]);
+                if (textLine) {
+                    if (textLine.substr(0, 1) != ";") {
+                        if (textLine.substr(0, 1) == "@") {
+                            kategooria = sqnaKlass(textLine.replace(/\s+/g, ''));
+                            onParadigmas = true;
+                        } else if (textLine.substr(0, 1) == "+") {
+                            onParadigmas = false;
+                        } else {
+                            if (kategooria == "@i" || kategooria == "@n" || kategooria == "@v") {
+                                if (onParadigmas) {
+                                    tempArr = textLine.split(',');
+                                    fCodesArr[tempArr[2]] = [kategooria, tempArr[0], tempArr[1], tempArr[3], tempArr[4], tempArr[5], jnr++];
+                                    //                                    addFCodesRow(tempArr[2]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            updateTyybiNrSelectid();
+            fillFCodesTable('');
+            parent.vormiSetup();
+
+
+        } // bodyOnLoad
+
+
+        //-----------------------------------------------------------------------------------
+        function fillFCodesTable(katId) {
+            // i=0 on päis
+            while (tblFCodes.rows.length > 1) {
+                tblFCodes.deleteRow(1);
+            }
+            for (var siseKood in fCodesArr) {
+                var muuteVormid = fCodesArr[siseKood];
+                if (katId == '' || katId == muuteVormid[0]) { // kategooria
+                    addFCodesRow(siseKood);
+                }
+            }
+        } // fillFCodesTable
+
+
+        //-----------------------------------------------------------------------------------
+        function sqnaKlass(kat) {
+            var rets;
+            if (kat == "@indekl") {
+                rets = "@i";
+            } else if (kat == "@noomen") {
+                rets = "@n";
+            } else if (kat == "@verb") {
+                rets = "@v";
+            } else {
+                rets = kat;
+            }
+            return rets;
+        } // sqnaKlass
+
+
+        //-----------------------------------------------------------------------------------
+        function addFCodesHeader() {
+            var trow = tblFCodes.insertRow();
+            trow.style.fontWeight = "bold";
+            trow.style.backgroundColor = "navy";
+            trow.style.color = "white";
+
+            var tcol = trow.insertCell();
+            tcol.innerHTML = "&#x00A0;x&#x00A0;";
+
+            tcol = trow.insertCell();
+            tcol.innerHTML = "Skl"; // kategooria
+
+            tcol = trow.insertCell();
+            tcol.innerHTML = "Vormi nimi"; // vorminimi
+
+//            tcol = trow.insertCell();
+//            tcol.innerHTML = "Klaar-kood"; // klaarkood
+
+//            tcol = trow.insertCell();
+//            tcol.innerHTML = "FS-kood"; // FS-kood
+
+            tcol = trow.insertCell();
+            tcol.innerHTML = "Selgitus"; // selgitus
+
+            tcol = trow.insertCell();
+            tcol.innerHTML = "Näited"; // selgitus
+
+        } // addFCodesHeader
+
+
+        //-----------------------------------------------------------------------------------
+        function addFCodesRow(siseKood) {
+            var trow = tblFCodes.insertRow();
+            trow.id = siseKood;
+
+            var tcol = trow.insertCell();
+            tcol.innerHTML = "<input id='chk" + siseKood + "' type='checkbox'>";
+
+            var kastid = fCodesArr[siseKood];
+
+            tcol = trow.insertCell();
+            tcol.innerHTML = "[" + kastid[0] + "]"; // kategooria
+
+            tcol = trow.insertCell();
+            tcol.innerHTML = kastid[1]; // vorminimi
+
+//            tcol = trow.insertCell();
+//            tcol.innerHTML = kastid[2]; // klaarkood
+
+//            tcol = trow.insertCell();
+//            tcol.innerHTML = kastid[3]; // FS-kood
+
+            tcol = trow.insertCell();
+            tcol.innerHTML = kastid[4]; // selgitus
+
+            tcol = trow.insertCell();
+            tcol.innerHTML = kastid[5]; // näited
+
+        } // addFCodesRow
+
+
+        //-----------------------------------------------------------------------------------
+        function selKategooriaOnChange() {
+            updateTyybiNrSelectid();
+            var opt = selKategooria.options[selKategooria.selectedIndex];
+            var sKl = opt.getAttribute("sKl");
+            fillFCodesTable(sKl);
+        } // selKategooriaOnChange
+
+
+        //        <option sKl="" id="x" selected></option>
+        //        <option sKl="@i" id="41">indekl (&lt;mt&gt;=41): _</option>
+        //        <option sKl="@n" id="00-26">noomen (&lt;mt&gt;=00-26): 0n, 0g, 0p, 0d, D, DE, SID</option>
+        //        <option sKl="@v" id="27-38">verb (&lt;mt&gt;=27-38): MA, DA, B, TUD</option>
+        //        <option sKl="@v" id="27-31">verb (&lt;mt&gt;=27-31): MA, DA, B, TUD</option>
+        //        <option sKl="@v" id="32-35">verb (&lt;mt&gt;=32-35): MA, DA, B, TUD, S, NUD</option>
+        //        <option sKl="@v" id="36-38">verb (&lt;mt&gt;=36-38): MA, DA, B, TUD, S, NUD, TAKSE</option>
+
+        //-----------------------------------------------------------------------------------
+        function updateTyybiNrSelectid() {
+            var opt = selKategooria.options[selKategooria.selectedIndex];
+            var katId = opt.id;
+            if (katId == "x") {
+                selTyypAlates.options.item("00").selected = true;
+                selTyypKuni.options.item("41").selected = true;
+            }
+            else {
+                var klassiTyybid = katId.split("-");
+                selTyypAlates.options.item(klassiTyybid[0]).selected = true;
+                if (klassiTyybid.length > 1) {
+                    selTyypKuni.options.item(klassiTyybid[1]).selected = true;
+                } else {
+                    selTyypKuni.options.item("-1").selected = true;
+                }
+            }
+        } // updateTyybiNrSelectid
+
+
+        //-----------------------------------------------------------------------------------
+        function btnLisaKlassOnClick() {
+            var opt = selKategooria.options[selKategooria.selectedIndex];
+            var katId = opt.id, tekst = opt.innerText, sKl = opt.getAttribute("sKl"), valitudVormid;
+            if (katId != "x") {
+                opt = selValitudVormid.options.item(katId);
+                if (!opt) {
+                    valitudVormid = jsTrim(tekst.substr(tekst.indexOf(":") + 1));
+                    opt = document.createElement("OPTION");
+                    selValitudVormid.options.add(opt);
+                    opt.id = katId;
+                    opt.innerHTML = "(&lt;mt&gt;=" + katId + "): " + valitudVormid; // vorminimedena
+                    opt.setAttribute("sKl", sKl);
+                }
+            }
+        } // btnLisaKlassOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function tblFCodesOnClick(event) {
+            var oSrc = event.target ? event.target : event.srcElement;
+            if (oSrc.tagName == "INPUT" && oSrc.type == "checkbox") {
+
+                var tRow, tId, mtAlgusIdStr, mtAlgusId, mtKuniIdStr, mtKuniId, mtId, kastid, opt, tekst;
+
+                tRow = oSrc.parentElement.parentElement;
+                tId = tRow.id;
+
+                mtAlgusIdStr = selTyypAlates.options[selTyypAlates.selectedIndex].id;
+                if (mtAlgusIdStr == "-1") {
+                    return;
+                }
+                mtAlgusId = parseInt(mtAlgusIdStr);
+
+                mtId = mtAlgusIdStr;
+
+                mtKuniIdStr = selTyypKuni.options[selTyypKuni.selectedIndex].id;
+                if (mtKuniIdStr != "-1") {
+                    mtKuniId = parseInt(mtKuniIdStr);
+                    if (mtKuniId > mtAlgusId) {
+                        mtId += "-" + mtKuniIdStr;
+                    }
+                }
+
+                kastid = fCodesArr[tId];
+
+                var valitudVormid, valitudArr, ix;
+
+                if (oSrc.checked) {
+                    opt = selValitudVormid.options.item(mtId);
+                    if (opt) {
+                        tekst = opt.innerText;
+                        valitudVormid = jsTrim(tekst.substr(tekst.indexOf(":") + 1));
+                        valitudArr = valitudVormid.split(", ");
+                        //                        ix = valitudArr.indexOf(kastid[1]); // IE9
+                        ix = jsArrIndex(valitudArr, kastid[1]);
+                        if (ix < 0) {
+                            opt.innerHTML += ", " + kastid[1]; // vorminimi
+                        }
+                    } else {
+                        opt = document.createElement("OPTION");
+                        selValitudVormid.options.add(opt);
+                        opt.id = mtId;
+                        opt.innerHTML = "(&lt;mt&gt;=" + mtId + "): " + kastid[1]; // vorminimi
+                        var sKl = "";
+                        if (selKategooria.selectedIndex > -1) {
+                            sKl = selKategooria.options[selKategooria.selectedIndex].getAttribute("sKl");
+                        }
+                        opt.setAttribute("sKl", sKl);
+                    }
+                    opt.selected = true;
+                } else {
+                    if (selValitudVormid.selectedIndex > -1) {
+                        opt = selValitudVormid.options[selValitudVormid.selectedIndex];
+                        mtId = opt.id;
+                        tekst = opt.innerText;
+                        valitudVormid = jsTrim(tekst.substr(tekst.indexOf(":") + 1));
+                        valitudArr = valitudVormid.split(", ");
+                        //                        ix = valitudArr.indexOf(kastid[1]); // IE9
+                        ix = jsArrIndex(valitudArr, kastid[1]);
+                        if (ix > -1) {
+                            valitudArr.splice(ix, 1);
+                            if (valitudArr.length > 0) {
+                                opt.innerHTML = "(&lt;mt&gt;=" + mtId + "): " + valitudArr.join(", ");
+                            } else {
+                                selValitudVormid.remove(selValitudVormid.selectedIndex);
+                            }
+                        }
+                    }
+                }
+            }
+        } // tblFCodesOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function selValitudVormidOnChange() {
+            if (selValitudVormid.selectedIndex > -1) {
+
+                var opt, mtId, sKl, tekst, ix;
+
+                opt = selValitudVormid.options[selValitudVormid.selectedIndex];
+                mtId = opt.id;
+                sKl = opt.getAttribute("sKl");
+                tekst = opt.innerText;
+
+                var mtd = mtId.split("-");
+                var alatesItem = selTyypAlates.options.item(mtd[0]);
+                if (!alatesItem) {
+                    alatesItem = selTyypAlates.options.item("-1");
+                }
+                alatesItem.selected = true;
+                var selKuniId = "-1";
+                if (mtd.length > 1) {
+                    selKuniId = mtd[1];
+                }
+                selTyypKuni.options.item(selKuniId).selected = true;
+
+                opt = selKategooria.options.item(mtId);
+                if (opt) {
+                    opt.selected = true;
+                } else {
+                    selKategooria.options.item('x').selected = true;
+                }
+                fillFCodesTable(sKl);
+
+                var valitudVormid = jsTrim(tekst.substr(tekst.indexOf(":") + 1));
+                var valitudArr = valitudVormid.split(", ");
+
+                var read = tblFCodes.rows, rida, tId, kastid, chk;
+                // rida '0' on tabeli päis
+                for (ix = 1; ix < read.length; ix++) {
+                    rida = read[ix];
+                    tId = rida.id;
+                    kastid = fCodesArr[tId];
+                    chk = rida.cells[0].firstChild;
+                    //                    var j = valitudArr.indexOf(kastid[1]); // IE9
+                    var j = jsArrIndex(valitudArr, kastid[1]); // kastid[1]: vorminimi
+                    if (j > -1) {
+                        chk.checked = true;
+                    } else {
+                        chk.checked = false;
+                    }
+                }
+            }
+        } // selValitudVormidOnChange
+
+
+        //-----------------------------------------------------------------------------------
+        function btnKustutaVormideRidaOnClick() {
+            if (selValitudVormid.selectedIndex > -1) {
+
+                var read = tblFCodes.rows, ix, rida, chk;
+                // rida '0' on tabeli päis
+                for (ix = 1; ix < read.length; ix++) {
+                    rida = read[ix];
+                    chk = rida.cells[0].firstChild;
+                    chk.checked = false;
+                }
+
+                selValitudVormid.remove(selValitudVormid.selectedIndex);
+            }
+
+        } // btnKustutaVormideRidaOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function btnOkOnClick() {
+            parent.vormiValikOk();
+        } // btnOkOnClick
+
+
+    </script>
+</head>
+<body style="background-color: buttonface;" onload="bodyOnLoad()">
+    <div id="divBody" style="padding: 5mm;">
+        <table id="tblVormiValikud" style="width: 100%; height:100%; empty-cells: show;">
+            <tr>
+                <td style="width: 50%;">
+                    <table id="tblTyybidValikud">
+                        <tr>
+                            <td style="width: 10%; vertical-align:top;">
+                                <label for="selKategooria">
+                                    Sõnaklass</label>
+                            </td>
+                            <td>
+                                <select size="4" id="selKategooria" onchange="selKategooriaOnChange()" style="width: 100%;">
+                                    <option skl="" id="x" selected></option>
+                                    <option skl="@i" id="41">indekl (&lt;mt&gt;=41): ID</option>
+                                    <option skl="@n" id="00-26">noomen (&lt;mt&gt;=00-26): SgN, SgG, SgP, SgAdt, PlN, PlG, PlP</option>
+                                    <option skl="@v" id="27-38">verb (&lt;mt&gt;=27-38): Sup, Inf, IndPrSg3, PtsPtIps</option>
+                                    <option skl="@v" id="27-31">verb (&lt;mt&gt;=27-31): Sup, Inf, IndPrSg3, PtsPtIps</option>
+                                    <option skl="@v" id="32-35">verb (&lt;mt&gt;=32-35): Sup, Inf, IndPrSg3, PtsPtIps, IndIpfSg3, PtsPtPs</option>
+                                    <option skl="@v" id="36-38">verb (&lt;mt&gt;=36-38): Sup, Inf, IndPrSg3, PtsPtIps, IndIpfSg3, PtsPtPs, IndPrIps</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="width: 10cm;">
+                    <table>
+                        <tr>
+                            <td>
+                                <label for="selTyypAlates">
+                                    Tüüp</label>
+                            </td>
+                            <td style="text-align: right;">
+                                <select id="selTyypAlates">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="selTyypKuni">
+                                    kuni</label>
+                            </td>
+                            <td style="text-align: right;">
+                                <select id="selTyypKuni">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input id="btnLisaKlass" onclick="btnLisaKlassOnClick()" type="button" value="Lisa"
+                                    style="width: 3cm;" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td style="vertical-align: top;">
+                    <table>
+                        <tr>
+                            <td>
+                                <input id="btnOk" onclick="btnOkOnClick()" type="button" value="Ok" style="width: 3cm;" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">
+                    <div id="divFCodes" style="width: 100%; height: 10cm; overflow: auto; border: thin solid black;">
+                        <table id="tblFCodes" border="1" onclick="tblFCodesOnClick(event)">
+                        </table>
+                    </div>
+                </td>
+                <td style="width: 50%;" colspan="2">
+                    <table id="tblVormiOperatsioonid">
+                        <tr>
+                            <td style="width: 75%;">
+                                <div id="divValitudVormid" style="width: 8cm; height: 10cm; overflow: auto; border: thin solid black;">
+                                    <select id="selValitudVormid" size="20" style="width: 8cm; height: 10cm"
+                                        onchange="selValitudVormidOnChange()">
+                                    </select>
+                                </div>
+                            </td>
+                            <td style="width: 25%; vertical-align: top;">
+                                <input id="btnKustutaVormideRida" onclick="btnKustutaVormideRidaOnClick()" type="button"
+                                    value="Kustuta rida" style="width: 3cm;" />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

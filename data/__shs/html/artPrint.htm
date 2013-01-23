@@ -1,0 +1,76 @@
+﻿<html>
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>Trüki</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+		<script language=vbscript type="text/vbscript">
+		<!--
+
+Option Explicit
+
+Dim sParDelimiter
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+sParDelimiter = ChrW(&HE001)
+Dim inArr, css
+if IsArray(window.dialogArguments) then
+	inarr = window.dialogArguments
+else
+	inarr = Split(window.dialogArguments, sParDelimiter)
+end if
+idIFr.document.body.onkeyup = GetRef("bodyOnKeyUp")
+set css = idIFr.document.createStyleSheet()
+css.cssText = inArr(1)
+idIFr.document.body.innerHTML = inArr(0)
+'    Call idIFr.document.execCommand("Print", True)
+'    window.close
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+    if Not (window.event Is Nothing) then
+        if (window.event.keyCode = 27) then
+	        window.close()
+        end if
+    else
+        if (idIFr.event.keyCode = 27) then
+	        window.close()
+        end if
+    end if
+End Sub 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub printOnClick()
+Call idIFr.document.execCommand("Print", True)
+End Sub 'printOnClick
+
+			-->
+		</script>
+	</head>
+	<body id="idBody" style="background-color:buttonface;padding:10mm;" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+        <div id="idDiv" style="width:100%;height:100%;">
+            <iframe id="idIFr" style="width:100%;height:80%;"></iframe>
+            <br />
+            <div>
+                <table cellspacing='5'>
+                    <tr>
+                        <td>
+                            <input type="button" id="btnPrint" value=" Trüki " onclick="printOnClick()" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+	</body>
+</html>

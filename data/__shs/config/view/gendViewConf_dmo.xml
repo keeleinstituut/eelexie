@@ -1,0 +1,5149 @@
+<?xml version="1.0"?>
+<elems>
+ <elem name="#document/x:sr" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="xml:lang" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:sr/x:A" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn>p</containsIn>
+<attrs>
+ <attr name="x:AS" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color>olive</attr_background-color>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:KF" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:A/x:P" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:P/x:mg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mg/x:m" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold>1</font-weight_bold>
+ <font-style_italic cond="../@pref:liik=&quot;z&quot;">1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family>Arial</font-family>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:i" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore/>
+ <colorsFont>
+ <attr_font-weight_bold>1</attr_font-weight_bold>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super>1</attr_vertical-align_super>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:liik" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:ps" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:u" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:O" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:m/x:r" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> {</symbolRoundBefore>
+ <symbolRoundAfter>}</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mg/x:hld" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> [</symbolRoundBefore>
+ <symbolRoundAfter>] </symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mg/x:vk" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mg/x:grp" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> &lt;</symbolRoundBefore>
+ <symbolRoundAfter>&gt;</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+</attrs>
+</elem>
+ <elem name="x:grp/x:mfp" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mfp/x:mkg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mkg/x:mkl" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mkg/x:mk" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mfp/x:mvg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mvg/x:vk" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mvg/x:mv" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mfp/x:mt" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:grp/x:gri" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global/>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:gri/x:sl" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText>A~adj|S~s</replaceText>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:rk" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:gri/x:gki" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size>x-small</font-size>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global/>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> (</symbolRoundBefore>
+ <symbolRoundAfter>)</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:gri/x:r" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> {</symbolRoundBefore>
+ <symbolRoundAfter>}</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mg/x:v" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:l" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic>1</attr_font-style_italic>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:mg/x:s" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:l" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:P/x:a" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink>1</isLink>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> <i>ka </i>
+</symbolRoundBefore>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:i" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore/>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super>1</attr_vertical-align_super>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:P/x:mvt" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink>1</isLink>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:i" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore/>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super>1</attr_vertical-align_super>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:t" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore>(</attr_SymbolRoundBefore>
+ <attr_SymbolRoundAfter>)</attr_SymbolRoundAfter>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:mvtl" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText>var~<i>vt</i>|srj~<i>vt ka</i>|l&#xFC;h~<i>l&#xFC;h</i>|gr~&#x2192;|fr~<i>vt</i>
+</attr_ReplaceText>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:A/x:S" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:S/x:tp" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine cond="count(../pref:tp) &gt; 1">1</newLine>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:tnr" st="e">
+ <attr_Display cond="count(../pref:tp) &gt; 1">1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold>1</attr_font-weight_bold>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter> <b>.</b> </attr_SymbolRoundAfter>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:as" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:tp/x:mmg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mmg/x:mm" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold>1</font-weight_bold>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:mmg/x:vk" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:tp/x:gri" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global/>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore>&lt;</symbolRoundBefore>
+ <symbolRoundAfter>&gt;</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:tp/x:tg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:as" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:tg/x:dg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:dg/x:v" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:l" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic>1</attr_font-style_italic>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:dg/x:s" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:l" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:dg/x:dt" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:i" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore/>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super>1</attr_vertical-align_super>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:t" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore>(</attr_SymbolRoundBefore>
+ <attr_SymbolRoundAfter>)</attr_SymbolRoundAfter>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:dg/x:d" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> (</symbolRoundBefore>
+ <symbolRoundAfter>)</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:d/x:ld" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="xml:lang" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:tg/x:xp" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xp/x:xg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="xml:lang" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:as" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:xg/x:x" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color cond=".=&quot;|vaste|&quot;">red</color>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:xliik" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:xall" st="e">
+<attr_Display/>
+<attr_DisplayLocationBefore/>
+<attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+<attr_SpaceBefore>1</attr_SpaceBefore>
+<colorsFont>
+<attr_font-weight_bold/>
+<attr_font-style_italic/>
+<attr_font-variant_small-caps/>
+<attr_text-decoration_underline/>
+<attr_vertical-align_sub/>
+<attr_vertical-align_super/>
+<attr_font-family/>
+<attr_font-size/>
+<attr_color/>
+<attr_background-color/>
+</colorsFont>
+<attr_SymbolsRound>
+<attr_SymbolRoundBefore/>
+<attr_SymbolRoundAfter/>
+</attr_SymbolsRound>
+<attr_NotInPrint/>
+<attr_ReplaceText/>
+<attr_IsLink/>
+</attr>
+</attrs>
+ </elem>
+ <elem name="x:x/x:xr" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> {</symbolRoundBefore>
+ <symbolRoundAfter>}</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xg/x:hld" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> [</symbolRoundBefore>
+ <symbolRoundAfter>] </symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xg/x:xvk" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xg/x:xgrp" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> &lt;</symbolRoundBefore>
+ <symbolRoundAfter>&gt;</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xgrp/x:xmfp" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xmfp/x:xmvg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xmvg/x:xvk" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xmvg/x:xmv" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xmfp/x:xag" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xag/x:xa" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:xgk" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:xag/x:xmv" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xmfp/x:xmt" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xgrp/x:xgri" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xgri/x:xsl" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xgri/x:xz" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xgri/x:xgki" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> (</symbolRoundBefore>
+ <symbolRoundAfter>)</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xgri/x:xr" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> {</symbolRoundBefore>
+ <symbolRoundAfter>}</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xg/x:xdg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xdg/x:xv" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xdg/x:xs" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xdg/x:xd" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> (</symbolRoundBefore>
+ <symbolRoundAfter>)</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:xdg/x:xn" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> (<i>&#x43C;&#x443;&#x442;&#x43B;.</i> </symbolRoundBefore>
+ <symbolRoundAfter>)</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:tp/x:np" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> &#x2666; </symbolRoundBefore>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:np/x:ng" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>; </symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:as" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:ng/x:n" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold>1</font-weight_bold>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>, </symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:nrl" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:n/x:r" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> {</symbolRoundBefore>
+ <symbolRoundAfter>}</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:ng/x:qnp" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:ntnr" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:qnp/x:ndg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:ndg/x:v" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:l" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic>1</attr_font-style_italic>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:ndg/x:s" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:l" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:ndg/x:nd" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> (</symbolRoundBefore>
+ <symbolRoundAfter>)</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:nd/x:ld" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="xml:lang" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:qnp/x:qng" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="xml:lang" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:qng/x:qn" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color cond=".=&quot;|t&#xF5;lge|&quot;">red</color>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:qn/x:xr" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> {</symbolRoundBefore>
+ <symbolRoundAfter>}</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:qng/x:xv" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:qng/x:xs" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:tp/x:tvt" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink>1</isLink>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:i" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore/>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super>1</attr_vertical-align_super>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:t" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore>(</attr_SymbolRoundBefore>
+ <attr_SymbolRoundAfter>)</attr_SymbolRoundAfter>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:tvtl" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic>1</attr_font-style_italic>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:S/x:LS" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold>1</font-weight_bold>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine>1</newLine>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore>&#x25A0;LS: </symbolRoundBefore>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:lso" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline>1</attr_text-decoration_underline>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:as" st="e">
+ <attr_Display/>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:LS/x:lsdg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:lsdg/x:v" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:l" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic>1</attr_font-style_italic>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:lsdg/x:s" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps>1</font-variant_small-caps>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>,</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:l" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:lsdg/x:lsd" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic>1</font-style_italic>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> (</symbolRoundBefore>
+ <symbolRoundAfter>)</symbolRoundAfter>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:LS/x:np" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore> &#x2666; </symbolRoundBefore>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol>;</symbol>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:LS/x:tvt" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink>1</isLink>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+<attrs>
+ <attr name="x:i" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore/>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super>1</attr_vertical-align_super>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:t" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore/>
+ <attr_DisplayLocationAfter>1</attr_DisplayLocationAfter>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic/>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore>(</attr_SymbolRoundBefore>
+ <attr_SymbolRoundAfter>)</attr_SymbolRoundAfter>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ <attr name="x:tvtl" st="e">
+ <attr_Display>1</attr_Display>
+ <attr_DisplayLocationBefore>1</attr_DisplayLocationBefore>
+ <attr_DisplayLocationAfter/>
+ <attr_SpaceBefore>1</attr_SpaceBefore>
+ <colorsFont>
+ <attr_font-weight_bold/>
+ <attr_font-style_italic>1</attr_font-style_italic>
+ <attr_font-variant_small-caps/>
+ <attr_text-decoration_underline/>
+ <attr_vertical-align_sub/>
+ <attr_vertical-align_super/>
+ <attr_font-family/>
+ <attr_font-size/>
+ <attr_color/>
+ <attr_background-color/>
+ </colorsFont>
+ <attr_SymbolsRound>
+ <attr_SymbolRoundBefore/>
+ <attr_SymbolRoundAfter/>
+ </attr_SymbolsRound>
+ <attr_NotInPrint/>
+ <attr_ReplaceText/>
+ <attr_IsLink/>
+ </attr>
+ </attrs>
+ </elem>
+ <elem name="x:A/x:KOM" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color>silver</background-color>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint>1</notInPrint>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds>1</applyChilds>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:KOM/x:komg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine>1</newLine>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:komg/x:kom" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color>blue</color>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:komg/x:kaut" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size>x-small</font-size>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:komg/x:kaeg" st="e">
+ <display>1</display>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size>x-small</font-size>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:G" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:K" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:KA" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:KL" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:T" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:TA" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:TL" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:PT" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:PTA" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:X" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+ <elem name="x:A/x:XA" st="e">
+ <display/>
+ <colorsFont>
+ <font-weight_bold/>
+ <font-style_italic/>
+ <text-decoration_underline/>
+ <font-variant_small-caps/>
+ <font-family/>
+ <font-size/>
+ <color/>
+ <background-color/>
+ <letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+ <newLine/>
+ <notInPrint/>
+ <global>1</global>
+ <isLink/>
+ <symbolBefore>
+ <symbol/>
+ </symbolBefore>
+ <symbolsRound>
+ <symbolRoundBefore/>
+ <symbolRoundAfter/>
+ <algab/>
+ <lopeb/>
+ <beginsWith/>
+<endsWith/>
+</symbolsRound>
+ <symbolBetweenRepeating>
+ <symbol/>
+ </symbolBetweenRepeating>
+ <replaceText/>
+ <applyChilds/>
+ <firstLanguage/>
+ <containsIn/>
+</elem>
+<elem name="x:A/x:maht" st="e">
+<display>1</display>
+<colorsFont>
+<font-weight_bold/>
+<font-style_italic/>
+<text-decoration_underline/>
+<font-variant_small-caps/>
+<font-family/>
+<font-size/>
+<color/>
+<background-color>aqua</background-color>
+<letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+<newLine/>
+<notInPrint/>
+<global>1</global>
+<isLink/>
+<symbolBefore>
+<symbol/>
+</symbolBefore>
+<symbolsRound>
+<symbolRoundBefore/>
+<symbolRoundAfter/>
+<algab/>
+<lopeb/>
+<beginsWith/>
+<endsWith/>
+</symbolsRound>
+<symbolBetweenRepeating>
+<symbol/>
+</symbolBetweenRepeating>
+<replaceText/>
+<applyChilds/>
+<firstLanguage/>
+<containsIn/>
+</elem>
+<elem name="x:xg/x:xtx" st="e">
+<display>1</display>
+<colorsFont>
+<font-weight_bold/>
+<font-style_italic>1</font-style_italic>
+<text-decoration_underline/>
+<font-variant_small-caps/>
+<font-family/>
+<font-size/>
+<color/>
+<background-color/>
+<letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+<newLine/>
+<notInPrint/>
+<global>1</global>
+<isLink/>
+<symbolBefore>
+<symbol/>
+</symbolBefore>
+<symbolsRound>
+<symbolRoundBefore> (</symbolRoundBefore>
+<symbolRoundAfter>)</symbolRoundAfter>
+<algab/>
+<lopeb/>
+<beginsWith/>
+<endsWith/>
+</symbolsRound>
+<symbolBetweenRepeating>
+<symbol>,</symbol>
+</symbolBetweenRepeating>
+<replaceText/>
+<applyChilds/>
+<firstLanguage/>
+<containsIn/>
+</elem>
+<elem name="x:qng/x:xtx" st="e">
+<display>1</display>
+<colorsFont>
+<font-weight_bold/>
+<font-style_italic>1</font-style_italic>
+<text-decoration_underline/>
+<font-variant_small-caps/>
+<font-family/>
+<font-size/>
+<color/>
+<background-color/>
+<letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+<newLine/>
+<notInPrint/>
+<global>1</global>
+<isLink/>
+<symbolBefore>
+<symbol/>
+</symbolBefore>
+<symbolsRound>
+<symbolRoundBefore> (</symbolRoundBefore>
+<symbolRoundAfter>)</symbolRoundAfter>
+<algab/>
+<lopeb/>
+<beginsWith/>
+<endsWith/>
+</symbolsRound>
+<symbolBetweenRepeating>
+<symbol>,</symbol>
+</symbolBetweenRepeating>
+<replaceText/>
+<applyChilds/>
+<firstLanguage/>
+<containsIn/>
+</elem>
+<elem name="x:A/x:I" st="e">
+<display>1</display>
+<colorsFont>
+<font-weight_bold/>
+<font-style_italic/>
+<text-decoration_underline/>
+<font-variant_small-caps/>
+<font-family/>
+<font-size/>
+<color/>
+<background-color/>
+<letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+<newLine/>
+<notInPrint/>
+<global>1</global>
+<isLink/>
+<symbolBefore>
+<symbol/>
+</symbolBefore>
+<symbolsRound>
+<symbolRoundBefore/>
+<symbolRoundAfter/>
+<algab/>
+<lopeb/>
+<beginsWith/>
+<endsWith/>
+</symbolsRound>
+<symbolBetweenRepeating>
+<symbol/>
+</symbolBetweenRepeating>
+<replaceText/>
+<applyChilds/>
+<firstLanguage/>
+<containsIn/>
+</elem>
+<elem name="x:I/x:any" st="e">
+<display>1</display>
+<colorsFont>
+<font-weight_bold/>
+<font-style_italic/>
+<text-decoration_underline/>
+<font-variant_small-caps/>
+<font-family/>
+<font-size/>
+<color/>
+<background-color/>
+<letterSpacing/>
+<text-decoration_line-through/>
+</colorsFont>
+<newLine/>
+<notInPrint/>
+<global>1</global>
+<isLink/>
+<symbolBefore>
+<symbol/>
+</symbolBefore>
+<symbolsRound>
+<symbolRoundBefore/>
+<symbolRoundAfter/>
+<algab/>
+<lopeb/>
+<beginsWith/>
+<endsWith/>
+</symbolsRound>
+<symbolBetweenRepeating>
+<symbol/>
+</symbolBetweenRepeating>
+<replaceText/>
+<applyChilds/>
+<firstLanguage/>
+<containsIn/>
+</elem>
+</elems>

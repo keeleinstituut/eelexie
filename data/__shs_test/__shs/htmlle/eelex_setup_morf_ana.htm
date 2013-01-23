@@ -1,0 +1,210 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Morfoloogilise analüüsi sätted</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->  
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script language="JScript" type="text/jscript" src="tools.js"></script>
+    <script language="vbscript" type="text/vbscript">
+
+		<!--
+Option Explicit
+
+
+Dim dic_desc, sAppLang, PD, usrName
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+PD = ChrW(&HE001)
+Dim inArr
+
+inArr = Split(window.dialogArguments, PD)
+dic_desc = inArr(0)
+sAppLang = inArr(1)
+usrName = inArr(2)
+
+Dim configDom, configElement, radioElement
+set configDom = IDD("File", "../shsconfig_" & dic_desc & ".xml", False, False, Nothing)
+if Not (configDom Is Nothing) then
+    set configElement = configDom.documentElement.selectSingleNode("morf_ana/tul") 'koos tuletusega
+    if Not (configElement Is Nothing) then
+        chkMorfAnaTuletusega.checked = CBool(configElement.text)
+    end if
+    set configElement = configDom.documentElement.selectSingleNode("morf_ana/ls") 'koos liitsõna oletusega
+    if Not (configElement Is Nothing) then
+        chkMorfAnaLiitSqnana.checked = CBool(configElement.text)
+    end if
+    set configElement = configDom.documentElement.selectSingleNode("morf_ana/sqn") 'koos sõnastikuga
+    if Not (configElement Is Nothing) then
+        chkMorfAnaSqnastikuga.checked = CBool(configElement.text)
+    end if
+    set configElement = configDom.documentElement.selectSingleNode("morf_ana/vkkuju")
+    if Not (configElement Is Nothing) then
+        set radioElement = document.all("radVkKuju", CInt(configElement.text))
+        if Not (radioElement Is Nothing) then
+            radioElement.checked = true
+        end if
+    end if
+end if
+btnOK.focus()
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+elseif (window.event.keyCode = 13) then
+	Call SetReturnV()
+end if
+End Sub 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+Dim morfAnaXML, retVal, rad, radioValue
+morfAnaXML = "<morf_ana>"
+'VB-s True = -1 !!!
+morfAnaXML = morfAnaXML & "<tul>" & Abs(CInt(chkMorfAnaTuletusega.checked)) & "</tul>"
+morfAnaXML = morfAnaXML & "<ls>" & Abs(CInt(chkMorfAnaLiitSqnana.checked)) & "</ls>"
+morfAnaXML = morfAnaXML & "<sqn>" & Abs(CInt(chkMorfAnaSqnastikuga.checked)) & "</sqn>"
+radioValue = "1"
+for each rad in document.all("radVkKuju")
+    if (rad.checked) then
+        radioValue = rad.value
+        exit for
+    end if
+next
+morfAnaXML = morfAnaXML & "<vkkuju>" & radioValue & "</vkkuju>"
+morfAnaXML = morfAnaXML & "</morf_ana>"
+retVal = "morf_ana" & PD & _
+    Abs(CInt(chkMorfAnaTuletusega.checked)) & PD & _
+    Abs(CInt(chkMorfAnaLiitSqnana.checked)) & PD & _
+    Abs(CInt(chkMorfAnaSqnastikuga.checked)) & PD & _
+    radioValue
+
+Dim xh
+set xh = exCGISync("../tools.cgi", "updateXML" & PD & dic_desc & PD & usrName & PD & "shsconfig_" & dic_desc & ".xml" & PD & "morf_ana" & PD & morfAnaXML & PD & "1")
+
+if (xh.statusText = "OK") then
+
+    Dim rspDOM, sta
+    set rspDOM = IDD("", "", False, False, Nothing)
+    sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+    if (sta) then
+        Dim updCount
+        updCount = rspDOM.selectSingleNode("rsp/cnt").text
+        if (CInt(updCount) = 1) then
+            window.returnValue = retVal
+            window.close()
+            Exit Sub
+        else
+            MsgBox "Morfoloogilise analüüsi sätete salvestamine ei õnnestunud!" & vbCrLf & _
+                rspDOM.selectSingleNode("rsp/sta").text, _
+                vbCritical, _
+                "Morfoloogilise analüüsi sätted"
+        end if
+    end if
+
+else
+    MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+        xh.responseText, _
+        vbCritical
+end if
+End Sub 'SetReturnV
+
+
+'-----------------------------------------------------------------------------------
+Sub btnOkOnClick()
+	Call SetReturnV()
+End Sub 'btnOkOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub btnCancelOnClick()
+window.close()
+End Sub 'btnCancelOnClick
+
+			-->
+
+    </script>
+</head>
+<body style="background-color: buttonface" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()">
+    <div id="id_body" style="padding-left: 10mm; padding-top: 5mm">
+        <table id="tblMorfAnaSetup" border="0">
+            <tr>
+                <td id="tdMorfAnaTuletusega">
+                    <input tabindex="1" id="chkMorfAnaTuletusega" type="checkbox">
+                    <label for="chkMorfAnaTuletusega">
+                        koos tuletusega</label>
+                </td>
+                <td id="tdVkKuju" rowspan="3">
+                    <table id="tblMorfAnaSetupVkKuju" border="0">
+                        <tr>
+                            <td>
+                                <input tabindex="4" id="radVkKujuSiseKood" name="radVkKuju" type="radio" value="0"><br />
+                            </td>
+                            <td>
+                                <label for="radVkKujuSiseKood">
+                                    sisekood</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input tabindex="5" id="radVkKujuVormiNimi" name="radVkKuju" type="radio" value="1"
+                                    checked>
+                            </td>
+                            <td>
+                                <label for="radVkKujuVormiNimi">
+                                    vorminimi</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input tabindex="6" id="radVkKujuKlaarKood" name="radVkKuju" type="radio" value="2">
+                            </td>
+                            <td>
+                                <label for="radVkKujuKlaarKood">
+                                    klaarkood</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input tabindex="7" id="radVkKujuFSKood" name="radVkKuju" type="radio" value="3">
+                            </td>
+                            <td>
+                                <label for="radVkKujuFSKood">
+                                    FS-kood(id)</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td id="tdMorfAnaLiitSqnana">
+                    <input tabindex="2" id="chkMorfAnaLiitSqnana" type="checkbox" checked>
+                    <label for="chkMorfAnaLiitSqnana">
+                        koos liitsõna oletusega</label>
+                </td>
+            </tr>
+            <tr>
+                <td id="tdMorfAnaSqnastikuga">
+                    <input tabindex="3" id="chkMorfAnaSqnastikuga" type="checkbox" checked>
+                    <label for="chkMorfAnaSqnastikuga">
+                        koos sõnastikuga</label>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <input id="btnOK" onclick="btnOkOnClick()" type="button" value="    OK    " />
+        <input id="btnCancel" onclick="btnCancelOnClick()" type="button" value="  Loobu  " />
+    </div>
+</body>
+</html>

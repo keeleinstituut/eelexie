@@ -1,0 +1,783 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<iso639_1 xml:lang="en">
+  <record code="aa">
+    <name>Afar</name>
+    <native xml:lang="aa">Afaraf</native>
+  </record>
+  <record code="ab">
+    <name>Abkhazian</name>
+    <native xml:lang="ab">Аҧсуа</native>
+  </record>
+  <record code="ae">
+    <name>Avestan</name>
+    <native xml:lang="ae">avesta</native>
+  </record>
+  <record code="af">
+    <name>Afrikaans</name>
+    <native xml:lang="af">Afrikaans</native>
+  </record>
+  <record code="ak">
+    <name>Akan</name>
+    <native xml:lang="ak">Akan</native>
+  </record>
+  <record code="am">
+    <name>Amharic</name>
+    <native xml:lang="am">አማርኛ</native>
+  </record>
+  <record code="an">
+    <name>Aragonese</name>
+    <native xml:lang="an">Aragonés</native>
+  </record>
+  <record code="ar">
+    <name>Arabic</name>
+    <native xml:lang="ar">العربية</native>
+    <comment>Standard Arabic is [arb]</comment>
+  </record>
+  <record code="as">
+    <name>Assamese</name>
+    <native xml:lang="as">অসমীয়া</native>
+  </record>
+  <record code="av">
+    <name>Avaric</name>
+    <native xml:lang="av">авар мацӀ; магӀарул мацӀ</native>
+  </record>
+  <record code="ay">
+    <name>Aymara</name>
+    <native xml:lang="ay">aymar aru</native>
+  </record>
+  <record code="az">
+    <name>Azerbaijani</name>
+    <native xml:lang="az">azərbaycan dili</native>
+  </record>
+  <record code="ba">
+    <name>Bashkir</name>
+    <native xml:lang="ba">башҡорт теле</native>
+  </record>
+  <record code="be">
+    <name>Belarusian</name>
+    <native xml:lang="be">Беларуская</native>
+  </record>
+  <record code="bg">
+    <name>Bulgarian</name>
+    <native xml:lang="bg">български език</native>
+  </record>
+  <record code="bh">
+    <name>Bihari</name>
+    <native xml:lang="bh">भोजपुरी</native>
+    <comment>collective language code for Bhojpuri, Magahi, and Maithili</comment>
+  </record>
+  <record code="bi">
+    <name>Bislama</name>
+    <native xml:lang="bi">Bislama</native>
+  </record>
+  <record code="bm">
+    <name>Bambara</name>
+    <native xml:lang="bm">bamanankan</native>
+  </record>
+  <record code="bn">
+    <name>Bengali</name>
+    <native xml:lang="bn">বাংলা</native>
+  </record>
+  <record code="bo">
+    <name>Tibetan</name>
+    <native xml:lang="bo">བོད་ཡིག</native>
+  </record>
+  <record code="br">
+    <name>Breton</name>
+    <native xml:lang="br">brezhoneg</native>
+  </record>
+  <record code="bs">
+    <name>Bosnian</name>
+    <native xml:lang="bs">bosanski jezik</native>
+  </record>
+  <record code="ca">
+    <name>Catalan</name>
+    <native xml:lang="ca">Català</native>
+    <comment>Also called Valencian</comment>
+  </record>
+  <record code="ce">
+    <name>Chechen</name>
+    <native xml:lang="ce">нохчийн мотт</native>
+  </record>
+  <record code="ch">
+    <name>Chamorro</name>
+    <native xml:lang="ch">Chamoru</native>
+  </record>
+  <record code="co">
+    <name>Corsican</name>
+    <native xml:lang="co">corsu; lingua corsa</native>
+  </record>
+  <record code="cr">
+    <name>Cree</name>
+    <native xml:lang="cr">ᓀᐦᐃᔭᐍᐏᐣ</native>
+  </record>
+  <record code="cs">
+    <name>Czech</name>
+    <native xml:lang="cs">česky; čeština</native>
+  </record>
+  <record code="cu">
+    <name>Church Slavic</name>
+    <native xml:lang="cu">ѩзыкъ словѣньскъ</native>
+  </record>
+  <record code="cv">
+    <name>Chuvash</name>
+    <native xml:lang="cv">чӑваш чӗлхи</native>
+  </record>
+  <record code="cy">
+    <name>Welsh</name>
+    <native xml:lang="cy">Cymraeg</native>
+  </record>
+  <record code="da">
+    <name>Danish</name>
+    <native xml:lang="da">dansk</native>
+  </record>
+  <record code="de">
+    <name>German</name>
+    <name xml:lang="et">saksa</name>
+    <native xml:lang="de">Deutsch</native>
+  </record>
+  <record code="dv">
+    <name>Divehi</name>
+    <native xml:lang="dv">ދިވެހި</native>
+  </record>
+  <record code="dz">
+    <name>Dzongkha</name>
+    <native xml:lang="dz">རྫོང་ཁ</native>
+  </record>
+  <record code="ee">
+    <name>Ewe</name>
+    <native xml:lang="ee">Ɛʋɛgbɛ</native>
+  </record>
+  <record code="el">
+    <name>Greek</name>
+    <native xml:lang="el">Ελληνικά</native>
+  </record>
+  <record code="en">
+    <name>English</name>
+    <name xml:lang="et">inglise</name>
+    <native xml:lang="en">English</native>
+  </record>
+  <record code="eo">
+    <name>Esperanto</name>
+    <native xml:lang="eo">Esperanto</native>
+  </record>
+  <record code="es">
+    <name>Spanish</name>
+    <name xml:lang="et">hispaania</name>
+    <native xml:lang="es">Español; castellano</native>
+  </record>
+  <record code="et">
+    <name>Estonian</name>
+    <name xml:lang="et">eesti</name>
+    <native xml:lang="et">Eesti keel</native>
+  </record>
+  <record code="eu">
+    <name>Basque</name>
+    <native xml:lang="eu">euskara</native>
+  </record>
+  <record code="fa">
+    <name>Persian</name>
+    <native xml:lang="fa">فارسی</native>
+  </record>
+  <record code="ff">
+    <name>Fulah</name>
+    <native xml:lang="ff">Fulfulde</native>
+  </record>
+  <record code="fi">
+    <name>Finnish</name>
+    <name xml:lang="et">soome</name>
+    <native xml:lang="fi">suomi; suomen kieli</native>
+  </record>
+  <record code="fj">
+    <name>Fijian</name>
+    <native xml:lang="fj">vosa Vakaviti</native>
+  </record>
+  <record code="fo">
+    <name>Faroese</name>
+    <native xml:lang="fo">Føroyskt</native>
+  </record>
+  <record code="fr">
+    <name>French</name>
+    <name xml:lang="et">prantsuse</name>
+    <native xml:lang="fr">Français; langue française</native>
+  </record>
+  <record code="fy">
+    <name>Western Frisian</name>
+    <native xml:lang="fy">Frysk</native>
+  </record>
+  <record code="ga">
+    <name>Irish</name>
+    <native xml:lang="ga">Gaeilge</native>
+  </record>
+  <record code="gd">
+    <name>Scottish Gaelic</name>
+    <native xml:lang="gd">Gàidhlig</native>
+  </record>
+  <record code="gl">
+    <name>Galician</name>
+    <native xml:lang="gl">Galego</native>
+  </record>
+  <record code="gn">
+    <name>Guaraní</name>
+    <native xml:lang="gn">Avañe'ẽ</native>
+  </record>
+  <record code="gu">
+    <name>Gujarati</name>
+    <native xml:lang="gu">ગુજરાતી</native>
+  </record>
+  <record code="gv">
+    <name>Manx</name>
+    <native xml:lang="gv">Gaelg; Gailck</native>
+  </record>
+  <record code="ha">
+    <name>Hausa</name>
+    <native xml:lang="ha">هَوُسَ</native>
+  </record>
+  <record code="he">
+    <name>Hebrew</name>
+    <native xml:lang="he">עברית</native>
+  </record>
+  <record code="hi">
+    <name>Hindi</name>
+    <native xml:lang="hi">हिन्दी; हिंदी</native>
+  </record>
+  <record code="ho">
+    <name>Hiri Motu</name>
+    <native xml:lang="ho">Hiri Motu</native>
+  </record>
+  <record code="hr">
+    <name>Croatian</name>
+    <native xml:lang="hr">Hrvatski</native>
+  </record>
+  <record code="ht">
+    <name>Haitian</name>
+    <native xml:lang="ht">Kreyòl ayisyen</native>
+  </record>
+  <record code="hu">
+    <name>Hungarian</name>
+    <native xml:lang="hu">Magyar</native>
+  </record>
+  <record code="hy">
+    <name>Armenian</name>
+    <native xml:lang="hy">Հայերեն</native>
+  </record>
+  <record code="hz">
+    <name>Herero</name>
+    <native xml:lang="hz">Otjiherero</native>
+  </record>
+  <record code="ia">
+    <name>Interlingua (International Auxiliary Language Association)</name>
+    <native xml:lang="ia">Interlingua</native>
+  </record>
+  <record code="id">
+    <name>Indonesian</name>
+    <native xml:lang="id">Bahasa Indonesia</native>
+  </record>
+  <record code="ie">
+    <name>Interlingue</name>
+    <native xml:lang="ie">Interlingue</native>
+  </record>
+  <record code="ig">
+    <name>Igbo</name>
+    <native xml:lang="ig">Igbo</native>
+  </record>
+  <record code="ii">
+    <name>Sichuan Yi</name>
+    <native xml:lang="ii">ꆇꉙ</native>
+  </record>
+  <record code="ik">
+    <name>Inupiaq</name>
+    <native xml:lang="ik">Iñupiaq; Iñupiatun</native>
+  </record>
+  <record code="io">
+    <name>Ido</name>
+    <native xml:lang="io">Ido</native>
+  </record>
+  <record code="is">
+    <name>Icelandic</name>
+    <native xml:lang="is">Íslenska</native>
+  </record>
+  <record code="it">
+    <name>Italian</name>
+    <name xml:lang="et">itaalia</name>
+    <native xml:lang="it">Italiano</native>
+  </record>
+  <record code="iu">
+    <name>Inuktitut</name>
+    <native xml:lang="iu">ᐃᓄᒃᑎᑐᑦ</native>
+  </record>
+  <record code="ja">
+    <name>Japanese</name>
+    <native xml:lang="ja">日本語 (にほんご／にっぽんご)</native>
+  </record>
+  <record code="jv">
+    <name>Javanese</name>
+    <native xml:lang="jv">basa Jawa</native>
+  </record>
+  <record code="ka">
+    <name>Georgian</name>
+    <native xml:lang="ka">ქართული</native>
+  </record>
+  <record code="kg">
+    <name>Kongo</name>
+    <native xml:lang="kg">KiKongo</native>
+  </record>
+  <record code="ki">
+    <name>Kikuyu</name>
+    <native xml:lang="ki">Gĩkũyũ</native>
+  </record>
+  <record code="kj">
+    <name>Kwanyama</name>
+    <native xml:lang="kj">Kuanyama</native>
+  </record>
+  <record code="kk">
+    <name>Kazakh</name>
+    <native xml:lang="kk">Қазақ тілі</native>
+  </record>
+  <record code="kl">
+    <name>Kalaallisut</name>
+    <native xml:lang="kl">kalaallisut; kalaallit oqaasii</native>
+  </record>
+  <record code="km">
+    <name>Khmer</name>
+    <native xml:lang="km">ភាសាខ្មែរ</native>
+  </record>
+  <record code="kn">
+    <name>Kannada</name>
+    <native xml:lang="kn">ಕನ್ನಡ</native>
+  </record>
+  <record code="ko">
+    <name>Korean</name>
+    <native xml:lang="ko">한국어 (韓國語); 조선말 (朝鮮語)</native>
+  </record>
+  <record code="kr">
+    <name>Kanuri</name>
+    <native xml:lang="kr">Kanuri</native>
+  </record>
+  <record code="ks">
+    <name>Kashmiri</name>
+    <native xml:lang="ks">कश्मीरी; كشميري‎</native>
+  </record>
+  <record code="ku">
+    <name>Kurdish</name>
+    <native xml:lang="ku">Kurdî; كوردی‎</native>
+  </record>
+  <record code="kv">
+    <name>Komi</name>
+    <native xml:lang="kv">коми кыв</native>
+  </record>
+  <record code="kw">
+    <name>Cornish</name>
+    <native xml:lang="kw">Kernewek</native>
+  </record>
+  <record code="ky">
+    <name>Kirghiz</name>
+    <native xml:lang="ky">кыргыз тили</native>
+  </record>
+  <record code="la">
+    <name>Latin</name>
+    <name xml:lang="et">ladina</name>
+    <native xml:lang="la">latine; lingua latina</native>
+  </record>
+  <record code="lb">
+    <name>Luxembourgish</name>
+    <native xml:lang="lb">Lëtzebuergesch</native>
+  </record>
+  <record code="lg">
+    <name>Ganda</name>
+    <native xml:lang="lg">Luganda</native>
+  </record>
+  <record code="li">
+    <name>Limburgish</name>
+    <native xml:lang="li">Limburgs</native>
+  </record>
+  <record code="ln">
+    <name>Lingala</name>
+    <native xml:lang="ln">Lingála</native>
+  </record>
+  <record code="lo">
+    <name>Lao</name>
+    <native xml:lang="lo">ພາສາລາວ</native>
+  </record>
+  <record code="lt">
+    <name>Lithuanian</name>
+    <native xml:lang="lt">lietuvių kalba</native>
+  </record>
+  <record code="lu">
+    <name>Luba-Katanga</name>
+    <native xml:lang="lu" />
+  </record>
+  <record code="lv">
+    <name>Latvian</name>
+    <native xml:lang="lv">latviešu valoda</native>
+  </record>
+  <record code="mg">
+    <name>Malagasy</name>
+    <native xml:lang="mg">Malagasy fiteny</native>
+  </record>
+  <record code="mh">
+    <name>Marshallese</name>
+    <native xml:lang="mh">Kajin M̧ajeļ</native>
+  </record>
+  <record code="mi">
+    <name>Māori</name>
+    <native xml:lang="mi">te reo Māori</native>
+  </record>
+  <record code="mk">
+    <name>Macedonian</name>
+    <native xml:lang="mk">македонски јазик</native>
+  </record>
+  <record code="ml">
+    <name>Malayalam</name>
+    <native xml:lang="ml">മലയാളം</native>
+  </record>
+  <record code="mn">
+    <name>Mongolian</name>
+    <native xml:lang="mn">Монгол</native>
+  </record>
+  <record code="mr">
+    <name>Marathi</name>
+    <native xml:lang="mr">मराठी</native>
+  </record>
+  <record code="ms">
+    <name>Malay</name>
+    <native xml:lang="ms">bahasa Melayu; بهاس ملايو‎</native>
+    <comment>Malay (specific) is [mly]</comment>
+  </record>
+  <record code="mt">
+    <name>Maltese</name>
+    <native xml:lang="mt">Malti</native>
+  </record>
+  <record code="my">
+    <name>Burmese</name>
+    <native xml:lang="my">ဗမာစာ</native>
+  </record>
+  <record code="na">
+    <name>Nauru</name>
+    <native xml:lang="na">Ekakairũ Naoero</native>
+  </record>
+  <record code="nb">
+    <name>Norwegian Bokmål</name>
+    <native xml:lang="nb">Norsk bokmål</native>
+  </record>
+  <record code="nd">
+    <name>North Ndebele</name>
+    <native xml:lang="nd">isiNdebele</native>
+  </record>
+  <record code="ne">
+    <name>Nepali</name>
+    <native xml:lang="ne">नेपाली</native>
+  </record>
+  <record code="ng">
+    <name>Ndonga</name>
+    <native xml:lang="ng">Owambo</native>
+  </record>
+  <record code="nl">
+    <name>Dutch</name>
+    <native xml:lang="nl">Nederlands</native>
+  </record>
+  <record code="nn">
+    <name>Norwegian Nynorsk</name>
+    <native xml:lang="nn">Norsk nynorsk</native>
+  </record>
+  <record code="no">
+    <name>Norwegian</name>
+    <native xml:lang="no">Norsk</native>
+  </record>
+  <record code="nr">
+    <name>South Ndebele</name>
+    <native xml:lang="nr">isiNdebele</native>
+  </record>
+  <record code="nv">
+    <name>Navajo</name>
+    <native xml:lang="nv">Diné bizaad; Dinékʼehǰí</native>
+  </record>
+  <record code="ny">
+    <name>Chichewa</name>
+    <native xml:lang="ny">chiCheŵa; chinyanja</native>
+  </record>
+  <record code="oc">
+    <name>Occitan</name>
+    <native xml:lang="oc">Occitan</native>
+  </record>
+  <record code="oj">
+    <name>Ojibwa</name>
+    <native xml:lang="oj">ᐊᓂᔑᓈᐯᒧᐎᓐ</native>
+  </record>
+  <record code="om">
+    <name>Oromo</name>
+    <native xml:lang="om">Afaan Oromoo</native>
+  </record>
+  <record code="or">
+    <name>Oriya</name>
+    <native xml:lang="or">ଓଡ଼ିଆ</native>
+  </record>
+  <record code="os">
+    <name>Ossetian</name>
+    <native xml:lang="os">Ирон æвзаг</native>
+  </record>
+  <record code="pa">
+    <name>Panjabi</name>
+    <native xml:lang="pa">ਪੰਜਾਬੀ; پنجابی‎</native>
+  </record>
+  <record code="pi">
+    <name>Pāli</name>
+    <native xml:lang="pi">पाऴि</native>
+  </record>
+  <record code="pl">
+    <name>Polish</name>
+    <native xml:lang="pl">polski</native>
+  </record>
+  <record code="ps">
+    <name>Pashto</name>
+    <native xml:lang="ps">پښتو</native>
+  </record>
+  <record code="pt">
+    <name>Portuguese</name>
+    <name xml:lang="et">portugali</name>
+    <native xml:lang="pt">Português</native>
+  </record>
+  <record code="qu">
+    <name>Quechua</name>
+    <native xml:lang="qu">Runa Simi; Kichwa</native>
+  </record>
+  <record code="rm">
+    <name>Raeto-Romance</name>
+    <native xml:lang="rm">rumantsch grischun</native>
+  </record>
+  <record code="rn">
+    <name>Kirundi</name>
+    <native xml:lang="rn">kiRundi</native>
+  </record>
+  <record code="ro">
+    <name>Romanian</name>
+    <native xml:lang="ro">română</native>
+  </record>
+  <record code="ru">
+    <name>Russian</name>
+    <name xml:lang="et">vene</name>
+    <native xml:lang="ru">русский язык</native>
+  </record>
+  <record code="rw">
+    <name>Kinyarwanda</name>
+    <native xml:lang="rw">Ikinyarwanda</native>
+  </record>
+  <record code="sa">
+    <name>Sanskrit</name>
+    <native xml:lang="sa">संस्कृतम्</native>
+  </record>
+  <record code="sc">
+    <name>Sardinian</name>
+    <native xml:lang="sc">sardu</native>
+  </record>
+  <record code="sd">
+    <name>Sindhi</name>
+    <native xml:lang="sd">सिन्धी; سنڌي، سندھی‎</native>
+  </record>
+  <record code="se">
+    <name>Northern Sami</name>
+    <native xml:lang="se">Davvisámegiella</native>
+  </record>
+  <record code="sg">
+    <name>Sango</name>
+    <native xml:lang="sg">yângâ tî sängö</native>
+  </record>
+  <record code="sh">
+    <name>Serbo-Croatian</name>
+    <native xml:lang="sh">Srpskohrvatski; Српскохрватски</native>
+  </record>
+  <record code="si">
+    <name>Sinhala</name>
+    <native xml:lang="si">සිංහල</native>
+  </record>
+  <record code="sk">
+    <name>Slovak</name>
+    <native xml:lang="sk">slovenčina</native>
+  </record>
+  <record code="sl">
+    <name>Slovenian</name>
+    <native xml:lang="sl">slovenščina</native>
+  </record>
+  <record code="sm">
+    <name>Samoan</name>
+    <native xml:lang="sm">gagana fa'a Samoa</native>
+  </record>
+  <record code="sn">
+    <name>Shona</name>
+    <native xml:lang="sn">chiShona</native>
+  </record>
+  <record code="so">
+    <name>Somali</name>
+    <native xml:lang="so">Soomaaliga; af Soomaali</native>
+  </record>
+  <record code="sq">
+    <name>Albanian</name>
+    <native xml:lang="sq">Shqip</native>
+  </record>
+  <record code="sr">
+    <name>Serbian</name>
+    <native xml:lang="sr">српски језик</native>
+  </record>
+  <record code="ss">
+    <name>Swati</name>
+    <native xml:lang="ss">SiSwati</native>
+  </record>
+  <record code="st">
+    <name>Southern Sotho</name>
+    <native xml:lang="st">Sesotho</native>
+  </record>
+  <record code="su">
+    <name>Sundanese</name>
+    <native xml:lang="su">Basa Sunda</native>
+  </record>
+  <record code="sv">
+    <name>Swedish</name>
+    <name xml:lang="et">rootsi</name>
+    <native xml:lang="sv">svenska</native>
+  </record>
+  <record code="sw">
+    <name>Swahili</name>
+    <native xml:lang="sw">Kiswahili</native>
+  </record>
+  <record code="ta">
+    <name>Tamil</name>
+    <native xml:lang="ta">தமிழ்</native>
+  </record>
+  <record code="te">
+    <name>Telugu</name>
+    <native xml:lang="te">తెలుగు</native>
+  </record>
+  <record code="tg">
+    <name>Tajik</name>
+    <native xml:lang="tg">тоҷикӣ; toğikī; تاجیکی‎</native>
+  </record>
+  <record code="th">
+    <name>Thai</name>
+    <native xml:lang="th">ไทย</native>
+  </record>
+  <record code="ti">
+    <name>Tigrinya</name>
+    <native xml:lang="ti">ትግርኛ</native>
+  </record>
+  <record code="tk">
+    <name>Turkmen</name>
+    <native xml:lang="tk">Türkmen; Түркмен</native>
+  </record>
+  <record code="tl">
+    <name>Tagalog</name>
+    <native xml:lang="tl">Tagalog</native>
+  </record>
+  <record code="tn">
+    <name>Tswana</name>
+    <native xml:lang="tn">Setswana</native>
+  </record>
+  <record code="to">
+    <name>Tonga</name>
+    <native xml:lang="to">faka Tonga</native>
+  </record>
+  <record code="tr">
+    <name>Turkish</name>
+    <native xml:lang="tr">Türkçe</native>
+  </record>
+  <record code="ts">
+    <name>Tsonga</name>
+    <native xml:lang="ts">Xitsonga</native>
+  </record>
+  <record code="tt">
+    <name>Tatar</name>
+    <native xml:lang="tt">татарча; tatarça; تاتارچا‎</native>
+  </record>
+  <record code="tw">
+    <name>Twi</name>
+    <native xml:lang="tw">Twi</native>
+  </record>
+  <record code="ty">
+    <name>Tahitian</name>
+    <native xml:lang="ty">Reo Mā`ohi</native>
+  </record>
+  <record code="ug">
+    <name>Uighur</name>
+    <native xml:lang="ug">Uyƣurqə; ئۇيغۇرچە‎</native>
+  </record>
+  <record code="uk">
+    <name>Ukrainian</name>
+    <native xml:lang="uk">Українська</native>
+  </record>
+  <record code="ur">
+    <name>Urdu</name>
+    <native xml:lang="ur">اردو</native>
+  </record>
+  <record code="uz">
+    <name>Uzbek</name>
+    <native xml:lang="uz">O'zbek; Ўзбек; أۇزبېك‎</native>
+  </record>
+  <record code="ve">
+    <name>Venda</name>
+    <native xml:lang="ve">Tshivenḓa</native>
+  </record>
+  <record code="vi">
+    <name>Vietnamese</name>
+    <native xml:lang="vi">Tiếng Việt</native>
+  </record>
+  <record code="vo">
+    <name>Volapük</name>
+    <native xml:lang="vo">Volapük</native>
+  </record>
+  <record code="wa">
+    <name>Walloon</name>
+    <native xml:lang="wa">Walon</native>
+  </record>
+  <record code="wo">
+    <name>Wolof</name>
+    <native xml:lang="wo">Wollof</native>
+  </record>
+  <record code="xh">
+    <name>Xhosa</name>
+    <native xml:lang="xh">isiXhosa</native>
+  </record>
+  <record code="yi">
+    <name>Yiddish</name>
+    <native xml:lang="yi">ייִדיש</native>
+  </record>
+  <record code="yo">
+    <name>Yoruba</name>
+    <native xml:lang="yo">Yorùbá</native>
+  </record>
+  <record code="za">
+    <name>Zhuang</name>
+    <native xml:lang="za">Saɯ cueŋƅ; Saw cuengh</native>
+  </record>
+  <record code="zh">
+    <name>Chinese</name>
+    <native xml:lang="zh">中文 (Zhōngwén), 汉语, 漢語</native>
+  </record>
+  <record code="zu">
+    <name>Zulu</name>
+    <native xml:lang="zu">isiZulu</native>
+  </record>
+  <record code="ex" technical="1">
+    <name>Estonian-X</name>
+    <name xml:lang="et">Eesti-X</name>
+    <native xml:lang="et">Eesti-X</native>
+  </record>
+  <record code="ud">
+    <name>udmurtian</name>
+    <name xml:lang="et">udmurdi</name>
+    <native xml:lang="ud">udmurdi</native>
+  </record>
+  <record code="vro">
+    <name>võro</name>
+    <name xml:lang="et">võru</name>
+    <native xml:lang="vro">võro</native>
+  </record>
+  <record code="mhr">
+    <name>Meadow Mari</name>
+    <name xml:lang="et">niidumari</name>
+    <native xml:lang="mhr">Олык Марий</native>
+  </record>
+    <record code="mrj">
+    <name>Hill Mari</name>
+    <name xml:lang="et">mäemari</name>
+    <native xml:lang="mrj">Кырык мары</native>
+  </record>
+</iso639_1>

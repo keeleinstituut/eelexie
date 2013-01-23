@@ -1,0 +1,97 @@
+.mi
+{
+	font-family:sans-serif;
+	font-size:10pt;
+	height: 16px;
+	padding-left:20;
+	padding-right:20;
+	background-Color:menu;
+	color:black;
+}
+.hi
+{
+	font-family:sans-serif;
+	font-size:10pt;
+	height: 16px;
+	padding-left:20;
+	padding-right:20;
+	background-Color:highlight;
+	color:white;
+}
+.si
+{
+	font-family:sans-serif;
+	font-size:10pt;
+	height: 16px;
+	padding-left:20;
+	padding-right:20;
+	background-Color:gainsboro;
+	color:black;
+}
+.dl
+{
+	font-family:sans-serif;
+	font-size:10pt;
+	height: 16px;
+	padding-left:20;
+	padding-right:20;
+	background-Color:menu;
+	color:black;
+}
+.md
+{
+    font-weight:bold;
+	font-family:sans-serif;
+	font-size:10pt;
+	height: 16px;
+	padding-left:20;
+	padding-right:20;
+	background-Color:deepskyblue;
+	color:white;
+}
+.mi_span
+{
+	font-size:10pt;
+	width: 36px;
+	height: 16px;
+	padding-left:10px;
+	padding-right:10px;
+	text-align:center;
+	background-Color:menu;
+	color:black;
+}
+.hi_span
+{
+	font-size:10pt;
+	width: 36px;
+	height: 16px;
+	padding-left:10px;
+	padding-right:10px;
+	text-align:center;
+	background-Color:highlight;
+	color:white;
+}
+.tbbt
+{
+	width: 20px;
+	height: 20px;
+	padding-left: 4px;
+	padding-top: 4px;
+	border: solid thin gainsboro;
+}
+.tbbt2
+{
+	width: 16px;
+	height: 16px;
+	padding-left: 0px;
+	padding-top: 0px;
+	border: solid thin seashell;
+}
+.tbbt3
+{
+	width: 16px;
+	height: 16px;
+	padding-left: 0px;
+	padding-top: 0px;
+	border: solid thin #FFD700;
+}

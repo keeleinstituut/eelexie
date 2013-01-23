@@ -1,0 +1,140 @@
+<public:attach event="oncontentready" onevent="init();" />
+
+<script>
+/*
+* siinne (event=oncontentready) sobib ainult siis, kui dokumendis on staatiliselt määratud thead ja veergude "pealkirjad"
+*/
+
+//
+// global variables
+//
+var tbody=null;
+var theadrow=null;
+// stores the object of our last used object
+var lastclick = -1;
+var reverse = false;
+
+
+function init() {
+	//Get THEAD
+	var thead = element.tHead;
+	if (!thead) return;
+
+	theadrow = thead.children[0]; //Assume just one Head row
+	if (theadrow.tagName != "TR") return;
+
+	theadrow.style.cursor = "hand";
+
+	// get TBODY - take the first TBODY for the table to sort
+	tbody = element.tBodies(0);
+
+	var colCount = theadrow.children.length;
+
+	var l, clickCell;
+	for (var i=0; i<colCount; i++)
+	{
+		// Create our blank gif
+		l=document.createElement("IMG");
+		l.id="srtImg";
+		l.width=25;
+		l.height=11;
+		l.src="../graphics/sort_blank.gif";
+
+		clickCell = theadrow.children[i];
+		clickCell.selectIndex = i;
+		clickCell.insertAdjacentElement("beforeEnd", l);
+		clickCell.attachEvent("onclick", doClick);
+	}
+
+}
+
+//
+// doClick handler
+//
+//
+function doClick(e)
+{
+	var clickObject = e.srcElement;
+
+	while (!(clickObject.tagName == "TD" || clickObject.tagName == "TH"))
+	{
+		clickObject = clickObject.parentElement;
+	}
+
+	// clear the sort images in the head
+	var imgcol= theadrow.all('srtImg');
+	for(var x = 0; x < imgcol.length; x++)
+		imgcol[x].src = "../graphics/sort_blank.gif";
+
+    if(lastclick == clickObject.selectIndex)
+    {
+        if(reverse == false)
+        {
+            clickObject.children[0].src = "../graphics/sort_down.gif";
+            reverse = true;
+        }
+        else
+        {
+            clickObject.children[0].src = "../graphics/sort_up.gif";
+            reverse = false;
+        }
+    }
+    else
+    {
+        reverse = false;
+        lastclick = clickObject.selectIndex;
+        clickObject.children[0].src = "../graphics/sort_up.gif";
+    }
+
+	insertionSort(tbody, tbody.rows.length-1, reverse, clickObject.selectIndex);
+}
+
+
+function insertionSort(t, iRowEnd, fReverse, iColumn)
+{
+    var textRowInsert, textRowCurrent, current, insert;
+
+    for (var iRowInsert = 0 + 1 ; iRowInsert <= iRowEnd ; iRowInsert++ )
+    {
+        if(typeof(t.children[iRowInsert].children[iColumn]) != "undefined")
+            textRowInsert = t.children[iRowInsert].children[iColumn].innerText;
+        else
+            textRowInsert = "";
+
+        for (var iRowWalk = 0; iRowWalk < iRowInsert ; iRowWalk++ )
+        {
+			if(typeof(t.children[iRowWalk].children[iColumn]) != "undefined")
+				textRowCurrent = t.children[iRowWalk].children[iColumn].innerText;
+			else
+				textRowCurrent = "";
+		    //
+		    // We save our values so we can manipulate the numbers for
+		    // comparison
+		    //
+		    current = textRowCurrent;
+		    insert  = textRowInsert;
+
+		    //  If the value is not a number, we sort normally, else we evaluate
+		    //  the value to get a numeric representation
+		    //
+		    if ( !isNaN(current) || !isNaN(insert))
+		    {
+			    current= eval(current);
+			    insert= eval(insert);
+		    }
+		    else
+		    {
+			    current	= current.toLowerCase();
+			    insert	= insert.toLowerCase();
+		    }
+
+            if ( (!fReverse && insert < current) || ( fReverse && insert > current) )
+            {
+                t.insertBefore(t.children[iRowInsert], t.children[iRowWalk]);
+                iRowWalk = iRowInsert; // done
+            }
+        }
+    }
+}
+
+</script>

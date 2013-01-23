@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lgnconfig>
+	<lnk>
+		<elem>01 - Eesti-ukraina sõnaraamat (ukr)</elem>
+		<lyh>ukr</lyh>
+	</lnk>
+	<lnk>
+		<elem>02 - Haridussõnastik (har)</elem>
+		<lyh>har</lyh>
+		<upt>12.10.2010</upt>
+	</lnk>
+	<lnk>
+		<elem>03 - Vene õpilase ÕS (qqv)</elem>
+		<lyh>qqv</lyh>
+		<upt>12.10.2010</upt>
+	</lnk>
+	<lnk>
+		<elem>04 - Inglise-eesti füüsika sõnaraamat (ief)</elem>
+		<lyh>ief</lyh>
+		<upt>12.10.2010</upt>
+	</lnk>
+	<lnk>
+		<elem>05 - Võõrsõnade leksikon (vsl)</elem>
+		<lyh>vsl</lyh>
+		<upt>12.10.2010</upt>
+	</lnk>
+	<lnk>
+		<elem>06 - Geoloogiaterminite baas (geo)</elem>
+		<lyh>geo</lyh>
+		<upt>12.10.2010</upt>
+	</lnk>
+	<lnk>
+		<elem>07 - Eesti-Soome sõnaraamat (fin)</elem>
+		<lyh>fin</lyh>
+		<upt>12.10.2010</upt>
+	</lnk>
+	<lnk>
+		<elem>08 - Eesti kohanimeraamat (knr)</elem>
+		<lyh>knr</lyh>
+		<upt>12.10.2010</upt>
+	</lnk>
+	<lnk>
+		<elem>09 - Üheköiteline seletav sõnaraamat (ss1)</elem>
+		<lyh>ss1</lyh>
+		<upt>12.10.2010</upt>
+	</lnk>
+	<lnk>
+		<elem>10 - Eesti-X sõnastikupõhi (ex_)</elem>
+		<lyh>ex</lyh>
+		<upt>04.02.2011</upt>
+	</lnk>
+	<lnk>
+		<elem>11 - Eesti-võro sõnaraamat (evo)</elem>
+		<lyh>evo</lyh>
+		<upt>09.03.2011</upt>
+	</lnk>
+	<lnk>
+		<elem>12 - ÕS-2006 (qs_)</elem>
+		<lyh>qs</lyh>
+		<upt>16.06.2011</upt>
+	</lnk>
+	<lnk>
+		<elem>13 - ÕS-2013 (eos)</elem>
+		<lyh>eos</lyh>
+		<upt>27.06.2011</upt>
+	</lnk>
+	<lnk>
+		<elem>14 - Põhisõnavara sõnastik (psv)</elem>
+		<lyh>psv</lyh>
+		<upt>29.11.2011</upt>
+	</lnk>
+	<lnk>
+		<elem>15 - Sõnaperede andmebaas (sp_)</elem>
+		<lyh>sp</lyh>
+		<upt>13.01.2012</upt>
+	</lnk>
+	<lnk>
+		<elem>15 - Sõnaperede indeks (spi)</elem>
+		<lyh>spi</lyh>
+		<upt>29.02.2012</upt>
+	</lnk>
+	<lnk>
+		<elem>17 - Sõnaperede pöördandmebaas (spp)</elem>
+		<lyh>spp</lyh>
+		<upt>04.04.2012</upt>
+	</lnk>
+		<lnk>
+		<elem>18 - Kohanimed (ÕS 2013 lisa) (kno)</elem>
+		<lyh>kno</lyh>
+		<upt>17.10.2012</upt>
+	</lnk>
+</lgnconfig>

@@ -1,0 +1,516 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+    xmlns:al="http://www.eo.ee/xml/xsl/scripts"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:pref="http://www.eki.ee/dict/nothing"
+                xmlns:eRegs="http://exslt.org/regular-expressions"
+                exclude-result-prefixes="eRegs">
+
+  <xsl:output method="html" omit-xml-declaration="yes" indent="no" encoding="utf-8" />
+  
+  <!--Chrome ja Safari ei toeta include ja import-->
+  <!--<xsl:include href="include/incTemplates.xsl"/>-->
+
+  <msxsl:script language="javascript" implements-prefix="al">
+    <![CDATA[
+    function unNameXslLn(inpStr) {
+      var unStr = '', i;
+      // unStr = inpStr.replace(/:/, "-");
+      // sest sisse tuleb ainult local-name()
+      for (i = 0; i < inpStr.length; i++) {
+              unStr += '_' + inpStr.charCodeAt(i);
+      }
+      return unStr;
+    }
+
+    function unNameEditQn(inpStr) {
+      // sisse tuleb qualified name 'qn'
+      var unStr = inpStr.replace(/:/, "-");
+      for (var i = 0; i < inpStr.length; i++)
+        // _ pluss number, kusjuures teine märk on koolon (_58)
+        unStr += '_' + inpStr.charCodeAt(i);
+      return unStr;
+    }
+
+      function xslNumberToRepString(xslNumber, repStr, lenOffStr) {
+        var xslNumbers = xslNumber.split('.');
+        var lenOff = parseInt(lenOffStr);
+        var rets = '';
+        for (var ix = 0; ix < xslNumbers.length + lenOff; ix++) {
+            rets += repStr;
+        }
+        return (rets + rets);
+    }
+]]>
+  </msxsl:script>
+
+  <xsl:variable name="dic_desc"></xsl:variable>
+  <xsl:variable name="appLang">et</xsl:variable>
+  <xsl:variable name="segad"></xsl:variable>
+  <xsl:variable name="tekstiga"></xsl:variable>
+  <xsl:variable name="attrNoEdit"></xsl:variable>
+  <xsl:variable name="elemNoEdit"></xsl:variable>
+  <xsl:variable name="elemNoDisplay"></xsl:variable>
+  <xsl:variable name="attrNoDisplay"></xsl:variable>
+  <xsl:variable name="attrNoCreate"></xsl:variable>
+  <xsl:variable name="tblBrdCol"></xsl:variable>
+  <xsl:variable name="addGroupPicture">graphics/justify.ico</xsl:variable>
+  <xsl:variable name="delGroupPicture">graphics/delart 16-16.ico</xsl:variable>
+  <xsl:variable name="createGroupPicture">graphics/downarrow 16-16.ico</xsl:variable>
+  <xsl:variable name="addLisadPicture">graphics/downarrow 16-16.ico</xsl:variable>
+  <xsl:variable name="delLisadPicture">graphics/delart 16-16.ico</xsl:variable>
+  <xsl:variable name="attrNoDelete"></xsl:variable>
+
+
+  <xsl:variable name="kirjeldavad">
+  </xsl:variable>
+
+  <xsl:template match="/">
+    <xsl:apply-templates select="*">
+    </xsl:apply-templates>
+  </xsl:template>
+
+  <xsl:template match="pref:sr">
+    <xsl:variable name="srLang">
+      <xsl:choose>
+        <xsl:when test="@xml:lang">
+          <xsl:value-of select="@xml:lang"></xsl:value-of>
+        </xsl:when>
+        <xsl:otherwise>et</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <body lang="{$srLang}">
+      <table border="1" frame="box" rules="all" bordercolor="{$tblBrdCol}" style="width:100%;">
+        <xsl:apply-templates select="pref:A">
+          <xsl:with-param name="rada">
+          </xsl:with-param>
+        </xsl:apply-templates>
+      </table>
+    </body>
+  </xsl:template>
+
+  <xsl:template match="*" mode="nodeInMixed">
+    <xsl:param name="rada"/>
+    <xsl:variable name="elPos">
+      <xsl:value-of select="name()"></xsl:value-of>
+      <xsl:text>[</xsl:text>
+      <xsl:number level="single" format="1"></xsl:number>
+      <xsl:text>]</xsl:text>
+    </xsl:variable>
+    <xsl:variable name="elId">
+      <xsl:value-of select="concat($rada, $elPos)"></xsl:value-of>
+    </xsl:variable>
+
+    <xsl:variable name="k">
+      <xsl:call-template name="sekeldaNimi"></xsl:call-template>
+    </xsl:variable>
+
+    <xsl:text xml:space="preserve"> </xsl:text>
+    <xsl:element name="span">
+      <xsl:attribute name="id">
+        <xsl:value-of select="$elId"></xsl:value-of>
+      </xsl:attribute>
+      <xsl:attribute name="title">
+        <xsl:value-of select="concat('`', $k, '` ', $elPos)"></xsl:value-of>
+      </xsl:attribute>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="function-available('al:unNameEditQn')">
+            <xsl:value-of select="concat('enmx enmx_', al:unNameEditQn(name()), ' noedit')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('enmx enmx_', translate(name(), ':', '-'), ' noedit')"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:attribute name="tabIndex">0</xsl:attribute>
+      <xsl:value-of select="local-name()"></xsl:value-of>
+    </xsl:element>
+    <xsl:apply-templates select="@*[not(contains($attrNoDisplay, concat(';', name(..), '/@', name(), ';')))]" mode="nodeInMixed">
+      <xsl:with-param name="rada">
+        <xsl:value-of select="concat($elId, '/')"></xsl:value-of>
+      </xsl:with-param>
+    </xsl:apply-templates>
+    <xsl:if test="@pref:mT = 'snd'">
+      <xsl:element name="img">
+        <xsl:attribute name="id">
+          <xsl:value-of select="concat('sndListen||', $elId)"></xsl:value-of>
+        </xsl:attribute>
+        <xsl:attribute name="src">graphics/sound_.ico</xsl:attribute>
+        <xsl:attribute name="alt">kõlar</xsl:attribute>
+        <xsl:attribute name="title">klõpsa kuulamiseks</xsl:attribute>
+        <xsl:attribute name="style">width:16px;</xsl:attribute>
+        <xsl:attribute name="tabIndex">0</xsl:attribute>
+      </xsl:element>
+    </xsl:if>
+    <xsl:apply-templates select="node()[not(contains($elemNoDisplay, concat(';', name(..), '/', name(), ';')))]" mode="nodeInMixed">
+      <xsl:with-param name="rada">
+        <xsl:value-of select="concat($elId, '/')"></xsl:value-of>
+      </xsl:with-param>
+    </xsl:apply-templates>
+  </xsl:template>
+
+  <xsl:template match="@*" mode="nodeInMixed">
+    <xsl:param name="rada"/>
+    <xsl:variable name="qn">
+      <xsl:value-of select="name()"></xsl:value-of>
+    </xsl:variable>
+    <xsl:variable name="elPos">
+      <xsl:text>@</xsl:text>
+      <xsl:value-of select="$qn"></xsl:value-of>
+    </xsl:variable>
+    <xsl:variable name="elId">
+      <xsl:value-of select="concat($rada, $elPos)"></xsl:value-of>
+    </xsl:variable>
+
+    <xsl:variable name="k">
+      <xsl:value-of select="document('')//xsl:variable[@name = 'kirjeldavad']/a[@n = $qn]/t[@l = $appLang]"></xsl:value-of>
+    </xsl:variable>
+
+    <xsl:variable name="sisu">
+      <xsl:value-of select="."></xsl:value-of>
+    </xsl:variable>
+
+    <xsl:element name="span">
+      <xsl:attribute name="id">
+        <xsl:value-of select="$elId"></xsl:value-of>
+      </xsl:attribute>
+      <xsl:attribute name="title">
+        <xsl:value-of select="concat('`', $k, '` ', $elPos)"></xsl:value-of>
+      </xsl:attribute>
+      <xsl:variable name="noEdit">
+        <xsl:choose>
+          <xsl:when test="contains($attrNoEdit, concat(';', name(..), '/@', $qn, ';'))"> noedit</xsl:when>
+          <xsl:otherwise> edit</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="function-available('al:unNameEditQn')">
+            <xsl:value-of select="concat('atmx atmx_', al:unNameEditQn(string($qn)), $noEdit)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('atmx atmx_', translate($qn, ':', '-'), $noEdit)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:attribute name="lang">
+        <xsl:call-template name="get_lang"></xsl:call-template>
+      </xsl:attribute>
+      <xsl:if test="string-length($sisu) &lt; 2">
+        <xsl:attribute name="style">width:16px;display:inline-block;</xsl:attribute>
+      </xsl:if>
+      <xsl:value-of select="$sisu"></xsl:value-of>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="text()" mode="nodeInMixed">
+    <xsl:param name="rada"/>
+    <xsl:variable name="elPos">
+      <xsl:text>text()</xsl:text>
+      <xsl:text>[</xsl:text>
+      <xsl:number level="single" format="1"></xsl:number>
+      <xsl:text>]</xsl:text>
+    </xsl:variable>
+    <xsl:variable name="elId">
+      <xsl:value-of select="concat($rada, $elPos)"></xsl:value-of>
+    </xsl:variable>
+    <xsl:variable name="qn">
+      <xsl:value-of select="name(..)"></xsl:value-of>
+    </xsl:variable>
+
+    <xsl:variable name="k">
+      <xsl:value-of select="document('')//xsl:variable[@name = 'kirjeldavad']/e[@n = $qn]/t[@l = $appLang]"></xsl:value-of>
+    </xsl:variable>
+
+    <xsl:variable name="sisu">
+      <xsl:value-of select="."></xsl:value-of>
+    </xsl:variable>
+
+    <xsl:if test="preceding-sibling::*">
+      <xsl:text xml:space="preserve"> </xsl:text>
+    </xsl:if>
+    <xsl:element name="span">
+      <xsl:attribute name="id">
+        <xsl:value-of select="$elId"></xsl:value-of>
+      </xsl:attribute>
+      <xsl:attribute name="title">
+        <xsl:value-of select="concat('`', $k, '` ', $elPos)"></xsl:value-of>
+      </xsl:attribute>
+      <xsl:variable name="noEdit">
+        <xsl:choose>
+          <xsl:when test="contains($elemNoEdit, concat(';', name(../..), '/', $qn, ';'))"> noedit</xsl:when>
+          <xsl:otherwise> edit</xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:attribute name="class">
+        <xsl:choose>
+          <xsl:when test="function-available('al:unNameEditQn')">
+            <xsl:value-of select="concat('et et_', al:unNameEditQn(string($qn)), $noEdit)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="concat('et et_', translate($qn, ':', '-'), $noEdit)"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:attribute>
+      <xsl:attribute name="lang">
+        <xsl:call-template name="get_lang"></xsl:call-template>
+      </xsl:attribute>
+      <xsl:if test="string-length($sisu) &lt; 2">
+        <xsl:attribute name="style">width:16px;display:inline-block;</xsl:attribute>
+      </xsl:if>
+      <xsl:attribute name="tabIndex">0</xsl:attribute>
+      <xsl:value-of select="$sisu"></xsl:value-of>
+    </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="*">
+    <xsl:param name="rada"></xsl:param>
+    <xsl:variable name="qn">
+      <xsl:value-of select="name()"></xsl:value-of>
+    </xsl:variable>
+    <xsl:variable name="elPos">
+      <xsl:value-of select="name()"></xsl:value-of>
+      <xsl:text>[</xsl:text>
+      <xsl:number level="single" format="1"></xsl:number>
+      <xsl:text>]</xsl:text>
+    </xsl:variable>
+    <xsl:variable name="elId">
+      <xsl:value-of select="concat($rada, $elPos)"></xsl:value-of>
+    </xsl:variable>
+
+    <xsl:variable name="k">
+      <xsl:call-template name="sekeldaNimi"></xsl:call-template>
+    </xsl:variable>
+
+    <xsl:variable name="xn">
+      <xsl:number level="multiple" from="pref:A" count="*" format="1"/>
+    </xsl:variable>
+
+    <tr>
+      <td width="32px">
+        <xsl:variable name="paljuMindOn">
+          <xsl:value-of select="count(../*[name() = $qn])"/>
+        </xsl:variable>
+      </td>
+      <td width="33%">
+        <xsl:variable name="xn2">
+          <xsl:choose>
+            <xsl:when test="function-available('al:xslNumberToRepString')">
+              <xsl:value-of select="al:xslNumberToRepString(string($xn), '&#x00A0;', -1)"/>
+            </xsl:when>
+            <xsl:when test="function-available('eRegs:replace')">
+              <xsl:value-of select="eRegs:replace($xn, '(\d+(\.)?)', 'g', '&#x00A0;')"/>
+            </xsl:when>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:element name="span">
+          <xsl:value-of select="$xn2"></xsl:value-of>
+        </xsl:element>
+        <xsl:element name="span">
+          <xsl:attribute name="id">
+            <xsl:value-of select="$elId"></xsl:value-of>
+          </xsl:attribute>
+          <xsl:attribute name="title">
+            <xsl:value-of select="$elPos"></xsl:value-of>
+          </xsl:attribute>
+          <xsl:attribute name="class">
+            <xsl:choose>
+              <xsl:when test="function-available('al:unNameEditQn')">
+                <xsl:value-of select="concat('en en_', al:unNameEditQn(name()), ' noedit')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat('en en_', translate(name(), ':', '-'), ' noedit')"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+          <xsl:if test="not(contains($segad, concat(';', name(), ';')) or contains($tekstiga, concat(';', name(), ';')))">
+            <xsl:attribute name="style">text-decoration:underline;</xsl:attribute>
+          </xsl:if>
+          <xsl:attribute name="tabIndex">0</xsl:attribute>
+          <xsl:value-of select="$k"></xsl:value-of>
+        </xsl:element>
+        <xsl:if test="contains($segad, concat(';', name(), ';'))">
+          <span> +</span>
+        </xsl:if>
+
+        <!--atribuudid-->
+        <xsl:text> </xsl:text>
+
+        <xsl:if test="@pref:mT = 'snd'">
+          <xsl:text>&#x00A0;</xsl:text>
+          <xsl:element name="img">
+            <xsl:attribute name="id">
+              <xsl:value-of select="concat('sndListen||', $elId)"></xsl:value-of>
+            </xsl:attribute>
+            <xsl:attribute name="src">graphics/sound_.ico</xsl:attribute>
+            <xsl:attribute name="alt">kõlar</xsl:attribute>
+            <xsl:attribute name="title">klõpsa kuulamiseks</xsl:attribute>
+            <xsl:attribute name="style">width:16px;</xsl:attribute>
+            <xsl:attribute name="tabIndex">0</xsl:attribute>
+          </xsl:element>
+        </xsl:if>
+
+      </td>
+      <td>
+        <xsl:choose>
+          <xsl:when test="contains($segad, concat(';', name(), ';'))">
+            <xsl:apply-templates select="node()[not(contains($elemNoDisplay, concat(';', name(..), '/', name(), ';')))]" mode="nodeInMixed">
+              <xsl:with-param name="rada">
+                <xsl:value-of select="concat($elId, '/')"></xsl:value-of>
+              </xsl:with-param>
+            </xsl:apply-templates>
+          </xsl:when>
+          <xsl:when test="contains($tekstiga, concat(';', name(), ';'))">
+
+            <xsl:element name="span">
+              <xsl:attribute name="id">
+                <xsl:value-of select="concat($elId, '/text()[1]')"></xsl:value-of>
+              </xsl:attribute>
+              <xsl:attribute name="title">
+                <xsl:value-of select="concat('`', $k, '` ', $elPos, '/text()[1]')"></xsl:value-of>
+              </xsl:attribute>
+              <xsl:variable name="noEdit">
+                <xsl:choose>
+                  <xsl:when test="contains($elemNoEdit, concat(';', name(..), '/', $qn, ';'))"> noedit</xsl:when>
+                  <xsl:otherwise> edit</xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <xsl:attribute name="class">
+                <xsl:choose>
+                  <xsl:when test="function-available('al:unNameEditQn')">
+                    <xsl:value-of select="concat('et et_', al:unNameEditQn(name()),  $noEdit, ' etws')"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="concat('et et_', translate(name(), ':', '-'),  $noEdit, ' etws')"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:attribute>
+              <xsl:attribute name="lang">
+                <xsl:call-template name="get_lang"></xsl:call-template>
+              </xsl:attribute>
+              <xsl:attribute name="tabIndex">0</xsl:attribute>
+              <xsl:choose>
+                <xsl:when test="@pref:mT = 'html'">
+                  <xsl:copy-of select="node()"></xsl:copy-of>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="."></xsl:value-of>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:element>
+
+          </xsl:when>
+        </xsl:choose>
+      </td>
+      <td width="32px">
+        <!--lisaelemendid ja tühjade kustutamine-->
+        <xsl:if test="*[normalize-space(.) = '']">
+          <xsl:element name="img">
+            <xsl:attribute name="id">
+              <xsl:value-of select="concat('dellisad||', $elId)"></xsl:value-of>
+            </xsl:attribute>
+            <xsl:attribute name="src">
+              <xsl:value-of select="$delLisadPicture"></xsl:value-of>
+            </xsl:attribute>
+            <xsl:attribute name="alt">kustuta_tühjad</xsl:attribute>
+            <xsl:attribute name="title">Kustuta tühjad elemendid!</xsl:attribute>
+            <xsl:attribute name="tabIndex">0</xsl:attribute>
+          </xsl:element>
+        </xsl:if>
+      </td>
+    </tr>
+  </xsl:template>
+
+  <xsl:template name="sekeldaNimi">
+    <xsl:variable name="qn">
+      <xsl:value-of select="name()"></xsl:value-of>
+    </xsl:variable>
+    <xsl:variable name="k">
+      <xsl:value-of select="document('')//xsl:variable[@name = 'kirjeldavad']/e[@n = $qn]/t[@l = $appLang]"></xsl:value-of>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$k = ''">
+        <xsl:value-of select="name()"></xsl:value-of>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="$k"></xsl:value-of>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="sekeldaAtribuut">
+    <xsl:param name="elId"></xsl:param>
+    <xsl:param name="fullQn"></xsl:param>
+    <xsl:variable name="qn">
+      <xsl:value-of select="substring-after($fullQn, '@')"></xsl:value-of>
+    </xsl:variable>
+    <xsl:variable name="k">
+      <xsl:value-of select="document('')//xsl:variable[@name = 'kirjeldavad']/a[@n = $qn]/t[@l = $appLang]"></xsl:value-of>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="@*[name() = $qn]">
+        <xsl:variable name="sisu">
+          <xsl:value-of select="@*[name() = $qn]"></xsl:value-of>
+        </xsl:variable>
+        <xsl:if test="not(contains($attrNoDelete, concat(';', $fullQn, ';')))">
+          <span class="delatt">&#xA0;&#xA0;</span>
+        </xsl:if>
+        <xsl:element name="span">
+          <xsl:attribute name="id">
+            <xsl:value-of select="concat($elId, '/@', $qn)"></xsl:value-of>
+          </xsl:attribute>
+          <xsl:attribute name="title">
+            <xsl:value-of select="concat('`', $k, '` @', $qn)"></xsl:value-of>
+          </xsl:attribute>
+          <xsl:variable name="noEdit">
+            <xsl:choose>
+              <xsl:when test="contains($attrNoEdit, concat(';', $fullQn, ';'))"> noedit</xsl:when>
+              <xsl:otherwise> edit</xsl:otherwise>
+            </xsl:choose>
+          </xsl:variable>
+          <xsl:attribute name="class">
+            <xsl:choose>
+              <xsl:when test="function-available('al:unNameEditQn')">
+                <xsl:value-of select="concat('at at_', al:unNameEditQn(string($qn)),  $noEdit)"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat('at at_', translate($qn, ':', '-'),  $noEdit)"/>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:attribute>
+          <xsl:attribute name="lang">
+            <xsl:call-template name="get_lang"></xsl:call-template>
+          </xsl:attribute>
+          <xsl:if test="string-length($sisu) &lt; 2">
+            <xsl:attribute name="style">width:16px;display:inline-block;</xsl:attribute>
+          </xsl:if>
+          <xsl:value-of select="$sisu"></xsl:value-of>
+        </xsl:element>
+        <xsl:text> </xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:if test="not(contains($attrNoCreate, concat(';', $fullQn, ';')))">
+          <img src="graphics/struprop_16-16.ico" alt="loo" border="1" id="{concat('addAttr|', $qn, '|', $elId)}" title="{concat('Loo `', $k, '` @', $qn, '!')}"></img>
+          <xsl:text> </xsl:text>
+        </xsl:if>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="get_lang">
+    <xsl:variable name="keel">
+      <xsl:for-each select="ancestor-or-self::*[@xml:lang][1]">
+        <xsl:value-of select="@xml:lang"/>
+      </xsl:for-each>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$keel != ''">
+        <xsl:value-of select="$keel"/>
+      </xsl:when>
+      <xsl:otherwise>et</xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+</xsl:stylesheet>

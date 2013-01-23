@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>Valik</title>
+
+		<script type="text/javascript" src="tools.js"></script>
+
+		<script language=vbscript type="text/vbscript">
+		<!--
+
+Option Explicit
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+Dim inArr
+
+if IsArray(window.dialogArguments) then
+	inArr = window.dialogArguments
+	tekst.innerText = inArr(0)
+    document.title = inArr(2)
+end if
+
+End Sub 'bodyOnLoad
+
+		
+'-----------------------------------------------------------------------------------
+Function bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+elseif (window.event.keyCode = 13) then
+	SetReturnV()
+end if
+End Function 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+Dim t
+t = tekst.innerText
+window.returnValue = t
+window.close()
+End Sub 'SetReturnV
+
+			-->
+		</script>
+	</head>
+	<body  style="background-color:buttonface" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+		<div id="idBody" style="padding:5mm 10mm 5mm 10mm;">
+		    <div id="divTekst" style="height:90%;">
+				<label for="tekst"><b>Tekst:</b></label>
+				<br />
+				<TEXTAREA id="tekst" name="tekst" style="width:100%;" rows="12"></TEXTAREA>
+		    </div>
+		    <div id="idButtons" align="left">
+			    <input id="btnOk" onclick="SetReturnV()" type="button" value="   OK   ">
+			    <input id="btnCancel" onclick="window.close()" type="button" value=" Loobu ">
+		    </div>
+		</div>
+	</body>
+</html>

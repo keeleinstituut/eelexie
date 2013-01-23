@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Artikkel</title>
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="copyright" content="Eesti Keele Instituut" />
+    <meta name="author" content="Ain Teesalu" />
+    <meta name="keywords" content="EELex, sõnastik, dictionary" />
+    <script type="text/javascript" src="ats_app.js"></script>
+    <script type="text/javascript" src="res_var.js"></script>
+    <script type="text/javascript" src="res_lang_${APP_LANG}.js"></script>
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="res_xml.js"></script>
+    <script type="text/javascript" src="procs_app.js"></script>
+    <script type="text/javascript" src="procs_edt.js"></script>
+    <script type="text/javascript" src="kontrollid.js"></script>
+    <script type="text/javascript" src="komponendid.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+    <script type="text/javascript" src="procs_TextContMenu.js"></script>
+    <script type="text/javascript" src="jwplayer/jwplayer.js"></script>
+
+
+    <script type="text/javascript">
+    //-----------------------------------------------------------------------------------
+    function changeTest() {
+      var aaArray;
+      var Index = document.menuForm.zzVMenux.options[document.menuForm.zzVMenux.selectedIndex].value;
+
+      aaArray = Index.split(PD);
+      viwReadViewDB(aaArray[2], aaArray[3]);
+
+      //alert("+1=" + inarr[1] + " +2=" + Index);
+
+    } // changeTest
+    //-----------------------------------------------------------------------------------
+    function bodyOnLoad() {
+      var inarr = window.dialogArguments;
+      var aaRet = new Array("", "", "", "");
+      var aaArray;
+      var ccSelect = "";
+      var ElemList;
+      var ccVL = "";
+      var ccG = "";
+
+      ElemList = document.getElementById('zzVMenux');
+      ElemList.options.length = 0;
+
+      //alert(inarr.length);
+      for (i = 0; i < inarr.length; i ++)
+      {
+        aaArray = inarr[i].split(PD);
+        if (i==0) {
+          ccVL = aaArray[2];
+          ccG = aaArray[3];
+        }
+        ccSelect = inarr[i];
+        ElemList.options[i] = new Option(aaArray[0] + " " + aaArray[1], ccSelect);
+      }
+
+      viwReadViewDB(ccVL, ccG);
+
+      //alert(document.getElementById("xxxxx").innerHTML);
+      //valaDiv.innerHTML = ccSelect;
+    } // bodyOnLoad
+    //-----------------------------------------------------------------------------------
+    function valaOnClick(event) {
+    } // valaOnClick
+    //-----------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------
+    function cReturn() {
+      var Index = document.menuForm.zzVMenux.options[document.menuForm.zzVMenux.selectedIndex].value;
+      var aaRet = new Array("", "", "", "");
+      aaArray = Index.split(PD);
+      aaRet[0] = aaArray[0];
+      aaRet[1] = aaArray[1];
+      aaRet[2] = aaArray[2];
+      aaRet[3] = aaArray[3];
+      window.returnValue = aaRet;
+      window.close();
+    } // cReturn
+    //-----------------------------------------------------------------------------------
+    </script>
+    <style id="valaCss"></style>
+</head>
+<body style="background-color: #deeaf8;" onload="bodyOnLoad()">
+<form name="menuForm" id="menuForm" method="post" action="">
+  <table width="100%" border="0">
+    <tr id="xxxxx">
+      <td><div align="center">Millisele artiklile soovid viidata :
+          <select name="zzVMenux" id="zzVMenux" onchange="changeTest()"></select>
+          <input type="button" name="zzGo" id="zzGo" value="Vali artikkel" OnClick="cReturn();">
+      </div>
+        <label for="zzVMenux"></label>
+        <div align="center"></div></td>
+    </tr>
+  </table>
+</form>
+<table width="100%" border="0">
+  <tr>
+    <td style="background-color: #99CCFF; color: #FFF; font-weight: bold;">Artikkel :</td>
+  </tr>
+  <tr>
+    <td><div id="valaDiv"></div></td>
+  </tr>
+</table>
+
+</body>
+</html>

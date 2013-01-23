@@ -1,0 +1,335 @@
+<html XMLNS:shs="http://www.eki.ee/shs">
+<head>
+    <title>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <STYLE>
+        shs\:cacher {behavior:url(#default#userData);}
+    </STYLE>
+    <script language="javascript" type="text/javascript">
+<!--
+
+/*
+Firefox:
+0) versioon oli 2.0.0.1 ja 24. märtsil 2007
+1) HTML nimeruumiks ei sobi talle xhtml oma, kui on, siis objekte lehel id järgi ära ei tunta.
+2) Ka !DOCTYPE sai maha võetud.
+3) "all" collection kehtib ainult "document" jaoks.
+4) "innerText" - i ei tunta.
+5) "execScript" - i pole.
+6) ("userData" nt) muidugi ka pole.
+7) span-style-width ei tee span-i suuremaks kui tekst tema sees.
+
+x) - ei ole mõttekas tegeleda mitme lehitsejaga!
+
+*/
+
+
+var sAppLang;
+var seldDictIndex;
+var useTestDB;
+
+var DOC_TITLE;
+var WRONG_BROWSER_TXT;
+var DICS;
+var LBL_LANG_ET_TXT;
+var LBL_LANG_EN_TXT;
+var LBL_TESTDB_TXT;
+var SPN_BROWSER_TXT;
+var GO_BTN_TXT;
+
+
+function bodyOnLoad() {
+
+if (window.location.hostname == "localhost") {
+    hallRiba.style.backgroundImage = "url(vista_logo.jpg)";
+    testdb.checked = false;
+    testdb.disabled = true;
+}
+
+try {
+    // siinkohal paneb Firefox pange, sellepärast ka "try"
+    cacheTag.load("loginCache");
+}
+catch(e) {
+    window.status = "'UserData' behaviour not supported, use Internet Explorer.";
+}
+
+// muutujad: kui pole midagi omistatud, siis "undefined". Kui aga on omistatud olematu väärtus, siis "null"
+// võrdlemisel on kama, kas "null" või "undefined"
+sAppLang = cacheTag.getAttribute("sAppLang");
+if (sAppLang == null) sAppLang = 'en';
+
+seldDictIndex = cacheTag.getAttribute("seldDictIndex");
+if (seldDictIndex == null) seldDictIndex = -1; else seldDictIndex = parseInt(seldDictIndex);
+
+useTestDB = cacheTag.getAttribute("useTestDB");
+if (useTestDB == null) useTestDB = 0; else useTestDB = parseInt(useTestDB);
+
+initConst();
+applyConst();
+
+if (seldDictIndex > -1) {
+    sel_dicts.selectedIndex = seldDictIndex;
+    if (document.all.item("goBtn") != null) {
+        goBtn.disabled = false;
+    }
+}
+
+switch (sAppLang) {
+    case "et":
+        lang_et.checked = true;
+        break;
+    case "en":
+        lang_en.checked = true;
+        break;
+    default:
+        break;
+}
+
+testdb.checked = useTestDB;
+
+document.title = 'EELex - login';
+loginSisu.style.visibility = "visible";
+
+ua.innerHTML = '&nbsp;' + window.navigator.userAgent;
+
+} // bodyOnLoad
+
+
+function initConst() {
+    // Eesti-vene sõnaraamat (1997-2009)|evs||
+    // Estonian-Russian dictionary (1997-(2008))|evs||
+switch (sAppLang) {
+    case "et":
+        DOC_TITLE = "EKI sõnastike haldussüsteem EELex";
+        WRONG_BROWSER_TXT = "Kasuta <b>Internet Explorer</b> 7-t või uuemat!";
+        DICS = "Õigekeelsussõnaraamat (ÕS 2006)|qs_||Eesti-läti sõnaraamat|lat||Eesti-leedu sõnaraamat|lit||Eesti-udmurdi sõnaraamat|udm||LEKS-baas|lex||Sõnaperede andmebaas (Silvi Vare)|sp_||Oxfordi-Dudeni piltsõnastik|od_||Vene õpilase ÕS|qqv";
+        LBL_LANG_ET_TXT = "eesti keeles";
+        LBL_LANG_EN_TXT = "inglise keeles";
+        LBL_TESTDB_TXT = "kasuta prooviversiooni";
+        SPN_BROWSER_TXT = "Lehitseja:";
+        DIV_WEB_MASTER = "Süsteemikonsultant: Andres Loopmann [andres.loopmann@eki.ee]";
+        GO_BTN_TXT = "Sisene";
+        break;
+    case "en":
+        DOC_TITLE = "IEL Dictionary Management System EELex";
+        WRONG_BROWSER_TXT = "Please use <b>Internet Explorer</b> 7 or higher!";
+        DICS = "Dictionary of correct usage (ÕS 2006)|qs_||Estonian-Latvian dictionary|lat||Estonian-Lithuanian dictionary|lit||Estonian-Udmurtian dictionary|udm||LEKS-database|lex||Word formation database (Silvi Vare)|sp_||Oxford-Duden pictorial dictionary|od_||Russian student dictionary|qqv";
+        LBL_LANG_ET_TXT = "in Estonian";
+        LBL_LANG_EN_TXT = "in English";
+        LBL_TESTDB_TXT = "use test database";
+        SPN_BROWSER_TXT = "Browser:";
+        DIV_WEB_MASTER = "Web master: Andres Loopmann [andres.loopmann@eki.ee]";
+        GO_BTN_TXT = "Enter";
+        break;
+    default:
+        break;
+}
+} // initConst
+
+
+function applyConst() {
+loginHeading.innerHTML = DOC_TITLE;
+
+var dicsArr = DICS.split('||');
+var i, dicArr, dictsHtml;
+for (i = 0; i < dicsArr.length; i++) {
+    dicArr = dicsArr[i].split('|');
+    dictsHtml += "<option id='" + dicArr[1] + "'>" + dicArr[0] + "</option>";
+}
+var seli = sel_dicts.selectedIndex;
+dictsTD.innerHTML = "<select id='sel_dicts' size='10' style='width:100%' onchange='selDictsOnChange()' ondblclick='selDictsOnDblClick()'>" + dictsHtml + "</select>";
+if (seli > -1)
+    sel_dicts.selectedIndex = seli;
+
+lbl_lang_et.innerHTML = LBL_LANG_ET_TXT;
+lbl_lang_en.innerHTML = LBL_LANG_EN_TXT;
+
+lbl_testdb.innerHTML = LBL_TESTDB_TXT;
+spn_browser.innerHTML = SPN_BROWSER_TXT;
+div_webmaster.innerHTML = DIV_WEB_MASTER;
+
+var gb = document.all("goBtn");
+if (gb != null) gb.value = GO_BTN_TXT;
+
+var wb = document.all("wrongBrowser");
+if (wb != null) wb.innerHTML = WRONG_BROWSER_TXT;
+
+} // applyConst
+
+
+function langChoiceOnClick(evnt) {
+var newLang;
+if (evnt.target == null) // IE
+    newLang = evnt.srcElement.value;
+else // Mozilla
+    newLang = evnt.target.value;
+
+if (newLang != sAppLang) {
+    sAppLang = newLang;
+    initConst();
+    applyConst();
+}
+} // langChoiceOnClick
+
+
+function selDictsOnChange() {
+if (sel_dicts.selectedIndex > -1)
+    goBtn.disabled = false;
+} // selDictsOnChange
+
+
+function selDictsOnDblClick() {
+goFn();
+} // selDictsOnDblClick
+
+
+function goFn() {
+cacheTag.setAttribute("sAppLang", sAppLang);
+
+//var actStr = "__shs";
+//if (testdb.checked) {
+//    cacheTag.setAttribute("useTestDB", 1);
+//    actStr += "_test";
+//}
+//else {
+//    cacheTag.setAttribute("useTestDB", 0);
+//}
+//actStr += "/art_";
+
+//var s = document.all("sel_dicts");
+//if (s.selectedIndex > -1) {
+//    cacheTag.setAttribute("seldDictIndex", s.selectedIndex);
+//    var o = s.options[s.selectedIndex].id;
+//    actStr += o;
+//    sdata.app_id.value = o;
+//}
+//actStr += ".cgi";
+
+
+var actStr = "";
+var s = document.all("sel_dicts");
+if (s.selectedIndex > -1) {
+    cacheTag.setAttribute("seldDictIndex", s.selectedIndex);
+    var o = s.options[s.selectedIndex].id;
+    sdata.app_id.value = o;
+    actStr += o;
+}
+actStr += "login.cgi";
+
+try {
+    // siinkohal paneb Firefox pange, sellepärast ka "try"
+    cacheTag.save("loginCache");
+}
+catch(e) {
+    window.status = "'UserData' behaviour not supported, use Internet Explorer.";
+}
+
+//sdata.app_lang.value = sAppLang;
+//if (sdata.app_id.value == 'evs')
+//    sdata.action = 'evslogin.cgi';
+//else
+//    sdata.action = actStr;
+
+sdata.action = actStr;
+if (ua.innerHTML.indexOf('MSIE') > -1)
+    sdata.submit();
+} // goFn
+
+
+function goBtnOnClick() {
+goFn();
+} // goBtnOnClick
+
+
+-->
+    </script>
+</head>
+<body onload="bodyOnLoad()" background="redtextb.jpg">
+
+<div id="piltDiv" style="background-color:rosybrown;width:100%;padding:10 0 5 10">
+    <img id="rmtd" src="dictionary.gif" />
+</div>
+
+<hr />
+
+<div id="loginSisu" style="visibility:hidden">
+    <table align="center" width="75%" border="0">
+        <tr>
+            <td colspan="2">
+                <h1 id="loginHeading"></h1>
+            </td>
+        </tr>
+        <tr>
+            <td id="dictsTD" width="50%">
+                <select id="sel_dicts" size="10"></select>
+            </td>
+            <td valign="top">
+                <table border="0">
+                    <tr>
+                        <td><img id="img_ee" src="ee.gif" width="24" /></td>
+                        <td>
+                            <input id="lang_et" name="lang_choice" type="radio" value="et" onclick="langChoiceOnClick(event)" />
+                            <label id="lbl_lang_et" for="lang_et"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><img id="img_uk" src="uk.gif" width="24" /></td>
+                        <td>
+                            <input id="lang_en" name="lang_choice" type="radio" value="en" onclick="langChoiceOnClick(event)" />
+                            <label id="lbl_lang_en" for="lang_en"></label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input id="testdb" type="checkbox" />
+                <label id="lbl_testdb" for="testdb"></label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <!--[if gte IE 7]>
+                    <br />
+                    <input id="goBtn" type="button" style="width:20mm" onclick="goBtnOnClick()" disabled />
+                    <br />
+                    <br />
+                <![endif]-->
+
+                <![if !gte IE 7]>
+                <p id="wrongBrowser" style="color:Red"></p>
+                <![endif]>
+            </td>
+        </tr>
+    </table>
+
+    <hr />
+
+    <div id="hallRiba" style="WIDTH:100%;HEIGHT:70px;BACKGROUND-COLOR:silver" align="center" ></div>
+
+    <br />
+
+    <DIV style="width:100%">
+        <span id="spn_browser" style="font-size:medium;width:20mm"></span>
+        <span id="ua" style="color:gray;font-size:small"></span>
+    </DIV>
+    <br />
+    <div id="div_webmaster" style="font-size:x-small;"></div>
+    <br />
+    <br />
+    <br />
+    <br />
+    <div style="font-size:x-small;">Copyright © Eesti Keele Instituut</div>
+</div>
+
+<shs:cacher id="cacheTag"></shs:cacher>
+
+<form name="sdata" method="post">
+	<input id="app_id" name="app_id" type="hidden">
+	<input id="app_lang" name="app_lang" type="hidden">
+</form>
+
+</body>
+</html>

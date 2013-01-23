@@ -1,0 +1,418 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>EELex sätted</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+
+    <script type="text/javascript">
+
+
+        var PD = "\uE001";
+        var dic_desc, sAppLang, retVal, usrName, smdArgs;
+        var eeLexAdmin;
+        var msIE = false;
+
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnLoad() {
+            if (navigator.userAgent.indexOf("MSIE") > -1)
+                msIE = true;
+
+            if (!msIE)
+                return;
+
+            var inArr;
+            // showModalDialog, open; Opera-l pole 'showModalDialog'-i, tuleb <iframe>-ina <div>-is
+            if (window.showModalDialog) {
+                if (navigator.userAgent.indexOf("Chrome") > -1)
+                    document.body.setAttribute("onblur", "this.focus()");
+                inArr = window.dialogArguments.split(PD);
+            }
+            else { // Opera
+                var tekst = window.parent.document.getElementById("spn_eeLexDlgParms").innerHTML;
+                inArr = tekst.split(PD);
+            }
+            dic_desc = inArr[0];
+            sAppLang = inArr[1];
+            usrName = inArr[3];
+
+            var oConfigDOM;
+            if (!(oConfigDOM = IDD("File", "../shsconfig_" + dic_desc + ".xml", false, false, null)))
+                return;
+
+            chkSetKeyboard.checked = jsStringToBoolean(xmlElementTextValue(oConfigDOM.documentElement.getElementsByTagName("cfgSetKeyboard")[0]));
+            chkDoSpellCheck.checked = jsStringToBoolean(xmlElementTextValue(oConfigDOM.documentElement.getElementsByTagName("do_spellcheck")[0]));
+            chkUseMorfo.checked = jsStringToBoolean(xmlElementTextValue(oConfigDOM.documentElement.getElementsByTagName("cfgUseMorfo")[0]));
+
+            var confElem = oConfigDOM.documentElement.getElementsByTagName("msg")[0];
+            if (confElem) {
+                if (confElem.getAttribute("type") == "stop") {
+                    chkLukusta.checked = true;
+                }
+            }
+            confElem = oConfigDOM.documentElement.getElementsByTagName("newArtDlg")[0];
+            if (confElem) {
+                chkNewArtDlg.checked = jsStringToBoolean(xmlElementTextValue(confElem));
+            }
+            else {
+                chkNewArtDlg.checked = true;
+            }
+            confElem = oConfigDOM.documentElement.getElementsByTagName("mustBeUnique")[0];
+            if (confElem) {
+                chkMustBeUnique.checked = jsStringToBoolean(xmlElementTextValue(confElem));
+            }
+            else {
+                chkMustBeUnique.checked = true;
+            }
+
+            var shsConf = IDD("File", "../shsConfig.xml", false, false, null);
+            eeLexAdmin = xmlElementTextValue(shsConf.documentElement.getElementsByTagName("eeLexAdmin")[0]);
+
+            if (eeLexAdmin.indexOf(";" + usrName + ";") > -1) {
+                tdLukusta.style.visibility = "visible";
+                tdNewArtDlg.style.visibility = "visible";
+                tdMustBeUnique.style.visibility = "visible";
+                btnFonts.disabled = false;
+            }
+
+            var pageName = "eelex_setup.htm";
+
+            var constXml = IDD("File", "const.xml", false, false, null);
+
+            document.title = constXml.documentElement.selectSingleNode("p[@n = '" + pageName + "']/itm[@n = 'title'][@l = '" + sAppLang + "']").text
+
+            var useKbCh, useSpChk, useRPMTxt, morfAnaSetup, morfSynSetup, btnCancelText;
+            useKbCh = constXml.documentElement.selectSingleNode("p[@n = '" + pageName + "']/itm[@n = 'useKbChanger'][@l = '" + sAppLang + "']").text;
+            useKbChanger.innerText = useKbCh
+
+            useSpChk = constXml.documentElement.selectSingleNode("p[@n = '" + pageName + "']/itm[@n = 'useSpellCheck'][@l = '" + sAppLang + "']").text;
+            useSpellCheck.innerText = useSpChk
+
+            useRPMTxt = constXml.documentElement.selectSingleNode("p[@n = '" + pageName + "']/itm[@n = 'useRPM'][@l = '" + sAppLang + "']").text;
+            useRPM.innerText = useRPMTxt
+
+//            morfAnaSetup = constXml.documentElement.selectSingleNode("p[@n = '" + pageName + "']/itm[@n = 'morf_ana_setup'][@l = '" + sAppLang + "']").text;
+//            morf_ana_setup.innerText = morfAnaSetup
+
+//            morfSynSetup = constXml.documentElement.selectSingleNode("p[@n = '" + pageName + "']/itm[@n = 'morf_syn_setup'][@l = '" + sAppLang + "']").text;
+//            morf_syn_setup.innerText = morfSynSetup
+
+            btnCancelText = constXml.documentElement.selectSingleNode("p[@n = '" + pageName + "']/itm[@n = 'btnCancelText'][@l = '" + sAppLang + "']").text;
+            btnCancel.value = btnCancelText;
+        } //bodyOnLoad
+
+
+        //-----------------------------------------------------------------------------------
+        function btnMorfSetupOnClick(event) {
+            // globaalsed
+            smdArgs = dic_desc + PD + sAppLang + PD + usrName;
+            retVal = window.showModalDialog("eelex_setup_morfSetup.htm", smdArgs, "dialogHeight:600px;dialogWidth:1024px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no");
+            if (retVal) {
+                window.returnValue = retVal; //annab ka edasi parameetrid;
+                window.close();
+            }
+
+        } // btnMorfSetupOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnKeyUp() {
+            if (event.keyCode == 27) {
+                window.close();
+            }
+        } //bodyOnKeyUp
+
+
+        //-----------------------------------------------------------------------------------
+        function setMorfAnaSetup() {
+            smdArgs = dic_desc + PD + sAppLang + PD + usrName;
+            retVal = window.showModalDialog("eelex_setup_morf_ana.htm", smdArgs, "dialogHeight:400px;dialogWidth:800px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no");
+            if ((retVal)) {
+                window.returnValue = retVal; //annab ka edasi analüüsi parameetrid;
+                window.close();
+            }
+        } //setMorfAnaSetup
+
+
+        //-----------------------------------------------------------------------------------
+        function setMorfSynSetup() {
+            smdArgs = dic_desc + PD + sAppLang + PD + usrName;
+            retVal = window.showModalDialog("eelex_setup_morf_syn.htm", smdArgs, "dialogHeight:768px;dialogWidth:1024px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no");
+            if ((retVal)) {
+                window.returnValue = retVal; //annab ka edasi sünteesi parameetrid;
+                window.close();
+            }
+        } //setMorfSynSetup
+
+
+        //-----------------------------------------------------------------------------------
+        function setPtdSetup() {
+            if (eeLexAdmin.indexOf(";" + usrName + ";") > -1) {
+                smdArgs = dic_desc + PD + sAppLang + PD + usrName + PD + "yes";
+            }else{
+                smdArgs = dic_desc + PD + sAppLang + PD + usrName + PD + "no";
+            }
+            retVal = window.showModalDialog("eelex_setup_confStr.htm", smdArgs, "dialogHeight:400px;dialogWidth:560px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no");
+            if (retVal) {
+                window.returnValue = retVal;
+                window.close();
+            }
+        } //setPtdSetup
+
+
+        //-----------------------------------------------------------------------------------
+        function btnFontsSetup() {
+            smdArgs = dic_desc + PD + sAppLang + PD + usrName;
+            retVal = window.showModalDialog("eelex_setup_fonts.htm", smdArgs, "dialogHeight:200px;dialogWidth:1024px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no");
+            if (retVal) {
+                window.returnValue = retVal;
+                window.close();
+            }
+        }
+
+        //-----------------------------------------------------------------------------------
+        function SetReturnV() {
+            var xh, oRespDom, sta;
+            //"exsaSetField" salvestab ühe välja teksti, "updateXML" asendab DOM kaudu terve elemendi
+            // klaviatuurivahetus
+            xh = exCGISync("../tools.cgi", "exsaSetField" + PD + dic_desc + PD + usrName + PD + "shsconfig_" + dic_desc + ".xml" + PD + "cfgSetKeyboard" + PD + chkSetKeyboard.checked.toString());
+            if ((xh.statusText == "OK")) {
+                oRespDom = xh.responseXML; //responseXML: TypeName = DomDocument;
+                sta = oRespDom.selectSingleNode("rsp/sta").text;
+                if ((sta != "Success")) {
+                    alert("Autom. klav. kasutamise väärtuse salvestamine ei õnnestunud!");
+                    return;
+                }
+            } else {
+                alert(xh.status + ": " + xh.statusText + '\r\n\r\n' + xh.responseText);
+                return;
+            }
+
+            // õigekirjakontroll
+            xh = exCGISync("../tools.cgi", "exsaSetField" + PD + dic_desc + PD + usrName + PD + "shsconfig_" + dic_desc + ".xml" + PD + "do_spellcheck" + PD + chkDoSpellCheck.checked.toString());
+            if ((xh.statusText == "OK")) {
+                oRespDom = xh.responseXML //responseXML: TypeName = DomDocument;
+                sta = oRespDom.selectSingleNode("rsp/sta").text;
+                if ((sta != "Success")) {
+                    alert("Õigekirjakontrolli väärtuse salvestamine ei õnnestunud!");
+                    return;
+                }
+            } else {
+                alert(xh.status + ": " + xh.statusText + '\r\n\r\n' + xh.responseText);
+                return;
+            }
+
+            // morfoloogia kasutamine
+            xh = exCGISync("../tools.cgi", "exsaSetField" + PD + dic_desc + PD + usrName + PD + "shsconfig_" + dic_desc + ".xml" + PD + "cfgUseMorfo" + PD + chkUseMorfo.checked.toString());
+            if ((xh.statusText == "OK")) {
+                oRespDom = xh.responseXML //responseXML: TypeName = DomDocument;
+                sta = oRespDom.selectSingleNode("rsp/sta").text;
+                if ((sta != "Success")) {
+                    alert("Morf. kasutamise väärtuse salvestamine ei õnnestunud!");
+                    return;
+                } else {
+                    xh = exCGISync("../tools.cgi", "exsaSetField" + PD + dic_desc + PD + usrName + PD + "shsconfig_" + dic_desc + ".xml" + PD + "morf_syn" + PD + "checkOnlyExists");
+                    if ((xh.statusText == "OK")) {
+                        oRespDom = xh.responseXML //responseXML: TypeName = DomDocument;
+                        sta = oRespDom.selectSingleNode("rsp/sta").text;
+                        if ((sta == "Success")) {
+                            xh = exCGISync("../tools.cgi", "exsaSetField" + PD + dic_desc + PD + usrName + PD + "shsconfig_" + dic_desc + ".xml" + PD + "morf_ana" + PD + "checkOnlyExists");
+                            if ((xh.statusText == "OK")) {
+                                oRespDom = xh.responseXML //responseXML: TypeName = DomDocument;
+                                sta = oRespDom.selectSingleNode("rsp/sta").text;
+                                if ((sta != "Success")) {
+                                    alert("Morf. 'morf_ana' väärtuse salvestamine ei õnnestunud!");
+                                    return;
+                                }
+                            } else {
+                                alert(xh.status + ": " + xh.statusText + '\r\n\r\n' + xh.responseText);
+                                return;
+                            }
+                        } else {
+                            alert("Morf. 'morf_syn' väärtuse salvestamine ei õnnestunud!");
+                            return;
+                        }
+                    } else {
+                        alert(xh.status + ": " + xh.statusText + '\r\n\r\n' + xh.responseText);
+                        return;
+                    }
+                }
+            } else {
+                alert(xh.status + ": " + xh.statusText + '\r\n\r\n' + xh.responseText);
+                return;
+            }
+
+            if (eeLexAdmin.indexOf(";" + usrName + ";") > -1) {
+                // lukusta
+                xh = exCGISync("../tools.cgi", "exsaSetField" + PD + dic_desc + PD + usrName + PD + "shsconfig_" + dic_desc + ".xml" + PD + "msg" + PD + chkLukusta.checked.toString());
+                if ((xh.statusText == "OK")) {
+                    oRespDom = xh.responseXML;  //responseXML: TypeName = DomDocument;
+                    sta = oRespDom.selectSingleNode("rsp/sta").text;
+                    if ((sta != "Success")) {
+                        alert("Sõnastiku lukustamise salvestamine ei õnnestunud!");
+                        return;
+                    }
+                } else {
+                    alert(xh.status + ": " + xh.statusText + '\r\n\r\n' + xh.responseText);
+                    return;
+                }
+                // uue artikli dialoog
+                xh = exCGISync("../tools.cgi", "exsaSetField" + PD + dic_desc + PD + usrName + PD + "shsconfig_" + dic_desc + ".xml" + PD + "newArtDlg" + PD + chkNewArtDlg.checked.toString());
+                if (xh.statusText == "OK") {
+                    oRespDom = xh.responseXML;  //responseXML: TypeName = DomDocument;
+                    sta = oRespDom.selectSingleNode("rsp/sta").text;
+                    if (sta != "Success") {
+                        alert("Uue artikli dialoogi väärtuse salvestamine ei õnnestunud!");
+                        return;
+                    }
+                } else {
+                    alert(xh.status + ": " + xh.statusText + '\r\n\r\n' + xh.responseText);
+                    return;
+                }
+                // märksõna on unikaalne
+                xh = exCGISync("../tools.cgi", "exsaSetField" + PD + dic_desc + PD + usrName + PD + "shsconfig_" + dic_desc + ".xml" + PD + "mustBeUnique" + PD + chkMustBeUnique.checked.toString());
+                if (xh.statusText == "OK") {
+                    oRespDom = xh.responseXML;  //responseXML: TypeName = DomDocument;
+                    sta = oRespDom.selectSingleNode("rsp/sta").text;
+                    if (sta != "Success") {
+                        alert("Märksõna unikaalsuse väärtuse salvestamine ei õnnestunud!");
+                        return;
+                    }
+                } else {
+                    alert(xh.status + ": " + xh.statusText + '\r\n\r\n' + xh.responseText);
+                    return;
+                }
+            }
+
+        } //SetReturnV
+
+
+        //-----------------------------------------------------------------------------------
+        function btnOkOnClick() {
+            if (msIE)
+                SetReturnV();
+
+            var rets = "eelex_setup" + PD + chkSetKeyboard.checked.toString() + PD + chkDoSpellCheck.checked.toString() + PD + chkUseMorfo.checked.toString();
+            if (window.showModalDialog) {
+                window.returnValue = rets;
+                window.close();
+            }
+            else {
+                window.parent.document.getElementById("spn_eeLexDlgRetVal").firstChild.nodeValue = "eelex_setup" + PD + rets;
+            }
+        } //btnOkOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function btnCancelOnClick() {
+            if (window.showModalDialog) {
+                window.close();
+            }
+            else {
+                window.parent.document.getElementById("spn_eeLexDlgRetVal").firstChild.nodeValue = "0";
+            }
+        } //btnCancelOnClick
+
+
+    </script>
+</head>
+<body style="background-color: buttonface" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()">
+    <div id="id_body" style="padding: 5mm 0 0 10mm;">
+        <table id="tblLinnukesed" border="0">
+            <tr>
+                <td id="tdLukusta" style="visibility: hidden;">
+                    <input tabindex="1" id="chkLukusta" type="checkbox" />
+                    <label id="lblLukusta" for="chkLukusta">
+                        lukusta sõnastik (hooldustöödeks vms)</label>
+                </td>
+            </tr>
+            <tr>
+                <td id="tdNewArtDlg" style="visibility: hidden;">
+                    <input tabindex="2" id="chkNewArtDlg" type="checkbox" />
+                    <label id="lblNewArtDlg" for="chkNewArtDlg">
+                        uue artikli lisamise dialoog</label>
+                </td>
+            </tr>
+            <tr>
+                <td id="tdMustBeUnique" style="visibility: hidden;">
+                    <input tabindex="3" id="chkMustBeUnique" type="checkbox" />
+                    <label id="lblMustBeUnique" for="chkMustBeUnique">
+                        märksõna on unikaalne</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <hr />
+                </td>
+            </tr>
+            <tr>
+                <td id="tdSetKeyboard">
+                    <input tabindex="4" id="chkSetKeyboard" type="checkbox" />
+                    <label id="useKbChanger" for="chkSetKeyboard">
+                        kasuta automaatset klaviatuurivahetust</label>
+                </td>
+            </tr>
+            <tr>
+                <td id="tdDoSpellCheck">
+                    <input tabindex="5" id="chkDoSpellCheck" type="checkbox" />
+                    <label id="useSpellCheck" for="chkDoSpellCheck">
+                        kasuta MS Word õigekirjakontrolli</label>
+                </td>
+            </tr>
+            <tr>
+                <td id="tdUseMorfo">
+                    <input tabindex="6" id="chkUseMorfo" type="checkbox" />
+                    <label id="useRPM" for="chkUseMorfo">
+                        kasuta reeglipõhist morfoloogiat</label>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <table id="tblDialoogid">
+            <tr>
+                <td>
+                    <input type="button" id="ptdSetup" value="Õiguste määramine" onclick="setPtdSetup()"
+                        style="width: 5cm;" />
+                </td>
+                <td>
+                    <input disabled type="button" id="btnFonts" value="Fontide sätted" onclick="btnFontsSetup()"
+                        style="width: 5cm;" />
+                </td>
+            </tr>
+<!--            <tr>
+                <td>
+                    <input type="button" id="morf_ana_setup" value="Morf. analüüsi sätted"
+                        onclick="setMorfAnaSetup()" style="width: 5cm;" />
+                </td>
+                <td>
+                    <input type="button" id="morf_syn_setup" value="Morf. sünteesi sätted"
+                        onclick="setMorfSynSetup()" style="width: 5cm;" />
+                </td>
+            </tr>-->
+            <tr>
+                <td>
+                    <input type="button" id="btnMorfSetup" value="Morf. sätted"
+                        onclick="btnMorfSetupOnClick(event)" style="width: 5cm;" />
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+        <br />
+        <br />
+        <br />
+        <input id="btnOK" onclick="btnOkOnClick()" type="button" value="    OK    " style="width: 3cm" />
+        <input id="btnCancel" onclick="btnCancelOnClick()" type="button" value="  Loobu  "
+            style="width: 3cm" />
+    </div>
+</body>
+</html>

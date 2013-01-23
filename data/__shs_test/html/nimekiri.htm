@@ -1,0 +1,298 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+	<title>Loend</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+
+    <script type="text/javascript">
+
+
+        var JR = "\uE001";
+        var dic_desc, sAppLang, usrName, cmdId;
+
+        var gendXslStandard, gendXslNimi;
+
+//        var eeLexAdmin;
+
+        var msIE = false;
+
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnLoad() {
+            if (navigator.userAgent.indexOf("MSIE") > -1)
+                msIE = true;
+
+            if (!msIE)
+                return;
+
+            //            var yldConfDom = IDD("File", "../shsConfig.xml", false, false, null);
+            //            eeLexAdmin = xmlElementTextValue(yldConfDom.documentElement.getElementsByTagName("eeLexAdmin")[0]);
+
+            //            if (eeLexAdmin.indexOf(";" + usrName + ";") > -1) {
+            //            }
+
+            var inArr = window.dialogArguments.split(JR);
+            dic_desc = inArr[0];
+            sAppLang = inArr[1];
+            usrName = inArr[2];
+            cmdId = inArr[3];
+
+            if (cmdId == "näitaVaateid") {
+
+                var dirName, filePtrn;
+                dirName = inArr[4];
+                filePtrn = inArr[5];
+                gendXslNimi = inArr[6];
+
+                gendXslStandard = "gendView_" + dic_desc;
+
+                var xh, rspDOM, loadStatus, sta;
+                var ix, opt, tekst, n;
+
+                xh = exCGISync("../tools.cgi", "getFiles" + JR + dic_desc + JR + usrName + JR +
+                        dirName + JR +
+                        filePtrn);
+
+                if (xh.statusText == "OK") {
+                    rspDOM = IDD("", "", false, false, null);
+                    loadStatus = rspDOM.load(xh.responseXML); //'responseXML: TypeName = DomDocument
+
+                    if (loadStatus) {
+                        var fNodes = rspDOM.selectNodes("rsp/outDOM/f");
+                        if (fNodes.length == 0) {
+                            alert("Põhivaade (\"Standard\") on veel salvestamata!");
+                            window.close();
+                            return;
+                        }
+
+                        for (ix = 0; ix < fNodes.length; ix++) {
+                            tekst = fNodes[ix].text;
+                            n = tekst.substr(0, tekst.lastIndexOf("."));
+                            if (n != gendXslStandard) {
+                                opt = document.createElement("OPTION");
+                                selLoend.options.add(opt);
+                                opt.id = tekst;
+                                if (n == gendXslNimi) {
+                                    opt.selected = true;
+                                }
+                                opt.innerHTML = n.substr(gendXslStandard.length + 1); // allkriips alguses
+                            }
+                        }
+                    }
+                    else {
+                        alert(xh.status + ": " + xh.statusText + xh.responseText);
+                    }
+                }
+                else {
+                    alert(xh.status + ": " + xh.statusText + xh.responseText);
+                }
+            }
+
+        } //bodyOnLoad
+
+
+        //-----------------------------------------------------------------------------------
+        function btnLisaOnClick() {
+            var tekst = jsTrim(inp_UusTekst.value);
+            if (!tekst) {
+                return;
+            }
+
+            var opt = document.createElement("OPTION");
+            selLoend.options.add(opt);
+            var uusTekst = gendXslStandard + "_" + tekst;
+            opt.id = uusTekst + ".xsl";
+            opt.selected = true;
+            opt.innerHTML = tekst;
+            opt.setAttribute("lubatud", true);
+        } // btnLisaOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function SetReturnV() {
+            var ix = selLoend.selectedIndex;
+            if (ix < 0) {
+                return;
+            }
+
+            var opt = selLoend.options(ix);
+            var lubatud = opt.getAttribute("lubatud");
+
+            if (!lubatud) {
+                return;
+            }
+
+            var nimi = opt.id;
+            var saba = nimi.substr(0, nimi.lastIndexOf("."));
+            saba = saba.substr(gendXslStandard.length);
+
+            window.returnValue = saba.substr(1);
+            window.close();
+
+        } //SetReturnV
+
+
+        //-----------------------------------------------------------------------------------
+        function btnDeleteOnClick() {
+            var ix = selLoend.selectedIndex;
+            if (ix < 0) {
+                return;
+            }
+
+            var opt = selLoend.options(ix);
+            var tekst = opt.innerHTML;
+            var ret = window.confirm("Soovid vaate '" + tekst + "' kustutada?")
+            if (!ret) {
+                return;
+            }
+
+            var nimi = opt.id;
+            var n = nimi.substr(0, nimi.lastIndexOf("."));
+            var saba = n.substr(gendXslStandard.length);
+
+            if (n == gendXslNimi) {
+                alert("Genereeritavat kustutada ei saa!");
+                return;
+            }
+
+
+            var xh, rspDOM, loadStatus, sta;
+            var myStatus = 0;
+
+            xh = exCGISync("../tools.cgi", "deleteFile" + JR + dic_desc + JR + usrName + JR +
+                        "xsl/" + n + ".xsl");
+            if (xh.statusText == "OK") {
+                rspDOM = IDD("", "", false, false, null);
+                loadStatus = rspDOM.load(xh.responseXML); //responseXML: TypeName = DomDocument
+                if (loadStatus) {
+                    var sta = rspDOM.selectSingleNode("rsp/sta").text;
+                    if (sta == "Success") {
+                        myStatus = 1;
+                    } else {
+                        alert("[xsl] Operatsiooni staatus serveris: " + sta);
+                    }
+                } else {
+                    alert("[xsl] Vastuse laadimise viga: " + rspDOM.parseError.reason);
+                }
+            } else {
+                alert("[xsl] " + xh.status + ": " + xh.statusText + "\n\n" + xh.responseText);
+            }
+
+
+            if (myStatus == 1) {
+                xh = exCGISync("../tools.cgi", "deleteFile" + JR + dic_desc + JR + usrName + JR +
+                        "css/" + n + ".css");
+                if (xh.statusText == "OK") {
+                    rspDOM = IDD("", "", false, false, null);
+                    loadStatus = rspDOM.load(xh.responseXML); //responseXML: TypeName = DomDocument
+                    if (loadStatus) {
+                        var sta = rspDOM.selectSingleNode("rsp/sta").text;
+                        if (sta == "Success") {
+                            myStatus = 2;
+                        } else {
+                            alert("[css] Operatsiooni staatus serveris: " + sta);
+                        }
+                    } else {
+                        alert("[css] Vastuse laadimise viga: " + rspDOM.parseError.reason);
+                    }
+                } else {
+                    alert("[css] " + xh.status + ": " + xh.statusText + "\n\n" + xh.responseText);
+                }
+            }
+
+
+            if (myStatus == 2) {
+                xh = exCGISync("../tools.cgi", "deleteFile" + JR + dic_desc + JR + usrName + JR +
+                        "config/view/gendViewConf_" + dic_desc + saba + ".xml");
+                if (xh.statusText == "OK") {
+                    rspDOM = IDD("", "", false, false, null);
+                    loadStatus = rspDOM.load(xh.responseXML); //responseXML: TypeName = DomDocument
+                    if (loadStatus) {
+                        var sta = rspDOM.selectSingleNode("rsp/sta").text;
+                        if (sta == "Success") {
+                            myStatus = 3;
+                        } else {
+                            alert("[xml] Operatsiooni staatus serveris: " + sta);
+                        }
+                    } else {
+                        alert("[xml] Vastuse laadimise viga: " + rspDOM.parseError.reason);
+                    }
+                } else {
+                    alert("[xml] " + xh.status + ": " + xh.statusText + "\n\n" + xh.responseText);
+                }
+            }
+
+
+            if (myStatus == 3) {
+                alert("Failide kustutamine OK!");
+                window.returnValue = "___kustutati___";
+                window.close();
+            }
+
+
+        } // btnDeleteOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function btnOkOnClick() {
+            SetReturnV();
+        } //btnOkOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function btnCancelOnClick() {
+            window.close();
+        } //btnCancelOnClick
+
+
+        //-----------------------------------------------------------------------------------
+        function bodyOnKeyUp() {
+            if (event.keyCode == 27) {
+                window.close();
+            }
+        } //bodyOnKeyUp
+
+
+    </script>
+</head>
+<body style="background-color: buttonface" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()">
+    <div id="divBody" style="width: 100%; padding: 5mm 10mm 0 10mm;">
+        <table id="tblNimekiri" border="1" style="width:100%;">
+            <tr>
+                <td colspan="2">Sisesta mingi mõtet omav nimi, nt 'Eest-läti' või 'Ainult päised' vms!</td>
+            </tr>
+            <tr>
+                <td style="width:75%;">
+                    <input id='inp_UusTekst' type='text' value='' style="width:100%;" />
+                </td>
+                <td style="width:4cm;">
+                    <input id="btnLisa" onclick="btnLisaOnClick()" type="button" value="Lisa" style="width: 3cm" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="selLoend" size="8" style="width:100%;" ondblclick="SetReturnV()"></select>
+                </td>
+                <td style="width:4cm;">
+                    <input id="btnOK" onclick="btnOkOnClick()" type="button" value="Vali" style="width: 3cm" />
+                    <br />
+                    <input id="btnDelete" onclick="btnDeleteOnClick()" type="button" value="Kustuta"style="width: 3cm" />
+                    <br />
+                    <br />
+                    <br />
+                    <input id="btnCancel" onclick="btnCancelOnClick()" type="button" value="Loobu"style="width: 3cm" />
+                </td>
+            </tr>
+        </table>
+        <br />
+    </div>
+</body>
+</html>

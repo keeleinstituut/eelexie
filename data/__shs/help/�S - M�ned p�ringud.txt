@@ -1,0 +1,90 @@
+﻿NB! Operaatorid peavad olema eraldatud tühjaga! (07. detsember 2005)
+-> Tõstutundlikkus välja, sümbolid sisse (mida täpsemalt tead, seda kiirem on otsing)
+
+
+
+1) märkusi, mis on teinud Tuuli:
+	q:art -> §q:toimetaja = 'TRehemaa' and q:markus
+VÕI	q:art -> §q:toimetaja = 'TRehemaa' and q:markus = '*'
+
+2) Kaja poolt lisatud artikleid:
+	q:autor -> KKruusmaa
+VÕI	q:art -> §q:autor = 'KKruusmaa'
+
+3) (Tuuli poolt) parandatud artikleid, mis sisaldavad elementi <b>, välja arvatud kui 
+<b> = 'mitm':
+	q:art -> §q:toimetaja = 'TRehemaa' and q:b != 'mitm'
+		- artiklis leidub vähemalt üks <b>, mis ei ole 'mitm'.
+VÕI	q:art -> §q:toimetaja = 'TRehemaa' and not(q:b = 'mitm')
+		- artiklis ei ole ühtegi <b>, mis oleks 'mitm'.
+VÕI	q:art -> §q:toimetaja = 'TRehemaa' and q:hdr/q:m_grp/q:b != 'mitm'
+		- päise märksõna grupi <b> on muud kui 'mitm', teised suvalised.
+
+4) artiklid, milles sisaldub &eml; ja toimetaja on TRehemaa:
+	q:art -> §q:toimetaja = 'TRehemaa' and = '*&eml;*'
+		- kui elemendi nimi puudub, kehtib tingimus valitud elemendi,
+		- praegu <art> kohta.
+VÕI	q:art -> §q:toimetaja = 'TRehemaa' and q:hdr/q:varm_grp/q:a = '*&eml;*'
+		- ainult hdr/varm_grp/a - s sisaldub '&eml;'.
+
+5) artiklid, kus rektsioon (hdr/m_grp/r) on 'millega':
+	q:r   -> millega
+		- 22 artiklit (07. detsember 2005, testandmebaas)
+
+6) artiklid, kus vähemalt üks hdr/m_grp/r ei ole 'millega':
+	q:r   -> § != 'millega'
+		- kahjuks see r saab max ühe korra olla: mõne teise elemendi, mille max > 1,
+		- saaks vahet jälgida: 95 artiklit (07. detsember 2005)
+
+7) artiklid, milles pole ühtegi hdr/m_grp/r, mis oleks 'millega':
+	q:r   -> §not( = 'millega')
+		- 95 artiklit (07. detsember 2005, , testandmebaas)
+
+8) artiklid, milles ükskõik mis element lõpeb komaga:
+	*     -> *,
+		- 3357 artiklit (07. detsember 2005, , testandmebaas)
+VÕI	q:art -> §* = '*,'
+		- 3357 artiklit (07. detsember 2005, , testandmebaas)
+
+9) artiklid, milles ükskõik mis element peale <kvm> lõpeb komaga:
+	q:art -> §!q:kvm = '*,'
+		- 8 artiklit (07. detsember 2005, , testandmebaas)
+		- muide, see toob välja ka artiklid, kus tah_grp koosneb AINULT kvm-ist,
+		- seega on olemas element <tah_grp>, mis lõpeb komaga kui <kvm>
+		- lõpeb komaga ...
+
+10) artiklid, milles tähenduse tsooni paariliste arv ei vasta päise tsooni paariliste arvule:
+	q:art -> § count(q:hdr//*[@q:soov='hv'])!=count(q:tahendus//*[@q:soov='tp'])
+		- 18 artiklit
+
+11) artiklid, kus päise oma paariliste arv ei klapi:
+	q:art -> § count(q:hdr//*[@q:soov='hv'])!=count(q:hdr//*[@q:soov='tp']) and not(q:tahendus//*[@q:soov])
+		- 12 artiklit (on kõik need, kus tähenduses pole ja päises on üks; kõik on eelmises päringus loetletud)
+
+12) artiklid, kus tähenduse oma paariliste arv ei klapi:
+	q:art -> § count(q:tahendus//*[@q:soov='hv'])!=count(q:tahendus//*[@q:soov='tp']) and not(q:hdr//*[@q:soov])
+		- 0 artiklit
+
+13) artiklid, kus paariliste arv näidete tsoonis ei klapi:
+	q:art -> § count(q:naited//*[@q:soov='hv'])!=count(q:naited//*[@q:soov='tp'])
+		- 13 artiklit
+
+14) artiklid, kus näidete tsoonis ei järgne paarilisele kohe oma paariline:
+	q:art -> § q:naited//*[@q:soov='hv']/following-sibling::*[1][not(@q:soov='tp')]
+		- 2 artiklit (olid ka eelmises)
+
+15) artiklid, kus t_grp t-le eelneb k1='ei soovita tähenduses:' ning t/type ei ole 'ei':
+	q:art -> § q:tahendus//q:t_grp/q:k1[.='ei soovita tähenduses:']/following-sibling::q:t[not(@q:type='ei')]
+		- 0 artiklit
+
+16) viit kuhu=" ... " viitab olematule märksõnale (Nt dekk)
+	q:art -> § .//@q:kuhu[not(.=ancestor::q:sr//q:m)]
+		- 
+
+17) artiklid, milles on näite lõpus . või ? või ! ja järgneb q:viited:
+	q:art -> §(.//q:nl = '*.' or .//q:nl = '*?' or .//q:nl = '*!') and q:viited
+		- 109 artiklit
+
+18) artiklid, kus mitte-esimeses märkõnas on vähemalt 2 liitsõnapiiri /:
+	q:art -> §q:hdr/q:m_grp[position()>1]/q:m[contains(substring-after(.,'/'),'/')]
+		- 53 artiklit

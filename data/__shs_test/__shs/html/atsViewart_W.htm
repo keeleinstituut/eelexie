@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Artikkel</title>
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann" />
+    <meta name="author" content="Andres Loopmann" />
+    <meta name="keywords" content="EELex, sõnastik, dictionary" />
+    <script type="text/javascript" src="ats_app.js"></script>
+    <script type="text/javascript">
+        //-----------------------------------------------------------------------------------
+        function changeTest() {
+            var inarr = window.dialogArguments;
+            valaDiv.innerHTML = inarr[1];
+            var Index = document.menuForm.zzVMenu.options[document.menuForm.zzVMenu.selectedIndex].value;
+ 
+            alert("+1=" + inarr[1] + " +2=" + Index);
+ 
+    
+        } // changeTest
+        //-----------------------------------------------------------------------------------
+        function bodyOnLoad() {
+           var inarr = window.dialogArguments;
+           valaDiv.innerHTML = inarr[1];
+        } // bodyOnLoad
+        //-----------------------------------------------------------------------------------
+        function valaOnClick(event) {
+            //alert("OK111");
+            //parent.handleView(event);
+            //cancelThisEvent(event);
+        } // valaOnClick
+        //-----------------------------------------------------------------------------------
+    </script>
+    <style id="valaCss"></style>
+</head>
+<body style="background-color: #deeaf8;" onload="bodyOnLoad()">
+<form name="menuForm" id="menuForm" method="post" action="">
+  <table width="100%" border="0">
+    <tr>
+      <td><div align="center">Millisele artiklile soovid viidata : 
+          <select name="zzVMenu" size="1" id="zzVMenu" onchange="changeTest()">
+            <option value="1" selected>baar 1</option>
+            <option value="2">baar 2</option>
+            <option value="3">baar 3</option>
+          </select>
+          <input type="submit" name="zzGo" id="zzGo" value="Vali artikkel">
+      </div>
+        <label for="zzVMenu"></label>
+        <div align="center"></div></td>
+    </tr>
+  </table>
+</form>
+<table width="100%" border="0">
+  <tr>
+    <td style="background-color: #99CCFF; color: #FFF; font-weight: bold;">Artikkel :</td>
+  </tr>
+  <tr>
+    <td><div id="valaDiv"></div></td>
+  </tr>
+</table>
+
+</body>
+</html>

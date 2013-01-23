@@ -1,0 +1,16 @@
+Options -Indexes
+AuthType Digest
+
+
+
+AuthName "'SHS'"
+
+AuthUserFile /var/www/EELex/shs_users/shs_digest_users.txt
+
+AuthGroupFile /var/www/EELex/shs_users/shs_groups.txt
+
+<Files shs_login.cgi>
+
+    Require valid-user
+
+</Files> 

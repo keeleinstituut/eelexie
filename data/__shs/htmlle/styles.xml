@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<css>
+  <item id="background-color">
+	  <value id="#00FFFF">aqua</value>
+	  <value id="#000000">black</value>
+	  <value id="#0000FF">blue</value>
+	  <value id="#FF00FF">fuchsia</value>
+	  <value id="#808080">gray</value>
+	  <value id="#008000">green</value>
+	  <value id="#00FF00">lime</value>
+	  <value id="#800000">maroon</value>
+	  <value id="#000080">navy</value>
+	  <value id="#808000">olive</value>
+	  <value id="#800080">purple</value>
+	  <value id="#FF0000">red</value>
+	  <value id="#C0C0C0">silver</value>
+	  <value id="#008080">teal</value>
+	  <value id="#FFFFFF">white</value>
+	  <value id="#FFFF00">yellow</value>
+  </item>
+  <item id="color">
+  </item>
+  <item id="font-family">
+  </item>
+  <item id="font-size">
+    <value>xx-small</value>
+    <value>x-small</value>
+    <value>small</value>
+    <value>medium</value>
+    <value>large</value>
+    <value>x-large</value>
+    <value>xx-large</value>
+  </item>
+  <item id="font-style">
+    <value>normal</value>
+    <value>italic</value>
+  </item>
+  <item id="font-weight">
+    <value>normal</value>
+    <value>bold</value>
+    <value>bolder</value>
+    <value>lighter</value>
+  </item>
+  <item id="text-decoration">
+    <value>none</value>
+    <value>underline</value>
+    <value>overline</value>
+    <value>line-through</value>
+  </item>
+  <item id="text-transform">
+    <value>none</value>
+    <value>capitalize</value>
+    <value>lowercase</value>
+    <value>uppercase</value>
+  </item>
+</css>

@@ -1,0 +1,763 @@
+﻿<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title></title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+   
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+    <script type="text/javascript" src="res_xml.js"></script>
+    <script type="text/vbscript">
+<!--
+Option Explicit
+
+Const NO_BREAK_SPACE = "&#x00a0;"
+Const EMPTY_SET = "&#x2205;"
+Const INFINITY_HTML = "&#x221e;"
+
+'"joiner"
+Dim JR
+Dim TDA
+Dim taane
+
+Dim dic_desc
+Dim sAppLang
+Dim DICPR
+Dim DICURI
+
+Dim oXsdDOM, oXsdNsm
+
+Dim oEditDOM, oXmlSc, oSchRootElems, oSchRootAttrs, oSchRootTypes
+
+Dim mainApp
+Dim impSchemaLocations
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+
+JR = ChrW(&HE001)
+TDA = ChrW(&HE002)
+'taane = ChrW(&H2022) & String(2, ChrW(&H00A0))
+taane = "|" & String(2, ChrW(&H00A0))
+
+Dim i, sPr, sUri, oNsNodeList, sXsdNsList, oXsdSc, xsd_file, sAppDesc
+set mainApp = window.opener
+dic_desc = mainApp.dic_desc
+sAppLang = mainApp.sAppLang
+DICPR = mainApp.DICPR
+DICURI = mainApp.DICURI
+sAppDesc = "{" & dic_desc & "}"
+set impSchemaLocations = mainApp.impSchemaLocations
+
+Dim lc
+set lc = langConst.all("langConst_" & sAppLang)
+Call window.execScript(lc.innerText, "JScript")
+
+xsd_file = "xsd/schema_" & dic_desc & ".xsd"
+
+set oXsdDOM = IDD("File", "../" & xsd_file, False, False, Nothing)
+if (oXsdDOM.parseError.errorCode <> 0) then
+	Call ShowXMLParseError(oXsdDOM)
+	Exit Sub
+end if
+
+set oXsdNsm = CreateObject("Msxml2.MXNamespaceManager.6.0")
+oXsdNsm.allowOverride = True
+set oNsNodeList = oXsdDOM.documentElement.selectNodes("namespace::node()")
+for i = 0 to oNsNodeList.length - 1
+	if (oNsNodeList(i).prefix <> "") then 'default namespace - t ei regita
+		if (oNsNodeList(i).baseName <> "xml") then
+			Call oXsdNsm.declarePrefix(oNsNodeList(i).baseName, oNsNodeList(i).value)
+		end if
+	end if
+next
+
+'Ühtlasi ka nimeruumide loetelu
+sXsdNsList = ""
+
+for each sPr in oXsdNsm.getDeclaredPrefixes
+	sUri = oXsdNsm.getURI(sPr)
+    Call AddRowToTable(ns_table, sPr & JR & sUri, "")
+	if (sPr <> "xml") then
+		sXsdNsList = sXsdNsList & " xmlns:" & sPr & "='" & sUri & "'"
+	end if
+next
+oXsdDOM.setProperty "SelectionLanguage", "XPath"
+oXsdDOM.setProperty "SelectionNamespaces", Trim(sXsdNsList)
+
+set oXsdSc = CreateObject("Msxml2.XMLSchemaCache.6.0")
+oXsdSc.validateOnLoad = True
+Call oXsdSc.Add(DICURI, "../" & xsd_file)
+
+Dim sEditDOMString
+sEditDOMString = "<" & DICPR & ":sr xml:lang='et' xmlns:" & DICPR & "='" & DICURI & "' />"
+
+set oEditDOM = IDD("String", sEditDOMString, False, False, oXsdSc)
+if (oEditDOM.parseError.errorCode <> 0) then
+	Call ShowXMLParseError(oEditDOM)
+	Exit Sub
+end if
+oEditDOM.setProperty "SelectionLanguage", "XPath"
+oEditDOM.setProperty "SelectionNamespaces", Trim(sXsdNsList)
+
+set oXmlSc = oEditDOM.namespaces
+set oSchRootElems = oXmlSc.getSchema(DICURI).elements
+set oSchRootAttrs = oXmlSc.getSchema(DICURI).attributes
+set oSchRootTypes = oXmlSc.getSchema(DICURI).types
+
+Dim xsdNodes, xsdNode, oParticle, sItemQN, sXsdXPath, docNode, sKirjeldav
+Dim tyybid, baasTyyp, bt2, loend, itmEnum, maskid, mask, dispMask, maskTitle, editDOMNode
+
+'Atribuutide loetelu
+set xsdNodes = oXsdDOM.documentElement.selectNodes(".//" & NS_XS_PR & ":attribute[@name]")
+for each xsdNode in xsdNodes
+    'skeemis on alati määratud "targetNamespace" ning default ns ei kasuta
+    sItemQN = DICPR & ":" & xsdNode.getAttribute("name")
+    set editDOMNode = oEditDOM.createNode(NODE_ATTRIBUTE, sItemQN, DICURI)
+    set oParticle = oXmlSc.getDeclaration(editDOMNode)
+	sXsdXPath = NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang='" & sAppLang & "']"
+    set docNode = xsdNode.selectSingleNode(sXsdXPath)
+    if Not (docNode Is Nothing) then
+	    sKirjeldav = docNode.text
+    else
+	    sKirjeldav = sItemQN
+    end if
+
+    tyybid = ""
+    if (oParticle.type.namespaceURI = NS_XS) then
+        tyybid = oParticle.type.name
+    else
+        if (oParticle.type.baseTypes.length > 0) then
+            for each baasTyyp in oParticle.type.baseTypes
+                tyybid = tyybid & ", " & baasTyyp.name
+            next
+            tyybid = Mid(tyybid, 3)
+        else
+            tyybid = "?"
+        end if
+    end if
+    
+    loend = ""
+    if (oParticle.type.enumeration.length > 0) then
+        for each itmEnum in oParticle.type.enumeration
+            loend = loend & ", '" & itmEnum & "'"
+        next
+        loend = Mid(loend, 3)
+    else
+        loend = "-"
+    end if
+    
+    maskid = ""
+    if (oParticle.type.patterns.length > 0) then
+        for each mask in oParticle.type.patterns
+            maskid = maskid & ", '" & mask & "'"
+        next
+        maskid = Mid(maskid, 3)
+    else
+        maskid = "-"
+    end if
+    if (Len(maskid) > 50) then
+        dispMask = Mid(maskid, 1, 50) & " ...'"
+        maskTitle = maskid
+    else
+        dispMask = maskid
+        maskTitle = ""
+    end if
+
+    Call AddRowToTable(attr_table, sKirjeldav & JR & _
+        sItemQN & JR & _
+        tyybid & JR & _
+        loend & JR & _
+        dispMask & TDA & maskTitle, "")
+next
+
+'Lihtelementide loetelu
+Dim lihtElement
+
+set xsdNodes = oXsdDOM.documentElement.selectNodes(".//" & NS_XS_PR & ":element[@name]")
+for each xsdNode in xsdNodes
+    'skeemis on alati määratud "targetNamespace" ning default ns ei kasuta
+    sItemQN = DICPR & ":" & xsdNode.getAttribute("name")
+    set editDOMNode = oEditDOM.createNode(NODE_ELEMENT, sItemQN, DICURI)
+    set oParticle = oXmlSc.getDeclaration(editDOMNode)
+    if (TypeName(oParticle.type) = "ISchemaComplexType") then
+        if (oParticle.type.contentType = SCHEMACONTENTTYPE_TEXTONLY) then
+            lihtElement = true
+        else
+            lihtElement = false
+        end if
+    elseif (TypeName(oParticle.type) = "ISchemaType") then
+        lihtElement = true
+    end if
+
+    if (lihtElement) then
+	    sXsdXPath = NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang='" & sAppLang & "']"
+        set docNode = xsdNode.selectSingleNode(sXsdXPath)
+        if Not (docNode Is Nothing) then
+	        sKirjeldav = docNode.text
+        else
+	        sKirjeldav = sItemQN
+        end if
+
+        tyybid = ""
+        if (oParticle.type.namespaceURI = NS_XS) then
+            tyybid = oParticle.type.name
+        else
+            if (oParticle.type.baseTypes.length > 0) then
+                for each baasTyyp in oParticle.type.baseTypes
+                    if (baasTyyp.namespaceURI = NS_XS) then
+                        tyybid = tyybid & ", " & baasTyyp.name
+                    else
+                        for each bt2 in baasTyyp.baseTypes
+                            tyybid = tyybid & ", " & bt2.name
+                        next
+                    end if
+                next
+                tyybid = Mid(tyybid, 3)
+            else
+                tyybid = "?"
+            end if
+        end if
+        
+        loend = ""
+        if (oParticle.type.enumeration.length > 0) then
+            for each itmEnum in oParticle.type.enumeration
+                loend = loend & ", '" & itmEnum & "'"
+            next
+            loend = Mid(loend, 3)
+        else
+            loend = "-"
+        end if
+        
+        maskid = ""
+        if (oParticle.type.patterns.length > 0) then
+            for each mask in oParticle.type.patterns
+                maskid = maskid & ", '" & mask & "'"
+            next
+            maskid = Mid(maskid, 3)
+        else
+            maskid = "-"
+        end if
+        if (Len(maskid) > 100) then
+            dispMask = Mid(maskid, 1, 100) & " ...'"
+            maskTitle = maskid
+        else
+            dispMask = maskid
+            maskTitle = ""
+        end if
+
+        Call AddRowToTable(elem_table, sKirjeldav & JR & _
+            sItemQN & JR & _
+            tyybid & JR & _
+            loend & JR & _
+            dispMask & TDA & maskTitle, "")
+    end if
+    
+next
+
+'Skeem
+set oParticle = oXmlSc.getDeclaration(oEditDOM.documentElement)
+sPr = oXsdNsm.getPrefixes(oParticle.namespaceURI).Item(0)
+sItemQN = sPr & ":" & oParticle.name
+sXsdXPath = ".//" & NS_XS_PR & ":element[@name='" & oParticle.name & "']/" & NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang='" & sAppLang & "']"
+set docNode = oXsdDOM.documentElement.selectSingleNode(sXsdXPath)
+if Not (docNode Is Nothing) then
+	sKirjeldav = docNode.text
+else
+	sKirjeldav = sItemQN
+end if
+
+Dim sMinSymbol, sMaxSymbol
+sMinSymbol = oParticle.minOccurs
+if (oParticle.maxOccurs = "-1") then
+	sMaxSymbol = ChrW("&H" & Mid(INFINITY_HTML, 4, 4))
+else
+	sMaxSymbol = oParticle.maxOccurs
+end if
+
+Dim tyyp, ct, gt
+Dim nContentType, nGroupType, attrStr, oOrgAttr, sAttrQN
+if (TypeName(oParticle.type) = "ISchemaComplexType") then
+    tyyp = "Ct"
+	nContentType = oParticle.type.contentType
+	if (nContentType = SCHEMACONTENTTYPE_MIXED) then
+	    ct = "Mx"
+	elseif (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+	    ct = "Eo"
+	elseif (nContentType = SCHEMACONTENTTYPE_TEXTONLY) then
+	    ct = "To"
+	elseif (nContentType = SCHEMACONTENTTYPE_EMPTY) then
+	    ct = " "
+	end if
+	'"ISchemaComplexType" korral peaks alati olema TypeName(oParticle.type.contentModel) = "ISchemaModelGroup" ?
+	nGroupType = oParticle.type.contentModel.itemType
+	if (nGroupType = SOMITEM_EMPTYPARTICLE) then
+	    gt = " "
+	elseif (nGroupType = SOMITEM_SEQUENCE) then
+	    gt = "Sq"
+	elseif (nGroupType = SOMITEM_CHOICE) then
+	    gt = "Ch"
+	elseif (nGroupType = SOMITEM_ALL) then
+	    gt = "All"
+	end if
+	if (oParticle.type.attributes.length > 0) then
+		for each oOrgAttr in oParticle.type.attributes
+			sAttrQN = oXsdNsm.getPrefixes(oOrgAttr.namespaceURI).Item(0) & ":" & oOrgAttr.name
+			attrStr = attrStr & " @" & sAttrQN
+			if (oOrgAttr.use = SCHEMAUSE_REQUIRED) then
+			    attrStr = attrStr & "[obl]"
+			end if
+		next
+	end if
+elseif (TypeName(oParticle.type) = "ISchemaType") then
+    tyyp = "St"
+	nContentType = -1
+	nGroupType = -1
+    ct = " "
+    gt = " "
+end if
+
+Call AddRowToTable(schema_table, sKirjeldav & JR & _
+    "<" & sItemQN & attrStr & ">" & JR & _
+    sMinSymbol & ", " & sMaxSymbol & JR & _
+    tyyp & JR & _
+    ct & JR & _
+    gt, "")
+
+
+Files.innerHTML = "<u> Skeemifaili</u>"
+Files_in.innerHTML = "<a href='../"& xsd_file & "'>Skeem</a> <br/><a href='../xsd/" & dic_desc & "/" & dic_desc & "_tyybid.xsd'>Tüübid</a> "
+
+nsHeading.innerHTML = "<u>" & NS_HEADING_TXT & "</u>"
+ns1.innerHTML = NS_1
+ns2.innerHTML = NS_2
+ns_table.addBehavior("sort.htc")
+
+attrsHeading.innerHTML = "<u>" & ATTRS_HEADING_TXT & "</u>"
+att1.innerHTML = ATT_1
+att2.innerHTML = ATT_2
+att3.innerHTML = ATT_3
+att4.innerHTML = ATT_4
+att5.innerHTML = ATT_5
+attr_table.addBehavior("sort.htc")
+
+contentsHeading.innerHTML = "<u>" & CONTENTS_HEADING_TXT & "</u>"
+cont1.innerHTML = ATT_1
+cont2.innerHTML = ATT_2
+cont3.innerHTML = ATT_3
+cont4.innerHTML = ATT_4
+cont5.innerHTML = ATT_5
+elem_table.addBehavior("sort.htc")
+
+schemaHeading.innerHTML = "<u>" & SCHEMA_HEADING_TXT & "</u>"
+sch1.innerHTML = ATT_1
+sch2.innerHTML = ATT_2
+sch3.innerHTML = SCH_3
+sch4.innerHTML = SCH_4
+sch5.innerHTML = SCH_5
+sch6.innerHTML = SCH_6
+
+document.title = sAppDesc & ": " & DOC_TITLE
+pealkiri.innerHTML = "<u>" & sAppDesc & ": " & DOC_TITLE & "</u>"
+
+if (TypeName(oParticle.type) = "ISchemaComplexType") then
+	Call GetSchemaElements(oParticle, sItemQN, 1)
+end if
+
+
+'Defineeritud andmetüübid (defined types)
+if (oSchRootTypes.length > 0) then
+    Dim loendidHTML, oSchRootType, oSchRootTypeType, oEnum
+    Dim ptrn, importDOM
+    loendidHTML = "<br /><hr /><h1>Defineeritud andmetüübid (defined types)</h1>" & vbCrLf
+    For Each oSchRootType in oSchRootTypes
+        If oSchRootType.itemType = SOMITEM_ANYTYPE Then
+            oSchRootTypeType = "built-in complex any type"
+        End If
+        If oSchRootType.itemType = SOMITEM_SIMPLETYPE Then
+            oSchRootTypeType = "simple type"
+        End If
+        If oSchRootType.itemType = SOMITEM_COMPLEXTYPE Then
+            oSchRootTypeType = "complex type"
+        End If
+        If (oSchRootType.itemType and SOMITEM_DATATYPE) = SOMITEM_DATATYPE Then
+            oSchRootTypeType = "built-in type"
+        End If
+        loendidHTML = loendidHTML & "<h2 title='" & oSchRootTypeType & "'>" & oSchRootType.name & "</h2>" & vbCrLf
+        loendidHTML = loendidHTML & "<table border='1' style='width:100%'>" & vbCrLf
+        if (oSchRootType.enumeration.length > 0) then
+            sXsdXPath = ".//" & NS_XS_PR & ":simpleType[@name = '" & oSchRootType.name & "']"
+            if (oSchRootType.namespaceURI <> DICURI) then
+                set importDOM = IDD("File", "../xsd/" & impSchemaLocations.Item(oSchRootType.namespaceURI), False, False, Nothing)
+                importDOM.setProperty "SelectionLanguage", "XPath"
+                importDOM.setProperty "SelectionNamespaces", Trim(sXsdNsList)
+            else
+                set importDOM = oXsdDOM
+            end if
+            set xsdNode = importDOM.documentElement.selectSingleNode(sXsdXPath)
+            for each oEnum in oSchRootType.enumeration
+                loendidHTML = loendidHTML & "<tr>" & vbCrLf
+	            sXsdXPath = ".//" & NS_XS_PR & ":enumeration[@value = '" & oEnum & "']/" & NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang='" & sAppLang & "']"
+                set docNode = xsdNode.selectSingleNode(sXsdXPath)
+                if Not (docNode Is Nothing) then
+	                sKirjeldav = docNode.text
+                else
+	                sKirjeldav = oEnum
+                end if
+                loendidHTML = loendidHTML & "<td>enum</td>" & vbCrLf
+                loendidHTML = loendidHTML & "<td>" & sKirjeldav & "</td>" & vbCrLf
+                loendidHTML = loendidHTML & "<td>" & oEnum & "</td>" & vbCrLf
+                loendidHTML = loendidHTML & "</tr>" & vbCrLf
+            next
+        end if
+        if (oSchRootType.patterns.length > 0) then
+            for each ptrn in oSchRootType.patterns
+                loendidHTML = loendidHTML & "<tr>" & vbCrLf
+                loendidHTML = loendidHTML & "<td>ptrn</td>" & vbCrLf
+                loendidHTML = loendidHTML & "<td colspan='2'>" & ptrn & "</td>" & vbCrLf
+                loendidHTML = loendidHTML & "</tr>" & vbCrLf
+            next
+        end if
+        loendidHTML = loendidHTML & "</table>" & vbCrLf
+    Next
+    loendidHTML = loendidHTML & "<br />" & vbCrLf
+    Call skeemisisu.insertAdjacentHTML("beforeEnd", loendidHTML)
+end if
+
+skeemisisu.style.visibility = "visible"
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub GetSchemaElements(oISchItem, sFullPath, nDepth)
+Dim sPr, sParentQN, sLName, sItemQN, sItemURI
+Dim oParticle, sElemPath, oXmlFrDom, i, fp, anyNames, partCnt
+Dim sXsdXPath, docNode, sKirjeldav, sMinSymbol, sMaxSymbol, tyyp, nContentType, ct, nGroupType, gt
+Dim oOrgAttr, attrStr, sAttrQN
+
+sPr = oXsdNsm.getPrefixes(oISchItem.namespaceURI).Item(0)
+sParentQN = sPr & ":" & oISchItem.name
+
+set fp = oISchItem.type.contentModel.particles(0)
+
+Dim ette, kuipalju
+ette = ""
+for kuipalju = 1 to nDepth
+    ette = ette & taane
+next
+
+if (TypeName(fp) = "ISchemaAny") then
+	'aa: "add any"
+	set oXmlFrDom = IDD("file", "../xml/" & dic_desc & "/aa_" & unName(sParentQN) & ".xml",  False, False, Nothing)
+	if Not (oXmlFrDom.parseError.errorCode = 0) then
+		sItemQN = NS_XS_PR & ":any"
+	    sKirjeldav = "<" & sItemQN & ">"
+		tyyp = "Any,-,-"
+        ct = " "
+        gt = " "
+        attrStr = ""
+
+		sMinSymbol = fp.minOccurs
+		if (fp.maxOccurs = "-1") then
+			sMaxSymbol = ChrW("&H" & Mid(INFINITY_HTML, 4, 4))
+		else
+			sMaxSymbol = fp.maxOccurs
+		end if
+        Call AddRowToTable(schema_table, sKirjeldav & JR & _
+            ette & "<" & sItemQN & attrStr & ">" & JR & _
+            sMinSymbol & ", " & sMaxSymbol & JR & _
+            tyyp & JR & _
+            ct & JR & _
+            gt, "peachpuff")
+        Exit Sub
+	else
+		anyNames = Split(oXmlFrDom.documentElement.text, "|")
+		partCnt = UBound(anyNames, 1) + 1
+	end if
+else
+	partCnt = oISchItem.type.contentModel.particles.length
+end if
+
+for i = 0 to partCnt - 1
+    sKirjeldav = " "
+    tyyp = " "
+	nContentType = -1
+    ct = " "
+	nGroupType = -1
+    gt = " "
+    attrStr = ""
+
+	if (TypeName(fp) = "ISchemaAny") then
+		sItemQN = anyNames(i)
+		if (InStr(1, sItemQN, ":") > 0) then
+			sPr = Mid(sItemQN, 1, InStr(1, sItemQN, ":") - 1)
+			sLName = Mid(sItemQN, InStr(1, sItemQN, ":") + 1)
+			sItemURI = oXsdNsm.getURI(sPr)
+		else
+			sPr = ""
+			sLName = sItemQN
+			sItemURI = oXsdNsm.getURI("")
+		end if
+
+		set oParticle = oSchRootElems.itemByQName(sLName, sItemURI)
+
+		sMinSymbol = fp.minOccurs
+		if (fp.maxOccurs = "-1") then
+			sMaxSymbol = ChrW("&H" & Mid(INFINITY_HTML, 4, 4))
+		else
+			sMaxSymbol = fp.maxOccurs
+		end if
+
+	elseif (TypeName(fp) = "ISchemaElement") then
+
+		set oParticle = oISchItem.type.contentModel.particles(i)
+
+		if Not (oParticle.namespaceURI = "") then
+			sItemURI = oParticle.namespaceURI
+			sPr = oXsdNsm.getPrefixes(sItemURI).Item(0)
+			if (sPr = "") then
+				sItemQN = oParticle.name
+			else
+				sItemQN = sPr & ":" & oParticle.name
+			end if
+		Else
+			sItemURI = ""
+			sItemQN = oParticle.name
+		End If
+
+		sMinSymbol = oParticle.minOccurs
+		if (oParticle.maxOccurs = "-1") then
+			sMaxSymbol = ChrW("&H" & Mid(INFINITY_HTML, 4, 4))
+		else
+			sMaxSymbol = oParticle.maxOccurs
+		end if
+
+	end if
+
+    sXsdXPath = ".//" & NS_XS_PR & ":element[@name = '" & oParticle.name & "']/" & _
+        NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang = '" & sAppLang & "']"
+    set docNode = oXsdDOM.documentElement.selectSingleNode(sXsdXPath)
+    if Not (docNode Is Nothing) then
+        sKirjeldav = docNode.text
+    else
+        sKirjeldav = sItemQN
+    end if
+
+    if (TypeName(oParticle.type) = "ISchemaComplexType") then
+        tyyp = "Ct"
+        nContentType = oParticle.type.contentType
+        if (nContentType = SCHEMACONTENTTYPE_MIXED) then
+            ct = "Mx"
+        elseif (nContentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+            ct = "Eo"
+        elseif (nContentType = SCHEMACONTENTTYPE_TEXTONLY) then
+            ct = "To"
+        elseif (nContentType = SCHEMACONTENTTYPE_EMPTY) then
+            ct = " "
+        end if
+        '"ISchemaComplexType" korral peaks alati olema TypeName(oParticle.type.contentModel) = "ISchemaModelGroup" ?
+        nGroupType = oParticle.type.contentModel.itemType
+        if (nGroupType = SOMITEM_EMPTYPARTICLE) then
+            gt = " "
+        elseif (nGroupType = SOMITEM_SEQUENCE) then
+            gt = "Sq"
+        elseif (nGroupType = SOMITEM_CHOICE) then
+            gt = "Ch"
+        elseif (nGroupType = SOMITEM_ALL) then
+            gt = "All"
+        end if
+        if (oParticle.type.attributes.length > 0) then
+	        for each oOrgAttr in oParticle.type.attributes
+		        sAttrQN = oXsdNsm.getPrefixes(oOrgAttr.namespaceURI).Item(0) & ":" & oOrgAttr.name
+		        attrStr = attrStr & " @" & sAttrQN
+		        if (oOrgAttr.use = SCHEMAUSE_REQUIRED) then
+		            attrStr = attrStr & "[obl]"
+		        end if
+	        next
+        end if
+    elseif (TypeName(oParticle.type) = "ISchemaType") then
+        tyyp = "St"
+    end if
+
+	sElemPath = sFullPath & "/" & sItemQN
+
+    if (TypeName(fp) = "ISchemaAny") then
+        Call AddRowToTable(schema_table, sKirjeldav & JR & _
+            ette & "<" & sItemQN & attrStr & ">" & TDA & sElemPath & JR & _
+            sMinSymbol & ", " & sMaxSymbol & JR & _
+            tyyp & JR & _
+            ct & JR & _
+            gt, "peachpuff")
+    else
+        Call AddRowToTable(schema_table, sKirjeldav & JR & _
+            ette & "<" & sItemQN & attrStr & ">" & TDA & sElemPath & JR & _
+            sMinSymbol & ", " & sMaxSymbol & JR & _
+            tyyp & JR & _
+            ct & JR & _
+            gt, "")
+    end if
+
+    if (TypeName(oParticle.type) = "ISchemaComplexType") then
+	    if (oParticle.type.contentModel.particles.length > 0) then
+		    'nt q:no (ÕS) pärast läheb tsüklisse
+		    if Not (sParentQN = sItemQN) then
+			    Call GetSchemaElements(oParticle, sElemPath, nDepth + 1)
+		    end if
+	    end if
+    end if
+
+next
+
+End Sub 'GetSchemaElements
+
+
+'-----------------------------------------------------------------------------------
+Sub AddRowToTable(tblId, cellData, trBgCol)
+Dim oNewTableRow, oNewRowCell, i, j, tarr, t2
+set oNewTableRow = tblId.insertRow()
+if Not (trBgCol = "") then
+    oNewTableRow.style.backgroundColor = trBgCol
+end if
+tarr = Split(cellData, JR)
+for i = 0 to UBound(tarr, 1)
+    set oNewRowCell = oNewTableRow.insertCell
+    t2 = Split(tarr(i), TDA)
+    if (UBound(t2, 1) > -1) then
+        oNewRowCell.innerText = t2(0)
+        for j = 1 to UBound(t2, 1)
+            if (j = 1) then
+                oNewRowCell.title = t2(j)
+            end if
+        next
+    end if
+next
+End Sub 'AddRowToTable
+
+
+		-->
+    </script>
+</head>
+<body style="background-color: seashell;" onload="bodyOnLoad()">
+    <div id="skeemisisu" style="visibility: hidden; font-family: 'Arial Unicode MS';">
+        <h1 id="pealkiri">
+        </h1>
+        <h2 id="Files">
+        </h2>
+        <span id="Files_in">
+        </span>
+        <br />
+        <br />
+        <h2 id="nsHeading">
+        </h2>
+        <table id="ns_table" border="1">
+            <thead>
+                <tr style="background-color: Navy; color: White;">
+                    <th id="ns1">
+                    </th>
+                    <th id="ns2">
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <br />
+        <br />
+        <h2 id="attrsHeading">
+        </h2>
+        <table id="attr_table" border="1" style="width: 100%;">
+            <thead>
+                <tr style="background-color: Navy; color: White;">
+                    <th id="att1">
+                    </th>
+                    <th id="att2">
+                    </th>
+                    <th id="att3">
+                    </th>
+                    <th id="att4">
+                    </th>
+                    <th id="att5">
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <br />
+        <br />
+        <h2 id="contentsHeading">
+        </h2>
+        <table id="elem_table" border="1" style="width: 100%;">
+            <thead>
+                <tr style="background-color: Navy; color: White;">
+                    <th id="cont1">
+                    </th>
+                    <th id="cont2">
+                    </th>
+                    <th id="cont3">
+                    </th>
+                    <th id="cont4">
+                    </th>
+                    <th id="cont5">
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <br />
+        <br />
+        <h2 id="schemaHeading">
+        </h2>
+        <table id="schema_table" border="1" style="width: 100%;">
+            <thead>
+                <tr style="background-color: Navy; color: White;">
+                    <th id="sch1">
+                    </th>
+                    <th id="sch2">
+                    </th>
+                    <th id="sch3">
+                    </th>
+                    <th id="sch4">
+                    </th>
+                    <th id="sch5">
+                    </th>
+                    <th id="sch6">
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <br />
+        <br />
+    </div>
+    <!-- selle meetodiga ei näe võimalust, kuidas teisest failist neid kasutada. -->
+    <div id="langConst" style="display: none;">
+        <div id="langConst_et">
+            var DOC_TITLE = "XML skeem"; var NS_HEADING_TXT = "Nimeruumid"; var NS_1 = "Prefiks";
+            var NS_2 = "Nimeruum"; var ATTRS_HEADING_TXT = "Atribuudid"; var ATT_1 = "Kirjeldav
+            nimi"; var ATT_2 = "Täisnimi"; var ATT_3 = "Sisu tüüp"; var ATT_4 = "Loend"; var
+            ATT_5 = "Mask"; var CONTENTS_HEADING_TXT = "Sisuga elemendid"; var SCHEMA_HEADING_TXT
+            = "Skeem"; var SCH_3 = "Korduvus"; var SCH_4 = "Tüüp"; var SCH_5 = "Sisu"; var SCH_6
+            = "Sisu mudel";
+        </div>
+        <div id="langConst_en">
+            var DOC_TITLE = "XML schema"; var NS_HEADING_TXT = "Namespaces"; var NS_1 = "Prefix";
+            var NS_2 = "Namespace"; var ATTRS_HEADING_TXT = "Attributes"; var ATT_1 = "Descriptive
+            name"; var ATT_2 = "QName"; var ATT_3 = "Content type"; var ATT_4 = "List"; var
+            ATT_5 = "Pattern"; var CONTENTS_HEADING_TXT = "Elements with content"; var SCHEMA_HEADING_TXT
+            = "Schema"; var SCH_3 = "Min, Max"; var SCH_4 = "Type"; var SCH_5 = "Content"; var
+            SCH_6 = "Content model";
+        </div>
+        <div id="langConst_ru">
+            var DOC_TITLE = "Схема"; var NS_HEADING_TXT = "Namespaces"; var NS_1 = "Prefix";
+            var NS_2 = "Namespace"; var ATTRS_HEADING_TXT = "Attributes"; var ATT_1 = "Descriptive
+            name"; var ATT_2 = "QName"; var ATT_3 = "Content type"; var ATT_4 = "List"; var
+            ATT_5 = "Pattern"; var CONTENTS_HEADING_TXT = "Elements with content"; var SCHEMA_HEADING_TXT
+            = "Схема"; var SCH_3 = "Min, Max"; var SCH_4 = "Type"; var SCH_5 = "Content"; var
+            SCH_6 = "Content model";
+        </div>
+    </div>
+</body>
+</html>

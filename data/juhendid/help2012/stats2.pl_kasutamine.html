@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>ekieki - stats2.pl kasutamine</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+xmlStatsi analoog UNIX-ilaadsetele operatsioonisüsteemidele on <a href="http://ekieki.wikispaces.com/file/view/stats2.pl">stats2.pl</a>, ent see on võrreldes .exega vananenud ning me ei hoia seda kaasaegsena.<br />
+<br />
+Tipi käsureale: ./stats2.pl sonastikufail.xml<br />
+Programmi väljundiks on tekstiredaktoriga loetav lihtteksti fail, mille nimi on kujul &lt;sisendfailinimi.stats&gt; ‍‍‍‍‍. ‍<br />
+<br />
+stats2.pl kasutab järgnevaid algväärtuseid, soovi korral saab neid tekstiredaktoriga muuta otse programmifailis:<br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$strpikkus = 3; # nii pikk ja pikem string on struktuuris juba trellid</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$stringieraldaja = '|'; # selle paneme valjastatava stringi ümber</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;"># esialgu on arvestatud ühe märgi, mitte stringiga</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$amponlubatud = 1; # kui 0, siis nuriseb tekstis &amp;-märkide peale</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$sordisagedust = 0; # 0 - sordi tähestiku järgi, 1 - sageduse järgi</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$sordipoordes = 0; # 0 - ette väiksemad sagedused või tähestiku algus</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$loendipiir = 10; # terminaalse märgendi puhul suhe kokku/erinevaid,</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;"># üle selle on 'pigem loend'</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;"># mida suurem väärtus, seda vähem loendeid</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$entiteedidstringis = 1; # 0 - ei märgi</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;"># 1 - kõiki tähistame &lt;&amp;&gt;-ga</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;"># 2 vm - kirjutame välja kujul &lt;&amp;nimi&gt;</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$uuefaililaiend = '.stats';</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$lopetaparast = 0; # 0 on kõik artiklid, muu väärtus teeb statistika</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;"># esimese n artikli kohta ja lõpetab. kasuta silumisel</span></strong><br />
+<strong><span style="font-family: 'Courier New'; font-size: 13px;">$margendiette = 'Märgend: ';</span></strong><br />
+<br />
+‍‍Väljundi lugemine on analoogne <a class="wiki_link_new" href="http://ekieki.wikispaces.com/xmlStats">.exe väljundi mõistmisega</a> (aga mitte 100%). Väljundfaili osad:<br />
+<ol><li>Loend esinevatest ..., lõpus arv, palju selliseid esines.</li><li>Loend esinevatest elementidest ja arv, kui palju selliseid esines.</li><li>Loend siltidest ükshaaval - et näha, mis sildid nende sees esinevad. Iga kombinatsiooni ## lõpus on toodud esimene märksõna (artikkel), millel selline kombinatsioon esineb.</li></ol>
+    </div>
+  </body>
+</html>

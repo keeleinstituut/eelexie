@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Salvestamine, valideerimine ja veateated</h2>
+	
+<h3 id="toc0"><a name="x--Salvestamine ja valideerimine"></a><span style="text-align: justify;">Salvestamine ja valideerimine</span></h3>
+ <span style="display: block; text-align: justify;">Salvestamine toimub toimetamisala ülal paremas ääres asuva flopikujulise nupu <img src="files/nupp_salvesta.png" alt="nupp_salvesta.png" title="nupp_salvesta.png" /> abil.</span><span style="display: block; text-align: justify;"><br />
+Artikli salvestamisel kustutatakse kõik tühjad tekstiväljad ja grupid ning kontrollitakse artikli vastavust skeemile. Kui artikkel skeemile ei vasta, informeeritakse kasutajat veateatega ning salvestamise protsess katkeb. Kui artikli struktuuri ja sisuga on kõik korras, saadetakse muudatus serverisse.<br />
+Igal hetkel võid artikli sisu <strong>valideerida</strong> (kontrollida ta vastavust sõnastiku skeemile) ka ilma salvestamata, vastav linnukesekujuline nupp <img src="files/nupp_valideeri.png" alt="nupp_valideeri.png" title="nupp_valideeri.png" />asub kohe salvestamisnupu kõrval.</span><br />
+<br />
+<h3 id="toc1"><a name="x--Valideerimisel tekkivad veateated"></a>Valideerimisel tekkivad veateated</h3>
+ <br />
+Kui artikkel ei valideeru, kuvatakse avanevas aknas mõni neist veateadetest. Veateadete tekst ja keel võib erinevatel arvutitel varieeruda, lähtuda tuleb veateate koodist.<br />
+<br />
+<strong>0xC00CE014</strong><br />
+Element '{http://www.eki.ee/dict/ss1}kaut' is unexpected according to content model of parent element '{http://www.eki.ee/dict/ss1}komg'.<br />
+<strong>ja 0xC00CE012</strong><br />
+<span style="background-color: #ffffff;">Content for element '{</span><span style="background-color: #ffffff;">http://www.eki.ee/dict/vot</span><span style="background-color: #ffffff;">}ng' is incomplete according to the DTD/Schema. Expecting: {</span><span style="background-color: #ffffff;">http://www.eki.ee/dict/vot</span><span style="background-color: #ffffff;">}n, {</span><span style="background-color: #ffffff;">http://www.eki.ee/dict/vot</span><span style="background-color: #ffffff;">}qnp.</span><br />
+<span style="background-color: #ffffff;">Elemendi {</span><span style="background-color: #ffffff;">http://www.eki.ee/dict/usv</span><span style="background-color: #ffffff;">}cg sisu pole DTD/Schema järgi täielik. Eeldatakse: {</span><span style="background-color: #ffffff;">http://www.eki.ee/dict/usv</span><span style="background-color: #ffffff;">}caut.</span><br />
+<strong><span style="background-color: #ffffff;">Selgitus:</span></strong><span style="background-color: #ffffff;"> Skeemi järgi peab elemendis sisalduma kohustuslikke elemente, ent need on artiklis puudu.</span><br />
+<strong><span style="background-color: #ffffff;">Lahendus:</span></strong><span style="background-color: #ffffff;"> Lisa puuduv element või muuda skeemi.</span><br />
+<br />
+<strong><span style="background-color: #ffffff;">0xC00CE018</span></strong><br />
+<span style="background-color: #ffffff;">Text is not allowed in the context of element '{</span><span style="background-color: #ffffff;">http://www.eki.ee/dict/psv</span><span style="background-color: #ffffff;">}gki' according to DTD/Schema.</span><br />
+<span style="background-color: #ffffff;">Elemendi sisuks ei ole lubatud teksti (stringi).</span><br />
+<strong><span style="background-color: #ffffff;">Seletus</span></strong><span style="background-color: #ffffff;">: Skeemi järgi ei või sellesse elementi (antud näites sõnastikus psv element gki) lubatud sisestada teksti.</span><br />
+<strong><span style="background-color: #ffffff;">Lahendus:</span></strong><span style="background-color: #ffffff;"> Kui selles elemendis ikkagi on vaja teksti hoida, siis tuleb skeemi muuta.</span><br />
+<br />
+<strong><span style="background-color: #ffffff;">0xC00CE011</span></strong><br />
+<span style="background-color: #ffffff;">Element '{</span><span style="background-color: #ffffff;">http://www.eki.ee/dict/vot</span><span style="background-color: #ffffff;">}VT' cannot be empty according to the DTD/Schema.</span><br />
+<strong><span style="background-color: #ffffff;">Seletus:</span></strong><span style="background-color: #ffffff;"> Skeemi järgi ei ei või element VT tühi olla.</span><br />
+<strong><span style="background-color: #ffffff;">Lahendus:</span></strong><span style="background-color: #ffffff;"> Täita element või muuta skeemi.</span><br />
+<br />
+<strong><span style="background-color: #ffffff;">0xC00CE015</span></strong><br />
+<span style="background-color: #ffffff;">Elemendi {</span><span style="background-color: #ffffff;">http://www.eki.ee/dict/ss1</span><span style="background-color: #ffffff;">}p atribuuti {</span><span style="background-color: #ffffff;">http://www.eki.ee/dict/ss1</span><span style="background-color: #ffffff;">}aG pole DTD/Schemas määratletud.</span><br />
+<strong><span style="background-color: #ffffff;">Selgitus:</span></strong><span style="background-color: #ffffff;"> Elemendile ei saa lisada skeemis määratlemata atribuuti aG.</span><br />
+<strong><span style="background-color: #ffffff;">Lahendus:</span></strong><span style="background-color: #ffffff;"> atribuut aG kustutada või muuta skeemi.</span><br />
+<br />
+<strong><span style="background-color: #ffffff;">0xC00CE020</span></strong><br />
+<span style="background-color: #ffffff;">Nõutav atribuut </span><span style="background-color: #ffffff;">http://www.eki.ee/dict/vsl:tvtl2</span><span style="background-color: #ffffff;"> puudub.</span><br />
+<strong><span style="background-color: #ffffff;">Selgitus:</span></strong><span style="background-color: #ffffff;"> Skeemi järgi peab olemas olema atribuut tvtl2, ent antud artiklis see puudub.</span><br />
+<strong><span style="background-color: #ffffff;">Lahendus:</span></strong><span style="background-color: #ffffff;"> Lisada nõutud element või muuta skeemi.</span><br />
+<br />
+<strong><span style="background-color: #ffffff;">0xC00CE201</span></strong><br />
+<span style="background-color: #ffffff;">Error parsing '' as language datatype.</span><br />
+<strong><span style="background-color: #ffffff;">Selgitus:</span></strong><span style="background-color: #ffffff;"> Atribuut xml:lang on jäänud täitmata (xml:lang=&quot;&quot;), ent keel peab olema alati määratud.</span><br />
+<strong><span style="background-color: #ffffff;">Lahendus:</span></strong><span style="background-color: #ffffff;"> Anda atribuudile xml:lang mingi väärtus (näiteks Toimetamisalal).</span><br />
+<br />
+<strong><span style="background-color: #ffffff;">0xC00CE</span></strong><br />
+<span style="background-color: #ffffff;">'mustlaskeel' violates enumeration constraint of 'vms uurali soome-ugri lms-permi lms-volga lms-mari lms-mordva lms-saami lms eesti-liivi-vadja eesti-liivi eesti-vadja eesti ...'.</span><br />
+<strong><span style="background-color: #ffffff;">Selgitus:</span></strong><span style="background-color: #ffffff;"> See veateade tuleb näiteks siis, kui loendist on väärtuseid kustutatud, ent sõnastikus esineb veel neid kustutatud väärtusi.</span><br />
+<strong><span style="background-color: #ffffff;">Lahendus:</span></strong><span style="background-color: #ffffff;"> Paranda loendit või vali sõnaartiklis loendist uus väärtus.</span>
+    </div>
+  </body>
+</html>

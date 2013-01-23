@@ -1,0 +1,654 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Sõnaartikli otsimine</h2>
+	
+Kõigepealt määra, kas otsitakse ühest konkreetsest <strong>köitest</strong> või kõigist (köidete valik ülal vasakul). Sõnaartiklit saab otsida kõigi struktuurielementide (ja nende sisude) järgi,<br />
+<span style="display: block; text-align: justify;"><strong>Otsitav element</strong> määratakse artikli struktuuri näitava menüü abil (ülal vasakul, köitevaliku all):</span><br />
+<span style="display: block; text-align: justify;"><img src="files/son_avaleht_elemendi_otsing.png" alt="son_avaleht_elemendi_otsing.png" title="son_avaleht_elemendi_otsing.png" style="height: 375px; width: 800px;" /></span><br />
+Otsitava elemendi menüüst paremale jääb <strong>otsiaken</strong>, kuhu sisesta elemendis sisalduv tähejärjend või avaldis (vt allpool). Antud näites on otsitud kõiki g-ga algavaid sõnu - avaldis g*. Sellest edasi neli on linnukest:<br />
+<ul><li>linnuke <strong>Otsing on tõstutundetu</strong></li><li>linnuke <strong>Otsitakse kõiki märke</strong></li><li>linnuke <strong>Otsitakse ka fakultatiivseid järjendeid</strong></li><li>linnuke <strong>Otsitakse kogu artiklist.</strong></li></ul>Otsingu käivitab nupp Otsing.<br />
+<br />
+Sõnaartiklite otsimiseks on võimalik kasutada<br />
+<ul><li>nn tavaotsingut, </li><li>otsingut XPath süntaksi järgi </li><li>otsingut regulaaravaldiste süntaksiga</li><li>päringut XML süntaksi järgi.</li></ul>Neid otsinguliike eristatakse otsitava teksti lahtris oleva teksti esisümbolite järgi:<br />
+<ul><li>kui tekst algab kahe paragrahvi sümboliga (§§), siis kasutatakse regulaaravaldiste süntaksit; </li><li>kui tekst algab ühe paragrahvi sümboliga (§), siis kasutatakse XPath süntaksit; </li><li>ülejäänud juhtudel tavaotsingut.</li></ul>XML süntaksi järgi otsimiseks kasuta otsingu käimitamiseks Otsi-nupu asemel nuppu XML (Otsi-nupust paremal).<br />
+<br />
+<span style="display: block; text-align: justify;"><strong>Tavaotsing</strong></span><span style="display: block; text-align: justify;">Tavaotsingul kasutatakse tekstijärjendeid ja metasümboleid. Metasümboliteks tavaotsingus on tärn (*) ja küsimärk (?). Tärn (*) tähistab suvalist järjendit, küsimärk (?) üksikut tähte. Tavaotsingu näiteid vt tabelist, liitsõnapiiri tähistab püstkriips (|).</span><br />
+
+
+<table class="wiki_table" border=1>
+    <tr>
+        <td><strong>Otsitav element</strong><br />
+</td>
+        <td><strong>Otsitav tekst</strong><br />
+</td>
+        <td><strong>Kommentaar</strong><br />
+</td>
+        <td><strong>Vastus</strong><br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>abikäsi<br />
+</td>
+        <td>TÄPNE OTSING: leitakse kõik märksõnad &quot;abikäsi&quot;<br />
+</td>
+        <td>abi|käsi<br />
+</td>
+    </tr>
+    <tr>
+        <td>näiterühm: stiil<br />
+</td>
+        <td>kõne<br />
+</td>
+        <td>TÄPNE OTSING: leitakse kõik näiterühmades esinevad stiilimärgendid &quot;kõnek&quot;<br />
+</td>
+        <td>breik .. Breiki tegema, panema. kõnek.<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>abi*<br />
+</td>
+        <td>SÕNA ALGUSE OTSING: leitakse kõik märksõnad, mis algavad järjendiga &quot;abi&quot;<br />
+</td>
+        <td>abi|aine, abielu|akt, abielulahutus|akt ...<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>*abi<br />
+</td>
+        <td>SÕNA LÕPU OTSING: leitakse kõik märksõnad, mis lõpevad järjendiga &quot;abi&quot;<br />
+</td>
+        <td>humanitaar|abi<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>*ndus*<br />
+</td>
+        <td>OTSING SÕNA SEEST: leitakse kõik märksõnad, mis sisaldavad järjendit &quot;ndus&quot;<br />
+</td>
+        <td>agraar|-industriaalne, ajakirjandus|vabadus, asendus|teenistus, auto|ärandus ...<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>a*v<br />
+</td>
+        <td>SÕNA ALGUSE JA LÕPU OTSING: leitakse kõik märksõnad, mis algavad a-ga ja lõpevad v-ga<br />
+</td>
+        <td>anne|päev<br />
+</td>
+    </tr>
+    <tr>
+        <td>sagedus<br />
+</td>
+        <td>(lahter jäetakse tühjaks)<br />
+</td>
+        <td>NB! Kuna salvestamisel kustutatakse alati tühjad väljad, siis tavaliselt tulemus puudub<br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>liitsõnade plokk<br />
+</td>
+        <td>=NULL<br />
+</td>
+        <td>PUUDUVA VÄLJA OTSING: leitakse artiklid, kus valitud otsinguväli puudub<br />
+</td>
+        <td>aaderdama, aaderdus, aasta|intress ...<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>*<br />
+</td>
+        <td>KÕIKIDE SÕNADE OTSING: leitakse kõik märksõnad (kui ei ületata otsingutulemuste limiiti)<br />
+</td>
+        <td>(sõnade loend)<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>*|*<br />
+</td>
+        <td>leitakse märksõnad, milles sisaldub liitsõnapiir '|'<br />
+</td>
+        <td>aasta|intress …<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>*|*|*<br />
+</td>
+        <td>leitakse märksõnad, milles on kaks liitsõnapiiri '|'<br />
+</td>
+        <td>halogeen|(hõõg)|lamp, kõne|post|kast<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>bt<br />
+</td>
+        <td>leitakse neljatähelised märksõnad, mis algavad tähega 'b' ja lõpevad tähega 't'<br />
+</td>
+        <td>bait, balt<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td><br />
+</td>
+        <td>leitakse ainult kahetähelised märksõnad<br />
+</td>
+        <td>ca, CD, CV …<br />
+</td>
+    </tr>
+    <tr>
+        <td>märksõna<br />
+</td>
+        <td>b__<br />
+</td>
+        <td>leitakse viietähelised märksõnad, mille kolmas täht on 'b'<br />
+</td>
+        <td><span style="font-family: 'Courier New'; font-size: 13.3333px;">album, kebab<br />
+</td>
+    </tr>
+</table>
+
+<br />
+<h3 id="toc0"><a name="x--Otsing regulaaravaldistega"></a>Otsing regulaaravaldistega</h3>
+ <span style="display: block; text-align: justify;">Regulaaravaldiste kasutamine tekstiotsinguis võimaldab määrata üksikute tähtede või tervete järjendite korduvust; märkida otsingus täheklasse nagu kirjatäht/mittekirjatäht, suurtäht/väiketäht; otsida sümboleid loetelust; märkida sõnapiiri, teksti algust, lõppu jne. Regulaaravaldistega otsinguks <strong>peab otsitingimus algama kahe paragrahvimärgiga §§</strong>. Võib kasutada kõiki regulaaravaldiste süntaksi märke.<br />
+<ul><li><span style="display: block; text-align: justify;">^ - teksti algus; $ - teksti lõpp</span></li><li><span style="display: block; text-align: justify;">\u – suurtäht</span></li><li><span style="display: block; text-align: justify;">\l – väiketäht</span></li><li><span style="display: block; text-align: justify;">\v – vokaal, täishäälik</span></li><li><span style="display: block; text-align: justify;">\k – konsonant, kaashäälik</span></li><li><span style="display: block; text-align: justify;">\b – sõnapiir</span></li><li><span style="display: block; text-align: justify;">[xyz] – vähemalt üks märk loetelust</span></li><li><span style="display: block; text-align: justify;">[A-Z] – vahemik A kuni Z</span></li><li><span style="display: block; text-align: justify;">\p{L} – suvaline Unicode täht suvalises keeles/kultuuris</span></li><li><span style="display: block; text-align: justify;">\p{Lu} – suvaline Unicode suurtäht suvalises keeles/kultuuris</span></li><li><span style="display: block; text-align: justify;">\p{N} – suvaline numbritäht suvalises keeles/kultuuris</span></li><li><span style="display: block; text-align: justify;">edasi vt <a class="wiki_link_ext" href="http://en.wikipedia.org/wiki/Regular_expression" rel="nofollow" target="_blank">Regular Expression</a> Wikipedias</span></li></ul><br />
+<strong>Otsing XPathi moodulit kasutades</strong><br />
+Kui tekst otsingulahtris algab ühe paragrahvi sümboliga (§), siis mõistab süsteem seda kui XPath-i avaldist. Vaja on teada sõnastiku nimeruumi ja elementide silte (need saab järgi vaadata kas sõnastiku skeemifailist või otsitava elemendi määramise menüüst elemendi nime järel olevast veerust).</span><br />
+<br />
+XPathi kohta vaata lisaks <a class="wiki_link_ext" href="http://www.w3schools.com/xpath/xpath_syntax.asp" rel="nofollow" target="_blank">XPath Tutoriali</a> W3Schoolsis.</span><br />
+<br />
+<h3 id="toc1"><a name="x--Otsing XML moodulit kasutades"></a>Otsing XML moodulit kasutades</span></h3>
+ Nupp XML (nupust Otsi paremal). XML kohta vaata täpsemalt <a class="wiki_link_ext" href="http://www.w3schools.com/xml/default.asp" rel="nofollow" target="_blank">XML Tutorial</a>.<br />
+<br />
+<h3 id="toc2"><a name="x--Ühised märksõnad teiste EELexi sõnastikega"></a>Ühised märksõnad teiste EELexi sõnastikega</h3>
+ Toimetamisala kohalt märksõna/termini lahtrist avanevas menüüs on ülemine valik <strong>Ühised märksõnad 'sõnastiku id' ja ...</strong> ning paremale avanevas menüüs saad valida, millise teise sõnastikuga ühisosa otsida. Eeldus: sõnastik on paralleelselt MySQL andmebaasis.<br />
+<img src="files/yhised_marksonad.png" alt="yhised_marksonad.png" title="yhised_marksonad.png" style="height: 176px; width: 800px;" /><br />
+<h3 id="toc3">Sõna otsimine veebist</h3>
+On veel võimalus minna vaatama sama sõna <strong>teiste sõnastike veebiversioonidest või guuglist</strong>. Paremklõps elemendi nimel - menüüst <strong>Välised lingid / Guuglisse</strong>. Välised lingid avab allikate menüü, mida saab ka ise täiendada.
+
+<br />
+ <h3 id="toc4"><a name="x--Sarnaste sõnaartiklite otsimine"></a><span style="background-color: #ffffff;">Sarnaste sõnaartiklite otsimine</span></h3>
+ Sarnaste sõnaartiklite leidmise tööriist otsib sõnastiku sees sarnase tähtkoostisega märksõnu (sh artikli sees olevaid märksõnu). Selle abil saab näiteks kontrollida, kas sõnaartiklitele on vaja lisada homonüüminumber (otsingutulemuste tabelis on viimased näha) või ongi tegu kahe sisult sama sõnaartikliga, millest üks siis kustutada, vms. Eeldus: sõnastik peab olema ka MySQL-is.<br />
+<br />
+Vali <strong>Sõnastiku tööriistad -- Sarnased märksõnad</strong>. Leiud kuvatakse tulemuste tabelis.<br />
+NB! Kui sõnastik on jaotatud mitme köite vahel, siis on mõistlik enne sarnaste märksõnade leidmist valida Toimetamisala kohalt köidete valikust <strong>Kõik köited</strong><br />
+<br />
+<br />
+<h3 id="toc5"><a name="x--Näidispäringuid"></a>Näidispäringuid</h3>
+ <h3 id="toc6"><a name="x--A. Sõnastikutöö kulgu jälgivad päringud"></a>A. Sõnastikutöö kulgu jälgivad päringud</h3>
+
+<table class="wiki_table" border=1>
+    <tr>
+        <td><strong>Küsimus</strong><br />
+</td>
+        <td><strong>Otsitav element</strong><br />
+</td>
+        <td><strong>Tekst otsilahtrisse</strong><br />
+</td>
+        <td><strong>Kommentaar</strong><br />
+</td>
+    </tr>
+    <tr>
+        <td>Kasutaja ’ EReinsalu’ poolt salvestatud (toimetatud) artiklid<br />
+</td>
+        <td>artikli toimetaja<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">EReinsalu</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>2012. a veebruaris salvestatud (toimetatud) artiklid<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§starts-with(c:TA, '2012-02')</span><br />
+</td>
+        <td>TA on toimetamise aeg<br />
+</td>
+    </tr>
+    <tr>
+        <td>Toimetaja ’JKallas’ poolt salvestatud artiklid septembris 2012:<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§c:T='JKallas' and starts-with(c:TA, '2012-09')</span><br />
+</td>
+        <td>T on toimetaja, TA toimetamise aeg.<br />
+</td>
+    </tr>
+    <tr>
+        <td>Novembris või detsembris 2011 salvestatud artiklid (keskel olev punkt tähistab üht sümbolit, antud juhul ’-’; ees olev katus ^ tähendab järjendi algust)<br />
+</td>
+        <td>toimetamisaeg<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§§^2011.(11|12)</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, mille toimetamine on lõpetatud<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§c:TL</span><br />
+</td>
+        <td>TL on toimetamise lõpu märge<br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, mille toimetamine on lõpetatud (teine võimalus)<br />
+</td>
+        <td>toimetamise lõpp<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">*</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Kõik artiklid, mille koostaja on MJyrviste<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§c:K = 'MJyrviste'</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Kõik toimetatud artiklid (pandud on toimetamise lõpu märge TL)<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§c:TL</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>MTuuliku koostatud ja koostamine lõpetatud, aga toimetamata (TL panemata)<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§c:K='MTuulik' and c:KL and not(c:TL)</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Koostamise lõpu järgi otsimine</span><br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§.//c:K='MJyrviste' and .//c:KL[starts-with (., '2011-01')]</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Kuupäeva järgi otsimine (KL - koostamise lõpp)<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace; font-size: small;">§c:K='MJyrviste' and .c:KL[starts-with (., '2011-03-05')]</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, mille koostaja MJyrviste, koostamine lõpetatud kas veeburaris 2011 või 1. märtsil 2011 või 3. märtsil 2011</span><br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§.//c:K='MJyrviste' and .//c:KL[starts-with(., '2011-02') or starts-with(., '2011-03-01') or starts-with(., '2011-03-03')]</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, mille koostaja on MJyrviste ja koostamise lõpu märgi pandi 2011 aprillis või mais<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace; font-size: small;">§.//c:K='MJyrviste' and .//c:KL[starts-with(., '2011-04') or starts-with(., '2011-05')]</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+	    <tr>
+        <td>Artiklid, millel puudub morfoloogia plokk<br />
+</td>
+        <td>morfoloogia plokk <mfp><br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">=NULL</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+	    <tr>
+        <td>Artiklid, millel puudub morfoloogia plokk (teine võimalus)<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§not(.//c:mfp)</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, millel pole koostamise lõppu <KL> ega toimetamise lõppu <TL><br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§not(c:KL) and not(c:TL)</span><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+
+</table>
+
+<br />
+<h3 id="toc7"><a name="x--B. Päringud sõnastiku sisu kohta"></a>B. Päringud sõnastiku sisu kohta</h3>
+ 
+<table class="wiki_table" border=1>
+    <tr>
+        <td><strong>Küsimus</strong><br />
+</td>
+        <td><strong>Otsitav element</strong><br />
+</td>
+        <td><strong>Tekst otsilahtrisse</strong><br />
+</td>
+        <td><strong>Kommentaar</strong><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, milles termin, mis sisaldab sõna 'lantanoid'<br />
+</td>
+        <td>termin<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace; font-size: small;">*lantanoid*</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, milles vaste on sõna 'mine'<br />
+</td>
+        <td>vaste<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace; font-size: small;">mine</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+
+    <tr>
+        <td>Artiklid, milles vaste sisaldab 'rock'<br />
+</td>
+        <td>vaste<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace; font-size: small;">*rock*</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+
+    <tr>
+        <td>Artiklid, millel soome keeles ei ole vasteid.<br />
+</td>
+        <td>vastete plokk<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§@xml:lang='fi' and not(.//h:hg/h:x)<br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, mille märksõna sisaldab tühikut<br />
+</td>
+        <td>märksõna<br />
+</td>
+        <td>*<br />
+</td>
+        <td>linnuke Otsi kõiki märke. Tühik pane otsilahtrisse kahe tärni vahele.<br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, mille märksõna sisaldab tühikut või liitsõnapiiri:<br />
+</td>
+        <td>märksõna<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§§[ /]</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, millel soome keeles ei ole vasteid<br />
+</td>
+        <td>vastete plokk<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§@xml:lang='fi' and not(.//h:hg/h:x)<br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, millel puudub sisu plokk S<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§not(s:S)</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Leia kasutaja MLangemets poolt koostatud artiklid, mis on lõpetatud (s.t on olemas KL e koostamise lõpu märge) ja kus vald (v) ei ole märgitud ab-ks<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§s:K='MLangemets' and s:KL and .//s:v[not(@s:as='ab')]</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, mille vene keele vastete plokid ON lõpetatud (eeldusel, et eri keelte vastete plokis on toimetamise lõpu märget võimalik lisada)<br />
+</td>
+        <td>vastete plokk<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">$@xml:lang='ru' and @h:aKL</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, mille vene keele vastete plokid EI OLE lõpetatud (eeldusel, et eri keelte vastete plokis on toimetamise lõpu märget võimalik lisada)<br />
+</td>
+        <td>vastete plokk<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">$@xml:lang='ru' and not(@h:aKL)</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Kuidas leida neid artikleid, millekoostamine on lõpetatud, vene keeles pole veel vasteid või puudub koostamise lõpu märge<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§h:KL and (not(.//h:xp[@xml:lang = 'ru']) or .//h:xp[@xml:lang = 'ru' and not(@h:aKL)])</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, millel vene keeles pole veel vasteid<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§not(.//h:xp[@xml:lang = 'ru'])</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Artiklid, kus on saksa plokk, aga pole määratud sugu (xzde)<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§(.//h:xp[@xml:lang = 'de'] and not(.//h:xzde))</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>kõik terminikirjed, millel ei ole ühtki valdkonnamärgendit<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§not(.//h:v)</span><br />
+</td>
+        <td>v - valdkond<br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Valdkonna märgend on KASV või KASV + muu (v.a PSÜHH ja SOPE)<br />
+</td>
+        <td><br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§(.//h:v=&quot;kasv&quot; and not(.//h:v=&quot;sope&quot;) and not(.//h:v=&quot;psühh&quot;))</span><br />
+</td>
+        <td>Päringus tuleb valdkonna nimed pannna väikeste tähtedega<br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Valdkonna märgend on ainult KASV<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§(.//h:v=&quot;kasv&quot; and count(.//h:v)=1)</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Valdkonna märgend on KASV + kindlasti veel mõni valdkond (v.a PSÜHH ja SOPE)<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§(.//h:v=&quot;kasv&quot; and not(.//h:v=&quot;sope&quot;) and not(.//h:v=&quot;psühh&quot;) and count(.//h:v)&gt;1)</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+    <tr>
+        <td>Valdkonna märgend on KASV + veel mõni valdkond (ilma piiranguteta)<br />
+</td>
+        <td>artikkel<br />
+</td>
+        <td><span style="font-family: 'Courier New',Courier,monospace;">§(.//h:v=&quot;kasv&quot; and count(.//h:v)&gt;1)</span><br />
+</td>
+        <td><br />
+</td>
+        <td><br />
+</td>
+    </tr>
+
+</table>
+
+<br />
+<br />
+<br />
+Võimalikud lahendused, kuidas leida kokkulangeva sõnaga (märksõnaga, vastega) artiklid. <br />
+<ul><li>Märksõnade puhul aitab sarnaste märksõnade otsing (Sõnastiku tööriistad -- Sarnased märksõnad), aga sõnastik peab olema kantud ka MySQL-i baasi.</li><br />
+<li>Hädapärast saab kokkulangevaid vasteid leida vasteid sorteerides:<br />
+Otsitav element = märksõna ja otsilahtrisse tärn * (või a* või muud sarnast, et tulemusi oleks vähem) ja päringu käivitamiseks mitte Otsi-nupp vaid nupp XML (otsib XML baasist, mitte MySQL baasist). Nüüd saab tulemuste tabeli Leidude veergu sortida (veeru päisele klõpsates). Puudus: lahtris võib olla mitu vastet, aga veeru sortimine arvestab ainult esimest. Väike leevendus: sordi lahtrite sisud ka ära, hoides paremklõpsamisel all ctrl+shift). Puudus: ikkagi ei käsitle kõiki vasteid võrdsena. Vt edasi.</li></ul><br />
+Vastete kaupa sortida saab järgmisel moel.<br />
+Leia näiteks kõik olemasolevad soome vasted.<br />
+otsitav element = vastete plokk ja otsilahtrisse: <span style="font-family: 'Courier New',Courier,monospace;">§<@xml:lang='fi' and .//h:hg/h:x</span><br /> 
+Vajuta nuppu <img src="files/nupp_muudatabelit.png" alt="nupp_muudatabelit.png" title="nupp_muudatabelit.png" /> Muuda tabelit tabeli kohal paremal, pane linnuke vaste ette ja Ok. Avaneb muudetud tabel, kus kaks veergu – märksõna ja vaste (ühe märksõna mitu erinevat soomekeelset vastet on nüüd eraldi ridadel). Kopeeri tabel nupu <img src="files/nupp_kopeeri_tabel.png" alt="nupp_kopeeri_tabel.png" title="nupp_kopeeri_tabel.png" /> Kopeeri tabel abil (tulemuste tabeli kohal paremal) ja ava mõni MS Word ja kleebi tühjale dokumendile (ctrl + V). Wordis saab seda tabelit sortida veergude kaupa.<br />
+<hr />
+
+    </div>
+  </body>
+</html>

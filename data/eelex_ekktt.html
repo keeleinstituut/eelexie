@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+<link href="/eki.css" rel="stylesheet" type="text/css">
+<TITLE>EELex</TITLE>
+</HEAD>
+<BODY>
+<DIV class="pagecontent">
+
+<h2>Eesmärgid ja tähtsus</h2>
+<p>Projektil on kolm <u>põhieesmärki</u>:</p>
+
+<ol>
+<li>Luua leksikograafidele sobiv interaktiivne töökeskkond e sõnastike haldussüsteem EELex, st töövahendid, mis ühilduvad kehtiva
+rahvusvahelise märgistusstandardiga (XML) ja rakendavad nii universaalseid kui ka eesti keele põhiseid keeletehnoloogia
+vahendeid: keeleressursse ja keeletarkvara.</li>
+<li>Koostada eesti lähtekeele andmebaas uute kakskeelsete sõnaraamatute jaoks ehk Eesti–X-keele sõnastik.</li>
+<li>Anda projekti tulemused avalikku kasutusse: (a) süsteemi kuuluvate
+sõnastike avalikud veebiversioonid, (b) sõnastike haldussüsteemi laiatarbeversioon.</li>
+</ol>
+
+<p><u>Tähtsus</u>.
+Leksikograafi töökeskkond EELex muudab
+sõnastikutöö lihtsamaks, kiiremaks ja kvaliteetsemaks. EELexis koostatud või sinna üle viidud sõnastikud on standardse
+märgendusega universaalsed taaskasutatavad keeleressursid, mida vajavad nii leksikograafid ja keeletehnoloogid kui ka tavakasutajad.</p>
+
+<h2>Ajalugu</h2>
+<p>Projekt jätkab kolme varasema projekti tööd: kaks allprojekti programmist "Eesti keel ja rahvuslik mälu":</p>
+<ol>
+<li>Keeletehnoloogia. Tarkvara rakendusalad: "Leksikograafi töövahendid"</li>
+<li>Tänapäeva eesti keele baassõnastikud: "Eesti–X-keele sõnastik"</li>
+<li>HTM-i projekt “Eesti keele elektroonilised õigekeelsusressursid (ÕS 2006)”</li>
+</ol>
+
+<h2>EELex – mis ja milleks</h2>
+<p>Iga sõnastikukoostaja, kes alustab puhtalt lehelt uut sõnaraamatut, seisab kohe silmitsi mitme olulise valikuga. Kas sisestada materjal tekstitöötlusprogrammis, et tulemus oleks kohe "nagu päris" või pidada töö käigus vajalikuks ka sisu poolelt eristada, mis on mis? Kuidas olla kindel, et kõik olulised märksõnad on olemas? Kuidas veenduda, et märksõnad on tähestiku järjekorras? Millega garanteerida, et ühelt märksõnalt teisele viidates on mõlemad ka edaspidi samal kujul olemas? Kuidas tööd jaotada, kui kaks inimest tahavad korraga sõnastikku toimetada? Kuidas eraldada sõnaraamatust ühe kitsa valdkonna terminid, et erialaspetsialist saaks need üle vaadata ja omalt poolt parandusi teha? Sõnaraamatud on mahukad ning kord langetatud otsuseid ja nende tagajärgi on hiljem väga raske muuta.</p>
+
+<p>Sõnastike haldussüsteem ongi mõeldud kõikvõimaliku aega ja hoolt nõudva musta töö kaotamiseks, jättes koostajale koostaja töö sisulise poole – vastete, definitsioonide jms lisamise. EELex lahendab kõik eespool loetletud probleemid. Keskkond on veebipõhine ega piira kasutajate arvu. Koostaja näeb korraga nii artikli struktuuri kui ka sama artikli lõplikku vormistust küljendusvaates. Lihtsad tehnilised apsakad on välistatud, sest lisada ja muuta saab vaid artikli struktuuri rangelt järgides. Vormistuse, kirjavahemärkide paneku, sortimise, viitamise, ligipääsuõiguste eest artikli eri osadele ja tööetappidele jm mittesisulise poole eest hoolitseb EELex. Kui EELexi laiatarbeversioonis töö alustuseks pakutav märksõnavalik ja artiklite struktuur tegijat rahuldavad, seisneb sõnaraamatu koostamine lihtsaimal juhul vaid lünkade täitmises.</p>
+
+<p>Et EELex peaks rahuldama <em>kõiki</em> sõnaraamatutöö tüüpvajadusi, siis lisame sinna järk-järgult uut funktsionaalsust. Koostajat huvitab alati laiem info märksõna kohta, näiteks:</p>
+
+<ul>
+<li>kuidas sõna käänata või pöörata - sõnaliigi ja vormid lisab EELex automaatselt;</li>
+<li>püsiühendid selle sõnaga - artiklis juba olemas, või päring muudes sõnastikes;</li>
+<li>tüüpilised rektsioonid, kollokatsioonid, tüüpkasutus - vaja teha päring tekstikorpuses;</li>
+<li>kas sõna on tarvituses sage - mõeldav oleks teha päring Google'is koos piiranguga 'leht leiti viimase kuu jooksul';</li>
+<li>mis kujul sõna esineb muudes sõnaraamatutes - võimalusi on mitu: ühispäring veebis või EELexi-sisene ühispäring.</li>
+</ul>
+
+<p>Senine kogemus haldussüsteemi kasutamisel on toonud pidevalt esile uusi arendamist vajavaid kohti, näiteks soov importida mõnest muust sõnaraamatust kõik kindlate tingimustega struktuuriüksused; teha sõnastikus keerulisi struktuuripõhiseid päringuid regulaaravaldistega; teha samalaadseid asendusi korraga paljudes sõnaartiklites; muuta xsl-teisendust nii, et html-väljund sobiks brauseri eelvaateks ja sisaldaks ainult kõige olulisemat infot.</p>
+
+<h2>Tulemused 2007 (november)</h2>
+<ol>
+
+<li>Töökeskkonna arendus
+<p>Loodud on leksikograafi töökeskkonna tuum, sõnastike haldussüsteem EELex, mis muudab sõnastike koostamise ja toimetamise lihtsamaks ja tõhusamaks. EELex on veebipõhine töövahend, mille olulisemad omadused on:</p>
+<ul>
+<li>andmete hoidmine XML vormingus;</li>
+<li>sõnastiku struktuuri esitamine XML skeemi vahendusel;</li>
+<li>sõnaartiklite toimetamine XML skeemi konteksti alusel;</li>
+<li>võimalus sõnaartikleid koostada ja toimetada kollektiivselt ja mitmel kasutajatasemel;</li>
+<li>sõnastikuteksti esitamine mitmes eri vaates: XML vorming, tabel, küljendusvaade;</li>
+<li>võimalus teha struktuuripõhiseid päringuid;</li>
+<li>võimalus eksportida sõnastikutekst MS Wordi küljendusvormingusse.</li>
+</ul>
+
+<p>EELex-i on seni kasutatud või kasutatakse kaht tüüpi sõnastike koostamisel ja toimetamisel: (1) ükskeelsed (ÕS 2006, Kohanimed, Sõnaperede sõnastik, Leksikoloogiasektori baas) ja (2) kakskeelsed (Eesti-vene sõnaraamat, Eesti-läti sõnaraamat). Uued rakendustüübid on (3) terminoloogiasõnastik (Oxford-Duden) ja (4) Eesti-X-keele sõnastiku andmebaas. Loodud on ka nendega seotud uued funktsioonid: illustratsioonide kasutamine, andmete import muudest EELex-i ressurssidest.</p>
+
+<p>EELex.eki.ee on veel piiratud juurdepääsuga, avalikuks kasutamiseks mõeldud liides on 2008. aasta töökavas. Illustratsiooniks:</p>
+
+<p><a title="EElex sõnastiku töölaud" class="internal-link" href="eelex-sonastiku-toolaud">EELex-i sõnastiku puhas töölaud</a></p>
+<p><a title="eelex_ÕS" class="internal-link" href="eelex2.png">ÕS: sõnaartikkel "rotisaba"</a></p>
+<p><a title="eelex_eksport" class="internal-link" href="eelex3.png">Tulemuse eksport Wordi</a></p>
+<p>&nbsp;</p>
+</li>
+
+<li>Eesti-X-keele sõnastiku andmebaas
+<p>Koostatud on Eesti-X-keele sõnastiku andmebaasi (EXS) esialgne versioon:</p>
+<ul><li>koostatud keskmise mahuga (u 40 000 üksust) märksõnastik;</li>
+<li>märksõnastikuga liidetud Eesti-vene sõnaraamatu eesti keele materjal;</li>
+<li>alustatud EXS-i toimetamist EELex-i vahenditega;</li>
+<li>ette valmistatud stiili- ja erialamärgendite andmebaas (aluseks ÕS 2006) liitmiseks EXS-iga.</li></ul>
+<p>&nbsp;</p>
+</li>
+
+<li>Avalik kasutus
+<p>Loodud on ÕS 2006 avalik veebiversioon ja täiendatud selle rakendusfunktsioone:</p>
+<ul><li>esimene versioon (lihtpäringuga) on avalikus kasutuses alates aastast 2006 <a title="external-link" href="http://www.eki.ee/dict/qs2006/">http://www.eki.ee/dict/qs2006/</a>;</li>
+<li>lisatud liitsõnade täisotsing (lähtetekstis on liitsõnad lühendatud kujul) <a title="external-link" href="http://www.eki.ee/dict/qs/">http://www.eki.ee/dict/qs/</a>;</li>
+<li>lisatud komplekspäring, mis võimaldab mitme otsitunnuse kombineerimist ja struktuuripõhist otsingut <a title="external-link" href="http://www.eki.ee/dict/qs/full.html">http://www.eki.ee/dict/qs/full.html</a>;</li>
+<li>loodud linkimismehhanism muude ressurssidega, ootel on ressursside väljavalimine ja töötlus.</li>
+</ul>
+<p>&nbsp;</p>
+</li>
+</ol>
+
+<h2>Tulemused 2009 (märts)</h2>
+<ol>
+<li>Töökeskkonna arendus
+<ul>
+<li>EELex on saanud juurde uusi funktsioone: lisatud on sõnaartikli ja sõnastiku tööriistad, uued päringuvõimalused, automaatne klaviatuurivahetus vastavalt keelele, XML failide struktuurianalüüsi vahendid.</li>
+<li>Süsteemiga on integreeritud reeglipõhise morfoloogia tarkvara.</li>
+<li>Lisandunud on uued rakendustüübid koos vastavate funktsioonidega: suur ükskeelne üldsõnastik ja terminoloogiasõnastikud.</li>
+<li>Sõnastikurakendused. Praeguse seisuga on EELexi süsteemi kasutades valminud 4 sõnastikku, tööversioonina on leksikograafide käsutusse antud 11 sõnastiku haldussüsteemid, testimisel on 2 uue sõnastiku haldussüsteemid ja eeltöötluse faasis on 3 sõnastiku andmebaasid.</li>
+</ul>
+</li>
+<li>Eesti-X-keele sõnastiku andmebaas
+<ul>
+Jätkunud on Eesti-X keele sõnastiku (EXS) edasiarendamine. Väikese mahuga kakskeelse sõnastiku tarbeks on tehtud märksõnavalik (u 20 000 üksust). Käsil on EXS-i toimetamine EELex-i vahenditega: liitsõnamaterjali toimetamine, homonüümide korrastamine jne.</ul>
+</li>
+<li>Avalik kasutus
+<ul>
+<li>Sõnastike veebiversioonid. Leksikograafi töökeskkonnas kehtivate XML standardite alusel on loodud avalik veebiversioon Eesti kirjakeele seletussõnaraamatust (esialgu on ligipääs parooliga, avalik sügisest). Täiendatud on Õigekeelsussõnaraamatu struktuuripõhist päringut (<a href="http://www.eki.ee/dict/qs/full.html">http://www.eki.ee/dict/qs/full.html</a>).</li>
+<li>EELexi tarkvara. Loodud on esialgne demoversioon avalikust kakskeelsest sõnastike haldussüsteemist (<a href="http://exsa.eki.ee/">http://exsa.eki.ee/</a>), mis annab kasutajale võimaluse koostada oma kakskeelne sõnastik EELexi keskkonnas.</li>
+</ul>
+</li>
+</ol>
+
+<h2>Tulemused 2010 (jaanuar)</h2>
+<ol>
+<li>Töökeskkonna arendus
+<ul>
+<li>Töökeskkond on saanud juurde uusi funktsioone: hulgiparandused, XML andmete eksport EELexist, kasutajaliidese täiendus: keele valik, vaate kujundamine ja genereerimine; täiendatud on traditsiooniliste sõnastike eeltöötluse vahendeid.</li>
+<li>Jätkunud on reeglipõhise morfoloogiatarkvara integreerimine keskkonnaga.</li>
+<li>Päringusüsteemis on loodud võimalused regulaaravaldiste, loogiliste operaatorite, sümboliklasside kasutamiseks.</li>
+<li>Lisandunud on uued sõnastike rakendustüübid ning vastavad toimetamis- ja päringuvõimalused: entsüklopeedilist tüüpi võõrsõnade leksikon ja mitmekeelne etümoloogia andmebaas.</li>
+<li>Sõnastikurakendused. Praeguse seisuga on EELexi süsteemis valminud (ja trükki antud või mujal kasutatud) 7 sõnastikku, tööversioonina on leksikograafide käsutuses 9 sõnastikku, testimisel on 4 sõnastikku.</li>
+<li>Lisandunud uus rakendusvaldkond EELexis valminud sõnastikele – telefonisõnastikud: iPhone rakenduseks on ette valmistatud ÕS 2006.</li>
+</ul>
+</li>
+<li>Eesti-X-keele sõnastiku andmebaas
+<ul>Jätkunud on EXS-i edasiarendamine. Suure mahuga kakskeelse sõnastiku tarbeks on tehtud märksõnavalik (u 100 000 üksust). Jätkub EXS-i toimetamine EELex-i vahenditega. EXS-i rakendusena on loodud Eesti-soome sõnastikupõhi.</ul>
+</li>
+<li>Avalik kasutus
+<ul>
+<li>Sõnastike veebiversioonid. Loodud on uus otsingumootor EELexis valminud sõnastike kasutamiseks veebis, aluseks struktuuripõhine päring. Valminud on avalik veebiversioon Eesti kirjakeele seletussõnaraamatust (2009): <a href="http://www.eki.ee/dict/ekss/">http://www.eki.ee/dict/ekss/</a>  ja Eesti-vene sõnaraamatust (2009): <a href="http://www.eki.ee/dict/evs/">http://www.eki.ee/dict/evs/</a>. Uuendamisel on muude sõnastike veebiversioonid.</li>
+<li>EELexi tarkvara. Valminud on uus versioon EELexi avalikust laiatarbesüsteemist (<a href="http://exsa.eki.ee/">http://exsa.eki.ee/</a>), mis võimaldab kasutajal veebis koostada oma sõnastikku ning (lepingu alusel) kasutada Eesti-X keele sõnastiku andmebaasi.</li></ul>
+</li>
+</ol>
+
+
+<h2>Publikatsioonid ja väitekirjad</h2>
+
+<ul>
+<li>Loopmann, Andres; Sein, Kati; Viks, Ülle (2006). Sõnastike haldussüsteem Eesti Keele Instituudis. – Keel ja arvuti (toim. Mare Koit, Renate Pajusalu, Haldur Õim). TÜ üldkeeleteaduse õppetooli toimetised 6, lk 246-258.</li>
+<li>Langemets, Margit; Loopmann, Andres; Viks, Ülle (2006). The IEL dictionary management system of Estonian. – DWS 2006: Proceedings of the Fourth International Workshop on Dictionary Writing Systems (Toim. Gilles-Maurice de Schryver). Tuesday 5th September 2006. Turin, Italy (Pre-EURALEX 2006), lk 11-16.</li>
+<li>Loopmann, Andres (2007). Sõnastike haldussüsteem EELex. Magistritöö. Käsikiri Eesti Keele Instituudis.</li>
+<li>Viks, Ülle (2008). Eesti-X-keele sõnaraamat ja grammatika. – Eesti Rakenduslingvistika Ühingu aastaraamat 4. Koostaja Margit Langemets, toimetaja Maria-Maren Sepper. Eesti Keele Sihtasutus. Tallinn, 247–261.</li>
+<li>Langemets, Margit;  Loopmann, Andres; Viks, Ülle (2009). Dictionary Management System for Bilingual Dictionaries. – eLEX 2009. eLexicography in the 21st century: New challenges, new applications (Louvain-la-Neuve, 22-24 October 2009):135-139.</li>
+<li>Viks, Ülle; Loopmann, Andres (2009). Eesti–X-keele sõnastik leksikograafi töökeskkonnas. – Teadusmõte Eestis (V). Humanitaarteadused. Eesti Teaduste Akadeemia. Tallinn: 43-53.</li>
+<li>Langemets, Margit; Loopmann, Andres; Viks, Ülle (2010). Dictionary management system for bilingual dictionaries. Sylviane Granger, Magali Paquot (Toim.). eLexicography in the 21st century : New challenges, new applications. Proceedings of eLex 2009, Louvain-la-Neuve, 22-24 October 2009 (425 - 430). Louvain-la-Neuve: Presses universitaires de Louvain, Cahiers du CENTAL.</li>
+<li>Viks, Ülle; Vare, Silvi; Sahkai, Heete (2010). The Database of Estonian Word Families: a Language Technology Resource . In: Human Language Technologies. The Baltic Perspective : Proceedings of the Fourth International Conference, Baltic HLT 2010: (Toim.) Skadina, Inguna; Vasiljevs, Andrejs. Amsterdam: IOS Press, 2010, (Frontiers of Artifical Intelligence and Applications; 219), 169 - 176.</li>
+</ul>
+
+</DIV>
+</BODY>
+</HTML>

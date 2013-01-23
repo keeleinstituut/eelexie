@@ -1,0 +1,12 @@
+1:	http://www.google.com/search?q={{sone}}&as_epq	Google
+2:	http://www.eki.ee/dict/ekss/index.cgi?q={{sone}}&C03=1	Eesti keele seletav sõnaraamat I–VI (2009)
+3:	http://www.eki.ee/dict/qs/index.cgi?q={{sone}}&C03=1	Õigekeelsussõnaraamat ÕS 2006
+4:	http://www.eki.ee/dict/usv/index.cgi?q={{sone}}&C03=1	Uute sõnade vahebaas
+5:	http://www.eki.ee/dict/evs/index.cgi?q={{sone}}&C03=1	Eesti-vene sõnaraamat I–V (1997–2009)
+6:	http://www.eki.ee/dict/vsl/index.cgi?q={{sone}}&amp;C03=1	Võõrsõnade leksikon
+7:	http://www.eki.ee/dict/sp/index.cgi?q={{sone}}&amp;C03=1	Sõnaperede andmebaas
+psv1:	http://www.eki.ee/dict/ies/index.cgi?q={{sone}}&amp;C03=1	Inglise-eesti EKI
+qs_1:	http://www.eki.ee/dict/ekss/index.cgi?Q={{sone}}	Seletav sõnaraamat
+qs_2:	http://www.eki.ee/dict/psv/index.cgi?Q={{sone}}&amp;F=M	Põhisõnavara
+qs_3:	http://www.eki.ee/dict/usv/index.cgi?Q={{sone}}	Uute sõnade vahebaas
+qs_4:	http://www.eki.ee/dict/vsl/index.cgi?Q={{sone}}	Võõrsõnade leksikon

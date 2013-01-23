@@ -1,0 +1,5273 @@
+{
+    "project": {},
+    "files": {
+        "dxf.js": {
+            "name": "dxf.js",
+            "modules": {},
+            "classes": {
+                "dxf": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "komponendid.js": {
+            "name": "komponendid.js",
+            "modules": {},
+            "classes": {
+                "komponendid": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "kontrollid.js": {
+            "name": "kontrollid.js",
+            "modules": {},
+            "classes": {
+                "kontrollid": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "lisad.js": {
+            "name": "lisad.js",
+            "modules": {},
+            "classes": {
+                "lisad": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "procs_TextContMenu.js": {
+            "name": "procs_TextContMenu.js",
+            "modules": {},
+            "classes": {
+                "procs_TextContMenu": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "procs_app.js": {
+            "name": "procs_app.js",
+            "modules": {},
+            "classes": {
+                "procs_app": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "procs_edt.js": {
+            "name": "procs_edt.js",
+            "modules": {},
+            "classes": {
+                "procs_edt": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "tools.js": {
+            "name": "tools.js",
+            "modules": {},
+            "classes": {
+                "tools": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "tools_dx.js": {
+            "name": "tools_dx.js",
+            "modules": {},
+            "classes": {
+                "tools_dx": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "dxf": {
+            "name": "dxf",
+            "shortname": "dxf",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "dxf.js",
+            "line": 1,
+            "description": "dxf.js\nBrauserisõltumatu versiooni proc_edit.js ja proc_app.js."
+        },
+        "komponendid": {
+            "name": "komponendid",
+            "shortname": "komponendid",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "komponendid.js",
+            "line": 1,
+            "description": "komponendid.js.\nKasutatakse ka brauserisõltumatus versioonis."
+        },
+        "kontrollid": {
+            "name": "kontrollid",
+            "shortname": "kontrollid",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "kontrollid.js",
+            "line": 2,
+            "description": "kontrollid.js\nFunktsioonid, mis toimetamise ajal kontrollivad ja muudavad tähendusnumbreid jms."
+        },
+        "lisad": {
+            "name": "lisad",
+            "shortname": "lisad",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "lisad.js",
+            "line": 1,
+            "description": "lisad.js."
+        },
+        "procs_TextContMenu": {
+            "name": "procs_TextContMenu",
+            "shortname": "procs_TextContMenu",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "procs_TextContMenu.js",
+            "line": 1,
+            "description": "procs_TextContMenu.js\nKontekstmenüüdega opereerimine."
+        },
+        "procs_app": {
+            "name": "procs_app",
+            "shortname": "procs_app",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "procs_app.js",
+            "line": 1,
+            "description": "procs_app.js"
+        },
+        "procs_edt": {
+            "name": "procs_edt",
+            "shortname": "procs_edt",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "procs_edt.js",
+            "line": 1,
+            "description": "procs_edt.js"
+        },
+        "tools": {
+            "name": "tools",
+            "shortname": "tools",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "tools.js",
+            "line": 1,
+            "description": "tools.js\nIE verstiooni oma"
+        },
+        "tools_dx": {
+            "name": "tools_dx",
+            "shortname": "tools_dx",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "tools_dx.js",
+            "line": 1,
+            "description": "tools_dx.js\nBrauserisõltumatu verstiooni oma"
+        }
+    },
+    "classitems": [
+        {
+            "file": "dxf.js",
+            "line": 8,
+            "description": "Palju muutujaid.",
+            "itemtype": "property",
+            "name": "PaljuMuutujaid",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 88,
+            "description": "Käivitatakse EELexi laadides. Teeb kõik algseadistused. Näiteks ka kiirklahvid.",
+            "itemtype": "method",
+            "name": "bodyOnLoad",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 606,
+            "description": "Kutsutakse välja, kui keegi on riba (bar) peal vajutanud ja kutsub välja vajaliku funktsiooni.",
+            "itemtype": "method",
+            "name": "toolBarOnClick",
+            "params": [
+                {
+                    "name": "clickedId",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 641,
+            "description": "Kutsutakse välja, kui keegi klikib Toimetamisala ribal, ja kutsub välja vajaliku funktsiooni.",
+            "itemtype": "method",
+            "name": "dhxTalaBarOnClick",
+            "params": [
+                {
+                    "name": "clickedId",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 698,
+            "description": "Kutsutakse välja, kui klikatakse Sõnastiku tööriistade menüü valikul. Ja käivitab vajaliku funktsiooni.",
+            "itemtype": "method",
+            "name": "srMenuOnClick",
+            "params": [
+                {
+                    "name": "mnuItmId",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 712,
+            "description": "Toob artikli esile ja näitab nuppu otsingutulemuste esiletoomiseks.",
+            "itemtype": "method",
+            "name": "tooEsileArtikkel",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 724,
+            "description": "Toob esile otsingutulemuste tabeli ja näitab nuppu artikli esiletoomiseks.",
+            "itemtype": "method",
+            "name": "tooEsileLoend",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 736,
+            "description": "Käivitab otsingupäringu.",
+            "itemtype": "method",
+            "name": "otsing",
+            "params": [
+                {
+                    "name": "parQM",
+                    "description": "Päringumeetod (XML või MySQL).",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 943,
+            "description": "Avatud artikli kustutamine. Kontrollib, kas artikkel avatud, kas kasutaja ikka tahab kustutada ja seejärel kutsub kustutaArtikkel().",
+            "itemtype": "method",
+            "name": "kustutamine",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 963,
+            "description": "Kustutab avatud artikli ära.",
+            "itemtype": "method",
+            "name": "kustutaArtikkel",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1052,
+            "description": "Käivitab operatsiooni, mille vastus jõuab pikka rada pidi funktsioonile ParseSrvInfo.",
+            "itemtype": "method",
+            "name": "StartOperation",
+            "params": [
+                {
+                    "name": "oPrmDom",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "example": [
+                " \n\t// See on funktsioonist kustutaArtikkel:\n   var cmdXml = \"<prm>\" +\n                   \"<cmd>\" + sCmdId + \"</cmd>\" +\n                   \"<vol>\" + sFromVolume + \"</vol>\" +\n                   \"<nfo>\" + sQryInfo + \"</nfo>\" +\n                   \"<axp>\" + art_xpath + \"</axp>\" +\n                   \"<exp>\" + elm_xpath + \"</exp>\" +\n                   \"<wC>0</wC>\" +\n                   \"<wS>1</wS>\" +\n                   \"<fSrP>\" + srchPtrn + \"</fSrP>\" +\n                   \"<G>\" + artGuid + \"</G>\" +\n                   \"<sql>\" + sql + \"</sql>\" +\n                   \"<dV>\" + destVol + \"</dV>\" +\n                   \"<qn>\" + seldQn + \"</qn>\" +\n                   \"<qM>\" + qM + \"</qM>\" +\n               \"</prm>\";\n\tvar cmdXmlDom = IDD(\"String\", cmdXml, false, false, null);\n   StartOperation(cmdXmlDom);\n"
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1100,
+            "description": "Käivitub, kui serverist päring tagasi tuleb. Ajax päringu abifunktsioon.",
+            "itemtype": "method",
+            "name": "asyncCompleted",
+            "params": [
+                {
+                    "name": "objXMLDom",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1118,
+            "description": "Ajax päringu abifunktsioon. Paneb progress bari kinni.",
+            "itemtype": "method",
+            "name": "StopOperation",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1133,
+            "description": "Töötleb serveri vastuseid. Funktsiooniga StartOperation tehtud päringute vastused jõuavad siia.",
+            "itemtype": "method",
+            "name": "ParseSrvInfo",
+            "params": [
+                {
+                    "name": "oRespDom",
+                    "description": "XML Dom.",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1294,
+            "description": "Sätib Vaateala elemendi taustavärvi (jätab meelde, mis oli elemendi värv enne aktiivseks tegemist ja kui element enam aktiivne pole, paneb meelde jäetud värvi tagasi).",
+            "itemtype": "method",
+            "name": "SetValaElement",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1312,
+            "description": "Arvatavasti otsib põhielemente. TODO",
+            "itemtype": "method",
+            "name": "getMajors",
+            "params": [
+                {
+                    "name": "yldStruNode",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "editDomNode",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1349,
+            "description": "Tegeleb klikkidega Toimetamisalal. Sarnane funktsioon Vaatealale on handleView.",
+            "itemtype": "method",
+            "name": "handleEdit",
+            "params": [
+                {
+                    "name": "thisEvent",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1582,
+            "description": "Tühi funktsioon. Vaata kommentaari.",
+            "itemtype": "method",
+            "name": "sndError",
+            "params": [
+                {
+                    "name": "evnt",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1595,
+            "description": "Tühi funktsioon. Vaata kommentaari.",
+            "itemtype": "method",
+            "name": "sndStarted",
+            "params": [
+                {
+                    "name": "evnt",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1608,
+            "description": "Tühi funktsioon. Vaata kommentaari.",
+            "itemtype": "method",
+            "name": "sndCompleted",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1619,
+            "description": "Tegeleb klikkidega Vaatealal. Sarnane funktsioon Toimetamisalale on",
+            "itemtype": "method",
+            "name": "handleView",
+            "params": [
+                {
+                    "name": "thisEvent",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1877,
+            "description": "Arvatavasti tegeleb klikkidega Vaatealal.",
+            "itemtype": "method",
+            "name": "handleView",
+            "params": [
+                {
+                    "name": "thisEvent",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1894,
+            "description": "Brauseri akna suuruse muutmise korral kaasajastab komponentide suuruse.",
+            "itemtype": "method",
+            "name": "bodyOnResize",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1906,
+            "description": "Seadistab Toimetamisala (taustavärv, tala.css, font, ...). (TODO kus seda kutsutakse?)",
+            "itemtype": "method",
+            "name": "setTala",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1942,
+            "description": "Seadistab Vaateala (taustavärv, vala.css, font, ...). (TODO kus seda kutsutakse?)",
+            "itemtype": "method",
+            "name": "setVala",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 1978,
+            "description": "Teeb XML prefiksist nimeruumi URI.",
+            "itemtype": "method",
+            "name": "NSResolver",
+            "params": [
+                {
+                    "name": "nsPrefix",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2000,
+            "description": "Toimetamisala abifunktsioon toimetamisel andmete salvestasmiseks. Peaks tulema blurri korral. Kutsutakse välja funktsioonis handleEdit.",
+            "itemtype": "method",
+            "name": "SetVars",
+            "params": [
+                {
+                    "name": "currEvent",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2192,
+            "description": "Toimetamisala abifunktsioon. Teeb toimetamiseks kasti. Kutsutakse välja funktsioonis handleEdit. TODO",
+            "itemtype": "method",
+            "name": "SetEdits",
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2471,
+            "description": "Enteri puhul blurrib toimetamise kastikese.",
+            "itemtype": "method",
+            "name": "txtInpOnKeyUp",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2485,
+            "description": "Uuendab keelte valikut, kui on olemas xmllang_tyyp; muidu loetakse failist iso639_1.xml.",
+            "itemtype": "method",
+            "name": "updKeelteValik",
+            "params": [
+                {
+                    "name": "schLocation",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2588,
+            "description": "Koostatakse HTML optionite loend Toimetamisalale keele valikuks.",
+            "itemtype": "method",
+            "name": "getKeeledOptString",
+            "params": [
+                {
+                    "name": "kVal",
+                    "description": "Keele kood.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Optionsite loend <option> jne.",
+                "type": "String"
+            },
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2609,
+            "description": "Kutsutakse toimetamiskastikese blurri korral.",
+            "itemtype": "method",
+            "name": "HandleCeeBlur",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2711,
+            "description": "Teisendab Date objekti stringiks.",
+            "itemtype": "method",
+            "name": "GetXSDDateTime",
+            "params": [
+                {
+                    "name": "dNow",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Kuupäev EELexis kasutataval kujul.",
+                "type": "String"
+            },
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2730,
+            "description": "TODO Kui toimetamisalale tuleb liiga pikk tekst, siis algusosa on nähtav ja ülejäänu ei ole nähtav (30. tähemärgist edasi).",
+            "itemtype": "method",
+            "name": "updMuudatused",
+            "params": [
+                {
+                    "name": "op",
+                    "description": "S, K, U, R",
+                    "type": "String"
+                },
+                {
+                    "name": "tekst",
+                    "description": "Töödeldav tekst",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2765,
+            "description": "TODO",
+            "itemtype": "method",
+            "name": "FillArtFrames",
+            "params": [
+                {
+                    "name": "oArtNode",
+                    "description": "XML node",
+                    "type": "Object"
+                },
+                {
+                    "name": "delURHistory",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 2971,
+            "description": "Uuendab Toimetamisala ja Vaateala.",
+            "itemtype": "method",
+            "name": "vaatedRefresh",
+            "params": [
+                {
+                    "name": "nr",
+                    "description": "Eristab, kas on \"UndoRedo\" või mitte.",
+                    "type": "String"
+                },
+                {
+                    "name": "uuendaTala",
+                    "description": "",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "uuendaVala",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 3047,
+            "description": "TODO",
+            "itemtype": "method",
+            "name": "ElementChecker",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "A või ...",
+                "type": "String"
+            },
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 3062,
+            "description": "TODO",
+            "itemtype": "method",
+            "name": "ElementCheckerXS",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "xs:enumeration, record või ...",
+                "type": "String"
+            },
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 3080,
+            "description": "Lõhub stringi ;-ga juppideks ja kirjutab tükid optionideks.",
+            "itemtype": "method",
+            "name": "getLoadXmlString",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "HTML optionid.",
+                "type": "String"
+            },
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 3100,
+            "description": "TODO Koostab otsingutulemuste tabeli.",
+            "itemtype": "method",
+            "name": "FillBrowseFrame",
+            "params": [
+                {
+                    "name": "outDOMNode",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 3182,
+            "description": "Otsingutulemuste nimekirjas millelegi peale klikates käivitub.",
+            "itemtype": "method",
+            "name": "gridOnRowSelect",
+            "params": [
+                {
+                    "name": "rowId",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "colInd",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 3196,
+            "description": "Teeb XML päringu. Otsingutulemuste nimekirjas millelegi peale klikates käivitub.",
+            "itemtype": "method",
+            "name": "gridOnRightClick",
+            "params": [
+                {
+                    "name": "rowId",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "colInd",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "evntObj",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 3210,
+            "description": "Teeb BrowseRead päringu. Otsingutulemuste nimekirjas millelegi peale klikates käivitub.",
+            "itemtype": "method",
+            "name": "doBrowseRead",
+            "params": [
+                {
+                    "name": "qM",
+                    "description": "Query Method",
+                    "type": "String"
+                },
+                {
+                    "name": "rowId",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "colInd",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "dxf.js",
+            "line": 3236,
+            "itemtype": "method",
+            "name": "setButtonSelectId",
+            "params": [
+                {
+                    "name": "buttonSelectId",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "listOptId",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "dxf"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 8,
+            "description": "Arvatavasti paneb kokku sõnastike toimetuslogi päringu.",
+            "itemtype": "method",
+            "name": "showDicLogs",
+            "class": "komponendid"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 48,
+            "description": "Kontrollib XMLi valiidsust serveris. TODO: Äkki on köite valideerimine hoopis.\nKasutab StartOperation(cmdXmlDom);",
+            "itemtype": "method",
+            "name": "srvXmlValidate",
+            "class": "komponendid"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 104,
+            "description": "Näitab eelmist, järgmist, viimast või esimest artiklit. Kutsutakse välja Toimetamisala ülaservast noolenuppudelt.",
+            "itemtype": "method",
+            "name": "showPrevNextEntry",
+            "params": [
+                {
+                    "name": "samm",
+                    "description": "Kui 0, siis antakse esimene; kui 1, antakse järgmine; kui -1, antakse eelmine; kui 1000000, antakse viimane.",
+                    "type": "Int"
+                }
+            ],
+            "class": "komponendid"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 192,
+            "description": "Kutsutakse välja nupu \"Lisa artikkel\" alt (Sõnastiku akna ülaservas kollane tärn).",
+            "itemtype": "method",
+            "name": "imgArtAddClick",
+            "class": "komponendid"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 498,
+            "description": "Kontrollib artikli xml-i valiidsust ja salvestab artikli. Kutsutakse välja salvestamise nupust (Toimetamisala ülaservas).",
+            "itemtype": "method",
+            "name": "imgArtSaveClick",
+            "class": "komponendid"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 684,
+            "description": "Kustutab elemendi seest tühjad elemendid.",
+            "itemtype": "method",
+            "name": "DeleteEmptys",
+            "params": [
+                {
+                    "name": "deleteFrom",
+                    "description": "Element, mille seest kustutatakse.",
+                    "type": "Object"
+                }
+            ],
+            "class": "komponendid"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 711,
+            "description": "Otsib kõik default_query märksõnad ja lisab neile sorteerimisväärtuse (atribuut @O). Kasutab getSortVal.",
+            "itemtype": "method",
+            "name": "setMsvVals",
+            "class": "komponendid"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 734,
+            "description": "Arvutab sorteerimisväärtuse.",
+            "itemtype": "method",
+            "name": "getSortVal",
+            "params": [
+                {
+                    "name": "oMNode",
+                    "description": "Element, millest tekst võtta.",
+                    "type": "Object"
+                },
+                {
+                    "name": "inclHoms",
+                    "description": "Kas lisada homonüüminumber.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "yvOrder",
+                    "description": "Kas sorteerida põhisõna juurde.",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "sorteerimisväärtus",
+                "type": "String"
+            },
+            "class": "komponendid"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 959,
+            "description": "Lisab valmispäringud funktsiooniga LisaKoondParing. Valmispäringud on siin funktsioonis. Ainult art.cgi (IE).",
+            "itemtype": "method",
+            "name": "valmisParingud",
+            "class": "komponendid"
+        },
+        {
+            "file": "komponendid.js",
+            "line": 1026,
+            "description": "Müstiline funktsioon, mida kasutatakse funktsioonis valmisParingud. Ainult art.cgi (IE).",
+            "itemtype": "method",
+            "name": "LisaKoondParing",
+            "params": [
+                {
+                    "name": "rowId",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "rowVal",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "cellText1",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "subMenu",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "komponendid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 10,
+            "description": "(TODO Kus see välja kutsutakse?) Teisendab teksti",
+            "itemtype": "method",
+            "name": "tekstiTeisendused",
+            "params": [
+                {
+                    "name": "tekst",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "kontrollid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 42,
+            "description": "(TODO Kus see välja kutsutakse?) Kontrollib.",
+            "itemtype": "method",
+            "name": "ValueChecks",
+            "params": [
+                {
+                    "name": "newTxtVal",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "oldTxtVal",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "kontrollid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 117,
+            "description": "(TODO Kus, miks kellele välja kutsutakse? ) Määrab aT ja aTA.",
+            "itemtype": "method",
+            "name": "setATTAPlokid",
+            "params": [
+                {
+                    "name": "kontrollitav",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "kontrollid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 134,
+            "description": "TODO Arvatavasti kontroll, mis tehakse elemendi väljalt lahkudes.",
+            "itemtype": "method",
+            "name": "ValueDicChecks",
+            "params": [
+                {
+                    "name": "uusTekst",
+                    "description": "Muudetava elemendi väärtus.",
+                    "type": "String"
+                }
+            ],
+            "class": "kontrollid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 305,
+            "description": "Kontrollib artiklit. Kutsutakse välja enne salvestamist.",
+            "itemtype": "method",
+            "name": "ArtSaveChecks",
+            "class": "kontrollid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 359,
+            "description": "Kasutatakse sõnaperedega. Tegeleb elementidega ml, mm.",
+            "itemtype": "method",
+            "name": "SetMallid",
+            "class": "kontrollid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 382,
+            "description": "(TODO kus välja kutsutakse?) Tagastab märksõnast üleliigsed märgid.",
+            "itemtype": "method",
+            "name": "SetMallid",
+            "params": [
+                {
+                    "name": "oNode",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "kontrollid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 543,
+            "description": "(TODO kus välja kutsutakse?) Ei tee midagi.",
+            "itemtype": "method",
+            "name": "TeisendaDOM",
+            "params": [
+                {
+                    "name": "thisdomdoc",
+                    "description": "Muudetav DOM.",
+                    "type": "Object"
+                }
+            ],
+            "class": "kontrollid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 827,
+            "description": "Käivitatakse grupi loomisel. Tegeleb tähendusnumbritega.",
+            "itemtype": "method",
+            "name": "AddGruppChecks",
+            "params": [
+                {
+                    "name": "oAddedNode",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "kontrollid"
+        },
+        {
+            "file": "kontrollid.js",
+            "line": 856,
+            "description": "Arvutab funktsioonile AddGruppChecks tähendusnumbrid.",
+            "itemtype": "method",
+            "name": "arvutaTxhendusNumbrid",
+            "params": [
+                {
+                    "name": "parNode",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "seldNodeName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "kontrollid"
+        },
+        {
+            "file": "lisad.js",
+            "line": 7,
+            "description": "Hoiab erimärke.",
+            "itemtype": "property",
+            "name": "specCh",
+            "type": "{String}",
+            "default": "\\|(){}[]-+.?*^$",
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 16,
+            "description": "Hoiab eraldusmärki. Sama, mis PD.",
+            "itemtype": "property",
+            "name": "JR",
+            "type": "{String}",
+            "default": "uE001",
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 25,
+            "description": "Hoiab eraldusmärki. Sama, mis JR.",
+            "itemtype": "property",
+            "name": "PD",
+            "type": "{String}",
+            "default": "uE001",
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 34,
+            "description": "Hoiab laiendatud ladina tähestikku.",
+            "itemtype": "property",
+            "name": "REG_LETT_LA",
+            "type": "{String}",
+            "default": "tähestik",
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 43,
+            "description": "Hoiab vene tähestikku.",
+            "itemtype": "property",
+            "name": "REG_LETT_RU",
+            "type": "{String}",
+            "default": "tähestik",
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 61,
+            "description": "TODO",
+            "itemtype": "method",
+            "name": "getReqValue",
+            "params": [
+                {
+                    "name": "uusNode",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "origNode",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "eitea",
+                "type": "Boolean"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 130,
+            "description": "Tagastab brauseri versiooni.",
+            "itemtype": "method",
+            "name": "getBrowserData",
+            "return": {
+                "description": "kujul: browser + \";\" + verNr + \";\" + opSys",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 191,
+            "description": "Sisendstringist kustutatakse ära kõik sümbolid, mis ei kuulu tähestikku msAlpha ega muutujasse voivadOlla.",
+            "itemtype": "method",
+            "name": "RemoveSymbols",
+            "params": [
+                {
+                    "name": "inpstr",
+                    "description": "Sisendstring, millest kustutatakse. Kustutatakse ka &amp; järjendid.",
+                    "type": "String"
+                },
+                {
+                    "name": "voivadOlla",
+                    "description": "Nimekiri sümbolitest, mis alles jäävad.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Puhastatud string.",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 213,
+            "description": "Leiab elemendi õed-vennad.",
+            "itemtype": "method",
+            "name": "getFollowingSiblings",
+            "params": [
+                {
+                    "name": "elId",
+                    "description": "Rada elemendini.",
+                    "type": "String"
+                },
+                {
+                    "name": "qn",
+                    "description": "xPath.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Siblingite nimed loeteluna. Või \"Ei saa\" või \"\".",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 264,
+            "description": "Teeb xml-nodest sellise xml-stringi, mis on xml.",
+            "itemtype": "method",
+            "name": "getXmlString",
+            "params": [
+                {
+                    "name": "node",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "xml teksti kujul.",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 286,
+            "description": "Tehakse xPath päring ja väljastatakse nodede nimekiri. XPathResult.ORDERED_NODE_ITERATOR_TYPE,",
+            "itemtype": "method",
+            "name": "getXmlNodes",
+            "params": [
+                {
+                    "name": "xmlElement",
+                    "description": "Element, millelt päring tehakse.",
+                    "type": "Object"
+                },
+                {
+                    "name": "xPath",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "null või nodelist.",
+                "type": "Object"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 320,
+            "description": "Tehakse xPath päring ja väljastatakse nodede nimekiri. XPathResult.ORDERED_NODE_SNAPSHOT_TYPE",
+            "itemtype": "method",
+            "name": "getXmlNodesSnapshot",
+            "params": [
+                {
+                    "name": "xmlElement",
+                    "description": "Element, millelt päring tehakse.",
+                    "type": "Object"
+                },
+                {
+                    "name": "xPath",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "null või nodelist.",
+                "type": "Object"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 353,
+            "description": "Teeb xPath päringu ja vastab ühe node'i.",
+            "itemtype": "method",
+            "name": "getXmlSingleNode",
+            "params": [
+                {
+                    "name": "xmlElement",
+                    "description": "Algpunkt, kust päring tehakse.",
+                    "type": "Object"
+                },
+                {
+                    "name": "xPath",
+                    "description": "Rada.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Leitud node või null.",
+                "type": "Object"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 386,
+            "description": "Teeb xPath päringu ja vastab ühe node'i väärtuse.",
+            "itemtype": "method",
+            "name": "getXmlSingleNodeValue",
+            "params": [
+                {
+                    "name": "xmlElement",
+                    "description": "Algpunkt, kust päring tehakse.",
+                    "type": "Object"
+                },
+                {
+                    "name": "xPath",
+                    "description": "Rada.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Väärtus stringina või tühi string.",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 404,
+            "description": "Tagastab sisendnode'i väärtuse.",
+            "itemtype": "method",
+            "name": "getXmlNodeValue",
+            "params": [
+                {
+                    "name": "xmlElement",
+                    "description": "Sisendnode.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "Väärtus stringina.",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 420,
+            "description": "Omistab sisendnode'ile etteantud väärtuse.",
+            "itemtype": "method",
+            "name": "setXmlNodeValue",
+            "params": [
+                {
+                    "name": "xmlElement",
+                    "description": "Sisendnode, millele väärtust omistatakse.",
+                    "type": "Object"
+                },
+                {
+                    "name": "tekst",
+                    "description": "Väärtus, mis node'le omistatakse.",
+                    "type": "String"
+                }
+            ],
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 436,
+            "description": "xPathi päringu esimesele vastele omistatakse argumendi thisText väärtus.",
+            "itemtype": "method",
+            "name": "setXmlSingleNodeValue",
+            "params": [
+                {
+                    "name": "xmlElement",
+                    "description": "Sisendnode.",
+                    "type": "Object"
+                },
+                {
+                    "name": "xPath",
+                    "description": "Rada.",
+                    "type": "String"
+                },
+                {
+                    "name": "thisText",
+                    "description": "Väärtus, mis node'ile omistatakse.",
+                    "type": "String"
+                }
+            ],
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 452,
+            "description": "Loob uue elemendi.",
+            "itemtype": "method",
+            "name": "createMyNSElement",
+            "params": [
+                {
+                    "name": "xmlDom",
+                    "description": "Element, kes saab endale uue lapse.",
+                    "type": "Object"
+                },
+                {
+                    "name": "qn",
+                    "description": "Loodava elemendi nimi.",
+                    "type": "String"
+                },
+                {
+                    "name": "uri",
+                    "description": "Nimeruum.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Uus element või null.",
+                "type": "Object"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 471,
+            "description": "Loob elemendile uue atribuudi.",
+            "itemtype": "method",
+            "name": "createMyNSAttribute",
+            "params": [
+                {
+                    "name": "xmlDom",
+                    "description": "Element, millele luuakse atribuut.",
+                    "type": "Object"
+                },
+                {
+                    "name": "qn",
+                    "description": "Loodava atribuudi nimi.",
+                    "type": "String"
+                },
+                {
+                    "name": "uri",
+                    "description": "Nimeruum.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Uus atribuut või null.",
+                "type": "Object"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 490,
+            "description": "xmlElement.attributes.setNamedItem(attNode); Kas see tähendab atribuudi loomist?",
+            "itemtype": "method",
+            "name": "setMyNSNamedItem",
+            "params": [
+                {
+                    "name": "xmlElement",
+                    "description": "Element, millele liidetakse",
+                    "type": "Object"
+                },
+                {
+                    "name": "attNode",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 506,
+            "description": "Loob elemendile atribuudi või kirjutab vanale uue väärtuse.",
+            "example": [
+                "\n\tsetMyNSAttribute(selectedNode, DICURI, DICPR + \":maut\", sUsrName); \n\tsetMyNSAttribute(selectedNode, DICURI, DICPR + \":maeg\", GetXSDDateTime(new Date()));"
+            ],
+            "itemtype": "method",
+            "name": "setMyNSAttribute",
+            "params": [
+                {
+                    "name": "xmlElement",
+                    "description": "Element, millele tehakse atribuut.",
+                    "type": "Object"
+                },
+                {
+                    "name": "uri",
+                    "description": "Nimeruum.",
+                    "type": "String"
+                },
+                {
+                    "name": "qn",
+                    "description": "Atribuudi nimi.",
+                    "type": "String"
+                },
+                {
+                    "name": "val",
+                    "description": "Väärtus.",
+                    "type": "String"
+                }
+            ],
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 527,
+            "description": "Võtab stringi algusest ja lõpust tühikud ära.",
+            "itemtype": "method",
+            "name": "setMyNSAttribute",
+            "params": [
+                {
+                    "name": "mystring",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "mystring.replace(/^\\s+|\\s+$/g, \"\");",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 540,
+            "description": "Korrutab sisendstringi n korda.",
+            "itemtype": "method",
+            "name": "jsStrRepeat",
+            "params": [
+                {
+                    "name": "n",
+                    "description": "Niimitu korda kordab stringi s.",
+                    "type": "String"
+                },
+                {
+                    "name": "s",
+                    "description": "Sisendstring, mida korrutatakse n korda.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "n korda korrutatud s-i.",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 557,
+            "description": "Väljastab esimese positsiooni järjendis, kus asub val.",
+            "itemtype": "method",
+            "name": "jsArrIndex",
+            "params": [
+                {
+                    "name": "arr",
+                    "description": "Stringide järjend.",
+                    "type": "Array"
+                },
+                {
+                    "name": "val",
+                    "description": "Otsitav string.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Mitmendal positsioonil oli otsitav string. Kui ei leia, siis -1.",
+                "type": "Int"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 575,
+            "description": "Teeb stringist booleani. True, yes, 1 lähevad true'ks. False, no, 0, tühi string, null lähevad false'ks.",
+            "itemtype": "method",
+            "name": "jsStringToBoolean",
+            "params": [
+                {
+                    "name": "string",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "true või false.",
+                "type": "Boolean"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 591,
+            "description": "Võrdleb sisendstringe, arvestab tõstutundlikkust.",
+            "itemtype": "method",
+            "name": "jsStrComp",
+            "params": [
+                {
+                    "name": "s1",
+                    "description": "Sisendstring 1.",
+                    "type": "String"
+                },
+                {
+                    "name": "s2",
+                    "description": "Sisendstring 2.",
+                    "type": "String"
+                },
+                {
+                    "name": "cs",
+                    "description": "Case sensitive. Kui 1, siis case insensitive.",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "0 : It string matches 100% <br/>\n 1 : no match, and the parameter value comes before the string object's value in the locale sort order<br/>\n  -1 : no match, and the parameter value comes after the string object's value in the locale sort order",
+                "type": "Int"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 621,
+            "description": "Unikaalse nime koostamiseks tõstutundetule keskkonnale (näiteks css). Koolonid muutuvad sidekriipsudeks, tähed teisendatakse numbrilisteks koodideks.",
+            "itemtype": "method",
+            "name": "unName",
+            "params": [
+                {
+                    "name": "inpStr",
+                    "description": "Sisendstring",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 638,
+            "description": "Teisendab numbri 16-süsteemi.",
+            "itemtype": "method",
+            "name": "hex",
+            "params": [
+                {
+                    "name": "nmb",
+                    "description": "Sisendnumber.",
+                    "type": "Int"
+                },
+                {
+                    "name": "uCase",
+                    "description": "TRUE puhul on väljundis suured tähed.",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "16-süsteemis väljund.",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 659,
+            "description": "Vahetab sisendstringis ampersandid (&) &amp;-ide vastu.\nXML-is ei tohi peale nende &amp; eriti midagi olla. Näiteks &amp;br; (leia parem näitelause).",
+            "itemtype": "method",
+            "name": "toXmlString",
+            "params": [
+                {
+                    "name": "tekst",
+                    "description": "Sisendiks po tekst.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Teisendatud tekst.",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 672,
+            "description": "Teisendab numbrid rooma numbriteks.",
+            "itemtype": "method",
+            "name": "romanize",
+            "params": [
+                {
+                    "name": "num",
+                    "description": "Number.",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "Rooma number.",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 692,
+            "description": "Teisendab rooma numbri numbriks.",
+            "itemtype": "method",
+            "name": "deromanize",
+            "params": [
+                {
+                    "name": "romanIn",
+                    "description": "Rooma number.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Number.",
+                "type": "Int"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "lisad.js",
+            "line": 714,
+            "description": "Teisendab entity'd html-iks. Näiteks replace(/(&br;)/g, \"<br/>\"); ja palju muud.",
+            "itemtype": "method",
+            "name": "entitiesToHtml",
+            "params": [
+                {
+                    "name": "tekst",
+                    "description": "Sisendstring.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "HTML-ilaadsem string.",
+                "type": "String"
+            },
+            "class": "lisad"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 8,
+            "description": "//et vahepeal openmenuid ära ei kaoks;",
+            "itemtype": "property",
+            "name": "openmenuid",
+            "type": "{String} HTML elemendi id.",
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 15,
+            "description": "See muutuja on mujal, aga hoitakse menüü elementi.",
+            "itemtype": "property",
+            "name": "tn_cmenu",
+            "type": "{String} HTML element.",
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 22,
+            "description": "Käsitleb nii cmenu (tavaline kontekstmenüü) kui ka tn_cmenu (mixed=true #text sees tekkiv kontekstmenüü) onmouseover-it ja onmouseout-i. Ühel ajal korraga nad lahti ei ole, capture on korraga ühel neist",
+            "itemtype": "method",
+            "name": "SwitchCMenu",
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 109,
+            "description": "Näitab kontekstmenüüd määratud kohas.",
+            "itemtype": "method",
+            "name": "DisplayTNCMenu",
+            "params": [
+                {
+                    "name": "posx",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "posy",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 124,
+            "description": "Käivitatakse klõpsu peale.",
+            "itemtype": "method",
+            "name": "ClickTNCMenu",
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 259,
+            "description": "Kui seda funktsiooni on kutsutud, siis kontekstmenüüd enam ei tule.",
+            "itemtype": "method",
+            "name": "DisableContextMenu",
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 270,
+            "description": "Peidab menüü ära.",
+            "itemtype": "method",
+            "name": "HideDivMenu",
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 294,
+            "description": "Näitab tähte suuremalt kui menüüs näha.",
+            "itemtype": "method",
+            "name": "ShowBigCharacter",
+            "params": [
+                {
+                    "name": "cHTML",
+                    "description": "Mida näidatakse.",
+                    "type": "String"
+                },
+                {
+                    "name": "x",
+                    "description": "Pikslites.",
+                    "type": "Int"
+                },
+                {
+                    "name": "y",
+                    "description": "Pikslites.",
+                    "type": "Int"
+                },
+                {
+                    "name": "fs",
+                    "description": "Font Style.",
+                    "type": "String"
+                },
+                {
+                    "name": "ff",
+                    "description": "Font Family.",
+                    "type": "String"
+                }
+            ],
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 313,
+            "description": "Peidab suure tähepildi ära.",
+            "itemtype": "method",
+            "name": "HideBigCharacter",
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_TextContMenu.js",
+            "line": 324,
+            "description": "Pannakse kokku sümbolite menüü.",
+            "itemtype": "method",
+            "name": "FillInsertSymbolsMenu",
+            "class": "procs_TextContMenu"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 9,
+            "itemtype": "property",
+            "name": "PaljuProperteid",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 108,
+            "itemtype": "method",
+            "name": "bodyOnLoad",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 598,
+            "itemtype": "method",
+            "name": "initEditTransform",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 638,
+            "itemtype": "method",
+            "name": "initViewTransform",
+            "params": [
+                {
+                    "name": "vaateValik",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 754,
+            "itemtype": "method",
+            "name": "xslViewSelected",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 769,
+            "itemtype": "method",
+            "name": "PaneEkspressioonid",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 845,
+            "itemtype": "method",
+            "name": "GetQueryParams",
+            "params": [
+                {
+                    "name": "qryMethod",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "oPrmDom",
+                "type": "Object"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1354,
+            "itemtype": "method",
+            "name": "getSqlQuery",
+            "params": [
+                {
+                    "name": "qn",
+                    "description": "(a la jsMid(default_query, default_query.lastIndexOf(\"/\") + 1); )",
+                    "type": "Object"
+                },
+                {
+                    "name": "txt",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "onTeksti",
+                    "description": "",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "wsym",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "wcase",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "extvalpath",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "elRada",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "msAttCond",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1494,
+            "itemtype": "method",
+            "name": "getMySqlLikePtrn",
+            "params": [
+                {
+                    "name": "inp",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1549,
+            "itemtype": "method",
+            "name": "GCV",
+            "params": [
+                {
+                    "name": "sInpStr",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "lisa",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "kuhu",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1598,
+            "itemtype": "method",
+            "name": "getXPathPred",
+            "params": [
+                {
+                    "name": "inp",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1645,
+            "itemtype": "method",
+            "name": "asendaMetad",
+            "params": [
+                {
+                    "name": "jupp",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1662,
+            "itemtype": "method",
+            "name": "taastaMetad",
+            "params": [
+                {
+                    "name": "jupp",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1679,
+            "itemtype": "method",
+            "name": "gcv2",
+            "params": [
+                {
+                    "name": "jupp",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1728,
+            "itemtype": "method",
+            "name": "btnRunQuery",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1765,
+            "itemtype": "method",
+            "name": "koostamiseLopp",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1795,
+            "itemtype": "method",
+            "name": "remKoostamiseLopp",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1811,
+            "itemtype": "method",
+            "name": "signEntry",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1843,
+            "itemtype": "method",
+            "name": "remSignEntry",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1861,
+            "itemtype": "method",
+            "name": "completeEntryLatvian",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1883,
+            "itemtype": "method",
+            "name": "remCompleteEntryLatvian",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1898,
+            "itemtype": "method",
+            "name": "completeEntryEstonian",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1920,
+            "itemtype": "method",
+            "name": "remCompleteEntryEstonian",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1935,
+            "itemtype": "method",
+            "name": "completeEntry",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 1982,
+            "itemtype": "method",
+            "name": "remCompleteEntry",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2016,
+            "itemtype": "method",
+            "name": "kustutaArtikkel",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2101,
+            "itemtype": "method",
+            "name": "imgArtDeleteClick",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2122,
+            "itemtype": "method",
+            "name": "StartOperation",
+            "params": [
+                {
+                    "name": "oPrmDom",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2190,
+            "itemtype": "method",
+            "name": "CheckXPath",
+            "params": [
+                {
+                    "name": "sXPath",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2212,
+            "itemtype": "method",
+            "name": "ShowXPathError",
+            "params": [
+                {
+                    "name": "objErr",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2225,
+            "itemtype": "method",
+            "name": "asyncCompleted",
+            "params": [
+                {
+                    "name": "objXMLDom",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2237,
+            "itemtype": "method",
+            "name": "ParseSrvInfo",
+            "params": [
+                {
+                    "name": "oRespDom",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2415,
+            "description": "Ei tee midagi, kõik on välja kommenteeritud.",
+            "itemtype": "method",
+            "name": "ExportToExcel",
+            "params": [
+                {
+                    "name": "outDom",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2496,
+            "itemtype": "method",
+            "name": "ShowStatusInfo",
+            "params": [
+                {
+                    "name": "sExtraInfo",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2516,
+            "itemtype": "method",
+            "name": "StopOperation",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2569,
+            "itemtype": "method",
+            "name": "FillBrowseFrame",
+            "params": [
+                {
+                    "name": "oOutDomNode",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2618,
+            "itemtype": "method",
+            "name": "browseTableClick",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2866,
+            "itemtype": "method",
+            "name": "lisaHarud",
+            "params": [
+                {
+                    "name": "yNode",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "liNode",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "ulId",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 2920,
+            "itemtype": "method",
+            "name": "veerudOkClick",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3105,
+            "itemtype": "method",
+            "name": "veerudCancelClick",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3116,
+            "itemtype": "method",
+            "name": "browseTable3Click",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3183,
+            "itemtype": "method",
+            "name": "FillArtFrames",
+            "params": [
+                {
+                    "name": "oArtNode",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "delURHistory",
+                    "description": "",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3388,
+            "itemtype": "method",
+            "name": "fillImgFrame",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3454,
+            "itemtype": "method",
+            "name": "imgImagesClick",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3464,
+            "itemtype": "method",
+            "name": "bringZIndexToFront",
+            "params": [
+                {
+                    "name": "ziName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3486,
+            "itemtype": "method",
+            "name": "DeleteEmptys",
+            "params": [
+                {
+                    "name": "deleteFrom",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3503,
+            "itemtype": "method",
+            "name": "GetXSDDateTime",
+            "params": [
+                {
+                    "name": "dNow",
+                    "description": "või String?",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3521,
+            "itemtype": "method",
+            "name": "XMLChildTagsCount",
+            "params": [
+                {
+                    "name": "thisnode",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "thisname",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3533,
+            "itemtype": "method",
+            "name": "GetSchemaPosQuery",
+            "params": [
+                {
+                    "name": "seldElement",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "newElemQName",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3630,
+            "itemtype": "method",
+            "name": "imgRecordClick",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3640,
+            "itemtype": "method",
+            "name": "imgBrowseClick",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3652,
+            "itemtype": "method",
+            "name": "imgArtPrintClick",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3665,
+            "itemtype": "method",
+            "name": "ShowSchema",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3674,
+            "itemtype": "method",
+            "name": "ShowTipsTricks",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3683,
+            "itemtype": "method",
+            "name": "ShowDicHelp",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3697,
+            "itemtype": "method",
+            "name": "getAdvQuery",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3711,
+            "itemtype": "method",
+            "name": "ShowAdminXsl2",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3724,
+            "itemtype": "method",
+            "name": "bodyOnKeyUp",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3928,
+            "itemtype": "method",
+            "name": "switchEdit",
+            "params": [
+                {
+                    "name": "srcElem",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3952,
+            "itemtype": "method",
+            "name": "ChooseElement",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3970,
+            "itemtype": "method",
+            "name": "ShowElemsMenu",
+            "params": [
+                {
+                    "name": "nPosX",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "nPosY",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 3985,
+            "itemtype": "method",
+            "name": "SwitchElemsMenu",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4127,
+            "itemtype": "method",
+            "name": "ClickElemsMenu",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4151,
+            "itemtype": "method",
+            "name": "ShowElemEnums",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4172,
+            "itemtype": "method",
+            "name": "ClickElemEnums",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4191,
+            "itemtype": "method",
+            "name": "ShowAttribEnums",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4212,
+            "itemtype": "method",
+            "name": "ClickAttribEnums",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4231,
+            "itemtype": "method",
+            "name": "validateSR",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4245,
+            "itemtype": "method",
+            "name": "SetIfrViewLeftAlign",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4254,
+            "itemtype": "method",
+            "name": "SetIfrViewCenterAlign",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4263,
+            "itemtype": "method",
+            "name": "SetIfrViewRightAlign",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4272,
+            "itemtype": "method",
+            "name": "SetIfrViewLeftAlign",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4282,
+            "itemtype": "method",
+            "name": "showArtXML",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4297,
+            "itemtype": "method",
+            "name": "spnMsgDelete",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4307,
+            "itemtype": "method",
+            "name": "updMuudatused",
+            "params": [
+                {
+                    "name": "op",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "tekst",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4343,
+            "itemtype": "method",
+            "name": "UndoArticle",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4368,
+            "itemtype": "method",
+            "name": "RedoArticle",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4394,
+            "itemtype": "method",
+            "name": "volSelected",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4414,
+            "itemtype": "method",
+            "name": "showLargePicture",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4434,
+            "itemtype": "method",
+            "name": "fiOnClick",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4496,
+            "itemtype": "method",
+            "name": "showSrToolsMenu",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4517,
+            "itemtype": "method",
+            "name": "ClickSrToolsMenu",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4680,
+            "itemtype": "method",
+            "name": "kustutaSqnastik",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4734,
+            "itemtype": "method",
+            "name": "showArtToolsMenu",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4756,
+            "itemtype": "method",
+            "name": "ClickArtToolsMenu",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4850,
+            "itemtype": "method",
+            "name": "moveToVolume",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4936,
+            "itemtype": "method",
+            "name": "HandleViewSelectionChange",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4950,
+            "itemtype": "method",
+            "name": "checkRpmUpdates",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 4990,
+            "itemtype": "method",
+            "name": "showEELexSetup",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 5042,
+            "itemtype": "method",
+            "name": "setFontsSizes",
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 5090,
+            "itemtype": "method",
+            "name": "updKeelteValik",
+            "params": [
+                {
+                    "name": "schLocation",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 5150,
+            "itemtype": "method",
+            "name": "getKeeledOptString",
+            "params": [
+                {
+                    "name": "kVal",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_app.js",
+            "line": 5171,
+            "itemtype": "method",
+            "name": "getEnumRows",
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_app"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 9,
+            "description": "Uuem.",
+            "itemtype": "method",
+            "name": "getMajors",
+            "params": [
+                {
+                    "name": "editDomNode",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "editDomNode",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 43,
+            "description": "Vana.",
+            "itemtype": "method",
+            "name": "HandleEditClick",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 343,
+            "itemtype": "method",
+            "name": "sndError",
+            "params": [
+                {
+                    "name": "evnt",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 355,
+            "itemtype": "method",
+            "name": "sndStarted",
+            "params": [
+                {
+                    "name": "evnt",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 367,
+            "description": "Vana.",
+            "itemtype": "method",
+            "name": "sndCompleted",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 377,
+            "itemtype": "method",
+            "name": "SetIfrViewElement",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 395,
+            "itemtype": "method",
+            "name": "SetVars",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 570,
+            "itemtype": "method",
+            "name": "SetEdits",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 800,
+            "itemtype": "method",
+            "name": "vbSetKBLang",
+            "params": [
+                {
+                    "name": "l",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 836,
+            "itemtype": "method",
+            "name": "inp_ElemTextOnFocus",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 854,
+            "itemtype": "method",
+            "name": "ceeOnFocus",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 869,
+            "itemtype": "method",
+            "name": "documentOnFocusOut",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 883,
+            "itemtype": "method",
+            "name": "HandleCeeBlur",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 984,
+            "itemtype": "method",
+            "name": "vaatedRefresh",
+            "params": [
+                {
+                    "name": "nr",
+                    "description": "eeldan, et on Int, ei kontrollinud",
+                    "type": "Int"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 1013,
+            "itemtype": "method",
+            "name": "CheckCeeValue",
+            "params": [
+                {
+                    "name": "chkvalue",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "dt",
+                    "description": ""
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 1092,
+            "itemtype": "method",
+            "name": "HandleViewClick",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 1405,
+            "itemtype": "method",
+            "name": "HandleViewContextClick",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 1419,
+            "description": "Otsinguteksti kasti kontekstmenüü.",
+            "itemtype": "method",
+            "name": "HandleWindowContextClick",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 1459,
+            "description": "teksti (textarea) kontekstmenüü",
+            "itemtype": "method",
+            "name": "HandleContextClick",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 1742,
+            "itemtype": "method",
+            "name": "GetSubMenus",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 1912,
+            "itemtype": "method",
+            "name": "GetElSchemaInfo",
+            "params": [
+                {
+                    "name": "thisitem",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 1950,
+            "itemtype": "method",
+            "name": "delNodeAllowed",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 2017,
+            "description": "Kuvab menüü määratud kohta.",
+            "itemtype": "method",
+            "name": "DisplayCMenu",
+            "params": [
+                {
+                    "name": "posx",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "posy",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 2033,
+            "itemtype": "method",
+            "name": "ClickCMenu",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 2581,
+            "itemtype": "method",
+            "name": "GetAddElementFromFile",
+            "params": [
+                {
+                    "name": "qname",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "uri",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 2602,
+            "itemtype": "method",
+            "name": "GetAddElement",
+            "params": [
+                {
+                    "name": "qname",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "uri",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 2629,
+            "itemtype": "method",
+            "name": "AddEmptyTexts",
+            "params": [
+                {
+                    "name": "nodeToCheck",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 2660,
+            "description": "TN (teksti sees) menüü.",
+            "itemtype": "method",
+            "name": "GetTNSubMenus",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 2756,
+            "itemtype": "method",
+            "name": "sqnastikuTooriistad",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3035,
+            "itemtype": "method",
+            "name": "assignMainEntry",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3063,
+            "itemtype": "method",
+            "name": "assignSubEntry",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3092,
+            "itemtype": "method",
+            "name": "artikliStaatus",
+            "params": [
+                {
+                    "name": "st",
+                    "description": "Vist on string.",
+                    "type": "String"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3107,
+            "itemtype": "method",
+            "name": "AllartikkelYesNo",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3126,
+            "itemtype": "method",
+            "name": "ABartikkelYesNo",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3147,
+            "itemtype": "method",
+            "name": "showMsSarnased",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3172,
+            "itemtype": "method",
+            "name": "showTyhjadViited",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3210,
+            "itemtype": "method",
+            "name": "XMLChanged",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3314,
+            "itemtype": "method",
+            "name": "showDbgVar",
+            "params": [
+                {
+                    "name": "varName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "varVal",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "procName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "idNr",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "idDesc",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "praegu",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3367,
+            "itemtype": "method",
+            "name": "getLemmasForSyn",
+            "params": [
+                {
+                    "name": "sqna",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3481,
+            "itemtype": "method",
+            "name": "lisa_KL_TL_PT",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3533,
+            "itemtype": "method",
+            "name": "lisaVeelArtToolse",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3613,
+            "itemtype": "method",
+            "name": "showArtHistory",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3631,
+            "itemtype": "method",
+            "name": "ClickArtHistoryMenu",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3665,
+            "itemtype": "method",
+            "name": "salvestaJaKatkesta",
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3705,
+            "itemtype": "method",
+            "name": "salvestaJaKatkesta",
+            "params": [
+                {
+                    "name": "sNewId",
+                    "description": "Kontrolli andmetüüpi.",
+                    "type": "String"
+                },
+                {
+                    "name": "sNewAttrValue",
+                    "description": "Kontrolli andmetüüpi.",
+                    "type": "Boolean"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3838,
+            "itemtype": "method",
+            "name": "getEnumsHTML",
+            "params": [
+                {
+                    "name": "osake",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3881,
+            "itemtype": "method",
+            "name": "updElemEnumsMenu",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3902,
+            "itemtype": "method",
+            "name": "updAttrEnumsMenu",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3932,
+            "itemtype": "method",
+            "name": "ShowAdminView",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 3978,
+            "itemtype": "method",
+            "name": "ShowSkeemiGen",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 4052,
+            "itemtype": "method",
+            "name": "FillElementsMenu",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 4138,
+            "itemtype": "method",
+            "name": "GetMenuElements",
+            "params": [
+                {
+                    "name": "oISchItem",
+                    "description": "",
+                    "type": "Object"
+                },
+                {
+                    "name": "sFullPath",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "nDepth",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 4356,
+            "itemtype": "method",
+            "name": "artExpandCollapse",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 4378,
+            "itemtype": "method",
+            "name": "useSymbolsOnClick",
+            "class": "procs_edt"
+        },
+        {
+            "file": "procs_edt.js",
+            "line": 4394,
+            "itemtype": "method",
+            "name": "imgArtExportClick",
+            "class": "procs_edt"
+        },
+        {
+            "file": "tools.js",
+            "line": 8,
+            "description": "Hoiab highlight'i ajal ajutist värvi.",
+            "itemtype": "property",
+            "name": "str_TDBGCol",
+            "type": "{String}",
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 26,
+            "description": "Tagasatb algus ja lõpu wild characteridest vabastatud otsitava.",
+            "itemtype": "method",
+            "name": "getSrPn2",
+            "params": [
+                {
+                    "name": "algPtrn",
+                    "description": "String, mida puhastada vaja.",
+                    "type": "String"
+                },
+                {
+                    "name": "mode",
+                    "description": "Päringu tüüp - kas \"MySql\" või \"XML\".",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Puhastatud string.",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 131,
+            "description": "Kontrollib, kas sisendstringis on sümboleid, mis ei ole tähestikus.",
+            "itemtype": "method",
+            "name": "CheckForSymbols",
+            "params": [
+                {
+                    "name": "sQryText",
+                    "description": "String, millest otsitakse.",
+                    "type": "String"
+                },
+                {
+                    "name": "voivadOlla",
+                    "description": "Lisaks lubatud märgid.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "true, kui leiti.",
+                "type": "Boolean"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 150,
+            "description": "Higlight'ib asju, kui hiirega neile peale minna. Kasutab muutujat str_TDBGCol.",
+            "itemtype": "method",
+            "name": "SwitchTD",
+            "params": [
+                {
+                    "name": "obj_evnt",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "true, kui leiti.",
+                "type": "Boolean"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 173,
+            "description": "Tagastab MSXML dokumendi objekti.",
+            "itemtype": "method",
+            "name": "CreateMSXMLDocumentObject",
+            "return": {
+                "description": "null, kui ei õnnestu.",
+                "type": "Object"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 206,
+            "description": "Teisendab XML stringi objektiks.",
+            "itemtype": "method",
+            "name": "BuildXMLFromString",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "MSXML dokumendi objekt. null, kui ei õnnestu.",
+                "type": "Object"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 262,
+            "description": "Teeb (Ajax) päringust xml objekti.",
+            "itemtype": "method",
+            "name": "ParseHTTPResponse",
+            "params": [
+                {
+                    "name": "myRequest",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "MSXML dokumendi objekt. null, kui ei õnnestu.",
+                "type": "Object"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 303,
+            "description": "InitDomDoc. Luuakse uus xmldomdoc.",
+            "itemtype": "method",
+            "name": "IDD",
+            "params": [
+                {
+                    "name": "domsrc",
+                    "description": "Allika tüüp. \"string\", \"file\", \"\".",
+                    "type": "String"
+                },
+                {
+                    "name": "domstr",
+                    "description": "Viide allikale või allikas ise, sõltuvalt muutuja domsrc väärtusest. Kui domsrc on \"\", siis funktsioon loob tühja dokumendi.",
+                    "type": "String"
+                },
+                {
+                    "name": "res_ext",
+                    "description": "Kas lahendada välised viited.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "val_on_parse",
+                    "description": "Kas laadimisel valideeritakse.",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "domsc",
+                    "description": "Skeem või null.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "xmldomdoc objekt.",
+                "type": "Object"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 340,
+            "description": "Sünkroonne cgi postituspäring.",
+            "itemtype": "method",
+            "name": "exCGISync",
+            "params": [
+                {
+                    "name": "srvCGIFile",
+                    "description": "Aadress, kuhu postitatakse.",
+                    "type": "String"
+                },
+                {
+                    "name": "cmdId",
+                    "description": "Postituse sisu.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Request object.",
+                "type": "Object"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 362,
+            "description": "Tagastab Ajax objekti.",
+            "itemtype": "method",
+            "name": "getXmlHttpObject",
+            "return": {
+                "description": "= new XMLHttpRequest();",
+                "type": "Object"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 393,
+            "description": "Teeb asünkroonse päringu servfuncs.cgi-st ja vastus läheb funktsiooni doHttpReadyStateChange.",
+            "itemtype": "method",
+            "name": "QueryResponseAsync",
+            "params": [
+                {
+                    "name": "oPrmDom",
+                    "description": "XML objekt päringuga.",
+                    "type": "Object"
+                }
+            ],
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 409,
+            "description": "Töötleb päringu vastust ja edastatakse funktsiooniga asyncCompleted.",
+            "itemtype": "method",
+            "name": "doHttpReadyStateChange",
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 457,
+            "description": "Teeb asünkroonse päringu  antud aadressil ja vastus läheb funktsiooni myAsyncStateChanged.",
+            "itemtype": "method",
+            "name": "exCGIASync",
+            "params": [
+                {
+                    "name": "srvCGIFile",
+                    "description": "Aadress.",
+                    "type": "String"
+                },
+                {
+                    "name": "cmdId",
+                    "description": "Postituse sisu.",
+                    "type": "String"
+                }
+            ],
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 476,
+            "description": "Kontrollib, kas päring on valmis, kui on, siis saadab selle edasi funktsioonile toCaller.",
+            "itemtype": "method",
+            "name": "myAsyncStateChanged",
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 488,
+            "description": "Otsustab kumba väljatrükki kasutada.",
+            "itemtype": "method",
+            "name": "ExportToWord",
+            "params": [
+                {
+                    "name": "nStartPageNumber",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "bRemoveShaded",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "sWordFileName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "checkSpellingAndGrammar",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "oPrintXSL",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "sCSS",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "oErrDisp",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "srNode",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "erinevad",
+                "type": "Int"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 526,
+            "description": "Salvestab väljatrüki faili.",
+            "itemtype": "method",
+            "name": "ExportToWordNS",
+            "params": [
+                {
+                    "name": "nStartPageNumber",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "bRemoveShaded",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "sWordFileName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "checkSpellingAndGrammar",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "oPrintXSL",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "sCSS",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "oErrDisp",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "srNode",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "0",
+                "type": "Int"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 575,
+            "description": "Vastutab Wordi trükkimise eest. (ActiveXObject(\"ADODB.Stream\");)",
+            "itemtype": "method",
+            "name": "ExportToWordS",
+            "params": [
+                {
+                    "name": "nStartPageNumber",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "bRemoveShaded",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "sWordFileName",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "checkSpellingAndGrammar",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "oPrintXSL",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "sCSS",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "oErrDisp",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "srNode",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "erinevad",
+                "type": "Int"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 793,
+            "description": "Teisendab täpitähed %HH kujule (näiteks õ - %F5).",
+            "itemtype": "method",
+            "name": "val1257",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "Sisend.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Väljund.",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 820,
+            "description": "Valideerib XMLi. Näitab errorit.",
+            "itemtype": "method",
+            "name": "ValidateXML",
+            "params": [
+                {
+                    "name": "oXMLNode",
+                    "description": "XMLi objekt.",
+                    "type": "Object"
+                },
+                {
+                    "name": "oSchemaCache",
+                    "description": "Läheb IDD viimaseks väärtuseks.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "true, kui valiidne.",
+                "type": "Boolean"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 843,
+            "description": "Näitab kasutajale XMLi valideerimise viga.",
+            "itemtype": "method",
+            "name": "ShowXMLParseError",
+            "params": [
+                {
+                    "name": "srcDOM",
+                    "description": "XML objekt, kus viga oli.",
+                    "type": "Object"
+                }
+            ],
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 860,
+            "description": "Unikaalse nime koostamiseks tõstutundetule keskkonnale (näiteks css). Tähed teisendatakse numbrilisteks koodideks.",
+            "itemtype": "method",
+            "name": "unNameXsl",
+            "params": [
+                {
+                    "name": "inpStr",
+                    "description": "Sisendstring",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 877,
+            "description": "Teeb sisendstringi esitähe suureks.",
+            "itemtype": "method",
+            "name": "captl",
+            "params": [
+                {
+                    "name": "inpStr",
+                    "description": "Sisendstring",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Väljund.",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 888,
+            "description": "Sorteerib järjendi (array) kasutades funktsiooni arrSort. Liidab vastuse \\b-ga",
+            "itemtype": "method",
+            "name": "arrSort",
+            "params": [
+                {
+                    "name": "myArr",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 901,
+            "description": "Sorteerimise abifunktsioon ( ci - \"case insensitive\", tõstutundetu).",
+            "itemtype": "method",
+            "name": "ciSort",
+            "params": [
+                {
+                    "name": "param1",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "param2",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "String.localeCompare",
+                "type": "Int"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 915,
+            "itemtype": "method",
+            "name": "mdArrSortCi",
+            "params": [
+                {
+                    "name": "param1",
+                    "description": "?",
+                    "type": "String"
+                },
+                {
+                    "name": "param2",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "String.localeCompare",
+                "type": "Int"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 930,
+            "description": "Tagastab sisendstringi positsioonilt mystart stringi pikkusega mylength.",
+            "itemtype": "method",
+            "name": "jsMid",
+            "params": [
+                {
+                    "name": "mystring",
+                    "description": "Sisendstring.",
+                    "type": "String"
+                },
+                {
+                    "name": "mystart",
+                    "description": "Alguspositsioon.",
+                    "type": "Int"
+                },
+                {
+                    "name": "mylength",
+                    "description": "Tähtede arv.",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 943,
+            "description": "Stringi vasakust poolest niipalju kui vaja.",
+            "itemtype": "method",
+            "name": "jsLeft",
+            "params": [
+                {
+                    "name": "mystring",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "mylength",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 956,
+            "description": "Stringi paremast poolest niipalju kui vaja.",
+            "itemtype": "method",
+            "name": "jsRight",
+            "params": [
+                {
+                    "name": "mystring",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "mylength",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 968,
+            "description": "Asendab mystringi seest jupp oldStr stringiga newStr.",
+            "itemtype": "method",
+            "name": "jsReplace",
+            "params": [
+                {
+                    "name": "mystring",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "oldStr",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "newStr",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 994,
+            "description": "return myNum.toFixed(myDd);",
+            "itemtype": "method",
+            "name": "jsFormatNumber",
+            "params": [
+                {
+                    "name": "myNum",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "myDd",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 1007,
+            "description": "Kontrollib, kas objekt on undefined.",
+            "itemtype": "method",
+            "name": "jsIsNull",
+            "params": [
+                {
+                    "name": "thing",
+                    "description": "Kontrollitav objekt.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "true, kui undefined.",
+                "type": "Boolean"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 1022,
+            "description": "Kontrollib, kas objekt on tüüpi date.",
+            "itemtype": "method",
+            "name": "jsIsDate",
+            "params": [
+                {
+                    "name": "sDate",
+                    "description": "Kontrollitav kuupäev.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "true",
+                "type": "Boolean"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 1040,
+            "description": "Keerab stringi tagurpidi.",
+            "itemtype": "method",
+            "name": "jsStrReverse",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools.js",
+            "line": 1055,
+            "description": "Tagastab XML elemendi väärtuse.",
+            "itemtype": "method",
+            "name": "xmlElementTextValue",
+            "params": [
+                {
+                    "name": "myElem",
+                    "description": "XML element.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 8,
+            "description": "Hoiab highlight'i ajal ajutist värvi.",
+            "itemtype": "property",
+            "name": "str_TDBGCol",
+            "type": "{String}",
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 27,
+            "description": "Eventhandler. Higlight'ib asju, kui hiirega neile peale minna. Kasutab muutujat str_TDBGCol.",
+            "itemtype": "method",
+            "name": "SwitchTD",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "true, kui leiti.",
+                "type": "Boolean"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 50,
+            "description": "InitDomDoc. Luuakse uus xmldomdoc.",
+            "itemtype": "method",
+            "name": "IDD",
+            "params": [
+                {
+                    "name": "domsrc",
+                    "description": "Allika tüüp. \"string\", \"file\", \"\".",
+                    "type": "String"
+                },
+                {
+                    "name": "domstr",
+                    "description": "Viide allikale või allikas ise, sõltuvalt muutuja domsrc väärtusest. Kui domsrc on \"\", siis funktsioon loob tühja dokumendi.",
+                    "type": "String"
+                },
+                {
+                    "name": "res_ext",
+                    "description": "Kas lahendada välised viited. (Ei kasutata.)",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "val_on_parse",
+                    "description": "Kas laadimisel valideeritakse. (Ei kasutata.)",
+                    "type": "Boolean"
+                },
+                {
+                    "name": "domsc",
+                    "description": "Skeem või null. (Ei kasutata.)",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "xmldomdoc objekt.",
+                "type": "Object"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 107,
+            "description": "Teisendab XML stringi objektiks.",
+            "itemtype": "method",
+            "name": "BuildXMLFromString",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "MSXML dokumendi objekt. null, kui ei õnnestu.",
+                "type": "Object"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 162,
+            "description": "Teeb (Ajax) päringust xml objekti.",
+            "itemtype": "method",
+            "name": "ParseHTTPResponse",
+            "params": [
+                {
+                    "name": "myRequest",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "MSXML dokumendi objekt. null, kui ei õnnestu.",
+                "type": "Object"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 204,
+            "description": "Tagastab MSXML dokumendi objekti. (IE funktsioon. Tõenäoliselt ei kasutata.)",
+            "itemtype": "method",
+            "name": "CreateMSXMLDocumentObject",
+            "return": {
+                "description": "null, kui ei õnnestu.",
+                "type": "Object"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 237,
+            "description": "Tagastab Http requesti objekti.",
+            "itemtype": "method",
+            "name": "CreateHTTPRequestObject",
+            "return": {
+                "description": "",
+                "type": "Object"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 264,
+            "description": "Tagastab Ajax objekti.",
+            "itemtype": "method",
+            "name": "getXmlHttpObject",
+            "return": {
+                "description": "= new XMLHttpRequest();",
+                "type": "Object"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 290,
+            "description": "Returns whether the HTTP request was successful.",
+            "itemtype": "method",
+            "name": "IsRequestSuccessful",
+            "params": [
+                {
+                    "name": "httpRequest",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "Boolean"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 307,
+            "description": "Sünkroonne cgi postituspäring.",
+            "itemtype": "method",
+            "name": "exCGISync",
+            "params": [
+                {
+                    "name": "srvCGIFile",
+                    "description": "Aadress, kuhu postitatakse.",
+                    "type": "String"
+                },
+                {
+                    "name": "cmdId",
+                    "description": "Postituse sisu.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Request object.",
+                "type": "Object"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 329,
+            "description": "Ülakomade panemine millegi järgi.",
+            "itemtype": "method",
+            "name": "GCV",
+            "params": [
+                {
+                    "name": "sInpStr",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "lisa",
+                    "description": "String, mis lisatakse vahele.",
+                    "type": "String"
+                },
+                {
+                    "name": "kuhu",
+                    "description": "Positsioon, kuhu lisatakse.",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 378,
+            "description": "Teeb asünkroonse päringu servfuncs.cgi-st ja vastus läheb funktsiooni doHttpReadyStateChange.",
+            "itemtype": "method",
+            "name": "QueryResponseAsync",
+            "params": [
+                {
+                    "name": "oPrmDom",
+                    "description": "XML objekt päringuga.",
+                    "type": "Object"
+                }
+            ],
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 393,
+            "description": "Töötleb päringu vastust ja edastatakse funktsiooniga asyncCompleted.",
+            "itemtype": "method",
+            "name": "doHttpReadyStateChange",
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 410,
+            "description": "Teeb asünkroonse päringu  antud aadressil ja vastus läheb funktsiooni myAsyncStateChanged.",
+            "itemtype": "method",
+            "name": "exCGIASync",
+            "params": [
+                {
+                    "name": "srvCGIFile",
+                    "description": "Aadress.",
+                    "type": "String"
+                },
+                {
+                    "name": "cmdId",
+                    "description": "Postituse sisu.",
+                    "type": "String"
+                }
+            ],
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 428,
+            "description": "Kontrollib, kas päring on valmis, kui on, siis saadab selle edasi funktsioonile toCaller.",
+            "itemtype": "method",
+            "name": "myAsyncStateChanged",
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 439,
+            "description": "Valideerib XMLi. Näitab errorit. (Aga IDD on tegemata.)",
+            "itemtype": "method",
+            "name": "ValidateXML",
+            "params": [
+                {
+                    "name": "oXMLNode",
+                    "description": "XMLi objekt.",
+                    "type": "Object"
+                },
+                {
+                    "name": "oSchemaCache",
+                    "description": "Läheb IDD viimaseks väärtuseks.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "true, kui valiidne.",
+                "type": "Boolean"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 462,
+            "description": "Näitab kasutajale XMLi valideerimise viga.",
+            "itemtype": "method",
+            "name": "ShowXMLParseError",
+            "params": [
+                {
+                    "name": "srcDOM",
+                    "description": "XML objekt, kus viga oli.",
+                    "type": "Object"
+                }
+            ],
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 479,
+            "description": "Unikaalse nime koostamiseks tõstutundetule keskkonnale (näiteks css). Tähed teisendatakse numbrilisteks koodideks.",
+            "itemtype": "method",
+            "name": "unNameXsl",
+            "params": [
+                {
+                    "name": "inpStr",
+                    "description": "Sisendstring",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 496,
+            "description": "Teeb sisendstringi esitähe suureks.",
+            "itemtype": "method",
+            "name": "captl",
+            "params": [
+                {
+                    "name": "inpStr",
+                    "description": "Sisendstring",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Väljund.",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 507,
+            "description": "Sorteerib järjendi (array) kasutades funktsiooni arrSort. Liidab vastuse \\b-ga",
+            "itemtype": "method",
+            "name": "arrSort",
+            "params": [
+                {
+                    "name": "myArr",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 519,
+            "description": "Sorteerimise abifunktsioon ( ci - \"case insensitive\", tõstutundetu).",
+            "itemtype": "method",
+            "name": "ciSort",
+            "params": [
+                {
+                    "name": "param1",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "param2",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "String.localeCompare",
+                "type": "Int"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 533,
+            "description": "Sorteerimise abifunktsioon. Võrdleb esimese sisendstringi esitähte teise stringiga (mõlemad lowercase).",
+            "itemtype": "method",
+            "name": "mdArrSortCi",
+            "params": [
+                {
+                    "name": "param1",
+                    "description": "?",
+                    "type": "String"
+                },
+                {
+                    "name": "param2",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "String.localeCompare",
+                "type": "Int"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 548,
+            "description": "Tagastab sisendstringi positsioonilt mystart stringi pikkusega mylength.",
+            "itemtype": "method",
+            "name": "jsMid",
+            "params": [
+                {
+                    "name": "mystring",
+                    "description": "Sisendstring.",
+                    "type": "String"
+                },
+                {
+                    "name": "mystart",
+                    "description": "Alguspositsioon.",
+                    "type": "Int"
+                },
+                {
+                    "name": "mylength",
+                    "description": "Tähtede arv.",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 562,
+            "description": "Stringi vasakust poolest niipalju kui vaja.",
+            "itemtype": "method",
+            "name": "jsLeft",
+            "params": [
+                {
+                    "name": "mystring",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "mylength",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 574,
+            "description": "Stringi paremast poolest niipalju kui vaja.",
+            "itemtype": "method",
+            "name": "jsRight",
+            "params": [
+                {
+                    "name": "mystring",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "mylength",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 586,
+            "description": "Asendab mystringi seest jupp oldStr stringiga newStr.",
+            "itemtype": "method",
+            "name": "jsReplace",
+            "params": [
+                {
+                    "name": "mystring",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "oldStr",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "newStr",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 612,
+            "description": "Tagasatb algus- ja lõpu wild characteridest vabastatud otsitava.",
+            "itemtype": "method",
+            "name": "getSrPn2",
+            "params": [
+                {
+                    "name": "algPtrn",
+                    "description": "String, mida puhastada vaja.",
+                    "type": "String"
+                },
+                {
+                    "name": "mode",
+                    "description": "Päringu tüüp - kas \"MySql\" või \"XML\".",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Puhastatud string.",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 717,
+            "description": "Tagastab MySQLi päringu.",
+            "itemtype": "method",
+            "name": "getSqlQuery",
+            "params": [
+                {
+                    "name": "qn",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "txt",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "onTeksti",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "wsym",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "wcase",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "extvalpath",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "elRada",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "msAttCond",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 843,
+            "description": "Muudetakse (asendatakse, iskeibitakse) MySQL-like päring.",
+            "itemtype": "method",
+            "name": "getMySqlLikePtrn",
+            "params": [
+                {
+                    "name": "inp",
+                    "description": "MySQL-like päring.",
+                    "type": "String"
+                },
+                {
+                    "name": "Muudetud",
+                    "description": "päring.",
+                    "type": "String"
+                }
+            ],
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 898,
+            "description": "return myNum.toFixed(myDd);",
+            "itemtype": "method",
+            "name": "jsFormatNumber",
+            "params": [
+                {
+                    "name": "myNum",
+                    "description": "",
+                    "type": "Int"
+                },
+                {
+                    "name": "myDd",
+                    "description": "",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 911,
+            "description": "Kontrollib, kas objekt on undefined.",
+            "itemtype": "method",
+            "name": "jsIsNull",
+            "params": [
+                {
+                    "name": "thing",
+                    "description": "Kontrollitav objekt.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "true, kui undefined.",
+                "type": "Boolean"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 926,
+            "description": "Kontrollib, kas objekt on tüüpi date.",
+            "itemtype": "method",
+            "name": "jsIsDate",
+            "params": [
+                {
+                    "name": "sDate",
+                    "description": "Kontrollitav kuupäev.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "true või false",
+                "type": "Boolean"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 943,
+            "description": "Keerab stringi tagurpidi.",
+            "itemtype": "method",
+            "name": "jsStrReverse",
+            "params": [
+                {
+                    "name": "s",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 959,
+            "description": "Tagastab XML elemendi väärtuse.",
+            "itemtype": "method",
+            "name": "xmlElementTextValue",
+            "params": [
+                {
+                    "name": "myElem",
+                    "description": "XML element.",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 976,
+            "description": "Asendab funktsiooni showModalDialog(url, par, feat); mis on Operas puudu. Näitab dialoogi ja tagastab selle vastuse.",
+            "itemtype": "method",
+            "name": "modalDlg",
+            "params": [
+                {
+                    "name": "url",
+                    "description": "Aadress dialoogile.",
+                    "type": "String"
+                },
+                {
+                    "name": "par",
+                    "description": "Dialoogi parameetrid.",
+                    "type": "String"
+                },
+                {
+                    "name": "feat",
+                    "description": "Features, kas resizable jms.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": "tools_dx"
+        },
+        {
+            "file": "tools_dx.js",
+            "line": 1063,
+            "description": "Eventhandler. Nagu ei tee midagi.",
+            "itemtype": "method",
+            "name": "onDomTextModified",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": "tools_dx"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " dxf.js:2588"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " dxf.js:2711"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " dxf.js:3047"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " dxf.js:3062"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " dxf.js:3080"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " komponendid.js:734"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " kontrollid.js:10"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " kontrollid.js:382"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:845"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:1354"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:1494"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:1549"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:1598"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:1645"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:1662"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:1679"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:2190"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:3533"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:4950"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:5150"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_app.js:5171"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_edt.js:1013"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_edt.js:1912"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_edt.js:1950"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_edt.js:2581"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_edt.js:2602"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_edt.js:3367"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_edt.js:3665"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " procs_edt.js:3838"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:26"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:131"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:150"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:173"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:206"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:262"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:303"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:340"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:362"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:488"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:526"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:575"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:793"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools.js:820"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:27"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:50"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:107"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:162"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:204"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:237"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:264"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:290"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:307"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:329"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:439"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:612"
+        },
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " tools_dx.js:717"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+﻿<?xml version="1.0"?>
+<x:S xmlns:x="http://www.eki.ee/dict/dmo">
+	<x:tp x:tnr="1">
+		<x:tg>
+			<x:xp>
+				<x:xg xml:lang="ex">
+					<x:x></x:x>
+				</x:xg>
+			</x:xp>
+		</x:tg>
+		<x:np>
+			<x:ng>
+				<x:n></x:n>
+				<x:qnp x:ntnr="1">
+					<x:qng xml:lang="ex">
+						<x:qn></x:qn>
+					</x:qng>
+				</x:qnp>
+			</x:ng>
+		</x:np>
+	</x:tp>
+</x:S>

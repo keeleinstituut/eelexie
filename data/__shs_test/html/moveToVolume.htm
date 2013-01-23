@@ -1,0 +1,68 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+	<title>Köidete valik</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script src="tools.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+
+        var dic_desc, usrName, appLang;
+        var volsStr;
+
+        //'-----------------------------------------------------------------------------------
+        function bodyOnKeyUp() {
+            switch (window.event.keyCode) {
+                case 27:
+                    window.close();
+                    break;
+                case 13:
+                    SetReturnV();
+                    break;
+            }
+            return;
+        } // bodyOnKeyUp
+
+
+        //'-----------------------------------------------------------------------------------
+        function SetReturnV() {
+            window.returnValue = selVols.options(selVols.selectedIndex).id;
+            window.close();
+        } // SetReturnV
+
+
+        //'-----------------------------------------------------------------------------------
+        function bodyOnLoad() {
+            var dlgArgs = window.dialogArguments;
+            dic_desc = dlgArgs[0];
+            usrName = dlgArgs[1];
+            appLang = dlgArgs[2];
+
+            volsStr = dlgArgs[3];
+            selVols.outerHTML = "<select id='selVols'>" + volsStr + "</select>";
+        } // bodyOnLoad
+
+    </script>
+</head>
+<body style="background-color: buttonface" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+    <div id="divBody" style="padding: 2mm;">
+        <table style="width:100%;">
+            <tr>
+                <td style="width:50%;">
+                    <select id="selVols" style="width:100%;"></select>
+                </td>
+                <td>
+                    <input id="btnOK" type="button" value="  OK  " onclick="SetReturnV()" style="width:3cm;" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>ekieki - Veateated</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+<h3 id="toc0"><a name="x--Artikli valideerimisel tekkivad veateated"></a>Artikli valideerimisel tekkivad veateated</h3>
+ <br />
+Kui artikkel ei valideeru, kuvatakse avanevas aknas mõni neist veateadetest. Veateadete tekst ja keel võib erinevatel arvutitel varieeruda, lähtuda tuleb veateate koodist.<br />
+<br />
+<strong>0xC00CE014</strong><br />
+Element '{<a class="wiki_link_ext" href="http://www.eki.ee/dict/ss1" rel="nofollow">http://www.eki.ee/dict/ss1</a>}kaut' is unexpected according to content model of parent element '{http://www.eki.ee/dict/ss1}komg'.<br />
+<strong>ja 0xC00CE012</strong><br />
+Content for element '{<a class="wiki_link_ext" href="http://www.eki.ee/dict/vot" rel="nofollow">http://www.eki.ee/dict/vot</a>}ng' is incomplete according to the DTD/Schema. Expecting: {<a class="wiki_link_ext" href="http://www.eki.ee/dict/vot" rel="nofollow">http://www.eki.ee/dict/vot</a>}n, {<a class="wiki_link_ext" href="http://www.eki.ee/dict/vot" rel="nofollow">http://www.eki.ee/dict/vot</a>}qnp.<br />
+Elemendi {<a class="wiki_link_ext" href="http://www.eki.ee/dict/usv" rel="nofollow">http://www.eki.ee/dict/usv</a>}cg sisu pole DTD/Schema järgi täielik. Eeldatakse: {<a class="wiki_link_ext" href="http://www.eki.ee/dict/usv" rel="nofollow">http://www.eki.ee/dict/usv</a>}caut.<br />
+<strong>Selgitus:</strong> Skeemi järgi peab elemendis sisalduma kohustuslikke elemente, ent need on artiklis puudu.<br />
+<strong>Lahendus:</strong> Lisa puuduv element või muuda skeemi.<br />
+<br />
+<strong>0xC00CE018</strong><br />
+Text is not allowed in the context of element '{<a class="wiki_link_ext" href="http://www.eki.ee/dict/psv" rel="nofollow">http://www.eki.ee/dict/psv</a>}gki' according to DTD/Schema.<br />
+Elemendi sisuks ei ole lubatud teksti (stringi).<br />
+<strong>Seletus</strong>: Skeemi järgi ei või sellesse elementi (antud näites sõnastikus psv element gki) lubatud sisestada teksti.<br />
+<strong>Lahendus:</strong> Kui selles elemendis ikkagi on vaja teksti hoida, siis tuleb skeemi muuta.<br />
+<br />
+<strong>0xC00CE011</strong><br />
+Element '{<a class="wiki_link_ext" href="http://www.eki.ee/dict/vot" rel="nofollow">http://www.eki.ee/dict/vot</a>}VT' cannot be empty according to the DTD/Schema.<br />
+<strong>Seletus:</strong> Skeemi järgi ei ei või element VT tühi olla.<br />
+<strong>Lahendus:</strong> Täita element või muuta skeemi.<br />
+<br />
+<strong>0xC00CE015</strong><br />
+Elemendi {<a class="wiki_link_ext" href="http://www.eki.ee/dict/ss1" rel="nofollow">http://www.eki.ee/dict/ss1</a>}p atribuuti {<a class="wiki_link_ext" href="http://www.eki.ee/dict/ss1" rel="nofollow">http://www.eki.ee/dict/ss1</a>}aG pole DTD/Schemas määratletud.<br />
+<strong>Selgitus:</strong> Elemendile ei saa lisada skeemis määratlemata atribuuti aG.<br />
+<strong>Lahendus:</strong> atribuut aG kustutada või muuta skeemi.<br />
+<br />
+<strong>0xC00CE020</strong><br />
+Nõutav atribuut <a class="wiki_link_ext" href="http://www.eki.ee/dict/vsl:tvtl2" rel="nofollow">http://www.eki.ee/dict/vsl:tvtl2</a> puudub.<br />
+<strong>Selgitus:</strong> Skeemi järgi peab olemas olema atribuut tvtl2, ent antud artiklis see puudub.<br />
+<strong>Lahendus:</strong> Lisada nõutud element või muuta skeemi.<br />
+<br />
+<strong>0xC00CE201</strong><br />
+Error parsing '' as language datatype.<br />
+<strong>Selgitus:</strong> Atribuut xml:lang on jäänud täitmata (xml:lang=&quot;&quot;), ent keel peab olema alati määratud.<br />
+<strong>Lahendus:</strong> Anda atribuudile xml:lang mingi väärtus (näiteks Toimetamisalal).<br />
+<br />
+<strong>0xC00CE</strong><br />
+'mustlaskeel' violates enumeration constraint of 'vms uurali soome-ugri lms-permi lms-volga lms-mari lms-mordva lms-saami lms eesti-liivi-vadja eesti-liivi eesti-vadja eesti ...'.<br />
+<strong>Selgitus:</strong> See veateade tuleb näiteks siis, kui loendist on väärtuseid kustutatud, ent sõnastikus esineb veel neid kustutatud väärtusi.<br />
+<strong>Lahendus:</strong> Paranda loendit või vali sõnaartiklis loendist uus väärtus.
+    </div>
+  </body>
+</html>

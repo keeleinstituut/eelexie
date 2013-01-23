@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Server ja selle püstipanek</h2>
+	
+Laadides alla <a class="wiki_link_ext" href="http://eelextest.eki.ee/pub/Install/eeLex/" rel="nofollow" target="_blank">EELexi paki</a>, võib EELexi serveri endale püsti panna igaüks, kellel on kasutada Perli interpretaator ja veebiserver. Serveriks võib olla Unix/Linux/Windows. Veebiserveriks võib peale Apache'i olla mistahes muu server, mis oskab kasutada Apache'i-laadset ligipääsuõiguste süsteemi. Kasutajate autoriseerimine toimub nn Digest Authentication abil. Võimalik on ka veebiserver (Apache) paigaldada Windowsi tööarvutisse.<br />
+<br />
+Serverisse installeeritavad lisakomponendid – Perli moodulid – sõltuvad serveri operatsioonisüsteemist. Apache’i konfigureerimine on Apache’i versiooniti erinev. Samuti on mooduleid võimalik installeerida mitmel moel: kasutades nt mingit „Package Manager“-i või laadida moodulid käsitsi CPAN moodulite lehelt ning käivitada vastavad paigaldusskriptid. Seetõttu ei kirjeldata siinses juhendis moodulite täpset installeerimisprotsessi, vaid ainult loetletakse vajalikud moodulid. <br />
+<br />
+EELex on välja töötatud Eesti Keele Instituudis. Eesti Keele Instituut ei võta endale mingit vastutust EELex paki installeerimisel ja kasutamisel tekkida võivate probleemide korral. <br />
+<h3 id="toc0"> </h3>
+ <h3 id="toc1"><a name="x--Perli moodulid"></a>Perli moodulid</h3>
+ Käesoleva juhendi koostamisel võeti aluseks näidispaigaldus Ubuntu Linux 10.04 32-bitisel platvormil (EELex töötab Eesti Keele Instituudis Free-BSD Unix platvormil). Unbuntuga olid vaikimisi installeeritud Apache 2.2 veebiserver ja Perl 5.10. Allolevas nimekirjas on moodulid versiooni numbriga siis, kui vastav moodul puudus serveri paigaldusest ning moodul tuli installeerida. Kui versiooni numbrit pole, siis oli ta näidispaigalduses juba olemas. <br />
+<ul><li>HTTP::User-Manage (1.66) </li><li>XML::LibXML </li><li>XML::LibXSLT (1.70) </li><li>Data::GUID (0.046). Nõutavad mitmed alamkomponendid. </li><li>IO::Compress::Zip </li></ul>
+
+<h3 id="toc2"><a name="x--Paigaldamine"></a>Paigaldamine</h3>
+Kopeerida „eeL3ex_Pakk_*.tgz veebiserveri juurkataloogi (/var/ww). Pakkida lahti. Tekivad kataloogid EELex ja shs_users. Kataloog EELex on EELexi süsteemi juurkataloog ning andmed tema kohta tuleb lisada ka Apache konfiguratsioonifaili (/etc/apache2/sites-available/default): <br />
+&lt;Directory /var/www/EELex&gt; <br />
+AddHandler cgi-script .cgi <br />
+DirectoryIndex index.html index.htm index.cgi <br />
+Options ExecCGI FollowSymLinks MultiViews <br />
+AllowOverride AuthConfig <br />
+Order allow,deny <br />
+allow from all<br />
+&lt;/Directory&gt;<br />
+Kui Apache veebiserveri „mime.types“ failis ei ole ikoonifailid (*.ico) kirjeldatud, tuleb seda teha, lisades rea: <br />
+image/x-icon ico <br />
+*.cgi failides on Perl-i interpretaatori asukohaks märgitud „/usr/bin/perl“. Kui see on antud serveris erinev, on võimalik nt teha <em>symlink</em> asukohaga /usr/bin/perl ning mis viib tegelikku asukohta. Peale nende muudatuste tegemist on EELexi süsteem kättesaadav aadressil http://server.domeen.ee/EELex kataloogist.<br />
+<br />
+<h3 id="toc3"><a name="x--Juurkataloogi ülesehitus"></a>Juurkataloogi ülesehitus</h3>
+  Peale kodulehe index.html on näha kataloogid <u>shs ja</u> shs_test. Need on vastavalt EELexi süsteemi tööbaasi kataloog ja testbaasi kataloog. Töö- ja testbaasi kataloogid on üldjuhul (peale nt faili .htaccess) identsed. Edasine struktuur on järgmine: <br />
+<ul><li>__sr sõnastikud eri kataloogides, nende all sõnasiku XML-failid ja meediafailid </li><li>backup jooksva koopia kataloog </li><li>config toimetamisala (xsl2*) ja vaate (view*) genereerimise konfiguratsioonifailid </li><li>css üldkasutatavad ja sõnastikupõhised toimetamisala ja vaate CSS-failid </li><li>graphics EELexis kasutatavad graafikafailid </li><li>help EELexi toimetaja juhend jt <em>help</em>-failid </li><li>html kliendiskriptide failid </li><li>install IE-põhised installeeritavad lisakomponendid </li><li>logs sõnastike logifailid eri kataloogides </li><li>temp ajutine kataloog serverioperatsioonidel </li><li>xml sõnastikuartikli XML valmisplokid </li><li>xsd sõnastiku skeemi ja andmetüüpide failid </li><li>xsl üldkasutatavad ja sõnastikupõhised XSL teisendusfailid </li></ul><br />
+
+<h3 id="toc4"><a name="x--Kasutajate haldus"></a>Kasutajate haldus</h3>
+ Kasutajaõiguste kontroll on EELexis integreeritud veebiserveri ligipääsuõigustega. Kõik EELexi registreeritud kasutajanimed ja paroolid on koondatud faili /shs_users/shs_digest_users.txt ning suur osa töökataloogidest ja failidest on veebis nähtavad ainult registreeritud kasutajatele. Seda, kas kasutajal on õigused konkreetsele sõnaraamatule toimetaja või vaatajana, määrab tööversiooni jaoks fail /shs_users/shs_groups.txt ja testversiooni jaoks shs_test_groups.txt. Nende sisu kasutab lisaks veebiserverile ka sõnastike liides. <strong>Toimetaja õigused</strong> on grupi grp_*sid+ liikmetel, <strong>vaataja õigused</strong> annab grupp quest_*sid+ (*sid+ on sõnastiku kolmetäheline identifikaator). Grupp shs_DEV on <strong>arendajatele</strong>, ning annab kõik õigused kõigile sõnaraamatutele. <strong>shs_TEH</strong> on sisemiseks kasutuseks. <br />
+<br />
+Ehkki kasutajaid saab lisada ja kustutada veebiserveri standardvarustusse kuuluva programmiga htdigest, on EELexil töö hõlbustamiseks kaasas paar lisaprogrammi kataloogis EELex/shs_access/. ankeet.cgi on uue kasutaja andmete sisestamiseks, halda.cgi sõnastikuõiguste andmiseks/keelamiseks olemasolevatele kasutajatele ning login.cgi kiireks sisselogimiseks sõnastikesse. Need abiprogrammid eeldavad, et sõnastikud on eelnevalt olemas ning nende andmed on kantud faili /EELex/lexlist.xml <br />
+<br />
+<strong>Kasutaja lisamise</strong> protseduur on järgmine: <br />
+<ol><li> Uus kasutaja avab ankeet.cgi ning sisestab oma andmed. NB! kasutaja soovitud parool jääb lahtise tekstina kirja faili ankeet.txt. NB! kui kasutaja ei ole nõus automaatselt genereeritud kasutajanimega kujul eesnime esitäht pluss perekonnanimi, tuleb seda muuta käsitsi.</li><li>Haldur (arendaja, peatoimetaja vm, s.t nõutav on grp_DEV) avab halda.cgi ning otsustab avanenud veebilehe ülemises osas kuvatud ootel ankeetide kohta, kas need kustutada (soovimatu kasutaja, spämm vms) või lisada uueks EELexi kasutajaks. NB! Muutused rakenduvad koheselt. </li><li>Haldur klõpsab registreeritud kasutaja nimel lehe allpoolses osas ning saab lisada või ära võtta õigusi sõnaraamatutele. </li></ol><br />
+Kasutaja <strong>kustutamiseks</strong> tuleb avada halda.cgi, klõpsata kasutajanimel ning klõpsata lingil Kustuta see kasutaja. Juhul, kui kasutajal oli eelnevalt täidetud ankeet, ilmub see nüüd tagasi ootel ankeetide nimekirja. See annab võimaluse kasutaja kas taastada (nt kogemata kustutamisel, taastuvad ka kõik varem kehtinud õigused sõnaraamatutele) või kustutada ka ankeet. <br />
+<br />
+Parooli või oma meiliaadressi <strong>muutmine</strong> liidese kaudu on võimalik kaudsete vahenditega. Kasutaja täidab uue ankeedi muutunud andmetega ning halduril on paari klõpsuga võimalik olemasolev kasutaja kustutada. Kustutada ootel ankeetide hulgast esimese(d) selle kasutaja ankeedi(d), jättes alles vaid nimekirjas viimase. Lisada kasutaja tagasi. <br />
+<br />
+Tehniliste kontode ning arendajate-haldajate nimekirja saab grupifailis muuta ainult käsitsi. 
+    </div>
+  </body>
+</html>

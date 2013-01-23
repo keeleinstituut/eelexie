@@ -1,0 +1,118 @@
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+	<title></title>
+    
+
+    <script language="vbscript" type="text/vbscript">
+		<!--
+
+Option Explicit
+
+Dim PD
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+Dim dlgArgs, dic_desc, sAppLang
+
+if IsArray(window.dialogArguments) then
+	dlgArgs = window.dialogArguments
+    dic_desc = dlgArgs(0)
+    sAppLang = dlgArgs(1)
+    PD = dlgArgs(2)
+end if
+
+Dim lc
+set lc = langConst.all("langConst_" & sAppLang)
+Call window.execScript(lc.innerText, "JScript")
+
+document.title = DOC_TITLE
+lblChkHeading.innerHTML = LBL_CHK_HEADING
+lblChkOverwrite.innerHTML = LBL_CHK_OVERWRITE
+lblInpSelectFile.innerHTML = LBL_INP_SELECTFILE
+btnOk.value = BTN_OK_VALUE
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+elseif (window.event.keyCode = 13) then
+	SetReturnV()
+end if
+End Sub 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub btnOKOnClick()
+SetReturnV()
+End Sub 'btnOKOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+
+Dim fileName
+fileName = Trim(inpSelectFile.value)
+
+if (Right(fileName, 4) = ".doc" or Right(fileName, 4) = ".rtf") then
+    window.returnValue = Abs(CInt(chkHeading.checked)) & PD & Abs(CInt(chkOverWrite.checked)) & PD & fileName
+    window.close()
+end if
+
+End Sub 'SetReturnV
+
+			-->
+    </script>
+
+</head>
+<body style="background-color: buttonface" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()">
+    <div id="divBody" style="padding:10mm">
+        <table id="tblBody" border="0" cellpadding="0" cellspacing="0">
+		    <tr>
+			    <td>
+				    <input id="chkHeading" type="checkbox">
+				    <label id="lblChkHeading" for="chkHeading" accesskey="p" style="font-size:x-small"></label>
+			    </td>
+			    <td></td>
+		    </tr>
+		    <tr>
+			    <td>
+				    <input id="chkOverWrite" type="checkbox">
+				    <label id="lblChkOverWrite" for="chkOverWrite" accesskey="k" style="font-size:x-small"></label>
+			    </td>
+			    <td></td>
+		    </tr>
+			<tr>
+				<td>
+					<label id="lblInpSelectFile" for="inpSelectFile" accesskey="f" style="font-size:x-small"></label>
+					<br />
+                    <input id="inpSelectFile" type="file" size="30">
+				</td>
+				<td></td>
+			</tr>
+        </table>
+	    <br />
+        <input id="btnOK" onclick="btnOKOnClick()" type="button" value="-">
+    </div>
+    <div id="langConst" style="display:none;">
+        <div id="langConst_et">
+            var DOC_TITLE = "Vastete import MS Word tabelist";
+            var LBL_CHK_HEADING = "Esimene rida on tabeli <u>p</u>äise rida";
+            var LBL_CHK_OVERWRITE = "<u>K</u>irjuta olemasolevad vasted üle";
+            var LBL_INP_SELECTFILE = "MS Word <u>f</u>ail:";
+            var BTN_OK_VALUE = "Import";
+        </div>
+        <div id="langConst_en">
+            var DOC_TITLE = "Translation equivalents import from MS Word table";
+            var CHK_HEADING = "First row is heading row";
+            var LBL_CHK_OVERWRITE = "Overwrite existing equivalents";
+            var LBL_INP_SELECTFILE = "MS Word <u>f</u>ile:";
+            var BTN_OK_VALUE = "Import";
+        </div>
+    </div>
+</body>
+</html>

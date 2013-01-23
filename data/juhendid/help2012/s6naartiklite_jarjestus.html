@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Sõnaartiklite järjestus</h2>
+	
+Sõnastiku XML-fail on kogu aeg füüsiliselt õiges artiklite järjestuses. Iga uue artikli lisamisel või märksõnade teksti muutmisel järjestatakse sõnastik uuesti.
+<br><br>
+Igas sõnastikus on artiklite järjestamise reeglid erinevad. Nt mõnes võidakse mitmesõnalises märksõnas tühikut järjestamisel arvestada, teistes mitte. Lisaks võivad märksõnas kasutusel olevad sümbolid olla erinevad. Nt liitsõnaeraldajaks on kasutatud kaldkriipsu (/), püstkriipsu (|), plussi (+). ÕS 2006-s lisatakse märksõna teksti ka vältemärk (.), palatalisatsiooni märk (’) jt. Polüseemsete märksõnade teksti eristamiseks võidakse kasutada allkriipsu (_), lisaks peavad väiksema homonüüminumbriga märksõnad olema sõnastikus eespool suurema homonüüminumbriga märksõnadest.
+<br><br>
+
+Sõnastiku konfi-failis shsconfig_xxx.xml on kirjas antud sõnastikus kasutatav tähestik (eesti järjestus, inglise järjestus, türgi järjestus jne) ning vajaduse korral ka asenduseeskirjad (nt ongström Å peab olema a tähe juures jne). Ka element, mille järgi artiklid järjestatakse, on selles failis kirjas - vaikimisi on see märksõna, aga vastavalt konfi-failile ükskõik mis (nt termin). Sellel elemendil on atribuut @O (sorteerimisväärtus) sisaldab märksõna kuju, mille järgi järjestamine käib. 
+<br><br>
+NB! Mitmeköitelise sõnastiku puhul toimub sõnaartiklite järjestamine köite piirides. Nt kui oled kord sisestanud 'hüürgama' esimesse köitesse, aga hiljem kustutad 'h' eest ära, siis uus sõna 'üürgama' ei koli viimasesse köitesse, vaid läheb esimese köite lõppu ja artikkel tuleb käsitsi viia teise köitese (Artikli tööriistad -- Vii teise köitesse).
+    </div>
+  </body>
+</html>

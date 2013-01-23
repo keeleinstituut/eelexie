@@ -1,0 +1,428 @@
+﻿<html>
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+	<title>Sünteesitud vormid</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+		<script language="JScript" type="text/jscript" src="tools.js"></script>
+		<script language=vbscript type="text/vbscript">
+
+		<!--
+Option Explicit
+
+Dim PD, kompJnr, salvestatudVormid, configDom
+Dim mtConst, slConst, varConst, replConst, typesConst, formsConst
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+Dim inarr, dic_desc, sAppLang, sqnad, moodus, ms_valtega, ms_vkkuju
+PD = ChrW(&HE001)
+if IsArray(window.dialogArguments) then
+	inarr = window.dialogArguments
+else
+	inarr = Split(window.dialogArguments, PD)
+end if
+dic_desc = inarr(0)
+sAppLang = inarr(1)
+sqnad = inarr(2)
+moodus = inarr(3)
+ms_valtega = inarr(4)
+ms_vkkuju = inarr(5)
+
+Dim pageName
+pageName = window.location.href
+pageName = Mid(pageName, InStrRev(pageName, "/") + 1)
+Dim constXml
+set constXml = IDD("File", "const.xml", False, False, Nothing)
+
+document.title = captl(constXml.documentElement.selectSingleNode("p[@n = '" & pageName & "']/itm[@n = 'title'][@l = '" & sAppLang & "']").text)
+
+mtConst = captl(constXml.documentElement.selectSingleNode("p[@n = '" & pageName & "']/itm[@n = 'mt'][@l = '" & sAppLang & "']").text)
+slConst = constXml.documentElement.selectSingleNode("p[@n = '" & pageName & "']/itm[@n = 'sl'][@l = '" & sAppLang & "']").text
+varConst = constXml.documentElement.selectSingleNode("p[@n = '" & pageName & "']/itm[@n = 'var'][@l = '" & sAppLang & "']").text
+replConst = captl(constXml.documentElement.selectSingleNode("p[@n = '" & pageName & "']/itm[@n = 'repl'][@l = '" & sAppLang & "']").text)
+typesConst = constXml.documentElement.selectSingleNode("p[@n = '" & pageName & "']/itm[@n = 'types'][@l = '" & sAppLang & "']").text
+formsConst = constXml.documentElement.selectSingleNode("p[@n = '" & pageName & "']/itm[@n = 'forms'][@l = '" & sAppLang & "']").text
+
+Dim configElement
+salvestatudVormid = ""
+set configDom = IDD("File", "../shsconfig_" & dic_desc & ".xml", False, False, Nothing)
+if Not (configDom Is Nothing) then
+    set configElement = configDom.documentElement.selectSingleNode("morf_syn/vormid") 'muutevormidesse pandavad vormid
+    if Not (configElement Is Nothing) then
+        Dim sv
+        for each sv in configElement.selectNodes("itm")
+            salvestatudVormid = salvestatudVormid & "," & sv.getAttribute("code")
+        next
+        salvestatudVormid = salvestatudVormid & ","
+    end if
+end if
+
+Dim ix, lemmad, lemma, tulemus, algV2ljund, synteesitudVorme, tyypisid, tyybid, orgLemma, plVorm, lsOsa
+lemmad = Split(sqnad, PD)
+
+Dim komplektid, komplekt, komplektiTabel, komplektiPlk, komplektiInfo
+Dim vormid, vormiAndmed, vorm, vormikood, paralleelid, paralleel
+Dim trow, tcol, vormiEdit, vormiTekst, tyvePikkused, valiBtn, vormiSpan
+Dim vormiNimi
+
+kompJnr = 0
+algV2ljund = 0
+tulemus = ""
+
+for ix = 0 to UBound(lemmad, 1)
+    lemma = lemmad(ix)
+    plVorm = ""
+    lsOsa = ""
+    orgLemma = lemma
+    if (Left(lemma, 1) = "¡") then 'pl märkimiseks <vk> - s
+        lemma = Mid(lemma, 2)
+        plVorm = "pl"
+    end if
+    if (Left(lemma, 1) = "?") then
+        lemma = Mid(lemma, 2)
+    end if
+    if (Left(lemma, 1) = "+") then
+        lemma = Mid(lemma, 2)
+        lsOsa = "+"
+    end if
+    synteesitudVorme = 0
+    tyypisid = 0
+    tyybid = String(50, vbNullChar)
+	'tulemus => sõna, vältega, vkkuju (vorminimi, klaarkood, sisekood; 0, 1, 2), genereeritud vormide arv kokku, tüüpide arv, tüübid ise, algväljund (v3.3)
+	tulemus = thisEMS.synteesi(lemma, ms_valtega, ms_vkkuju, synteesitudVorme, tyypisid, tyybid, algV2ljund)
+    set komplektiInfo = id_body.insertAdjacentElement("beforeEnd", document.createElement("<div id='info_" & ix & "'></div>"))
+    komplektiInfo.innerHTML = "<b><u>" & orgLemma & "</u></b> - " & tyypisid & " " & typesConst & ": '" & tyybid & "'; " & synteesitudvorme & " " & formsConst & "."
+	if (synteesitudvorme > 0) then
+	    if (moodus = "Muutevormid" and tyypisid > 1) then
+            '11 - 09 PlP (raskus):                                      11_S~09_S
+            '12 - 10 PlP (aastane, liitlane)                            12_A~10_A
+            '23 - 22 PlG (poiss)                                        23_S?22_S
+            '07 - 05 PlG (kaunis)   -   5, 7 + ID (ilma rõhumärgita):   05_A~07_A|41_D
+            '05 - 03 SgP (tõrges)   -   3, 5:                           03_A~05_A
+            '17 - 16 SgP (logo)                                         17_S~16_S
+            '18 - 17 SgG (pidu)                                         18_S|17_S
+            Dim parVormideTyybid, ixPost
+            parVormideTyybid = ""
+            ixPost = InStr(1, parVormideTyybid, "|")
+            if (ixPost > 0) then
+                if (InStr(1, Mid(tyybid, ixPost + 1), "~") > 0 or InStr(1, Mid(tyybid, ixPost + 1), "?") > 0) then
+                    parVormideTyybid = Mid(tyybid, ixPost + 1)
+                elseif (InStr(1, Mid(tyybid, 1, ixPost - 1), "~") > 0 or InStr(1, Mid(tyybid, 1, ixPost - 1), "?") > 0) then
+                    parVormideTyybid = Mid(tyybid, 1, ixPost - 1)
+                end if
+            else
+                if (InStr(1, tyybid, "~") > 0 or InStr(1, tyybid, "?") > 0) then
+                    parVormideTyybid = tyybid
+                end if
+            end if
+            if (Len(parVormideTyybid) > 0) then
+                'siin on tüübinumbrid alati 2 märgi pikkused...
+	            if ( (InStr(1, parVormideTyybid, "11") > 0 and InStr(1, parVormideTyybid, "09") > 0) or _
+	            (InStr(1, parVormideTyybid, "12") > 0 and InStr(1, parVormideTyybid, "10") > 0) or _
+	            (InStr(1, parVormideTyybid, "23") > 0 and InStr(1, parVormideTyybid, "22") > 0) or _
+	            (InStr(1, parVormideTyybid, "05") > 0 and InStr(1, parVormideTyybid, "07") > 0) or _
+	            (InStr(1, parVormideTyybid, "03") > 0 and InStr(1, parVormideTyybid, "05") > 0) or _
+	            (InStr(1, parVormideTyybid, "17") > 0 and InStr(1, parVormideTyybid, "16") > 0) or _
+	            (InStr(1, parVormideTyybid, "18") > 0 and InStr(1, parVormideTyybid, "17") > 0) ) _
+	            then
+	                Call paralleelVormid(tulemus, parVormideTyybid, orgLemma, plVorm, lsOsa)
+	            end if
+            end if
+	    end if
+        komplektid = Split(tulemus, "|")
+        for komplekt = 0 to UBound(komplektid)
+            set komplektiTabel = id_body.insertAdjacentElement("beforeEnd", document.createElement("<table id='komplekt_" & kompJnr & "' border='1' style='width:80%'>"))
+            vormid = Split(komplektid(komplekt), ";")
+            vormiAndmed = Split(vormid(0), ",")
+            Call komplektiTabel.setAttribute("mt", vormiAndmed(0))
+            Call komplektiTabel.setAttribute("lsOsa", lsOsa)
+            Call komplektiTabel.setAttribute("sl", vormiAndmed(1))
+            Call komplektiTabel.setAttribute("vk", plVorm)
+            set komplektiPlk = komplektiTabel.insertAdjacentElement("afterBegin", document.createElement("caption"))
+            komplektiPlk.innerHTML = "<b><u>" & orgLemma & "</u></b>: " & mtConst & " " & vormiAndmed(0) & ", " & slConst & " " & vormiAndmed(1) & ", " & varConst & " " & vormiAndmed(2)
+            if (moodus = "Muutevormid") then
+                set trow = komplektiTabel.insertRow()
+                set tcol = trow.insertCell()
+                tcol.colSpan = 3
+                tcol.innerHTML = "<input id='linnuke_" & kompJnr & "' type='checkbox' /><label for='linnuke_" & kompJnr & "' style='80%'>" & String(40, "-") & "</label>"
+            end if
+            for vorm = 1 to UBound(vormid)
+                vormikood = Split(vormid(vorm), "=")
+                if (InStr(1, salvestatudVormid, "," & vormikood(0) & ",") > 0 or moodus = "Paradigma") then
+                    set trow = komplektiTabel.insertRow()
+                    trow.id = vormikood(0)
+                    set tcol = trow.insertCell() 'vormikood
+                    tcol.innerText = vormikood(0)
+                    set tcol = trow.insertCell() 'vormi nimetus
+                    if (InStr(1, salvestatudVormid, "," & vormikood(0) & ",") > 0) then
+                        vormiNimi = configDom.documentElement.selectSingleNode("morf_syn/vormid/itm[@code = '" & vormikood(0) & "']/@name").text
+                    else
+                        vormiNimi = " "
+                    end if
+                    tcol.innerText = vormiNimi
+                    set tcol = trow.insertCell() 'vormid ise
+                    set vormiEdit = tcol.insertAdjacentElement("afterBegin", document.createElement("<input type='text' id='vormiEdit' style='width:80%' />"))
+                    set vormiSpan = tcol.insertAdjacentElement("beforeEnd", document.createElement("<span id='vormiSpan'></span>"))
+                    paralleelid = Split(vormikood(1), "~")
+                    vormiTekst = ""
+                    tyvePikkused = ""
+                    for paralleel = 0 to UBound(paralleelid)
+                        vormiAndmed = Split(paralleelid(paralleel), ",")
+                        if (Len(vormiAndmed(0)) > 0) then
+                            vormiTekst = vormiTekst & " ~ " & vormiAndmed(0)
+                            if (UBound(vormiAndmed) > 0) then
+                                tyvePikkused = tyvePikkused & ", " & vormiAndmed(1)
+                            end if
+                        end if
+                    next
+                    vormiEdit.value = Mid(vormiTekst, 4)
+                    vormiSpan.innerText = Mid(tyvePikkused, 3)
+                end if
+            next
+'            if (moodus = "Muutevormid") then
+'                set valiBtn = komplektiTabel.insertAdjacentElement("afterEnd", document.createElement("<input id='btn_komplekt_" & kompJnr & "' type='button' value='  " & replConst & "  '>"))
+'            end if
+            kompJnr = kompJnr + 1
+            Call id_body.insertAdjacentElement("beforeEnd", document.createElement("br"))
+        next
+        Call id_body.insertAdjacentElement("beforeEnd", document.createElement("hr"))
+        Call id_body.insertAdjacentElement("beforeEnd", document.createElement("br"))
+	end if
+next
+set configDom = Nothing
+if (moodus = "Muutevormid") then
+    Call id_body.insertAdjacentElement("beforeEnd", document.createElement("<input id='btnReplace' type='button' value='  " & replConst & "  '>"))
+    Call id_body.insertAdjacentElement("beforeEnd", document.createElement("br"))
+    Call id_body.insertAdjacentElement("beforeEnd", document.createElement("br"))
+    Call id_body.insertAdjacentElement("beforeEnd", document.createElement("br"))
+end if
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub paralleelVormid(tulemus, tyybid, orgLemma, plVorm, lsOsa)
+Dim komplektid, komplekt0, komplekt1, vormid0, vormid1, uusTulemus, uuedVormid, uusVorm, uusVormIse, uusVormPikkus
+Dim paralleelid, paralleel
+Dim vormiAndmed, vorm0, vorm1, vormiNimi, vn1
+'r'askus:
+'1. komplekt:
+'11,S,1;SgN=r'askus,7;SgG=r'askuse,8;SgP=r'askust,7;SgAdt=r'askusse,7;SgIll=r'askusesse,8;SgIn=r'askuses,8;SgEl=r'askusest,8;SgAll=r'askusele,8;SgAd=r'askusel,8;SgAbl=r'askuselt,8;SgTr=r'askuseks,8;SgTer=r'askuseni,8;SgEs=r'askusena,8;SgAb=r'askuseta,8;SgKom=r'askusega,8;PlN=r'askused,8;PlG=r'askuste,7;PlP=r'askusi,8;PlIll=r'askustesse,7~r'askusisse,8;PlIn=r'askustes,7~r'askusis,8;PlEl=r'askustest,7~r'askusist,8;PlAll=r'askustele,7~r'askusile,8;PlAd=r'askustel,7~r'askusil,8;PlAbl=r'askustelt,7~r'askusilt,8;PlTr=r'askusteks,7~r'askusiks,8;PlTer=r'askusteni,7;PlEs=r'askustena,7;PlAb=r'askusteta,7;PlKom=r'askustega,7;Rpl=r'askusi,8;Nlyhi=;Nvahe=
+komplektid = Split(tulemus, "|")
+komplekt0 = komplektid(0)
+komplekt1 = komplektid(1)
+'11,S,1;SgN=r'askus,7;SgG=r'askuse,8;SgP=r'askust,7 ...
+vormid0 = Split(komplekt0, ";")
+vormiAndmed = Split(vormid0(0), ",")
+
+uusTulemus = vormiAndmed(0)
+vormid1 = Split(komplekt1, ";")
+vormiAndmed = Split(vormid1(0), ",")
+
+if (InStr(1, tyybid, "~") > 0) then
+    uusTulemus = uusTulemus & "~" & vormiAndmed(0)
+elseif (InStr(1, tyybid, "?") > 0) then
+    uusTulemus = uusTulemus & "~(" & vormiAndmed(0) & ")"
+else
+    exit sub
+end if
+uusTulemus = uusTulemus & "," & vormiAndmed(1) & "," & vormiAndmed(2)
+
+'SgN=r'askus,7
+for vorm0 = 1 to UBound(vormid0)
+    vormiNimi = Split(vormid0(vorm0), "=")
+    if (InStr(1, salvestatudVormid, "," & vormiNimi(0) & ",") > 0) then
+        uusTulemus = uusTulemus & ";" & vormiNimi(0) & "="
+        uuedVormid = ""
+        paralleelid = Split(vormiNimi(1), "~")
+        for paralleel = 0 to UBound(paralleelid)
+            if Not (paralleelid(paralleel) = "#,0") then
+                if (Len(uuedVormid) > 0) then
+                    uuedVormid = uuedVormid & "~"
+                end if
+                uuedVormid = uuedVormid & paralleelid(paralleel)
+            end if
+        next
+        for vorm1 = 1 to UBound(vormid1)
+            vn1 = Split(vormid1(vorm1), "=")
+            if (vn1(0) = vormiNimi(0)) then
+                paralleelid = Split(vn1(1), "~")
+                for paralleel = 0 to UBound(paralleelid)
+                    if Not (paralleelid(paralleel) = "#,0") then
+                        if (InStr(1, uuedVormid, paralleelid(paralleel)) < 1) then
+                            if (Len(uuedVormid) > 0) then
+                                uuedVormid = uuedVormid & "~"
+                            end if
+                            uusVorm = Split(paralleelid(paralleel), ",")
+                            uusVormIse = uusVorm(0)
+                            uusVormPikkus = CInt(uusVorm(1))
+                            if (InStr(1, tyybid, "?") > 0) then
+                                uusVormIse = "(" & uusVormIse & ")"
+                                uusVormPikkus = uusVormPikkus + 1
+                            end if
+                            uuedVormid = uuedVormid & uusVormIse & "," & uusVormPikkus
+                        end if
+                    end if
+                next
+                if (uuedVormid = "") then
+                    uuedVormid = "#,0"
+                end if
+                uusTulemus = uusTulemus & uuedVormid
+                exit for
+            end if
+        next
+    end if
+next
+
+Dim komplektiTabel, komplektiPlk, vormid, vorm, trow, tcol, vormiEdit, vormiSpan, vormiTekst, tyvePikkused, vormiNimetus
+
+set komplektiTabel = id_body.insertAdjacentElement("beforeEnd", document.createElement("<table id='komplekt_" & kompJnr & "' border='1' style='width:80%;background-color:aqua;'>"))
+vormid = Split(uusTulemus, ";")
+vormiAndmed = Split(vormid(0), ",")
+Call komplektiTabel.setAttribute("mt", vormiAndmed(0))
+Call komplektiTabel.setAttribute("lsOsa", lsOsa)
+Call komplektiTabel.setAttribute("sl", vormiAndmed(1))
+Call komplektiTabel.setAttribute("vk", plVorm)
+
+set komplektiPlk = komplektiTabel.insertAdjacentElement("afterBegin", document.createElement("caption"))
+komplektiPlk.innerHTML = "<b><u>" & orgLemma & "</u></b>: " & mtConst & " " & vormiAndmed(0) & ", " & slConst & " " & vormiAndmed(1) & ", " & varConst & " " & vormiAndmed(2)
+
+set trow = komplektiTabel.insertRow()
+set tcol = trow.insertCell()
+tcol.colSpan = 3
+tcol.innerHTML = "<input id='linnuke_" & kompJnr & "' type='checkbox' /><label for='linnuke_" & kompJnr & "' style='80%'>" & String(40, "-") & "</label>"
+
+for vorm = 1 to UBound(vormid)
+    'SgN
+    vormiNimi = Split(vormid(vorm), "=")
+    set trow = komplektiTabel.insertRow()
+    trow.id = vormiNimi(0)
+    set tcol = trow.insertCell() 'vormiNimi
+    tcol.innerText = vormiNimi(0)
+    set tcol = trow.insertCell() 'vormi nimetus
+    vormiNimetus = configDom.documentElement.selectSingleNode("morf_syn/vormid/itm[@code = '" & vormiNimi(0) & "']/@name").text
+    tcol.innerText = vormiNimetus
+    set tcol = trow.insertCell() 'vormid ise
+    set vormiEdit = tcol.insertAdjacentElement("afterBegin", document.createElement("<input type='text' id='vormiEdit' style='width:80%' />"))
+    set vormiSpan = tcol.insertAdjacentElement("beforeEnd", document.createElement("<span id='vormiSpan'></span>"))
+    'vormiNimi(1): r'askus,7
+    paralleelid = Split(vormiNimi(1), "~")
+    vormiTekst = ""
+    tyvePikkused = ""
+    for paralleel = 0 to UBound(paralleelid)
+        'r'askus
+        '7
+        vormiAndmed = Split(paralleelid(paralleel), ",")
+        if (Len(vormiAndmed(0)) > 0) then
+            vormiTekst = vormiTekst & " ~ " & vormiAndmed(0)
+            if (UBound(vormiAndmed) > 0) then
+                tyvePikkused = tyvePikkused & ", " & vormiAndmed(1)
+            end if
+        end if
+    next
+    vormiEdit.value = Mid(vormiTekst, 4)
+    vormiSpan.innerText = Mid(tyvePikkused, 3)
+next
+kompJnr = kompJnr + 1
+Call id_body.insertAdjacentElement("beforeEnd", document.createElement("br"))
+End Sub 'paralleelVormid
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+end if
+End Sub 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnClick()
+Dim oSrc, oTbl
+Dim myRow, vormid, vorm, tyvePikkused, vormideTekst, yksikVormid, yksikPikkused, i, mt, vormiEdit
+set oSrc = window.event.srcElement
+
+Dim rv
+rv = ""
+
+if (UCase(oSrc.tagName) = "INPUT") then
+    if (UCase(oSrc.type) = "BUTTON" and oSrc.id= "btnReplace") then
+        Dim linnuke, jnr
+        for each linnuke in document.all.tags("INPUT")
+            if (UCase(linnuke.type) = "CHECKBOX") then
+                if (Left(linnuke.id, Len("linnuke_")) = "linnuke_") then
+                    if (linnuke.checked) then
+                        jnr = Mid(linnuke.id, Len("linnuke_") + 1)
+                        set oTbl = document.all("komplekt_" & jnr)
+                        if Not (oTbl Is Nothing) then
+                            vormideTekst = ""
+                            for each myRow in oTbl.rows
+                                set vormiEdit = myRow.all("vormiEdit")
+                                if Not (vormiEdit Is Nothing) then 'on ka seesama linnuke
+                                    vormid = vormiEdit.value
+                                    yksikVormid = Split(vormid, " ~ ")
+                                    tyvePikkused = myRow.all("vormiSpan").innerText
+                                    yksikPikkused = Split(tyvePikkused, ", ")
+                                    vorm = vbNullString
+                                    if (vormid = "#") then
+                                        vorm = "-"
+                                    else
+                                        for i = 0 to UBound(yksikVormid, 1)
+                                            'et mitte liita vorme '#'
+                                            if (yksikPikkused(i) > 0) then
+                                                if (i > 0) then
+                                                    vorm = vorm & " ~ "
+                                                end if
+                                                if (CInt(yksikPikkused(i)) < Len(yksikVormid(i))) then
+                                                    vorm = vorm & Mid(yksikVormid(i), 1, CInt(yksikPikkused(i))) & "[" & Mid(yksikVormid(i), CInt(yksikPikkused(i)) + 1)
+                                                else
+                                                    vorm = vorm & yksikVormid(i)
+                                                end if
+                                            end if
+                                        next
+                                    end if
+                                    vormideTekst = vormideTekst & ", " & vorm
+                                end if
+                            next
+                            mt = oTbl.getAttribute("mt")
+                            if (Len(rv) > 0) then
+                                rv = rv & ChrW(&HE002)
+                            end if
+                            rv = rv & Mid(vormideTekst, 3) & PD & mt & PD & oTbl.getAttribute("vk") & PD & oTbl.getAttribute("sl") & PD & oTbl.getAttribute("lsOsa")
+                        end if
+                    end if
+                end if
+            end if
+        next
+    end if
+'    if (UCase(oSrc.type) = "BUTTON" and Mid(oSrc.id, 1, Len("btn_komplekt_")) = "btn_komplekt_") then
+'        set oTbl = document.all(Mid(oSrc.id, 5))
+'    end if
+end if
+if (Len(rv) > 0) then
+    window.returnValue = rv
+    window.close
+end if
+End Sub 'bodyOnClick
+
+			-->
+
+		</script>
+	</head>
+	<body  style="background-color:buttonface" onkeyup="bodyOnKeyUp()" onload="bodyOnLoad()" onclick="bodyOnClick()">
+        <OBJECT ID="thisEMS"
+        CLASSID="CLSID:A8C1E9B0-99B1-41B0-975B-1A194BC1D3C0"
+        CODEBASE="../install/eelexSWCtl.CAB#version=-1,-1,-1,-1"
+        STYLE="display:none;">
+	        <PARAM NAME="propDd" VALUE="___">
+        </OBJECT>
+		<div id="id_body" style="PADDING-LEFT: 10mm; PADDING-TOP: 5mm">
+		</div>
+	</body>
+</html>

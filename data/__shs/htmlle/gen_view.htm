@@ -1,0 +1,4383 @@
+﻿<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+    <title>Vaate genereerimine</title>
+    <style>
+        .thisPageNoCond
+        {
+            background-color: Gainsboro;
+        }
+        .fromText
+        {
+            border: 1 solid black;
+        }
+    </style>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+    <script type="text/javascript" src="tools.js"></script>
+    <script type="text/javascript" src="lisad.js"></script>
+    <script type="text/javascript" src="res_var.js"></script>
+    <script type="text/javascript" src="res_xml.js"></script>
+    <script type="text/javascript" src="res_lang_et.js"></script>
+    <link rel="STYLESHEET" type="text/css" href="dhtmlx/dhtmlxCombo/codebase/dhtmlxcombo.css" />
+    <script type="text/javascript" src="dhtmlx/dhtmlxCombo/codebase/dhtmlxcommon.js"></script>
+    <script type="text/javascript" src="dhtmlx/dhtmlxCombo/codebase/dhtmlxcombo.js"></script>
+    <script type="text/javascript" src="dhtmlx/dhtmlxCombo/codebase/ext/dhtmlxcombo_whp.js"></script>
+    <script type="text/javascript" src="dhtmlx/dhtmlxCombo/codebase/ext/dhtmlxcombo_extra.js"></script>
+    <script type="text/javascript" src="procs_TextContMenu.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/script.css">
+    <script type="text/javascript">
+<!--
+        //        function attDestrEvnt(o) {
+        //            o.attachEvent("onChange", function(o) { o.destructor()});
+        //        }
+
+        function getStrCharset(intCharset) {
+            var charset = "--------------------";
+            switch (intCharset) {
+                case 0:
+                    charset = "ANSI";
+                    break;
+                case 1:
+                    charset = "System default";
+                    break;
+                case 2:
+                    charset = "Standard symbols";
+                    break;
+                case 77:
+                    charset = "Apple Macintosh®";
+                    break;
+                case 128:
+                    charset = "Japanese (Shift-JIS)";
+                    break;
+                case 129:
+                    charset = "Korean (Wansung)";
+                    break;
+                case 130:
+                    charset = "Korean (Johab)";
+                    break;
+                case 134:
+                    charset = "Simplified Chinese";
+                    break;
+                case 136:
+                    charset = "Traditional Chinese";
+                    break;
+                case 161:
+                    charset = "Greek";
+                    break;
+                case 162:
+                    charset = "Turkish";
+                    break;
+                case 163:
+                    charset = "Vietnamese";
+                    break;
+                case 177:
+                    charset = "Hebrew";
+                    break;
+                case 178:
+                    charset = "Arabic";
+                    break;
+                case 186:
+                    charset = "Baltic";
+                    break;
+                case 204:
+                    charset = "Russian";
+                    break;
+                case 222:
+                    charset = "Thai";
+                    break;
+                case 238:
+                    charset = "Eastern European";
+                    break;
+                case 255:
+                    charset = "OEM";
+                    break;
+            }
+            return charset;
+        }
+
+        function fillFonts() {
+            var fontsArray = new Array();
+            var i;
+            for (i = 1; i <= dlgHelper.fonts.count; i++) {
+                fontsArray.push(dlgHelper.fonts(i));
+            }
+            fontsArray.sort();
+
+            var xmlStr = "<complete>";
+            for (i = 0; i < fontsArray.length; i++) {
+                // var intCharset = dlgHelper.getCharset(fontsArray[i]);
+                // getStrCharset(intCharset)
+                xmlStr += "<option value='" + fontsArray[i] + "'>" + fontsArray[i] + "</option>";
+            }
+            xmlStr += "</complete>";
+            return xmlStr;
+        }
+-->
+    </script>
+    <script type="text/vbscript">
+<!--
+Option Explicit
+
+Dim dic_desc
+Dim usrName
+Dim sAppLang
+Dim DICPR
+Dim DICURI
+Dim sDicName
+Dim gendXslStandard, gendXslNimi
+
+Dim schRootElems
+
+Dim TYHI_TAANE
+
+
+Dim xslIndented
+Dim xsdDOM, xsdTnsPr
+Dim xmlNsM
+
+Dim viewConfDom, viewConfRoot, viewConfRootStr, gendViewDom, cssRules, ss
+Dim preViewDom, doubledPreViewNodes
+Dim displayedElem
+
+Dim dhx_globalImgPath, z_sel_FontSize, z_sel_Font, z_sel_Color, z_sel_BgColor
+Dim colorsStr, sizesStr
+Dim artXml, artMs, artGuid, volId
+Dim slinkVols, first_default
+
+Dim withCondBgColor, PD
+
+Dim vaadeSalvestatud
+
+Dim nsList
+
+Dim viewFont, viewFontSize, wordFontSize
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+
+vaadeSalvestatud = false
+
+withCondBgColor = "fuchsia"
+
+dhx_globalImgPath = "dhtmlx/dhtmlxCombo/codebase/imgs/"
+
+TYHI_TAANE = String(4, ChrW("&H" & Mid(NO_BREAK_SPACE, 4, 4)))
+
+PD = ChrW(&HE001)
+
+Dim inArr
+if IsArray(window.dialogArguments) then
+    inarr = window.dialogArguments
+else
+    inarr = Split(window.dialogArguments, PD)
+end if
+
+dic_desc = inArr(0)
+usrName = inArr(1)
+sAppLang = inArr(2)
+
+sDicName = inArr(3)
+
+artMs = inArr(4) '"listing.htm" jaoks; sDicName - 'lexlist.xml' failist pannakse 'art_le.cgi' kaudu serverist kaasa 'spn_SrvParms' kaudu
+artGuid = inArr(5)
+artXml = ""
+
+slinkVols = inArr(6) '"listing.htm" jaoks
+volId = inArr(7) '"readArtByGuid" jaoks
+
+gendXslStandard = "gendView_" & dic_desc
+gendXslNimi = inArr(8)
+
+
+Dim dicConfDom, cfgElem
+set dicConfDom = IDD("File", "../shsconfig_" & dic_desc & ".xml", false, false, null)
+
+DICPR = dicConfDom.documentElement.selectSingleNode("dicpr").text
+DICURI = dicConfDom.documentElement.selectSingleNode("dicuri").text
+first_default = dicConfDom.documentElement.selectSingleNode("first_default").text
+
+viewFont = ""
+viewFontSize = ""
+wordFontSize = ""
+
+set cfgElem = dicConfDom.documentElement.selectSingleNode("colorsFonts/viewArea/viewFont")
+if Not (cfgElem Is Nothing) then
+    viewFont = cfgElem.text
+end if
+set cfgElem = dicConfDom.documentElement.selectSingleNode("colorsFonts/viewArea/viewFontSize")
+if Not (cfgElem Is Nothing) then
+    viewFontSize = cfgElem.text
+end if
+set cfgElem = dicConfDom.documentElement.selectSingleNode("colorsFonts/viewArea/wordFontSize")
+if Not (cfgElem Is Nothing) then
+    wordFontSize = cfgElem.text
+end if
+
+
+Dim lc
+set lc = langConst.all("langConst_" & sAppLang)
+Call window.execScript(lc.innerText, "JScript")
+
+set xslIndented = IDD("File", "../xsl/tools/indented_copy.xsl", False, False, Nothing)
+if (xslIndented.parseError.errorCode <> 0) then
+    Call ShowXMLParseError(xslIndented)
+    Exit Sub
+end if
+
+Dim XSD_FILE
+XSD_FILE = "../xsd/schema_" & dic_desc & ".xsd"
+
+set xsdDOM = IDD("File", XSD_FILE, False, False, Nothing)
+if (xsdDOM.parseError.errorCode <> 0) then
+    Call ShowXMLParseError(xsdDOM)
+    Exit Sub
+end if
+
+set xmlNsM = CreateObject("Msxml2.MXNamespaceManager.6.0")
+xmlNsM.allowOverride = True
+Call xmlNsM.declarePrefix(NS_XS_PR, NS_XS)
+Call xmlNsM.declarePrefix(NS_XSL_PR, NS_XSL)
+Call xmlNsM.declarePrefix(DICPR, DICURI)
+Call xmlNsM.declarePrefix("pref", DICURI)
+Call xmlNsM.declarePrefix(SDPR, SDURI)
+Call xmlNsM.declarePrefix("msxsl", "urn:schemas-microsoft-com:xslt")
+
+xsdTnsPr = xmlNsM.getPrefixes(xsdDOM.documentElement.getAttribute("targetNamespace"))(0)
+
+Dim nsPr
+nsList = ""
+for each nsPr in xmlNsM.getDeclaredPrefixes
+    if (nsPr <> "xml") then
+        nsList = nsList & " xmlns:" & nsPr & "='" & xmlNsM.getURI(nsPr) & "'"
+    end if
+next
+nsList = Trim(nsList)
+Call xsdDOM.setProperty("SelectionLanguage", "XPath")
+Call xsdDOM.setProperty("SelectionNamespaces", nsList)
+
+Dim xsdSC
+set xsdSC = CreateObject("Msxml2.XMLSchemaCache.6.0")
+xsdSC.validateOnLoad = True
+Call xsdSC.Add(DICURI, XSD_FILE)
+
+set schRootElems = xsdSc.getSchema(DICURI).elements
+
+Dim gvcName, saba, sabaNimi
+saba = Mid(gendXslNimi, Len(gendXslStandard) + 1)
+gvcName = "gendViewConf_" & dic_desc & saba
+if (saba = "") then
+    sabaNimi = "Standard"
+else
+    sabaNimi = Mid(saba, 2)
+end if
+
+set viewConfDom = IDD("", "", False, False, Nothing)
+viewConfDom.preserveWhiteSpace = true
+Call viewConfDom.load("../config/view/" & gvcName & ".xml")
+if (viewConfDom.parseError.errorCode <> 0) then
+    Dim nRetBtn
+    nRetBtn = MsgBox("Siiani on olnud kasutusel 'käsitsi' tehtud vaade. Vaate genereerimist tuleb alustada nullist." & vbCrLf & "Kas jätkata?", vbYesNo + vbQuestion, "Vaade")
+    if (nRetBtn <> vbYes) then
+        window.close()
+        Exit Sub
+    end if
+    set viewConfDom = IDD("", "", False, False, Nothing)
+    viewConfDom.preserveWhiteSpace = true
+    set viewConfRoot = viewConfDom.appendChild(viewConfDom.createNode(NODE_ELEMENT, "elems", ""))
+else
+    set viewConfRoot = viewConfDom.documentElement
+    Dim ex 'exists
+    set ex = viewConfRoot.selectNodes(".//*/@st") 'exists, kõik @st atribuudid võetakse maha, skeemi lugemise käigus pannakse iga elemendi v atribuudi külge @st = 'e' ning lõpetuseks kustutatakse kõik elemendid/atribuudid, mille @st <> 'e'
+    Call ex.removeAll
+end if
+viewConfRootStr = viewConfRoot.xml
+set preViewDom = IDD("", "", False, False, Nothing)
+doubledPreViewNodes = ";" & DICPR & ":A;"
+
+set ss = document.createStyleSheet()
+
+document.title = DOC_TITLE & ": [" & UCase(dic_desc) & "]"
+if (InStr(1, window.location.href, "/__shs_test/") > 0) then
+    document.title = document.title & " [T E S T B A A S]"
+end if
+document.title = document.title & " """ & sabaNimi & """ - '" & usrName & "'"
+
+sel_skeem.size = (div_SelectContainer.offsetHeight) / 16 - 1
+Call fillSchSelect(sel_Skeem, "sr")
+
+colorsStr = "<complete>"
+colorsStr = colorsStr & "<option value='black' img_src='../graphics/colors/black.png'>black</option>"
+colorsStr = colorsStr & "<option value='silver' img_src='../graphics/colors/silver.png'>silver</option>"
+colorsStr = colorsStr & "<option value='gray' img_src='../graphics/colors/gray.png'>gray</option>"
+colorsStr = colorsStr & "<option value='white' img_src='../graphics/colors/white.png'>white</option>"
+colorsStr = colorsStr & "<option value='maroon' img_src='../graphics/colors/maroon.png'>maroon</option>"
+colorsStr = colorsStr & "<option value='red' img_src='../graphics/colors/red.png'>red</option>"
+colorsStr = colorsStr & "<option value='purple' img_src='../graphics/colors/purple.png'>purple</option>"
+colorsStr = colorsStr & "<option value='fuchsia' img_src='../graphics/colors/fuchsia.png'>fuchsia</option>"
+colorsStr = colorsStr & "<option value='green' img_src='../graphics/colors/green.png'>green</option>"
+colorsStr = colorsStr & "<option value='lime' img_src='../graphics/colors/lime.png'>lime</option>"
+colorsStr = colorsStr & "<option value='olive' img_src='../graphics/colors/olive.png'>olive</option>"
+colorsStr = colorsStr & "<option value='yellow' img_src='../graphics/colors/yellow.png'>yellow</option>"
+colorsStr = colorsStr & "<option value='navy' img_src='../graphics/colors/navy.png'>navy</option>"
+colorsStr = colorsStr & "<option value='blue' img_src='../graphics/colors/blue.png'>blue</option>"
+colorsStr = colorsStr & "<option value='teal' img_src='../graphics/colors/teal.png'>teal</option>"
+colorsStr = colorsStr & "<option value='aqua' img_src='../graphics/colors/aqua.png'>aqua</option>"
+colorsStr = colorsStr & "</complete>"
+
+sizesStr = "<complete>"
+sizesStr = sizesStr & "<option value='xx-small'>xx-small</option>"
+sizesStr = sizesStr & "<option value='x-small'>x-small</option>"
+sizesStr = sizesStr & "<option value='small'>small</option>"
+sizesStr = sizesStr & "<option value='medium'>medium</option>"
+sizesStr = sizesStr & "<option value='large'>large</option>"
+sizesStr = sizesStr & "<option value='x-large'>x-large</option>"
+sizesStr = sizesStr & "<option value='xx-large'>xx-large</option>"
+sizesStr = sizesStr & "</complete>"
+
+set z_sel_Font = dhtmlXComboFromSelect("sel_Font")
+Call z_sel_Font.loadXMLString(fillFonts())
+Call z_sel_Font.setOptionWidth(2*(200))
+Call z_sel_Font.setOptionHeight(400)
+'Call z_sel_Font.enableFilteringMode(true)
+Call z_sel_Font.DOMelem_input.setAttribute("confProp", "colorsFont/font-family")
+
+sel_FontSize.style.width = "165"
+set z_sel_FontSize = dhtmlXComboFromSelect("sel_FontSize")
+Call z_sel_FontSize.loadXMLString(sizesStr)
+Call z_sel_FontSize.enableOptionAutoHeight(true)
+Call z_sel_FontSize.DOMelem_input.setAttribute("confProp", "colorsFont/font-size")
+
+set z_sel_Color = dhtmlXComboFromSelect("sel_Color")
+Call z_sel_Color.loadXMLString(colorsStr)
+Call z_sel_Color.enableOptionAutoHeight(true)
+Call z_sel_Color.DOMelem_input.setAttribute("confProp", "colorsFont/color")
+
+set z_sel_BgColor = dhtmlXComboFromSelect("sel_BgColor")
+Call z_sel_BgColor.loadXMLString(colorsStr)
+Call z_sel_BgColor.enableOptionAutoHeight(true)
+Call z_sel_BgColor.DOMelem_input.setAttribute("confProp", "colorsFont/background-color")
+
+Call FillInsertSymbolsMenu()
+
+div_AdminToimetamisala.style.visibility = "visible"
+
+if (Len(artGuid) > 0) then
+    Dim xh
+
+    set xh = exCGISync("../tools.cgi", "readArtByGuid" & JR & dic_desc & JR & usrName & JR & volId & JR & artGuid)
+
+    if (xh.statusText = "OK") then
+        Dim rspDOM, sta, status
+        set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDoc
+        sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+        if (sta) then
+            status = rspDOM.selectSingleNode("rsp/sta").text
+            if (status = "Success") then
+                Call rspDOM.setProperty("SelectionLanguage", "XPath")
+                Call rspDOM.setProperty("SelectionNamespaces", nsList)
+                artXml = rspDOM.selectSingleNode("rsp/" & DICPR & ":A").xml
+                artXml = "<" & DICPR & ":sr xmlns:" & DICPR & "='" & DICURI & "'>" & artXml & "</" & DICPR & ":sr>"
+            end if
+        end if
+'    else
+'        MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+'            xh.responseText, _
+'            vbCritical
+    end if
+end if
+
+Call doPreviewArt()
+
+set window.onunload = GetRef("setRV")
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub setRV()
+if (vaadeSalvestatud) then
+    window.returnValue = "salvestatud"
+end if
+End Sub 'setRV
+
+
+'-----------------------------------------------------------------------------------
+Sub cleanUpConf()
+Dim notEx 'need, mida skeemis polnud, "not existing"
+set notEx = viewConfRoot.selectNodes("elem[not(@st = 'e')]")
+if Not (notEx Is Nothing) then
+    Call notEx.removeAll
+end if
+set notEx = viewConfRoot.selectNodes("elem/attrs/attr[not(@st = 'e')]")
+if Not (notEx Is Nothing) then
+    Call notEx.removeAll
+end if
+
+'vanad värgid maha
+Dim vanad
+'05. dets 2010
+set vanad = viewConfRoot.selectNodes(".//attr_SymbolRoundCond | .//attr_DisplayCond")
+if Not (vanad Is Nothing) then
+    Call vanad.removeAll
+end if
+set vanad = viewConfRoot.selectNodes("elem/colorsFont/condition | elem/symbolBefore/condition | elem/symbolsRound/condition")
+if Not (vanad Is Nothing) then
+    Call vanad.removeAll
+end if
+'06. okt 2011
+set vanad = viewConfRoot.selectNodes("elem/colorsFont/text-transform_uppercase | elem/colorsFont/text-transform_lowercase")
+if Not (vanad Is Nothing) then
+    Call vanad.removeAll
+end if
+'10. aprill 2012
+set vanad = viewConfRoot.selectNodes("elem/isListItem | elem/listStyle")
+if Not (vanad Is Nothing) then
+    Call vanad.removeAll
+end if
+End Sub 'cleanUpConf
+
+
+'-----------------------------------------------------------------------------------
+Sub fillSchSelect(selectObj, schObjLN)
+Dim decl, qn, pr
+
+set decl = schRootElems.itemByQName(schObjLN, DICURI) 'sr
+
+qn = decl.name
+pr = xmlNsm.getPrefixes(decl.namespaceURI).item(0)
+if (Len(pr) > 0) then
+    qn = pr & ":" & qn 'e:sr
+end if
+
+Dim pvdn
+set pvdn = preViewDom.appendChild(preViewDom.createNode(NODE_ELEMENT, qn, decl.namespaceUri)) 'e:sr
+
+Call fillSchChildElems(selectObj, decl, 0, "", pvdn, "", "")
+
+Call preViewDom.setProperty("SelectionLanguage", "XPath")
+Call preViewDom.setProperty("SelectionNamespaces", nsList)
+
+Call cleanUpConf()
+
+End Sub 'fillSchSelect
+
+
+'-----------------------------------------------------------------------------------
+Sub fillSchChildElems(selectObj, schElem, depth, parentPath, preViewDomNode, anyMinOcc, anyMaxOcc)
+
+Dim opt
+
+set opt = document.createElement("OPTION")
+Call selectObj.options.add(opt)
+
+Dim minOccStr, maxOccStr, maxOccInt
+if (Len(anyMaxOcc) > 0) then
+    opt.style.backgroundColor = "peachpuff"
+    minOccStr = anyMinOcc
+    if (anyMaxOcc = "-1") then
+        maxOccStr = ChrW("&H" & Mid(eeLex_INFINITY, 4, 4)) 'lõpmatus
+        maxOccInt = "2000000000"
+    else
+        maxOccStr = anyMaxOcc
+        maxOccInt = anyMaxOcc
+    end if
+else
+    opt.style.backgroundColor = "seashell"
+    minOccStr = schElem.minOccurs
+    if (schElem.maxOccurs = "-1") then
+        maxOccStr = ChrW("&H" & Mid(eeLex_INFINITY, 4, 4)) 'lõpmatus
+        maxOccInt = "2000000000"
+    else
+        maxOccStr = schElem.maxOccurs
+        maxOccInt = maxOccStr
+    end if
+end if
+
+Dim qn, pr, currentPath, rex, xmlParent
+qn = schElem.name
+pr = xmlNsm.getPrefixes(schElem.namespaceURI).item(0)
+if (Len(pr) > 0) then
+    qn = pr & ":" & qn
+end if
+
+set rex = New RegExp
+rex.Global = True
+rex.Pattern = "(\[\d+\])"
+if (Len(parentPath) > 0) then
+    xmlParent = rex.Replace(parentPath, "")
+    xmlParent = Mid(xmlParent, InStrRev(xmlParent, "/") + 1) & "/" & qn
+    currentPath = parentPath & "/" & qn & "[1]"
+else '<sr> korral, et path algaks <A>  -st; vaates ja toimetamisalas on nii
+    if (schElem.name = "sr") then
+        xmlParent = "#document/" & qn
+        currentPath = ""
+    elseif (schElem.name = "A") then
+        xmlParent = DICPR & ":sr/" & qn
+        currentPath = qn & "[1]"
+    else
+        MsgBox "Mööööööööööööööööh!", vbExclamation, "Len(parentPath) = 0"
+        Exit Sub
+    end if
+end if
+
+Dim dokpath, doku, kirjeldav
+dokpath = ".//xs:element[@name='" & schElem.name & "']/xs:annotation/xs:documentation[@xml:lang='" & sAppLang & "']"
+set doku = xsdDom.documentElement.selectSingleNode(dokpath)
+if Not (doku Is Nothing) then
+    kirjeldav = doku.text
+else
+    kirjeldav = qn
+end if
+
+Dim thisElem, thisAttr, obj
+set thisElem = viewConfRoot.selectSingleNode("elem[@name = '" & xmlParent & "']")
+if (thisElem Is Nothing) then
+    Call addNewDefaultConfElem(schElem, xmlParent)
+    set thisElem = viewConfRoot.selectSingleNode("elem[@name = '" & xmlParent & "']")
+end if
+
+'uued funktsionaalsused
+'05. dets 2010
+set obj = thisElem.selectSingleNode("replaceText")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "replaceText", true)
+end if
+'09. dets 2010
+set obj = thisElem.selectSingleNode("applyChilds")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "applyChilds", true)
+end if
+'veel funki (ety-s puuduvad)
+set obj = thisElem.selectSingleNode("isLink")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "isLink", true)
+end if
+'09. märts 2011
+set obj = thisElem.selectSingleNode("symbolsRound/algab")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "symbolsRound/algab", true)
+end if
+set obj = thisElem.selectSingleNode("symbolsRound/lopeb")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "symbolsRound/lopeb", true)
+end if
+'17. märts 2011
+set obj = thisElem.selectSingleNode("firstLanguage")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "firstLanguage", true)
+end if
+
+'03. aprill 2012
+set obj = thisElem.selectSingleNode("colorsFont/letterSpacing")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "colorsFont/letterSpacing", true)
+end if
+set obj = thisElem.selectSingleNode("colorsFont/text-decoration_line-through")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "colorsFont/text-decoration_line-through", true)
+end if
+
+'10. aprill 2012: containsIn
+set obj = thisElem.selectSingleNode("containsIn")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "containsIn", true)
+end if
+
+'11. aprill 2012
+set obj = thisElem.selectSingleNode("symbolsRound/beginsWith")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "symbolsRound/beginsWith", true)
+end if
+set obj = thisElem.selectSingleNode("symbolsRound/endsWith")
+if (obj Is Nothing) then
+    Call addAttrItem(thisElem, qn, schElem.name, "symbolsRound/endsWith", true)
+end if
+
+Call thisElem.setAttribute("st", "e") 'exists
+
+Dim attrStr, attr, attrUri, attrQN, textNode, pvdAttr
+attrStr = ""
+if (TypeName(schElem.type) = "ISchemaComplexType") then
+    for each attr in schElem.type.attributes
+        attrUri = attr.namespaceURI
+        If Not (attrUri = "") Then
+            attrQN = xmlNsm.getPrefixes(attrUri).Item(0) & ":" & attr.name
+        Else
+            attrQN = attr.name
+        End If
+        attrStr = attrStr & " @" & attrQN
+        if (attr.use = SCHEMAUSE_REQUIRED) then
+            attrStr = attrStr & "[obl]"
+        end if
+        set pvdAttr = preViewDom.createNode(NODE_ATTRIBUTE, attrQN, attrUri)
+        pvdAttr.value = "@" & attr.name
+        Call preViewDomNode.setAttributeNode(pvdAttr)
+        set thisAttr = thisElem.selectSingleNode("attrs/attr[@name = '" & attrQN & "']")
+        if (thisAttr Is Nothing) then
+            Call addNewDefaultConfAttr(thisElem, attrQN, attr.name)
+            set thisAttr = thisElem.selectSingleNode("attrs/attr[@name = '" & attrQN & "']")
+        end if
+        'uued funktsionaalsused
+        '05. dets 2010
+        set obj = thisAttr.selectSingleNode("attr_ReplaceText")
+        if (obj Is Nothing) then
+            Call addAttrItem(thisAttr, attrQN, attr.name, "attr_ReplaceText", true)
+        end if
+        '11. märts 2011
+        set obj = thisAttr.selectSingleNode("attr_IsLink")
+        if (obj Is Nothing) then
+            Call addAttrItem(thisAttr, attrQN, attr.name, "attr_IsLink", true)
+        end if
+        Call thisAttr.setAttribute("st", "e") 'exists
+    next
+    if (schElem.type.contentType = SCHEMACONTENTTYPE_TEXTONLY) then
+        preViewDomNode.text = kirjeldav
+    elseif (schElem.type.contentType = SCHEMACONTENTTYPE_MIXED) then
+        set textNode = preViewDomNode.appendChild(preViewDom.createNode(NODE_TEXT, "", ""))
+        textNode.text = kirjeldav & " tekst_1"
+    end if
+elseif (TypeName(schElem.type) = "ISchemaType") then
+    preViewDomNode.text = kirjeldav
+end if
+
+opt.innerText = String(4 * (depth), TYHI_TAANE) & "[" & minOccStr & "," & maxOccStr & "] - <" & qn & attrStr & "> - " & kirjeldav
+opt.id = currentPath
+'opt.value = currentPath
+opt.title = currentPath & " - " & kirjeldav
+Call opt.setAttribute("qn", qn)
+Call opt.setAttribute("ln", schElem.name)
+Call opt.setAttribute("uri", schElem.namespaceURI)
+Call opt.setAttribute("xmlParent", xmlParent)
+'Call opt.setAttribute("minOcc", minOccStr)
+'Call opt.setAttribute("maxOcc", maxOccInt)
+Call opt.setAttribute("kirjeldav", kirjeldav)
+
+Dim chElem, chQn, oAnyDom, aAnyNames, i, sPr, sLName, sItemURI, oParticle, pvdn
+if (TypeName(schElem.type) = "ISchemaComplexType") then
+    if (schElem.type.contentType > SCHEMACONTENTTYPE_TEXTONLY) then
+        for each chElem in schElem.type.contentModel.particles
+            if (TypeName(chElem) = "ISchemaAny") then
+                set oAnyDom = IDD("file", "../xml/" & dic_desc & "/aa_" & unName(qn) & ".xml",  False, False, Nothing)
+                if (oAnyDom.parseError.errorCode = 0) then
+                    aAnyNames = Split(oAnyDom.documentElement.text, "|")
+                    for i = 0 to UBound(aAnyNames, 1)
+                        chQn = aAnyNames(i)
+                        if (InStr(1, chQn, ":") > 0) then
+                            sPr = Mid(chQn, 1, InStr(1, chQn, ":") - 1)
+                            sLName = Mid(chQn, InStr(1, chQn, ":") + 1)
+                            sItemURI = xmlNsm.getURI(sPr)
+                        else
+                            sPr = ""
+                            sLName = chQn
+                            sItemURI = xmlNsm.getURI("")
+                        end if
+                        set oParticle = schRootElems.itemByQName(sLName, sItemURI)
+                        if Not ((oParticle.name = schElem.name) and (oParticle.namespaceUri = schElem.namespaceUri)) then
+                            set pvdn = preViewDomNode.appendChild(preViewDom.createNode(NODE_ELEMENT, chQn, sItemURI))
+                            Call fillSchChildElems(selectObj, oParticle, depth + 1, currentPath, pvdn, chElem.minOccurs, chElem.maxOccurs)
+                        end if
+                    next 'for i = 0 to UBound(aAnyNames, 1)
+                end if 'if (oAnyDom.parseError.errorCode = 0) then
+            else 'if (TypeName(chElem) = "ISchemaAny") then
+                if Not ((chElem.name = schElem.name) and (chElem.namespaceUri = schElem.namespaceUri)) then
+                    chQn = chElem.name
+                    pr = xmlNsm.getPrefixes(chElem.namespaceURI).item(0)
+                    if (Len(pr) > 0) then
+                        chQn = pr & ":" & chQn
+                    end if
+                    set pvdn = preViewDomNode.appendChild(preViewDom.createNode(NODE_ELEMENT, chQn, chElem.namespaceUri))
+                    Call fillSchChildElems(selectObj, chElem, depth + 1, currentPath, pvdn, "", "")
+                end if
+            end if 'if (TypeName(chElem) = "ISchemaAny") then
+        next 'for each chElem in schElem.type.contentModel.particles
+        if (schElem.type.contentType = SCHEMACONTENTTYPE_MIXED) then
+            set textNode = preViewDomNode.appendChild(preViewDom.createNode(NODE_TEXT, "", ""))
+            textNode.text = kirjeldav & " tekst_2"
+        end if
+    end if 'if (schElem.type.contentType > SCHEMACONTENTTYPE_TEXTONLY) then
+end if 'if (TypeName(schElem.type) = "ISchemaComplexType") then
+
+Call preViewDomNode.normalize
+
+if (CLng(maxOccInt) > 1) then
+    if (InStr(1, doubledPreViewNodes, ";" & qn & ";") < 1) then
+        Dim doubledNode
+        set doubledNode = preViewDomNode.parentNode.insertBefore(preViewDomNode.cloneNode(true), preViewDomNode.nextSibling)
+        doubledPreViewNodes = doubledPreViewNodes & qn & ";"
+    end if
+end if
+
+End Sub 'fillSchChildElems
+
+
+'-----------------------------------------------------------------------------------
+Sub appendFrag(elm, str, repl)
+Dim lisatavDom
+set lisatavDom = IDD("", "", False, False, Nothing)
+lisatavDom.preserveWhiteSpace = true
+'võib sisse kleepuda ka puhas XSLT
+Call lisatavDom.loadXML("<r xmlns:xsl='" & NS_XSL & "'>" & str & "</r>")
+if (lisatavDom.parseError.errorCode <> 0) then
+    Call ShowXMLParseError(lisatavDom)
+    Exit Sub
+end if
+Dim frag
+set frag = elm.ownerDocument.createDocumentFragment()
+Dim nood
+for each nood in lisatavDom.documentElement.selectNodes("node()")
+    Call frag.appendChild(elm.ownerDocument.importNode(nood, true))
+next
+if (repl) then
+    elm.text = ""
+end if
+Call elm.appendChild(frag)
+Call elm.normalize
+End Sub 'appendFrag
+
+
+'-----------------------------------------------------------------------------------
+Sub insertFragBefore(elm, str, ref)
+Dim lisatavDom
+set lisatavDom = IDD("", "", False, False, Nothing)
+lisatavDom.preserveWhiteSpace = true
+'võib sisse kleepuda ka puhas XSLT
+Call lisatavDom.loadXML("<r xmlns:xsl='" & NS_XSL & "'>" & str & "</r>")
+if (lisatavDom.parseError.errorCode <> 0) then
+    Call ShowXMLParseError(lisatavDom)
+    Exit Sub
+end if
+Call lisatavDom.documentElement.normalize
+Dim frag
+set frag = elm.ownerDocument.createDocumentFragment()
+Dim nood
+for each nood in lisatavDom.documentElement.selectNodes("node()")
+    Call frag.appendChild(elm.ownerDocument.importNode(nood, true))
+next
+Call elm.insertBefore(frag, ref)
+End Sub 'insertFragBefore
+
+
+'-----------------------------------------------------------------------------------
+Sub addNewDefaultConfElem(decl, parNameLocalName)
+'parNameLocalName - <parent>/<local>
+Dim pr, qn, ln
+ln = decl.name
+qn = ln
+pr = xmlNsm.getPrefixes(decl.namespaceURI).item(0)
+if (Len(pr) > 0) then
+    qn = pr & ":" & qn
+end if
+
+Dim currentElem, currentConfElem, currentConfElemItem
+set currentElem = viewConfRoot.appendChild(viewConfDom.createNode(NODE_ELEMENT, "elem", ""))
+Call currentElem.setAttribute("name", parNameLocalName)
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "display", ""))
+if Not (InStr(1, ";G;K;KA;KL;T;TA;TL;PT;PTA;X;XA;", ";" & ln & ";") > 0) then
+    currentConfElem.text = "1"
+end if
+
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "colorsFont", ""))
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "font-weight_bold", ""))
+if (InStr(1, ";m;", ";" & ln & ";") > 0) then
+    currentConfElemItem.text = "1"
+end if
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "font-style_italic", ""))
+if (InStr(1, ";vk;gki;sl;m;", ";" & ln & ";") > 0) then
+    currentConfElemItem.text = "1"
+    if (InStr(1, ";m;", ";" & ln & ";") > 0) then
+        Call currentConfElemItem.setAttribute("cond", "../@pref:liik=""z""")
+    end if
+end if
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "text-decoration_underline", ""))
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "font-variant_small-caps", ""))
+if (InStr(1, ";s;v;", ";" & ln & ";") > 0) then
+    currentConfElemItem.text = "1"
+end if
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "font-family", ""))
+if (InStr(1, ";m;", ";" & ln & ";") > 0) then
+    currentConfElemItem.text = "Arial"
+end if
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "font-size", ""))
+if (InStr(1, ";kaut;kaeg;", ";" & ln & ";") > 0) then
+    currentConfElemItem.text = "x-small"
+end if
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "color", ""))
+if (InStr(1, ";kom;", ";" & ln & ";") > 0) then
+    currentConfElemItem.text = "blue"
+end if
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "background-color", ""))
+if (InStr(1, ";KOM;", ";" & ln & ";") > 0) then
+    currentConfElemItem.text = "silver"
+end if
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "newLine", ""))
+if (InStr(1, ";tp;KOM;", ";" & ln & ";") > 0) then
+    currentConfElem.text = "1"
+    if (InStr(1, ";tp;", ";" & ln & ";") > 0) then
+        Call currentConfElem.setAttribute("cond", "count(../pref:tp) > 1")
+    end if
+end if
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "notInPrint", ""))
+if (InStr(1, ";kom;", ";" & ln & ";") > 0) then
+    currentConfElem.text = "1"
+end if
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "global", ""))
+currentConfElem.text = "1"
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "isLink", ""))
+if (InStr(1, ";mvt;cvt;tvt;tvt1;tvt2:evt;", ";" & ln & ";") > 0) then
+    currentConfElem.text = "1"
+end if
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "symbolBefore", ""))
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "symbol", ""))
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "symbolsRound", ""))
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "symbolRoundBefore", ""))
+if (InStr(1, ";kom;", ";" & ln & ";") > 0) then
+    Call appendFrag(currentConfElemItem, "<font color='blue'> &lt;!--</font>", true)
+end if
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "symbolRoundAfter", ""))
+if (InStr(1, ";kom;", ";" & ln & ";") > 0) then
+    Call appendFrag(currentConfElemItem, "<font color='blue'>--&gt;</font>", true)
+end if
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "symbolBetweenRepeating", ""))
+set currentConfElemItem = currentConfElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "symbol", ""))
+
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "replaceText", ""))
+set currentConfElem = currentElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "applyChilds", ""))
+if (InStr(1, ";KOM;", ";" & ln & ";") > 0) then
+    currentConfElem.text = "1"
+end if
+
+Dim attr, attrQN, attrUri
+
+if (TypeName(decl.type) = "ISchemaComplexType") then
+    if (decl.type.attributes.length > 0) then
+        for each attr in decl.type.attributes
+            If Not (attr.namespaceURI = "") Then
+                attrUri = attr.namespaceURI
+                attrQN = xmlNsm.getPrefixes(attrUri).Item(0) & ":" & attr.name
+            Else
+                attrUri = ""
+                attrQN = attr.name
+            End If
+            Call addNewDefaultConfAttr(currentElem, attrQN, attr.name)
+        next
+    end if
+end if
+
+End Sub 'addNewDefaultConfElem
+
+
+'-----------------------------------------------------------------------------------
+Sub addNewDefaultConfAttr(confElem, attrQn, attrLn)
+Dim attrsNode, attrNode, attrItem, attrItemElem
+set attrsNode = confElem.selectSingleNode("attrs")
+if (attrsNode Is Nothing) then
+    set attrsNode = confElem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attrs", ""))
+end if
+set attrNode = attrsNode.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr", ""))
+Call attrNode.setAttribute("name", attrQn)
+
+set attrItem = attrNode.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_Display", ""))
+if (InStr(1, ";i;mvtl;cvtl;tvtl;tvtl1;tvtl2;tnr;l;", ";" & attrLn & ";") > 0) then
+    attrItem.text = "1"
+    if (InStr(1, ";tnr;", ";" & attrLn & ";") > 0) then
+        Call attrItem.setAttribute("cond", "count(../pref:tp) > 1")
+    end if
+end if
+
+set attrItem = attrNode.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_DisplayLocationBefore", ""))
+if (InStr(1, ";mvtl;cvtl;tvtl;tvtl1;tvtl2;tnr;l;", ";" & attrLn & ";") > 0) then
+    attrItem.text = "1"
+end if
+
+set attrItem = attrNode.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_DisplayLocationAfter", ""))
+if Not (InStr(1, ";mvtl;cvtl;tvtl;tvtl1;tvtl2;tnr;l;", ";" & attrLn & ";") > 0) then
+    attrItem.text = "1"
+end if
+set attrItem = attrNode.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_SpaceBefore", ""))
+if Not (InStr(1, ";i;", ";" & attrLn & ";") > 0) then
+    attrItem.text = "1"
+end if
+
+set attrItem = attrNode.appendChild(viewConfDom.createNode(NODE_ELEMENT, "colorsFont", ""))
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_font-weight_bold", ""))
+if (InStr(1, ";tnr;", ";" & attrLn & ";") > 0) then
+    attrItemElem.text = "1"
+end if
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_font-style_italic", ""))
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_font-variant_small-caps", ""))
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_text-decoration_underline", ""))
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_vertical-align_sub", ""))
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_vertical-align_super", ""))
+if (InStr(1, ";i;", ";" & attrLn & ";") > 0) then
+    attrItemElem.text = "1"
+end if
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_font-family", ""))
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_font-size", ""))
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_color", ""))
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_background-color", ""))
+
+set attrItem = attrNode.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_SymbolsRound", ""))
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_SymbolRoundBefore", ""))
+if (InStr(1, ";t;", ";" & attrLn & ";") > 0) then
+    attrItemElem.text = "("
+end if
+set attrItemElem = attrItem.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_SymbolRoundAfter", ""))
+if (InStr(1, ";tnr;", ";" & attrLn & ";") > 0) then
+    Call appendFrag(attrItemElem, "<b>.</b>", true)
+end if
+if (InStr(1, ";t;", ";" & attrLn & ";") > 0) then
+    attrItemElem.text = ")"
+end if
+
+set attrItem = attrNode.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_NotInPrint", ""))
+set attrItem = attrNode.appendChild(viewConfDom.createNode(NODE_ELEMENT, "attr_ReplaceText", ""))
+End Sub 'addNewDefaultConfAttr
+
+
+'22. november 2010
+'-----------------------------------------------------------------------------------
+Sub addAttrItem(attr, qn, ln, newItmName, init)
+Dim ref, newItm
+if (newItmName = "attr_ReplaceText") then
+    set ref = Nothing
+    set newItm = attr.insertBefore(viewConfDom.createNode(NODE_ELEMENT, "attr_ReplaceText", ""), ref)
+    if (init) then
+        if (InStr(1, ";mvtl;", ";" & ln & ";") > 0) then
+            newItm.text = "var|vt|gr|→"
+        end if
+    end if
+end if
+if (newItmName = "attr_IsLink") then
+    set ref = Nothing
+    set newItm = attr.insertBefore(viewConfDom.createNode(NODE_ELEMENT, "attr_IsLink", ""), ref)
+end if
+if (newItmName = "replaceText") then
+    set ref = attr.selectSingleNode("attrs")
+    set newItm = attr.insertBefore(viewConfDom.createNode(NODE_ELEMENT, "replaceText", ""), ref)
+end if
+if (newItmName = "applyChilds") then
+    set ref = attr.selectSingleNode("attrs")
+    set newItm = attr.insertBefore(viewConfDom.createNode(NODE_ELEMENT, "applyChilds", ""), ref)
+end if
+if (newItmName = "isLink") then
+    set ref = attr.selectSingleNode("global").nextSibling
+    set newItm = attr.insertBefore(viewConfDom.createNode(NODE_ELEMENT, "isLink", ""), ref)
+end if
+
+if (newItmName = "symbolsRound/algab") then
+    set ref = attr.selectSingleNode("symbolsRound")
+    set newItm = ref.appendChild(viewConfDom.createNode(NODE_ELEMENT, "algab", ""))
+end if
+if (newItmName = "symbolsRound/lopeb") then
+    set ref = attr.selectSingleNode("symbolsRound")
+    set newItm = ref.appendChild(viewConfDom.createNode(NODE_ELEMENT, "lopeb", ""))
+end if
+if (newItmName = "symbolsRound/beginsWith") then
+    set ref = attr.selectSingleNode("symbolsRound")
+    set newItm = ref.appendChild(viewConfDom.createNode(NODE_ELEMENT, "beginsWith", ""))
+end if
+if (newItmName = "symbolsRound/endsWith") then
+    set ref = attr.selectSingleNode("symbolsRound")
+    set newItm = ref.appendChild(viewConfDom.createNode(NODE_ELEMENT, "endsWith", ""))
+end if
+if (newItmName = "firstLanguage") then
+    set ref = attr.selectSingleNode("attrs")
+    set newItm = attr.insertBefore(viewConfDom.createNode(NODE_ELEMENT, "firstLanguage", ""), ref)
+end if
+if (newItmName = "colorsFont/letterSpacing") then
+    set ref = attr.selectSingleNode("colorsFont")
+    set newItm = ref.appendChild(viewConfDom.createNode(NODE_ELEMENT, "letterSpacing", ""))
+end if
+if (newItmName = "colorsFont/text-decoration_line-through") then
+    set ref = attr.selectSingleNode("colorsFont")
+    set newItm = ref.appendChild(viewConfDom.createNode(NODE_ELEMENT, "text-decoration_line-through", ""))
+end if
+if (newItmName = "containsIn") then
+    set ref = attr.selectSingleNode("attrs")
+    set newItm = attr.insertBefore(viewConfDom.createNode(NODE_ELEMENT, "containsIn", ""), ref)
+    if (init) then
+        if (InStr(1, ";A;", ";" & ln & ";") > 0) then
+            newItm.text = "p"
+        end if
+    end if
+end if
+End Sub 'addAttrItem
+
+
+'-----------------------------------------------------------------------------------
+'Sub comboOnChange()
+''Dim obj
+''set obj = window.event.srcElement
+''alert(obj.innerText)
+'End Sub 'comboOnChange
+
+'-----------------------------------------------------------------------------------
+Sub tbOnContextMenu()
+Dim cmhtml, srcx, srcy, mdivs, mheight
+cmhtml = "<div style='width:100%' class='md'>#text</div>" & insert_symbols.innerHTML
+tn_cmenu.innerHTML = cmhtml
+if (window.event.clientX + tn_cmenu.style.pixelWidth + insert_entities.style.pixelWidth + big_character.style.pixelWidth/2 + 60 > window.document.body.clientWidth) then
+    srcx = window.event.screenX - (tn_cmenu.style.pixelWidth + 60)
+else
+    srcx = window.event.screenX + 60
+end if
+mdivs = tn_cmenu.all.tags("DIV").length
+mheight = (mdivs * 16) + 6
+if (window.event.clientY + mheight + 20 > window.document.body.clientHeight) then
+    srcy = window.event.screenY - window.screenTop - (mheight + 20)
+else
+    srcy = window.event.screenY - window.screenTop + 20
+end if
+Call DisplayTNCMenu(srcx, srcy)
+window.event.returnValue = false
+End Sub 'tbOnContextMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub tbOnChange()
+End Sub 'tbOnChange
+
+
+'-----------------------------------------------------------------------------------
+Sub chkOnClick()
+Dim obj
+set obj = window.event.srcElement
+
+if (tbl_Gen.contains(obj)) then
+    Call chk_Show_Proc(obj)
+end if
+
+End Sub 'chkOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub chk_Show_Proc(o)
+Dim obj, rida, r, attrQn, htmlId
+if (o.id = "chk_Show") then
+    if (o.checked = true) then
+        tbl_Element.style.visibility = "visible"
+        z_sel_Color.show(true)
+        z_sel_BgColor.show(true)
+    else
+        z_sel_Color.show(false)
+        z_sel_BgColor.show(false)
+        tbl_Element.style.visibility = "hidden"
+    end if
+elseif (Mid(o.id, 1, Len("chk_Show_attr_")) = "chk_Show_attr_") then
+    set obj = tbl_Element.all(o.id) '<input type='checkbox' id='chk_Show_ ... '>
+    set rida = obj.parentElement.parentElement '<tr>
+    attrQn = rida.getAttribute("confElemAttrName")
+    htmlId = "attr_" & Replace(attrQN, ":", "-")
+    for each r in tbl_Atribuudid.rows
+        if (r.getAttribute("confElemAttrName") = attrQn and Not (r Is rida)) then
+            if (obj.checked) then
+                r.style.visibility = ""
+            else
+                r.style.visibility = "hidden"
+            end if
+        end if
+    next
+end if
+End Sub 'chk_Show_Proc
+
+
+'-----------------------------------------------------------------------------------
+Sub updateDisplayedElemConf()
+Dim currentConfItem
+'"Näidata" ja "Glob." ei asetse 'tbl_Element' sees ...
+set currentConfItem = displayedElem.selectSingleNode("global")
+if (chk_Global.checked = false) then
+    currentConfItem.text = ""
+else
+    currentConfItem.text = "1"
+end if
+set currentConfItem = displayedElem.selectSingleNode("display")
+if (chk_Show.checked = false) then
+    currentConfItem.text = ""
+    Exit Sub
+end if
+currentConfItem.text = "1"
+
+Dim sisestused, sisestus, confProp, attrQn, obj, ix
+set sisestused = tbl_Element.getElementsByTagName("INPUT")
+for ix = 0 to sisestused.length - 1
+    set sisestus = sisestused(ix)
+    if (sisestus.type = "text" or sisestus.type = "checkbox") then
+        confProp = sisestus.getAttribute("confProp")
+        if (tbl_Atribuudid.contains(sisestus)) then
+            set obj = sisestus
+            do
+                set obj = obj.parentElement
+            loop until (obj.tagName = "TR")
+            attrQn = obj.getAttribute("confElemAttrName")
+            set currentConfItem = displayedElem.selectSingleNode("attrs/attr[@name = '" & attrQn & "']/" & confProp)
+        else
+            set currentConfItem = displayedElem.selectSingleNode(confProp)
+        end if
+        if (sisestus.type = "text") then
+            Call appendFrag(currentConfItem, sisestus.value, true)
+        elseif (sisestus.type = "checkbox") then
+            if (sisestus.checked) then
+                currentConfItem.text = "1"
+            else
+                currentConfItem.text = ""
+            end if
+        end if
+    end if
+next
+
+'kui on globaalne, siis kanda üle kõikidele teistele globaalsetele
+if (displayedElem.selectSingleNode("global").text = "1") then
+    Dim qn, parentQn, ln, elem, yhine, nimi, uus
+    qn = displayedElem.getAttribute("name")
+    parentQn = qn
+    ix = InStr(1, qn, "/")
+    if (ix > 0) then
+        qn = Mid(qn, ix + 1)
+        parentQn = Mid(parentQn, 1, ix - 1)
+    end if
+    ln = qn
+    if (InStr(1, ln, ":") > 0) then
+        ln = Mid(ln, InStr(1, ln, ":") + 1)
+    end if
+    set yhine = displayedElem.cloneNode(true)
+    for each elem in viewConfRoot.selectNodes("elem[substring-after(@name, '/') = '" & qn & "'][display = '1'][global = '1']")
+        nimi = elem.getAttribute("name")
+        set uus = yhine.cloneNode(true)
+        Call uus.setAttribute("name", nimi)
+        Call viewConfRoot.replaceChild(uus, elem)
+    next
+end if
+vaadeSalvestatud = false
+End Sub 'updateDisplayedElemConf
+
+
+'-----------------------------------------------------------------------------------
+Sub makeXsl()
+
+if Not IsEmpty(displayedElem) then
+    Call updateDisplayedElemConf()
+end if
+
+Dim gendViewDomRoot
+set gendViewDom = IDD("File", "xslView.xml", False, False, Nothing)
+if (gendViewDom.parseError.errorCode <> 0) then
+    Call ShowXMLParseError(gendViewDom)
+    Exit Sub
+end if
+set gendViewDomRoot = gendViewDom.documentElement
+Call gendViewDomRoot.removeAttribute("xmlns:pref") 'read only
+Call gendViewDomRoot.setAttribute("xmlns:pref", DICURI)
+Call gendViewDomRoot.setAttribute("xmlns:" & DICPR, DICURI)
+
+Call gendViewDom.setProperty("SelectionLanguage", "XPath")
+Call gendViewDom.setProperty("SelectionNamespaces", nsList)
+Call gendViewDom.setProperty("AllowXsltScript", true)
+
+Dim styleInSpan, styleInSpanAttr, tekstiSisu, atribuudiSisu, tekstiLink, atribuudiLink
+set styleInSpan = gendViewDomRoot.selectSingleNode("xsl:template[@match = 'text()']/xsl:element[@name = 'span']/xsl:variable[@name = 'styleInSpan']")
+set styleInSpanAttr = gendViewDomRoot.selectSingleNode("xsl:template[@match = '@*']/xsl:element[@name = 'span']/xsl:variable[@name = 'styleInSpanAttr']")
+set tekstiSisu = gendViewDomRoot.selectSingleNode("xsl:template[@match = 'text()']/xsl:element[@name = 'span']/xsl:choose/xsl:otherwise")
+set atribuudiSisu = gendViewDomRoot.selectSingleNode("xsl:template[@match = '@*']/xsl:element[@name = 'span']/xsl:choose/xsl:otherwise")
+set tekstiLink = gendViewDomRoot.selectSingleNode("xsl:template[@match = 'text()']/xsl:element[@name = 'span']/xsl:attribute[@name = 'class']/xsl:if[@test = '1 = 2']")
+set atribuudiLink = gendViewDomRoot.selectSingleNode("xsl:template[@match = '@*']/xsl:element[@name = 'span']/xsl:attribute[@name = 'class']/xsl:if[@test = '1 = 2']")
+
+Dim skriptElem, skriptTekst, skriptReks, skriptPtrn, skriptKoht, skriptLisada
+set skriptElem = gendViewDomRoot.selectSingleNode("msxsl:script")
+skriptTekst = skriptElem.text
+
+set skriptReks = New RegExp
+'skriptReks.Global = True
+skriptReks.IgnoreCase = False
+'skriptReks.Multiline = True
+skriptPtrn = "// siia pane tekstide 'reksAsendused'"
+skriptReks.Pattern = skriptPtrn
+skriptLisada = ""
+if (skriptReks.Test(skriptTekst)) then
+    set skriptKoht = skriptReks.Execute(skriptTekst)(0)
+else
+    Call MsgBox("Ei leidnud <msxsl:script> -i lisamise kohta!", vbCritical, "?")
+    Exit Sub
+end if
+
+
+'dic_desc
+Dim xslElement, xslElementWhen, obj, tekst
+set xslElement = gendViewDomRoot.selectSingleNode("xsl:variable[@name = 'dic_desc']")
+xslElement.text = dic_desc
+
+'piltide kontekst, pildiJuurikas
+set xslElement = gendViewDomRoot.selectSingleNode("xsl:variable[@name = 'pildiJuurikas']")
+xslElement.text = "../__sr/"
+
+'4. juuli 11: Margiti jaoks SS1-s hall taust kui @as = 'ab'
+if (dic_desc = "ss1") then
+    set xslElement = styleInSpan.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+    Call xslElement.setAttribute("test", "../@pref:as='ab'")
+'    xslElement.text = "color:#696969;"
+    xslElement.text = "color:silver;"
+end if
+
+if Not ((viewFont = "") and (viewFontSize = "") and (wordFontSize = "")) then
+    tekst = ""
+    set xslElement = gendViewDomRoot.selectSingleNode("xsl:template[@match = 'pref:sr']/xsl:variable[@name = 'juurStiil']")
+    if (viewFont <> "") then
+        tekst = tekst & "font-family:'" & viewFont & "';"
+    end if
+    if (viewFontSize <> "") then
+        tekst = tekst & "font-size:" & viewFontSize & "pt;"
+    end if
+    set obj = xslElement.selectSingleNode("xsl:choose/xsl:otherwise")
+    obj.text = tekst
+
+    tekst = ""
+    if (viewFont <> "") then
+        tekst = tekst & "font-family:'" & viewFont & "';"
+    end if
+    if (wordFontSize <> "") then
+        tekst = tekst & "font-size:" & wordFontSize & "pt;"
+    end if
+    set obj = xslElement.selectSingleNode("xsl:choose/xsl:when")
+    obj.text = tekst
+end if
+
+
+
+
+if (dic_desc = "ss1") then
+    cssRules = ".lingike {text-decoration:underline;color:blue;cursor:pointer;}" & vbCrLf
+else
+    cssRules = ".lingike {text-decoration:underline;color:blue;background-color:cyan;cursor:pointer;}" & vbCrLf
+end if
+
+
+Dim itad, paksud, tekstiLingid, atribuudiLingid
+itad = ";"
+paksud = ";"
+tekstiLingid = ""
+atribuudiLingid = ""
+
+
+Dim ix, qn, ln, parentQn, condValue, teha, tingimus, sisuTingimus
+
+Dim currentTemplate
+Dim asendused, asendus, uusTekst, uusStiil
+
+Dim jubaTehtudAsjad, tehtavAsi, elemendiSisemus, refNode
+jubaTehtudAsjad = ";"
+
+Dim elem
+for each elem in viewConfRoot.selectNodes("elem[display = '1'][not(@name = '#document/" & DICPR & ":sr')]")
+    qn = elem.getAttribute("name")
+    parentQn = qn
+    ix = InStr(1, qn, "/")
+    if (ix > 0) then
+        qn = Mid(qn, ix + 1)
+        parentQn = Mid(parentQn, 1, ix - 1)
+    end if
+    ln = qn
+    if (InStr(1, ln, ":") > 0) then
+        ln = Mid(ln, InStr(1, ln, ":") + 1)
+    end if
+
+    tingimus = ""
+    tehtavAsi = qn
+    teha = true
+    if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+        tingimus = "name(..) = '" & parentQn & "'"
+        tehtavAsi = parentQn & "_" & tehtavAsi
+        if (viewConfRoot.selectNodes("elem[substring-after(@name, '/') = '" & qn & "'][display = '1'][global = '1']").length > 0) then
+            teha = false
+        end if
+    end if
+
+    if (teha And InStr(1, jubaTehtudAsjad, ";" & tehtavAsi & ";") < 1) then
+        Dim decl, ct
+        set decl = schRootElems.itemByQName(ln, DICURI)
+        if (TypeName(decl.type) = "ISchemaComplexType") then
+            if (decl.type.contentType = SCHEMACONTENTTYPE_TEXTONLY) then
+                ct = 1
+            elseif (decl.type.contentType = SCHEMACONTENTTYPE_ELEMENTONLY) then
+                ct = 2
+            elseif (decl.type.contentType = SCHEMACONTENTTYPE_MIXED) then
+                ct = 3
+            end if
+        elseif (TypeName(decl.type) = "ISchemaType") then
+            ct = 1
+        end if
+
+        sisuTingimus = tingimus
+        condValue = elem.selectSingleNode("display").getAttribute("cond")
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (elem.selectSingleNode("notInPrint").text = "1") then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "($showShaded = '1'"
+            condValue = elem.selectSingleNode("notInPrint").getAttribute("cond")
+            if Not (IsNull(condValue)) then
+                sisuTingimus = sisuTingimus & " or not(" & condValue & ")"
+            end if
+            sisuTingimus = sisuTingimus & ")"
+        end if
+
+        set currentTemplate = gendViewDomRoot.selectSingleNode("xsl:template[@match = '" & qn & "']")
+        if (currentTemplate Is Nothing) then
+            set currentTemplate = gendViewDomRoot.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:template", NS_XSL))
+            Call currentTemplate.setAttribute("match", qn)
+            set elemendiSisemus = currentTemplate
+            set obj = elemendiSisemus.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:param", NS_XSL))
+            Call obj.setAttribute("name", "rada")
+            set obj = elemendiSisemus.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:param", NS_XSL))
+            Call obj.setAttribute("name", "peidus")
+            if (Len(sisuTingimus) > 0) then
+                set elemendiSisemus = elemendiSisemus.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                Call elemendiSisemus.setAttribute("test", "(" & sisuTingimus & ")")
+            end if
+            tekst = ""
+            if (parentQn = DICPR & ":sr" And qn = DICPR & ":A") then
+                tekst = tekst & _
+                    "<xsl:if test=""$dotNet = '1'"">" & _
+                      "<xsl:if test=""function-available('al:myInit')"">" & _
+                        "<xsl:value-of select=""al:myInit(string($dic_desc), string($dotNet), string($itad), string($paksud), substring-before(name(), ':'), namespace-uri())""></xsl:value-of>" & _
+                      "</xsl:if>" & _
+                    "</xsl:if>"
+            end if
+            tekst = tekst & _
+                "<xsl:variable name=""posnr"">" & _
+                    "<xsl:number level=""single"" format=""1""/>" & _
+                "</xsl:variable>" & _
+                "<xsl:call-template name=""elemendiSisemus"">" & _
+                      "<xsl:with-param name=""rada"">" & _
+                        "<xsl:value-of select=""$rada""></xsl:value-of>" & _
+                      "</xsl:with-param>" & _
+                      "<xsl:with-param name=""posnr"">" & _
+                        "<xsl:value-of select=""$posnr""></xsl:value-of>" & _
+                      "</xsl:with-param>" & _
+                      "<xsl:with-param name=""peidus"">" & _
+                        "<xsl:value-of select=""$peidus""></xsl:value-of>" & _
+                      "</xsl:with-param>" & _
+                "</xsl:call-template>"
+            Call appendFrag(elemendiSisemus, tekst, false)
+        else 'kui on lokaalsed, siis näitamise ja mitteprintimise tingimused lisada
+            if (Len(sisuTingimus) > 0) then
+                set xslElement = currentTemplate.selectSingleNode("xsl:if[1]")
+                tekst = xslElement.getAttribute("test")
+                tekst = tekst & " or (" & sisuTingimus & ")"
+                Call xslElement.setAttribute("test", tekst)
+            end if
+        end if
+
+
+'-----------------------------------------------------------------
+'Teksti ees olevate asjade järjekord:
+'1) teksti ette
+'2) reavahetus
+'2a) milles sisaldub (<p>, <div>, <ul> ...)
+'3) ümbritsevad, XSLT ja eesolevad sümbolid
+'4) elementide stiil
+'5) ees olevad atribuudid
+
+        set elemendiSisemus = currentTemplate.selectSingleNode(".//xsl:call-template[@name = 'elemendiSisemus']")
+
+'1) Teksti ees olevad asjad (eelmise järele)
+        tekst = getConfVal(elem.selectSingleNode("symbolBefore/symbol")) 'getConfVal: xml kujul, kui on
+        if (Len(tekst) > 0) then
+            sisuTingimus = tingimus
+            condValue = elem.selectSingleNode("symbolBefore/symbol").getAttribute("cond")
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) > 0) then
+                set xslElement = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL), elemendiSisemus)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                set refNode = Nothing
+            else
+                set xslElement = elemendiSisemus.parentNode
+                set refNode = elemendiSisemus
+            end if
+            Call insertFragBefore(xslElement, tekst, refNode)
+        end if
+
+
+'2) reavahetus
+        tekst = getConfVal(elem.selectSingleNode("newLine"))
+        if (tekst = "1") then
+            sisuTingimus = tingimus
+            condValue = elem.selectSingleNode("newLine").getAttribute("cond")
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) > 0) then
+                set xslElement = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL), elemendiSisemus)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                set refNode = Nothing
+            else
+                set xslElement = elemendiSisemus.parentNode
+                set refNode = elemendiSisemus
+            end if
+            Call xslElement.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "br", ""), refNode)
+        end if
+
+
+'2a) milles sisaldub (<p>, <div>, <ul>, <span> ...)
+        tekst = getConfVal(elem.selectSingleNode("containsIn"))
+        if (Len(tekst) > 0) then
+
+            tekst = Replace(tekst, "&gt;", ">")
+
+            tekst = Replace(tekst, "\|", ChrW(&HE001))
+            tekst = Replace(tekst, "\~", ChrW(&HE002))
+
+            'saab anda tingimusi: ting1~asi1|ting2~asi2
+            asendused = Split(tekst, "|")
+
+'            On Error Resume Next
+            for ix = 0 to UBound(asendused, 1)
+                sisuTingimus = tingimus
+                'VBS: Split tühja stringi peal EI ANNA massiivi!!
+                if (Len(asendused(ix)) > 0) then
+                    asendus = Split(asendused(ix), "~")
+                    uusTekst = asendus(0)
+                    if (UBound(asendus, 1) > 0) then
+                        if (Len(sisuTingimus) > 0) then
+                            sisuTingimus = sisuTingimus & " and "
+                        end if
+                        sisuTingimus = sisuTingimus & "(" & asendus(0) & ")"
+                        uusTekst = asendus(1)
+                    end if
+                else
+                    uusTekst = ""
+                end if
+
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE001), "|")
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE002), "~")
+
+                uusTekst = Replace(uusTekst, ChrW(&HE001), "|")
+                uusTekst = Replace(uusTekst, ChrW(&HE002), "~")
+
+                uusStiil = ""
+                if (InStr(1, uusTekst, " ") > 0) then
+                    uusStiil = Trim(Mid(uusTekst, InStr(1, uusTekst, " ") + 1))
+                    uusTekst = Mid(uusTekst, 1, InStr(1, uusTekst, " ") - 1)
+                    if Not (Right(uusStiil, 1) = ";") then
+                        uusStiil = uusStiil & ";"
+                    end if
+                end if
+
+                if (Len(sisuTingimus) = 0) then
+                    if (ix = 0) then
+                        set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, uusTekst, ""), elemendiSisemus)
+                        if (Len(uusStiil) > 0) then
+                            Call obj.setAttribute("style", uusStiil)
+                        end if
+                        Call obj.appendChild(elemendiSisemus)
+                    else
+                        set obj = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:otherwise", NS_XSL))
+                        if (Len(uusTekst) > 0) then
+                            set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, uusTekst, ""))
+                            if (Len(uusStiil) > 0) then
+                                Call obj.setAttribute("style", uusStiil)
+                            end if
+                        end if
+                        Call obj.appendChild(elemendiSisemus)
+                    end if
+                    Exit For
+                else
+                    if (ix = 0) then
+                        set xslElement = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "xsl:choose", NS_XSL), elemendiSisemus)
+                    end if
+                    set obj = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL))
+                    Call obj.setAttribute("test", sisuTingimus)
+                    if (Len(uusTekst) > 0) then
+                        set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, uusTekst, ""))
+                        if (Len(uusStiil) > 0) then
+                            Call obj.setAttribute("style", uusStiil)
+                        end if
+                    end if
+                    if (ix = UBound(asendused, 1)) then
+                        Call obj.appendChild(elemendiSisemus)
+                    else
+                        Call obj.appendChild(elemendiSisemus.cloneNode(true))
+                    end if
+                end if
+            next
+'            if (Err.number <> 0) then
+'                MsgBox "Andmetes on viga!" & vbNewLine & Err.Description, vbCritical, "Milles sisaldub"
+'                Err.Clear()
+'                Exit Sub
+'            end if
+'            On Error Goto 0
+        end if
+
+
+'3) ümbritsevad (alustavad), alustav XSLT, ees olevad sümbolid
+' "ümbritsevad" on need, mis on enne esimest ja peale viimast
+' symbolRoundBefore - ümbritsev, alustav
+' beginsWith - XSLT jupike
+' algab - iga elemendi ees
+        if (Len(tingimus) > 0) then 'lokaalne?
+            tingimus = tingimus & " and "
+        end if
+        condValue = elem.selectSingleNode("symbolsRound/symbolRoundBefore").getAttribute("cond") 'ümbritsev, alustav
+        'ümbritsevate jaoks antakse niikuinii alguse ja lõpu tingimused, lisatingimus arvestub koos nendega
+        'nt <mg> -sid võib olla nii tavaliste kui ka alternatiivsete märksõnadega,
+        'kui soovime sulge ümber ainult alternatiivsetele, siis peavad tingimused liituma
+        if Not (IsNull(condValue)) then
+            tingimus = tingimus & "(" & condValue & ")"
+            tingimus = tingimus & " and not(preceding-sibling::node()[1][name() = '" & qn & "' and (" & condValue & ")])"
+        else
+            tingimus = tingimus & "not(preceding-sibling::node()[1][name() = '" & qn & "'])"
+        end if
+        'tekst - xml
+        tekst = getConfVal(elem.selectSingleNode("symbolsRound/symbolRoundBefore")) 'ümbritsev, alustav
+        if (Len(tekst) > 0) then
+
+            tekst = Replace(tekst, "\|", ChrW(&HE001))
+            tekst = Replace(tekst, "\~", ChrW(&HE002))
+
+            set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:choose", NS_XSL)
+
+            'saab anda tingimusi: ting1~asi1|ting2~asi2
+            'nt ems <parg>:
+            '@pref:es="y"~/|@pref:es="l"~ (|(
+            '
+            asendused = Split(tekst, "|")
+            for ix = 0 to UBound(asendused, 1)
+                asendus = Split(asendused(ix), "~")
+                uusTekst = asendus(0)
+                sisuTingimus = tingimus
+                if (UBound(asendus, 1) > 0) then
+                    sisuTingimus = sisuTingimus & " and (" & asendus(0) & ")"
+                    uusTekst = asendus(1)
+                end if
+
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE001), "|")
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE002), "~")
+
+                uusTekst = Replace(uusTekst, ChrW(&HE001), "|")
+                uusTekst = Replace(uusTekst, ChrW(&HE002), "~")
+
+                set xslElementWhen = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL))
+                Call xslElementWhen.setAttribute("test", sisuTingimus)
+                Call appendFrag(xslElementWhen, uusTekst, false)
+                set xslElementWhen = xslElementWhen.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                Call xslElementWhen.setAttribute("test", "function-available('al:paneKylge')")
+                set xslElementWhen = xslElementWhen.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:value-of", NS_XSL))
+                Call xslElementWhen.setAttribute("select", "al:paneKylge('')")
+            next
+            for each elemendiSisemus in currentTemplate.selectNodes(".//xsl:call-template[@name = 'elemendiSisemus']")
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), elemendiSisemus)
+                obj.text = " <ümbritsev, alustav> "
+                Call elemendiSisemus.parentNode.insertBefore(xslElement.cloneNode(true), elemendiSisemus)
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), elemendiSisemus)
+                obj.text = " </ümbritsev, alustav> "
+            next
+        end if
+
+        'tekst - xml
+        tingimus = ""
+        if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+            tingimus = "name(..) = '" & parentQn & "'"
+        end if
+        tekst = getConfVal(elem.selectSingleNode("symbolsRound/beginsWith")) 'XSLT tingimus, ees
+        if (Len(tekst) > 0) then
+            for each elemendiSisemus in currentTemplate.selectNodes(".//xsl:call-template[@name = 'elemendiSisemus']")
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), elemendiSisemus)
+                obj.text = " <XSLT, ees> "
+                if (Len(tingimus) > 0) then
+                    set xslElement = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL), elemendiSisemus)
+                    Call xslElement.setAttribute("test", tingimus)
+                    set refNode = Nothing
+                else
+                    set xslElement = elemendiSisemus.parentNode
+                    set refNode = elemendiSisemus
+                end if
+                Call insertFragBefore(xslElement, tekst, refNode)
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), elemendiSisemus)
+                obj.text = " </XSLT, ees> "
+            next
+        end if
+
+        'tekst - xml
+        tekst = getConfVal(elem.selectSingleNode("symbolsRound/algab"))
+        if (Len(tekst) > 0) then
+
+            condValue = elem.selectSingleNode("symbolsRound/algab").getAttribute("cond") 'iga elemendi ees (mitte ainult esimese)
+            if Not (IsNull(condValue)) then
+                if (Len(tingimus) > 0) then
+                    tingimus = tingimus & " and "
+                end if
+                tingimus = tingimus & "(" & condValue & ")"
+            end if
+
+            tekst = Replace(tekst, "\|", ChrW(&HE001))
+            tekst = Replace(tekst, "\~", ChrW(&HE002))
+
+'            set xslElement = gendViewDom.createDocumentFragment()
+            set xslElement = gendViewDom.createNode(NODE_ELEMENT, "sisaldav", "")
+
+            'saab anda tingimusi: ting1~asi1|ting2~asi2
+            asendused = Split(tekst, "|")
+            for ix = 0 to UBound(asendused, 1)
+                sisuTingimus = tingimus
+                'VBS: Split tühja stringi peal EI ANNA massiivi!!
+                if (Len(asendused(ix)) > 0) then
+                    asendus = Split(asendused(ix), "~")
+                    uusTekst = asendus(0)
+                    if (UBound(asendus, 1) > 0) then
+                        if (Len(sisuTingimus) > 0) then
+                            sisuTingimus = sisuTingimus & " and "
+                        end if
+                        sisuTingimus = sisuTingimus & "(" & asendus(0) & ")"
+                        uusTekst = asendus(1)
+                    end if
+                else
+                    uusTekst = ""
+                end if
+
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE001), "|")
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE002), "~")
+
+                uusTekst = Replace(uusTekst, ChrW(&HE001), "|")
+                uusTekst = Replace(uusTekst, ChrW(&HE002), "~")
+
+                if (Len(sisuTingimus) = 0) then
+                    if (ix = 0) then
+                        Call appendFrag(xslElement, uusTekst, false)
+                        set xslElementWhen = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                        Call xslElementWhen.setAttribute("test", "function-available('al:paneKylge')")
+                        set xslElementWhen = xslElementWhen.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:value-of", NS_XSL))
+                        Call xslElementWhen.setAttribute("select", "al:paneKylge('')")
+                    else
+                        set obj = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:otherwise", NS_XSL))
+                        if (Len(uusTekst) > 0) then
+                            Call appendFrag(obj, uusTekst, false)
+                        end if
+                    end if
+                    Exit For
+                else
+                    if (ix = 0) then
+                        set obj = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:choose", NS_XSL))
+                    end if
+                    set xslElementWhen = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL))
+                    Call xslElementWhen.setAttribute("test", sisuTingimus)
+                    if (Len(uusTekst) > 0) then
+                        Call appendFrag(xslElementWhen, uusTekst, false)
+                        set xslElementWhen = xslElementWhen.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                        Call xslElementWhen.setAttribute("test", "function-available('al:paneKylge')")
+                        set xslElementWhen = xslElementWhen.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:value-of", NS_XSL))
+                        Call xslElementWhen.setAttribute("select", "al:paneKylge('')")
+                    end if
+                end if
+            next
+            for each elemendiSisemus in currentTemplate.selectNodes(".//xsl:call-template[@name = 'elemendiSisemus']")
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), elemendiSisemus)
+                obj.text = " <iga elemendi ees> "
+                for each obj in xslElement.selectNodes("node()")
+                    Call elemendiSisemus.parentNode.insertBefore(obj.cloneNode(true), elemendiSisemus)
+                next
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), elemendiSisemus)
+                obj.text = " </iga elemendi ees> "
+            next
+        end if
+
+
+'4) elementide stiil
+        Dim elemStyle, sisaldavaStiil
+        set sisaldavaStiil = gendViewDom.createNode(NODE_ELEMENT, "xsl:variable", NS_XSL)
+        Call sisaldavaStiil.setAttribute("name", "sisaldavaStiil")
+        elemStyle = ""
+        tingimus = ""
+        if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+            if (ct <> 2) then 'peale "elementonly"
+                tingimus = "name(../..) = '" & parentQn & "'"
+            else
+                tingimus = "name(..) = '" & parentQn & "'"
+            end if
+        end if
+        set obj = elem.selectSingleNode("colorsFont/font-weight_bold")
+        condValue = obj.getAttribute("cond")
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (obj.text = "1") then
+                elemStyle = elemStyle & "font-weight:bold;"
+                if (InStr(1, paksud, "etvw_" & ln & ";") < 1) then
+                    paksud = paksud & "etvw_" & ln & ";"
+                end if
+            end if
+        else
+            if (obj.text = "1") then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "font-weight:bold;"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+        set obj = elem.selectSingleNode("colorsFont/font-style_italic")
+        condValue = obj.getAttribute("cond")
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (obj.text = "1") then
+                elemStyle = elemStyle & "font-style:italic;"
+                if (InStr(1, itad, "etvw_" & ln & ";") < 1) then
+                    itad = itad & "etvw_" & ln & ";"
+                end if
+            end if
+        else
+            if (obj.text = "1") then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "font-style:italic;"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+        set obj = elem.selectSingleNode("colorsFont/font-variant_small-caps")
+        condValue = obj.getAttribute("cond")
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (obj.text = "1") then
+                elemStyle = elemStyle & "font-variant:small-caps;"
+            end if
+        else
+            if (obj.text = "1") then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "font-variant:small-caps;"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+        
+        set obj = elem.selectSingleNode("colorsFont/letterSpacing")
+        condValue = obj.getAttribute("cond")
+        tekst = Trim(obj.text)
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (Len(tekst) > 0) then
+                elemStyle = elemStyle & "letter-spacing:" & tekst & ";"
+            end if
+        else
+            if (Len(tekst) > 0) then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "letter-spacing:" & tekst & ";"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+        set obj = elem.selectSingleNode("colorsFont/text-decoration_line-through")
+        condValue = obj.getAttribute("cond")
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (obj.text = "1") then
+                elemStyle = elemStyle & "text-decoration:line-through;"
+            end if
+        else
+            if (obj.text = "1") then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "text-decoration:line-through;"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+
+        set obj = elem.selectSingleNode("colorsFont/text-decoration_underline")
+        condValue = obj.getAttribute("cond")
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (obj.text = "1") then
+                elemStyle = elemStyle & "text-decoration:underline;"
+            end if
+        else
+            if (obj.text = "1") then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "text-decoration:underline;"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+        set obj = elem.selectSingleNode("colorsFont/font-family")
+        condValue = obj.getAttribute("cond")
+        tekst = Trim(obj.text)
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (Len(tekst) > 0) then
+                elemStyle = elemStyle & "font-family:" & tekst & ";"
+            end if
+        else
+            if (Len(tekst) > 0) then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "font-family:" & tekst & ";"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+        set obj = elem.selectSingleNode("colorsFont/font-size")
+        condValue = obj.getAttribute("cond")
+        tekst = Trim(obj.text)
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (Len(tekst) > 0) then
+                elemStyle = elemStyle & "font-size:" & tekst & ";"
+            end if
+        else
+            if (Len(tekst) > 0) then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "font-size:" & tekst & ";"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+
+        'värv
+        set obj = elem.selectSingleNode("colorsFont/color")
+        condValue = obj.getAttribute("cond")
+        tekst = Trim(obj.text)
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (Len(tekst) > 0) then
+                elemStyle = elemStyle & "color:" & tekst & ";"
+            end if
+        else
+            if (Len(tekst) > 0) then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "color:" & tekst & ";"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+
+        'taust
+        set obj = elem.selectSingleNode("colorsFont/background-color")
+        condValue = obj.getAttribute("cond")
+        tekst = Trim(obj.text)
+        sisuTingimus = tingimus
+        if Not (IsNull(condValue)) then
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "(" & condValue & ")"
+        end if
+        if (Len(sisuTingimus) = 0) then
+            if (Len(tekst) > 0) then
+                elemStyle = elemStyle & "background-color:" & tekst & ";"
+            end if
+        else
+            if (Len(tekst) > 0) then
+                if (ct <> 2) then
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL)
+                Call xslElement.setAttribute("test", sisuTingimus)
+                xslElement.text = "background-color:" & tekst & ";"
+                if (ct <> 2) then 'peale "elementonly"
+                    Call styleInSpan.appendChild(xslElement)
+                else
+                    Call sisaldavaStiil.appendChild(xslElement)
+                end if
+            end if
+        end if
+
+'kas on link
+        set obj = elem.selectSingleNode("isLink")
+        if (obj.text = "1") then
+            condValue = obj.getAttribute("cond")
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) > 0) then
+                sisuTingimus = sisuTingimus & " and "
+            end if
+            sisuTingimus = sisuTingimus & "name(..) = '" & qn & "'"
+            if (Len(tekstiLingid) > 0) then
+                tekstiLingid = tekstiLingid & " or "
+            end if
+            tekstiLingid = tekstiLingid & "(" & sisuTingimus & ")"
+        end if
+
+        if (Len(elemStyle) > 0) then
+            '"brauserisõltumatu" pärast ka ...
+            cssRules = cssRules & ".etvw_" & Replace(qn, ":", "_") & unNameXsl(ln) & _
+                                ", .etvw_" & Replace(qn, ":", "_") & " {" & elemStyle & "}" & vbCrLf
+        end if
+
+'kuidas määrata kujundust nii, et see mõjub ka allelementidele ...
+        if (elem.selectSingleNode("applyChilds").text = "1" and ct > 1) then
+            condValue = elem.selectSingleNode("applyChilds").getAttribute("cond")
+            sisuTingimus = tingimus 'tühi v lokaalne
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+
+            set elemendiSisemus = currentTemplate.selectSingleNode(".//xsl:call-template[@name = 'elemendiSisemus']")
+            if (Len(sisuTingimus) > 0) then
+                if (ct <> 2) then '3
+                    sisuTingimus = sisuTingimus & " and name(..) = '" & qn & "'"
+                else '2
+                    sisuTingimus = sisuTingimus & " and name() = '" & qn & "'"
+                end if
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:choose", NS_XSL)
+                set xslElementWhen = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL))
+                Call xslElementWhen.setAttribute("test", sisuTingimus)
+                set xslElementWhen = xslElementWhen.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:element", NS_XSL))
+                Call xslElementWhen.setAttribute("name", "span")
+                set obj = xslElementWhen.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:attribute", NS_XSL))
+                Call obj.setAttribute("name", "class")
+                obj.text = "etvw_" & Replace(qn, ":", "_") & unNameXsl(ln) & " etvw_" & Replace(qn, ":", "_")
+                if (sisaldavaStiil.hasChildNodes()) then
+                    set obj = xslElementWhen.appendChild(sisaldavaStiil)
+                    set obj = xslElementWhen.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call obj.setAttribute("test", "string-length($sisaldavaStiil) > 0")
+                    set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:attribute", NS_XSL))
+                    Call obj.setAttribute("name", "style")
+                    set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:value-of", NS_XSL))
+                    Call obj.setAttribute("select", "$sisaldavaStiil")
+                end if
+                Call xslElementWhen.appendChild(elemendiSisemus.cloneNode(true))
+                'otherwise
+                set xslElementWhen = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:otherwise", NS_XSL))
+                Call xslElementWhen.appendChild(elemendiSisemus.cloneNode(true))
+            else
+                set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:element", NS_XSL)
+                Call xslElement.setAttribute("name", "span")
+                set obj = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:attribute", NS_XSL))
+                Call obj.setAttribute("name", "class")
+                obj.text = "etvw_" & Replace(qn, ":", "_") & unNameXsl(ln) & " etvw_" & Replace(qn, ":", "_")
+                if (sisaldavaStiil.hasChildNodes()) then
+                    set obj = xslElement.appendChild(sisaldavaStiil)
+                    set obj = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call obj.setAttribute("test", "string-length($sisaldavaStiil) > 0")
+                    set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:attribute", NS_XSL))
+                    Call obj.setAttribute("name", "style")
+                    set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:value-of", NS_XSL))
+                    Call obj.setAttribute("select", "$sisaldavaStiil")
+                end if
+                Call xslElement.appendChild(elemendiSisemus.cloneNode(true))
+            end if
+
+            for each elemendiSisemus in currentTemplate.selectNodes(".//xsl:call-template[@name = 'elemendiSisemus']")
+                'In MSXML 6., the node-set result is fully calculated at the time of selection.
+                Call elemendiSisemus.parentNode.replaceChild(xslElement.cloneNode(true), elemendiSisemus)
+            next
+        end if
+
+
+'atribuudid
+        Dim attr, attrQn, attrLn
+        for each attr in elem.selectNodes("attrs/attr[attr_Display = '1']")
+            attrQn = attr.getAttribute("name")
+            attrLn = attrQn
+            if (InStr(1, attrLn, ":") > 0) then
+                attrLn = Mid(attrLn, InStr(1, attrLn, ":") + 1)
+            end if
+
+            tingimus = ""
+            if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                tingimus = tingimus & "name(../..) = '" & parentQn & "'"
+            end if
+
+            elemStyle = ""
+
+            set obj = attr.selectSingleNode("colorsFont/attr_font-weight_bold")
+            condValue = obj.getAttribute("cond")
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) = 0) then
+                if (obj.text = "1") then
+                    elemStyle = elemStyle & "font-weight:bold;"
+                end if
+            else
+                if (obj.text = "1") then
+                    sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                    set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    xslElement.text = "font-weight:bold;"
+                end if
+            end if
+            set obj = attr.selectSingleNode("colorsFont/attr_font-style_italic")
+            condValue = obj.getAttribute("cond")
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) = 0) then
+                if (obj.text = "1") then
+                    elemStyle = elemStyle & "font-style:italic;"
+                end if
+            else
+                if (obj.text = "1") then
+                    sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                    set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    xslElement.text = "font-style:italic;"
+                end if
+            end if
+            set obj = attr.selectSingleNode("colorsFont/attr_font-variant_small-caps")
+            condValue = obj.getAttribute("cond")
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) = 0) then
+                if (obj.text = "1") then
+                    elemStyle = elemStyle & "font-variant:small-caps;"
+                end if
+            else
+                if (obj.text = "1") then
+                    sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                    set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    xslElement.text = "font-variant:small-caps;"
+                end if
+            end if
+            set obj = attr.selectSingleNode("colorsFont/attr_text-decoration_underline")
+            condValue = obj.getAttribute("cond")
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) = 0) then
+                if (obj.text = "1") then
+                    elemStyle = elemStyle & "text-decoration:underline;"
+                end if
+            else
+                if (obj.text = "1") then
+                    sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                    set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    xslElement.text = "text-decoration:underline;"
+                end if
+            end if
+            set obj = attr.selectSingleNode("colorsFont/attr_vertical-align_sub")
+            condValue = obj.getAttribute("cond")
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) = 0) then
+                if (obj.text = "1") then
+                    elemStyle = elemStyle & "vertical-align:sub;"
+                end if
+            else
+                if (obj.text = "1") then
+                    sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                    set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    xslElement.text = "vertical-align:sub;"
+                end if
+            end if
+            if Not (obj.text = "1") then
+                set obj = attr.selectSingleNode("colorsFont/attr_vertical-align_super")
+                condValue = obj.getAttribute("cond")
+                sisuTingimus = tingimus
+                if Not (IsNull(condValue)) then
+                    if (Len(sisuTingimus) > 0) then
+                        sisuTingimus = sisuTingimus & " and "
+                    end if
+                    sisuTingimus = sisuTingimus & "(" & condValue & ")"
+                end if
+                if (Len(sisuTingimus) = 0) then
+                    if (obj.text = "1") then
+                        elemStyle = elemStyle & "vertical-align:super;"
+                    end if
+                else
+                    if (obj.text = "1") then
+                        sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                        set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                        Call xslElement.setAttribute("test", sisuTingimus)
+                        xslElement.text = "vertical-align:super;"
+                    end if
+                end if
+            end if
+            set obj = attr.selectSingleNode("colorsFont/attr_font-family")
+            condValue = obj.getAttribute("cond")
+            tekst = Trim(obj.text)
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) = 0) then
+                if (Len(tekst) > 0) then
+                    elemStyle = elemStyle & "font-family:" & tekst & ";"
+                end if
+            else
+                if (Len(tekst) > 0) then
+                    sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                    set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    xslElement.text = "font-family:" & tekst & ";"
+                end if
+            end if
+            set obj = attr.selectSingleNode("colorsFont/attr_font-size")
+            condValue = obj.getAttribute("cond")
+            tekst = Trim(obj.text)
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) = 0) then
+                if (Len(tekst) > 0) then
+                    elemStyle = elemStyle & "font-size:" & tekst & ";"
+                end if
+            else
+                if (Len(tekst) > 0) then
+                    sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                    set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    xslElement.text = "font-size:" & tekst & ";"
+                end if
+            end if
+            set obj = attr.selectSingleNode("colorsFont/attr_color")
+            condValue = obj.getAttribute("cond")
+            tekst = Trim(obj.text)
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) = 0) then
+                if (Len(tekst) > 0) then
+                    elemStyle = elemStyle & "color:" & tekst & ";"
+                end if
+            else
+                if (Len(tekst) > 0) then
+                    sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                    set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    xslElement.text = "color:" & tekst & ";"
+                end if
+            end if
+            set obj = attr.selectSingleNode("colorsFont/attr_background-color")
+            condValue = obj.getAttribute("cond")
+            tekst = Trim(obj.text)
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+            if (Len(sisuTingimus) = 0) then
+                if (Len(tekst) > 0) then
+                    elemStyle = elemStyle & "background-color:" & tekst & ";"
+                end if
+            else
+                if (Len(tekst) > 0) then
+                    sisuTingimus = sisuTingimus & " and name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                    set xslElement = styleInSpanAttr.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    xslElement.text = "background-color:" & tekst & ";"
+                end if
+            end if
+
+            if (Len(elemStyle) > 0) then
+                cssRules = cssRules & ".atvw_" & Replace(qn & "_" & attrQn, ":", "_") & unNameXsl(attrLn) & _
+                                    ", .atvw_" & Replace(qn & "_" & attrQn, ":", "_") & " {" & elemStyle & "}" & vbCrLf
+            end if
+
+'atribuut ise
+            tingimus = "@" & attrQn
+            if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                tingimus = tingimus & " and name(..) = '" & parentQn & "'"
+            end if
+
+            set xslElement = gendViewDom.createNode(NODE_ELEMENT, "sisaldav", "")
+
+            condValue = attr.selectSingleNode("attr_Display").getAttribute("cond")
+            sisuTingimus = tingimus
+            if Not (IsNull(condValue)) then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "(" & condValue & ")"
+            end if
+
+            if (attr.selectSingleNode("attr_NotInPrint").text = "1") then
+                if (Len(sisuTingimus) > 0) then
+                    sisuTingimus = sisuTingimus & " and "
+                end if
+                sisuTingimus = sisuTingimus & "($showShaded = '1'"
+                condValue = attr.selectSingleNode("attr_NotInPrint").getAttribute("cond")
+                if Not (IsNull(condValue)) then
+                    sisuTingimus = sisuTingimus & " or not(" & condValue & ")"
+                end if
+                sisuTingimus = sisuTingimus & ")"
+            end if
+
+            set obj = xslElement.appendChild(gendViewDom.createNode(NODE_COMMENT, "", ""))
+            obj.text = " <atribuut @" & attrQn & "> "
+
+            set xslElementWhen = xslElement
+            if (Len(sisuTingimus) > 0) then
+                set xslElementWhen = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                Call xslElementWhen.setAttribute("test", sisuTingimus)
+            end if
+
+            if (attr.selectSingleNode("attr_DisplayLocationBefore").text = "1") then
+                Call appendFrag(xslElementWhen, _
+                    "<xsl:choose>" & _
+                        "<xsl:when test=""function-available('al:paneTyhikEtte')"">" & _
+                            "<xsl:value-of select=""al:paneTyhikEtte(., local-name())""/>" & _
+                        "</xsl:when>" & _
+                        "<xsl:otherwise>" & _
+                            "<xsl:text> </xsl:text>" & _
+                        "</xsl:otherwise>" & _
+                    "</xsl:choose>", _
+                    false)
+            elseif (attr.selectSingleNode("attr_DisplayLocationAfter").text = "1") then
+                if (attr.selectSingleNode("attr_SpaceBefore").text = "1") then
+                    Call appendFrag(xslElementWhen, _
+                        "<xsl:choose>" & _
+                            "<xsl:when test=""function-available('al:paneTyhikEtte')"">" & _
+                                "<xsl:value-of select=""al:paneTyhikEtte(., local-name())""/>" & _
+                            "</xsl:when>" & _
+                            "<xsl:otherwise>" & _
+                                "<xsl:text> </xsl:text>" & _
+                            "</xsl:otherwise>" & _
+                        "</xsl:choose>", _
+                        false)
+                end if
+            end if
+
+            tekst = getConfVal(attr.selectSingleNode("attr_SymbolsRound/attr_SymbolRoundBefore"))
+            if (Len(tekst) > 0) then
+                condValue = attr.selectSingleNode("attr_SymbolsRound/attr_SymbolRoundBefore").getAttribute("cond")
+                sisuTingimus = ""
+                if Not (IsNull(condValue)) then
+                    if (Len(sisuTingimus) > 0) then
+                        sisuTingimus = sisuTingimus & " and "
+                    end if
+                    sisuTingimus = sisuTingimus & "(" & condValue & ")"
+                end if
+                set obj = xslElementWhen
+                if (Len(sisuTingimus) > 0) then
+                    set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call obj.setAttribute("test", sisuTingimus)
+                end if
+                Call appendFrag(obj, tekst, false)
+            end if
+
+            set obj = xslElementWhen.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:apply-templates", NS_XSL))
+            Call obj.setAttribute("select", "@" & attrQn & "[string-length(.) > 0]")
+            set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:with-param", NS_XSL))
+            Call obj.setAttribute("name", "rada")
+            set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:value-of", NS_XSL))
+            Call obj.setAttribute("select", "concat($rada, name(), '[', $posnr, ']/')")
+
+            tekst = getConfVal(attr.selectSingleNode("attr_SymbolsRound/attr_SymbolRoundAfter"))
+            if (Len(tekst) > 0) then
+                '"attr_SymbolRoundAfter" jaoks polegi tingimuse kohta
+                condValue = attr.selectSingleNode("attr_SymbolsRound/attr_SymbolRoundBefore").getAttribute("cond")
+                sisuTingimus = ""
+                if Not (IsNull(condValue)) then
+                    if (Len(sisuTingimus) > 0) then
+                        sisuTingimus = sisuTingimus & " and "
+                    end if
+                    sisuTingimus = sisuTingimus & "(" & condValue & ")"
+                end if
+                set obj = xslElementWhen
+                if (Len(sisuTingimus) > 0) then
+                    set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call obj.setAttribute("test", sisuTingimus)
+                end if
+                Call appendFrag(obj, tekst, false)
+            end if
+
+            if (attr.selectSingleNode("attr_DisplayLocationBefore").text = "1") then
+                if Not (attr.selectSingleNode("attr_SpaceBefore").text = "1") then
+                    set obj = xslElementWhen
+                    set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL))
+                    Call obj.setAttribute("test", "function-available('al:paneKylge')")
+                    set obj = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:value-of", NS_XSL))
+                    Call obj.setAttribute("select", "al:paneKylge('')")
+                end if
+            end if
+
+            set obj = xslElement.appendChild(gendViewDom.createNode(NODE_COMMENT, "", ""))
+            obj.text = " </atribuut @" & attrQn & "> "
+
+            for each elemendiSisemus in currentTemplate.selectNodes(".//xsl:call-template[@name = 'elemendiSisemus']")
+                if (attr.selectSingleNode("attr_DisplayLocationBefore").text = "1") then
+                    set refNode = elemendiSisemus
+                elseif (attr.selectSingleNode("attr_DisplayLocationAfter").text = "1") then
+                    if (attrLn = "i") then 'hom nr esimeseks atribuudiks
+                        set refNode = elemendiSisemus.nextSibling
+                    else
+                        set refNode = Nothing
+                    end if
+                else
+                    Exit For
+                end if
+                for each obj in xslElement.selectNodes("node()")
+                    Call elemendiSisemus.parentNode.insertBefore(obj.cloneNode(true), refNode)
+                next
+            next
+
+'atribuudi tekstide asendused
+            tekst = getConfVal(attr.selectSingleNode("attr_ReplaceText"))
+            if (Len(tekst) > 0) then
+                tingimus = ""
+                if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                    tingimus = tingimus & "name(../..) = '" & parentQn & "'"
+                end if
+
+                tekst = Replace(tekst, "\|", ChrW(&HE001))
+                tekst = Replace(tekst, "\~", ChrW(&HE002))
+
+                asendused = Split(tekst, "|")
+                for ix = 0 to UBound(asendused, 1)
+                    sisuTingimus = tingimus
+                    'VBS: Split tühja stringi peal EI ANNA massiivi!!
+                    if (Len(asendused(ix)) > 0) then
+                        asendus = Split(asendused(ix), "~")
+                        uusTekst = asendus(0)
+                        if (UBound(asendus, 1) > 0) then
+                            if (Len(sisuTingimus) > 0) then
+                                sisuTingimus = sisuTingimus & " and "
+                            end if
+                            sisuTingimus = sisuTingimus & "(. = '" & asendus(0) & "')"
+                            uusTekst = asendus(1)
+                        end if
+                    else
+                        uusTekst = ""
+                    end if
+
+                    sisuTingimus = Replace(sisuTingimus, ChrW(&HE001), "|")
+                    sisuTingimus = Replace(sisuTingimus, ChrW(&HE002), "~")
+
+                    uusTekst = Replace(uusTekst, ChrW(&HE001), "|")
+                    uusTekst = Replace(uusTekst, ChrW(&HE002), "~")
+
+                    set xslElement = atribuudiSisu.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL), atribuudiSisu)
+                    if (Len(sisuTingimus) > 0) then
+                        sisuTingimus = sisuTingimus & " and "
+                    end if
+                    sisuTingimus = sisuTingimus & "name(..) = '" & qn & "' and name() = '" & attrQn & "'"
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    if (Len(uusTekst) > 0) then
+                        Call appendFrag(xslElement, _
+                            "<xsl:choose>" & _
+                                "<xsl:when test=""function-available('al:l6petaTekst')"">" & _
+                                    uusTekst & _
+                                    "<xsl:value-of select=""al:l6petaTekst()""/>" & _
+                                "</xsl:when>" & _
+                                "<xsl:otherwise>" & _
+                                    uusTekst & _
+                                "</xsl:otherwise>" & _
+                            "</xsl:choose>", _
+                            false)
+                    end if
+                next
+            end if
+
+'kas atribuut on link
+            set obj = attr.selectSingleNode("attr_IsLink")
+            if (obj.text = "1") then
+                sisuTingimus = "name() = '" & attrQn & "' and name(..) = '" & qn & "'"
+                if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                    sisuTingimus = sisuTingimus & "name(../..) = '" & parentQn & "'"
+                end if
+                if (Len(atribuudiLingid) > 0) then
+                    atribuudiLingid = atribuudiLingid & " or "
+                end if
+                atribuudiLingid = atribuudiLingid & "(" & sisuTingimus & ")"
+            end if
+
+        next
+
+
+'-------------------------------------------------------------
+'Teksti taga olevate asjade järjekord
+'1) taga olevad atribuudid
+'1a) iga elemendi taga olevad sümbolid, XSLT
+'2) sümbolid korduvate elementide vahel
+'3) elemente/gruppe lõpetavad (ümbritsevad) sümbolid
+'
+'1a) iga elemendi taga olevad sümbolid
+        'tekst - xml
+        tekst = getConfVal(elem.selectSingleNode("symbolsRound/lopeb")) 'iga elemendi taga (mitte ainult viimase)
+        if (Len(tekst) > 0) then
+
+            tingimus = ""
+            if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                tingimus = "name(..) = '" & parentQn & "'"
+            end if
+
+            condValue = elem.selectSingleNode("symbolsRound/lopeb").getAttribute("cond")
+            if Not (IsNull(condValue)) then
+                if (Len(tingimus) > 0) then
+                    tingimus = tingimus & " and "
+                end if
+                tingimus = tingimus & "(" & condValue & ")"
+            end if
+
+            tekst = Replace(tekst, "\|", ChrW(&HE001))
+            tekst = Replace(tekst, "\~", ChrW(&HE002))
+
+            set xslElement = gendViewDom.createNode(NODE_ELEMENT, "sisaldav", "")
+
+            'saab anda tingimusi: ting1~asi1|ting2~asi2
+            asendused = Split(tekst, "|")
+            for ix = 0 to UBound(asendused, 1)
+                sisuTingimus = tingimus
+                'VBS: Split tühja stringi peal EI ANNA massiivi!!
+                if (Len(asendused(ix)) > 0) then
+                    asendus = Split(asendused(ix), "~")
+                    uusTekst = asendus(0)
+                    if (UBound(asendus, 1) > 0) then
+                        if (Len(sisuTingimus) > 0) then
+                            sisuTingimus = sisuTingimus & " and "
+                        end if
+                        sisuTingimus = sisuTingimus & "(" & asendus(0) & ")"
+                        uusTekst = asendus(1)
+                    end if
+                else
+                    uusTekst = ""
+                end if
+
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE001), "|")
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE002), "~")
+
+                uusTekst = Replace(uusTekst, ChrW(&HE001), "|")
+                uusTekst = Replace(uusTekst, ChrW(&HE002), "~")
+
+                if (Len(sisuTingimus) = 0) then
+                    if (ix = 0) then
+                        Call appendFrag(xslElement, uusTekst, false)
+                    else
+                        set obj = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:otherwise", NS_XSL))
+                        if (Len(uusTekst) > 0) then
+                            Call appendFrag(obj, uusTekst, false)
+                        end if
+                    end if
+                    Exit For
+                else
+                    if (ix = 0) then
+                        set obj = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:choose", NS_XSL))
+                    end if
+                    set xslElementWhen = obj.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL))
+                    Call xslElementWhen.setAttribute("test", sisuTingimus)
+                    if (Len(uusTekst) > 0) then
+                        Call appendFrag(xslElementWhen, uusTekst, false)
+                    end if
+                end if
+            next
+            for each elemendiSisemus in currentTemplate.selectNodes(".//xsl:call-template[@name = 'elemendiSisemus']")
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), Nothing)
+                obj.text = " <iga elemendi taga> "
+                for each obj in xslElement.selectNodes("node()")
+                    Call elemendiSisemus.parentNode.insertBefore(obj.cloneNode(true), Nothing)
+                next
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), Nothing)
+                obj.text = " </iga elemendi taga> "
+            next
+        end if
+
+'1a) iga elemendi taga olev XSLT tingimus
+        'tekst - xml
+        tekst = getConfVal(elem.selectSingleNode("symbolsRound/endsWith")) 'XSLT tingimus, taga
+        if (Len(tekst) > 0) then
+            tingimus = ""
+            if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                tingimus = "name(..) = '" & parentQn & "'"
+            end if
+            for each elemendiSisemus in currentTemplate.selectNodes(".//xsl:call-template[@name = 'elemendiSisemus']")
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), Nothing)
+                obj.text = " <XSLT, taga> "
+                if (Len(tingimus) > 0) then
+                    set xslElement = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL), Nothing)
+                    Call xslElement.setAttribute("test", tingimus)
+                    set refNode = Nothing
+                else
+                    set xslElement = elemendiSisemus.parentNode
+                    set refNode = Nothing
+                end if
+                Call insertFragBefore(xslElement, tekst, refNode)
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), Nothing)
+                obj.text = " </XSLT, taga> "
+            next
+        end if
+
+'2) sümbolid korduvate elementide vahel
+        tekst = getConfVal(elem.selectSingleNode("symbolBetweenRepeating/symbol"))
+        if (Len(tekst) > 0) then
+            tingimus = ""
+            if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                tingimus = "name(..) = '" & parentQn & "'"
+            end if
+            if (Len(tingimus) > 0) then
+                tingimus = tingimus & " and "
+            end if
+            tingimus = tingimus & "following-sibling::node()[1][name() = '" & qn & "']"
+            condValue = elem.selectSingleNode("symbolBetweenRepeating/symbol").getAttribute("cond")
+            if Not (IsNull(condValue)) then
+                tingimus = tingimus & " and (" & condValue & ")"
+            end if
+            for each elemendiSisemus in currentTemplate.selectNodes(".//xsl:call-template[@name = 'elemendiSisemus']")
+                set xslElement = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "xsl:if", NS_XSL), Nothing)
+                Call xslElement.setAttribute("test", tingimus)
+                Call appendFrag(xslElement, tekst, false)
+            next
+        end if
+
+'3) elemente/gruppe lõpetavad (ümbritsevad) sümbolid
+        tekst = getConfVal(elem.selectSingleNode("symbolsRound/symbolRoundAfter"))
+        if (Len(tekst) > 0) then
+            tingimus = ""
+            if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                tingimus = "name(..) = '" & parentQn & "'"
+            end if
+            if (Len(tingimus) > 0) then
+                tingimus = tingimus & " and "
+            end if
+            'tingimus on alustava küljes ...
+            condValue = elem.selectSingleNode("symbolsRound/symbolRoundBefore").getAttribute("cond")
+            'ümbritsevate jaoks antakse niikuinii alguse ja lõpu tingimused, lisatingimus arvestub koos nendega
+            'nt <mg> -sid võib olla nii tavaliste kui ka alternatiivsete märksõnadega,
+            'kui soovime sulge ümber ainult alternatiivsetele, siis peavad tingimused liituma
+            if Not (IsNull(condValue)) then
+                tingimus = tingimus & "(" & condValue & ")"
+                tingimus = tingimus & " and not(following-sibling::node()[1][name() = '" & qn & "' and (" & condValue & ")])"
+            else
+                tingimus = tingimus & "not(following-sibling::node()[1][name() = '" & qn & "'])"
+            end if
+
+            tekst = Replace(tekst, "\|", ChrW(&HE001))
+            tekst = Replace(tekst, "\~", ChrW(&HE002))
+
+            set xslElement = gendViewDom.createNode(NODE_ELEMENT, "xsl:choose", NS_XSL)
+
+            'saab anda tingimusi: ting1~asi1|ting2~asi2
+            'nt ems <parg>:
+            '@pref:es="y"~/|@pref:es="l"~ (|(
+            '
+            asendused = Split(tekst, "|")
+            for ix = 0 to UBound(asendused, 1)
+                sisuTingimus = tingimus
+                'VBS: Split tühja stringi peal EI ANNA massiivi!!
+                if (Len(asendused(ix)) > 0) then
+                    asendus = Split(asendused(ix), "~")
+                    uusTekst = asendus(0)
+                    if (UBound(asendus, 1) > 0) then
+                        if (Len(sisuTingimus) > 0) then
+                            sisuTingimus = sisuTingimus & " and "
+                        end if
+                        sisuTingimus = sisuTingimus & "(" & asendus(0) & ")"
+                        uusTekst = asendus(1)
+                    end if
+                else
+                    uusTekst = ""
+                end if
+
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE001), "|")
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE002), "~")
+
+                uusTekst = Replace(uusTekst, ChrW(&HE001), "|")
+                uusTekst = Replace(uusTekst, ChrW(&HE002), "~")
+
+                set xslElementWhen = xslElement.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL))
+                Call xslElementWhen.setAttribute("test", sisuTingimus)
+                Call appendFrag(xslElementWhen, uusTekst, false)
+            next
+            for each elemendiSisemus in currentTemplate.selectNodes(".//xsl:call-template[@name = 'elemendiSisemus']")
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), Nothing)
+                obj.text = " <ümbritsev, lõpetav> "
+                Call elemendiSisemus.parentNode.insertBefore(xslElement.cloneNode(true), Nothing)
+                set obj = elemendiSisemus.parentNode.insertBefore(gendViewDom.createNode(NODE_COMMENT, "", ""), Nothing)
+                obj.text = " </ümbritsev, lõpetav> "
+            next
+        end if
+
+
+'elemendi tekstide asendused
+        tekst = getConfVal(elem.selectSingleNode("replaceText"))
+        if (Len(tekst) > 0 and ct <> 2) then
+            tingimus = ""
+            if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                if (ct <> 2) then 'peale "elementonly"
+                    tingimus = "name(../..) = '" & parentQn & "'"
+                end if
+            end if
+
+            tekst = Replace(tekst, "\|", ChrW(&HE001))
+            tekst = Replace(tekst, "\~", ChrW(&HE002))
+
+            asendused = Split(tekst, "|")
+            for ix = 0 to UBound(asendused, 1)
+                sisuTingimus = tingimus
+                'VBS: Split tühja stringi peal EI ANNA massiivi!!
+                if (Len(asendused(ix)) > 0) then
+                    asendus = Split(asendused(ix), "~")
+                    uusTekst = asendus(0)
+                    if (UBound(asendus, 1) > 0) then
+                        if (Len(sisuTingimus) > 0) then
+                            sisuTingimus = sisuTingimus & " and "
+                        end if
+                        sisuTingimus = sisuTingimus & "(. = '" & asendus(0) & "')"
+                        uusTekst = asendus(1)
+                    end if
+                else
+                    uusTekst = ""
+                end if
+
+                if (Left(uusTekst, 2) = "(/" and Right(uusTekst, 2) = ");") then
+                    sisuTingimus = "ln == '" & ln & "'"
+                    if (UBound(asendus, 1) > 0) then
+                        sisuTingimus = sisuTingimus & " && currElemNode.SelectSingleNode('self::node()[" & asendus(0) & "]', xmlNsMgr)"
+                    end if
+                end if
+
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE001), "|")
+                sisuTingimus = Replace(sisuTingimus, ChrW(&HE002), "~")
+
+                uusTekst = Replace(uusTekst, ChrW(&HE001), "|")
+                uusTekst = Replace(uusTekst, ChrW(&HE002), "~")
+
+                if (Left(uusTekst, 2) = "(/" and Right(uusTekst, 2) = ");") then
+                    skriptLisada = skriptLisada & vbCrLf & vbTab & "if (dotNet == '1') {" & _
+                        "if (" & sisuTingimus & ") {nt = nt.replace" & uusTekst & "}}"
+                    Dim jsSisuTingimus
+                    jsSisuTingimus = sisuTingimus
+                    jsSisuTingimus = Replace(jsSisuTingimus, ".SelectSingleNode(", ".selectSingleNode(")
+                    jsSisuTingimus = Replace(jsSisuTingimus, ", xmlNsMgr)", ")")
+                    skriptLisada = skriptLisada & vbCrLf & vbTab & "if (dotNet == '0') {" & _
+                        "if (" & jsSisuTingimus & ") {nt = nt.replace" & uusTekst & "}}"
+                else
+                    if (Len(sisuTingimus) > 0) then
+                        sisuTingimus = sisuTingimus & " and "
+                    end if
+                    sisuTingimus = sisuTingimus & "name(..) = '" & qn & "'"
+                    set xslElement = tekstiSisu.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL), tekstiSisu)
+                    Call xslElement.setAttribute("test", sisuTingimus)
+                    if (Len(uusTekst) > 0) then
+                        Call appendFrag(xslElement, _
+                            "<xsl:choose>" & _
+                                "<xsl:when test=""function-available('al:l6petaTekst')"">" & _
+                                    uusTekst & _
+                                    "<xsl:value-of select=""al:l6petaTekst()""/>" & _
+                                "</xsl:when>" & _
+                                "<xsl:otherwise>" & _
+                                    uusTekst & _
+                                "</xsl:otherwise>" & _
+                            "</xsl:choose>", _
+                            false)
+                    end if
+                end if
+            next
+        end if
+
+
+'keeleplokkide valimise järjekord
+        tekst = getConfVal(elem.selectSingleNode("firstLanguage"))
+        if (Len(tekst) > 0) then
+            tingimus = "self::" & qn
+            if Not (elem.selectSingleNode("global").text = "1") then 'lokaalne
+                tingimus = tingimus & "[name(..) = '" & parentQn & "']"
+            end if
+            set xslElement = gendViewDomRoot.selectSingleNode("xsl:template[@name = 'elemendiSisemus']/xsl:choose/xsl:otherwise")
+            set xslElement = xslElement.parentNode.insertBefore(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL), xslElement)
+            Call xslElement.setAttribute("test", tingimus)
+
+            Call appendFrag(xslElement, _
+                "<xsl:apply-templates select=""*[@xml:lang = '" & tekst & "']"">" & _
+                    "<xsl:with-param name=""rada"">" & _
+                        "<xsl:value-of select=""concat($rada, name(), '[', $posnr, ']/')""></xsl:value-of>" & _
+                    "</xsl:with-param>" & _
+                    "<xsl:with-param name=""peidus"">" & _
+                        "<xsl:value-of select=""$peidus""></xsl:value-of>" & _
+                    "</xsl:with-param>" & _
+                "</xsl:apply-templates>", _
+                false)
+
+            Call appendFrag(xslElement, _
+                "<xsl:apply-templates select=""*[not(@xml:lang = '" & tekst & "')]"">" & _
+                    "<xsl:with-param name=""rada"">" & _
+                        "<xsl:value-of select=""concat($rada, name(), '[', $posnr, ']/')""></xsl:value-of>" & _
+                    "</xsl:with-param>" & _
+                    "<xsl:with-param name=""peidus"">" & _
+                        "<xsl:value-of select=""$peidus""></xsl:value-of>" & _
+                    "</xsl:with-param>" & _
+                "</xsl:apply-templates>", _
+                false)
+        end if
+
+        jubaTehtudAsjad = jubaTehtudAsjad & tehtavAsi & ";"
+    
+    end if
+next
+
+if (Len(skriptLisada) > 0) then
+    skriptTekst = Mid(skriptTekst, 1, skriptKoht.FirstIndex + 1 + skriptKoht.Length) & vbTab & skriptLisada & Mid(skriptTekst, skriptKoht.FirstIndex + 1 + skriptKoht.Length)
+    skriptElem.text = skriptTekst
+end if
+
+set xslElement = gendViewDomRoot.selectSingleNode("xsl:variable[@name = 'itad']")
+xslElement.text = itad
+set xslElement = gendViewDomRoot.selectSingleNode("xsl:variable[@name = 'paksud']")
+xslElement.text = paksud
+
+if (Len(tekstiLingid) > 0) then
+    tekst = "(" & tekstiLingid & ") and $printing = '0'"
+    Call tekstiLink.setAttribute("test", tekst)
+end if
+if (Len(atribuudiLingid) > 0) then
+    tekst = "(" & atribuudiLingid & ") and $printing = '0'"
+    Call atribuudiLink.setAttribute("test", tekst)
+end if
+
+ss.cssText = cssRules
+
+
+''get_lang template kirjutamine
+''<xsl:when test="lang('en')">en</xsl:when>
+'Dim getLangTemplate, iso639_1Dom, isoKeeled, isoKeel, keeleKood
+'set getLangTemplate = gendViewDomRoot.selectSingleNode("xsl:template[@name = 'get_lang']/xsl:choose")
+'set iso639_1Dom = IDD("File", "../iso639_1.xml", False, False, Nothing)
+'set isoKeeled = iso639_1Dom.documentElement.selectNodes("record")
+'for each isoKeel in isoKeeled
+'    keeleKood = isoKeel.getAttribute("code")
+'    set xslElement = getLangTemplate.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:when", NS_XSL))
+'    Call xslElement.setAttribute("test", "lang('" & keeleKood & "')")
+'    xslElement.text = keeleKood
+'next
+'set xslElement = getLangTemplate.appendChild(gendViewDom.createNode(NODE_ELEMENT, "xsl:otherwise", NS_XSL))
+
+End Sub 'makeXsl
+
+
+'-----------------------------------------------------------------------------------
+Sub doSelectArt()
+btn_SelectArt.disabled = true
+div_Eelvaade.innerHTML = ""
+Dim retVal, smdArgs
+smdArgs = Array("Märksõna valik", dic_desc, slinkVols, first_default, artMs, usrName)
+retVal = window.showModalDialog("listing.htm", _
+    smdArgs, _
+    "dialogHeight:200px;dialogWidth:500px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no")
+if (Len(retVal) > 0) then
+    Dim tarr, tekst, guid, volName, xh
+    tarr = Split(retVal, JR)
+    tekst = tarr(2)
+    guid = tarr(1)
+    volName = tarr(0)
+
+    set xh = exCGISync("../tools.cgi", "readArtByGuid" & JR & dic_desc & JR & usrName & JR & volName & JR & guid)
+
+    if (xh.statusText = "OK") then
+        Dim rspDOM, sta, status
+        set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDoc
+        sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+        if (sta) then
+            status = rspDOM.selectSingleNode("rsp/sta").text
+            if (status = "Success") then
+                Call rspDOM.setProperty("SelectionLanguage", "XPath")
+                Call rspDOM.setProperty("SelectionNamespaces", nsList)
+                artXml = rspDOM.selectSingleNode("rsp/" & DICPR & ":A").xml
+                artXml = "<" & DICPR & ":sr xmlns:" & DICPR & "='" & DICURI & "'>" & artXml & "</" & DICPR & ":sr>"
+                artMs = tekst
+            end if
+        end if
+    else
+        MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+            xh.responseText, _
+            vbCritical
+    end if
+end if
+Call doPreviewArt()
+btn_SelectArt.disabled = false
+End Sub 'doSelectArt
+
+
+'-----------------------------------------------------------------------------------
+Function doPreviewArt()
+doPreviewArt = 1
+if (Len(artXml) > 0) then
+    Call makeXsl()
+    Dim srcDom
+    set srcDom = IDD("string", artXml, False, False, Nothing)
+
+    Call srcDom.setProperty("SelectionLanguage", "XPath")
+    Call srcDom.setProperty("SelectionNamespaces", nsList)
+
+    'muidu tuleb lihtsalt "SCRIPT438: Object doesn't support this property or method"
+    On Error Resume Next
+    div_Eelvaade.innerHTML = srcDom.transformNode(gendViewDom)
+    if (Err.number <> 0) then
+        MsgBox "Andmetes on viga, ei salvesta!" & vbNewLine & Err.Description, vbCritical, "Vaate salvestamine"
+        btn_Save.disabled = true
+        doPreviewArt = 0
+        Exit Function
+    else
+        btn_Save.disabled = false
+    end if
+    On Error Goto 0
+
+else
+    div_Eelvaade.innerHTML = ""
+end if
+End Function 'doPreviewArt
+
+
+'-----------------------------------------------------------------------------------
+Sub doPreviewTingArt()
+Call makeXsl()
+On Error Resume Next
+div_Eelvaade.innerHTML = preViewDom.transformNode(gendViewDom)
+if (err.number <> 0) then
+    MsgBox "Andmetes on viga, ei salvesta!", vbCritical, "Vaate salvestamine"
+    btn_Save.disabled = true
+    Exit Sub
+else
+    btn_Save.disabled = false
+end if
+On Error Goto 0
+End Sub 'doPreviewTingArt
+
+
+'-----------------------------------------------------------------------------------
+Function getConfVal(elm)
+Dim val, nood
+val = ""
+for each nood in elm.selectNodes("node()")
+    if (nood.nodeType = NODE_ELEMENT) then
+        val = val & nood.xml
+    elseif (nood.nodeType = NODE_TEXT) then
+        val = val & nood.xml
+    end if
+next
+'trepitud XML sees nt tab-id
+val = Replace(val, vbTab, "")
+'val = Replace(val, "&gt;", ">")
+'val = Replace(val, "&lt;", "<")
+'val = Replace(val, "&amp;", "&")
+getConfVal = val
+End Function 'getConfVal
+
+
+'-----------------------------------------------------------------------------------
+Sub setElemLayout()
+
+'The onchange event does not fire when the selected option of the select object is changed programatically.
+'
+'ega checkBox (onclick (muidugi mitte)) - il ja textBox (onchange) - il ka ei käivitu ...
+'
+
+if Not IsEmpty(displayedElem) then
+    Call updateDisplayedElemConf()
+end if
+
+'********************************************************************************
+'Sisestuse algolek
+'
+Dim obj, ix
+
+do while (tbl_Atribuudid.rows.length > 0)
+    Call tbl_Atribuudid.deleteRow(0)
+loop
+
+'nullimine
+'"Näidata" ja "Glob." ei asu 'tbl_Element' sees ...
+Dim sisestused, sisestus
+set sisestused = tbl_Element.getElementsByTagName("INPUT")
+for ix = 0 to sisestused.length - 1
+    set sisestus = sisestused(ix)
+    if (sisestus.type = "text") then
+        sisestus.value = ""
+    elseif (sisestus.type = "checkbox") then
+        sisestus.checked = false
+    end if
+next
+chk_Global.checked = false
+
+
+Call z_sel_Font.selectOption(-1, false, true)
+Call z_sel_Font.setComboText("")
+
+Call z_sel_FontSize.selectOption(-1, false, true)
+Call z_sel_FontSize.setComboText("")
+
+Call z_sel_Color.selectOption(-1, false, true)
+Call z_sel_Color.setComboText("")
+
+Call z_sel_BgColor.selectOption(-1, false, true)
+Call z_sel_BgColor.setComboText("")
+
+
+Dim selectObj, opt
+set selectObj = sel_skeem 'window.event.srcElement
+set opt = selectObj.options(selectObj.selectedIndex)
+
+Dim qn, ln, uri, xmlParent, kirjeldav, decl, esinevad, esineb, esinebStr
+qn = opt.getAttribute("qn")
+ln = opt.getAttribute("ln")
+uri = opt.getAttribute("uri")
+kirjeldav = opt.getAttribute("kirjeldav")
+
+esinebStr = ""
+set esinevad = selectObj.options
+for each esineb in esinevad
+    xmlParent = esineb.getAttribute("xmlParent")
+    ix = InStr(1, xmlParent, "/")
+    if (ix > 0) then
+        if (Mid(xmlParent, ix + 1) = qn) then
+            if (InStr(1, esinebStr & ", ", ", " & Mid(xmlParent, 1, ix - 1) & ", ") < 1) then
+                esinebStr = esinebStr & ", " & Mid(xmlParent, 1, ix - 1)
+            end if
+        end if
+    end if
+next
+
+' on element KOOS vanemaga (mg/m)
+xmlParent = opt.getAttribute("xmlParent")
+
+elemName.innerHTML = "&lt;" & qn & "&gt; - " & kirjeldav & " (esineb " & Mid(esinebStr, 3) & ")"
+
+set decl = schRootElems.itemByQName(ln, uri)
+
+'********************************************************************************
+'Algväärtustamine
+'
+Dim currentConfElem, currentConfElemItem, condValue
+
+set displayedElem = viewConfRoot.selectSingleNode("elem[@name = '" & xmlParent & "']")
+
+'global ei ole tingimusega ...
+set currentConfElem = displayedElem.selectSingleNode("global")
+if (currentConfElem.text = "1") then
+    chk_Global.checked = true
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("display")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_chk_Show.style.backgroundColor = withCondBgColor
+    lbl_chk_Show.title = condValue
+else
+    lbl_chk_Show.style.backgroundColor = ""
+    lbl_chk_Show.title = ""
+end if
+
+'"Näidata" ei asu 'tbl_Element' sees ...
+if (currentConfElem.text = "1") then
+    chk_Show.checked = true
+else
+    chk_Show.checked = false
+end if
+Call chk_Show_Proc(chk_Show)
+
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/font-weight_bold")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_chk_Bold.style.backgroundColor = withCondBgColor
+    lbl_chk_Bold.title = condValue
+else
+    lbl_chk_Bold.style.backgroundColor = ""
+    lbl_chk_Bold.title = ""
+end if
+if (currentConfElem.text = "1") then
+    chk_Bold.checked = true
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/font-style_italic")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_chk_Italic.style.backgroundColor = withCondBgColor
+    lbl_chk_Italic.title = condValue
+else
+    lbl_chk_Italic.style.backgroundColor = ""
+    lbl_chk_Italic.title = ""
+end if
+if (currentConfElem.text = "1") then
+    chk_Italic.checked = true
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/text-decoration_underline")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_chk_Underline.style.backgroundColor = withCondBgColor
+    lbl_chk_Underline.title = condValue
+else
+    lbl_chk_Underline.style.backgroundColor = ""
+    lbl_chk_Underline.title = ""
+end if
+if (currentConfElem.text = "1") then
+    chk_Underline.checked = true
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/font-variant_small-caps")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_chk_UCase.style.backgroundColor = withCondBgColor
+    lbl_chk_UCase.title = condValue
+else
+    lbl_chk_UCase.style.backgroundColor = ""
+    lbl_chk_UCase.title = ""
+end if
+if (currentConfElem.text = "1") then
+    chk_UCase.checked = true
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/letterSpacing")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_inp_LetterSpacing.style.backgroundColor = withCondBgColor
+    lbl_inp_LetterSpacing.title = condValue
+else
+    lbl_inp_LetterSpacing.style.backgroundColor = ""
+    lbl_inp_LetterSpacing.title = ""
+end if
+inp_LetterSpacing.value = getConfVal(currentConfElem)
+inp_LetterSpacing.title = getConfVal(currentConfElem)
+
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/text-decoration_line-through")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_chk_LineThrough.style.backgroundColor = withCondBgColor
+    lbl_chk_LineThrough.title = condValue
+else
+    lbl_chk_LineThrough.style.backgroundColor = ""
+    lbl_chk_LineThrough.title = ""
+end if
+if (currentConfElem.text = "1") then
+    chk_LineThrough.checked = true
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("isLink")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_chk_IsLink.style.backgroundColor = withCondBgColor
+    lbl_chk_IsLink.title = condValue
+else
+    lbl_chk_IsLink.style.backgroundColor = ""
+    lbl_chk_IsLink.title = ""
+end if
+if (currentConfElem.text = "1") then
+    chk_IsLink.checked = true
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("applyChilds")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_applyChilds.style.backgroundColor = withCondBgColor
+    lbl_applyChilds.title = condValue
+else
+    lbl_applyChilds.style.backgroundColor = ""
+    lbl_applyChilds.title = ""
+end if
+if (currentConfElem.text = "1") then
+    chk_applyChilds.checked = true
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("newLine")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_chk_NewLine.style.backgroundColor = withCondBgColor
+    lbl_chk_NewLine.title = condValue
+else
+    lbl_chk_NewLine.style.backgroundColor = ""
+    lbl_chk_NewLine.title = ""
+end if
+if (currentConfElem.text = "1") then
+    chk_NewLine.checked = true
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("notInPrint")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_chk_NotInPrint.style.backgroundColor = withCondBgColor
+    lbl_chk_NotInPrint.title = condValue
+else
+    lbl_chk_NotInPrint.style.backgroundColor = ""
+    lbl_chk_NotInPrint.title = ""
+end if
+if (currentConfElem.text = "1") then
+    chk_NotInPrint.checked = true
+end if
+
+'firstLanguage ei ole tingimusega ...
+set currentConfElem = displayedElem.selectSingleNode("firstLanguage")
+inp_firstLanguage.value = getConfVal(currentConfElem)
+
+
+set currentConfElem = displayedElem.selectSingleNode("containsIn")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_inp_ContainsIn.style.backgroundColor = withCondBgColor
+    lbl_inp_ContainsIn.title = condValue
+else
+    lbl_inp_ContainsIn.style.backgroundColor = ""
+    lbl_inp_ContainsIn.title = ""
+end if
+inp_ContainsIn.value = getConfVal(currentConfElem)
+inp_ContainsIn.title = getConfVal(currentConfElem)
+
+
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/font-family")
+'selectOption(ind,filter,conf)
+'select option 
+'◦ind - (int) index of option in question
+'◦filter - (boolean) enable autocomplit range, optional
+'◦conf - (boolean) true for real selection, false for pre-selection
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_sel_Font.style.backgroundColor = withCondBgColor
+    lbl_sel_Font.title = condValue
+else
+    lbl_sel_Font.style.backgroundColor = ""
+    lbl_sel_Font.title = ""
+end if
+if (Len(currentConfElem.text) > 0) then
+    ix = z_sel_Font.getIndexByValue(currentConfElem.text)
+    Call z_sel_Font.selectOption(ix, false, true)
+    Call z_sel_Font.setComboText(currentConfElem.text)
+end if
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/font-size")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_sel_FontSize.style.backgroundColor = withCondBgColor
+    lbl_sel_FontSize.title = condValue
+else
+    lbl_sel_FontSize.style.backgroundColor = ""
+    lbl_sel_FontSize.title = ""
+end if
+if (Len(currentConfElem.text) > 0) then
+    ix = z_sel_FontSize.getIndexByValue(currentConfElem.text)
+    Call z_sel_FontSize.selectOption(ix, false, true)
+    Call z_sel_FontSize.setComboText(currentConfElem.text)
+end if
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/color")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_sel_Color.style.backgroundColor = withCondBgColor
+    lbl_sel_Color.title = condValue
+else
+    lbl_sel_Color.style.backgroundColor = ""
+    lbl_sel_Color.title = ""
+end if
+if (Len(currentConfElem.text) > 0) then
+    ix = z_sel_Color.getIndexByValue(currentConfElem.text)
+    Call z_sel_Color.selectOption(ix, false, true)
+    Call z_sel_Color.setComboText(currentConfElem.text)
+end if
+set currentConfElem = displayedElem.selectSingleNode("colorsFont/background-color")
+condValue = currentConfElem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_sel_BgColor.style.backgroundColor = withCondBgColor
+    lbl_sel_BgColor.title = condValue
+else
+    lbl_sel_BgColor.style.backgroundColor = ""
+    lbl_sel_BgColor.title = ""
+end if
+if (Len(currentConfElem.text) > 0) then
+    ix = z_sel_BgColor.getIndexByValue(currentConfElem.text)
+    Call z_sel_BgColor.selectOption(ix, false, true)
+    Call z_sel_BgColor.setComboText(currentConfElem.text)
+end if
+
+set currentConfElem = displayedElem.selectSingleNode("symbolBefore")
+set currentConfElemItem = currentConfElem.selectSingleNode("symbol")
+condValue = currentConfElemItem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_inp_SymbolBefore.style.backgroundColor = withCondBgColor
+    lbl_inp_SymbolBefore.title = condValue
+else
+    lbl_inp_SymbolBefore.style.backgroundColor = ""
+    lbl_inp_SymbolBefore.title = ""
+end if
+inp_SymbolBefore.value = getConfVal(currentConfElemItem)
+inp_SymbolBefore.title = getConfVal(currentConfElemItem)
+
+set currentConfElem = displayedElem.selectSingleNode("symbolsRound")
+set currentConfElemItem = currentConfElem.selectSingleNode("symbolRoundBefore")
+condValue = currentConfElemItem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_inp_SymbolRoundBefore.style.backgroundColor = withCondBgColor
+    lbl_inp_SymbolRoundBefore.title = condValue
+else
+    lbl_inp_SymbolRoundBefore.style.backgroundColor = ""
+    lbl_inp_SymbolRoundBefore.title = ""
+end if
+inp_SymbolRoundBefore.value = getConfVal(currentConfElemItem)
+inp_SymbolRoundBefore.title = getConfVal(currentConfElemItem)
+
+set currentConfElemItem = currentConfElem.selectSingleNode("algab")
+condValue = currentConfElemItem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_inp_Algab.style.backgroundColor = withCondBgColor
+    lbl_inp_Algab.title = condValue
+else
+    lbl_inp_Algab.style.backgroundColor = ""
+    lbl_inp_Algab.title = ""
+end if
+inp_Algab.value = getConfVal(currentConfElemItem)
+inp_Algab.title = getConfVal(currentConfElemItem)
+
+set currentConfElemItem = currentConfElem.selectSingleNode("lopeb")
+condValue = currentConfElemItem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_inp_Lopeb.style.backgroundColor = withCondBgColor
+    lbl_inp_Lopeb.title = condValue
+else
+    lbl_inp_Lopeb.style.backgroundColor = ""
+    lbl_inp_Lopeb.title = ""
+end if
+inp_Lopeb.value = getConfVal(currentConfElemItem)
+inp_Lopeb.title = getConfVal(currentConfElemItem)
+
+set currentConfElemItem = currentConfElem.selectSingleNode("symbolRoundAfter")
+inp_SymbolRoundAfter.value = getConfVal(currentConfElemItem)
+inp_SymbolRoundAfter.title = getConfVal(currentConfElemItem)
+
+
+set currentConfElem = displayedElem.selectSingleNode("symbolBetweenRepeating")
+set currentConfElemItem = currentConfElem.selectSingleNode("symbol")
+condValue = currentConfElemItem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+if (Len(condValue) > 0) then
+    lbl_inp_SymbolBetweenRepeating.style.backgroundColor = withCondBgColor
+    lbl_inp_SymbolBetweenRepeating.title = condValue
+else
+    lbl_inp_SymbolBetweenRepeating.style.backgroundColor = ""
+    lbl_inp_SymbolBetweenRepeating.title = ""
+end if
+inp_SymbolBetweenRepeating.value = getConfVal(currentConfElemItem)
+inp_SymbolBetweenRepeating.title = getConfVal(currentConfElemItem)
+
+'replaceText ei ole tingimusega ...
+set currentConfElem = displayedElem.selectSingleNode("replaceText")
+inp_ReplaceText.value = getConfVal(currentConfElem)
+inp_ReplaceText.title = getConfVal(currentConfElem)
+
+
+'********************************************************************************
+'Atribuudid
+'
+Dim attr, attrQN, attrUri, xsdXPath, xsdNode, attrKirjeldav, seldOpt
+Dim rida, kast, html, htmlId
+Dim currentAttr, currentConfAttr, currentConfAttrItem
+Dim vis, labelStuff
+
+Dim tekst, leidub, elNimi, atribuut, atribuudid
+
+if (TypeName(decl.type) = "ISchemaComplexType") then
+    if (decl.type.attributes.length > 0) then
+
+        set currentConfElem = displayedElem.selectSingleNode("attrs")
+
+        for each attr in decl.type.attributes
+
+            If Not (attr.namespaceURI = "") Then
+                attrUri = attr.namespaceURI
+                attrQN = xmlNsm.getPrefixes(attrUri).Item(0) & ":" & attr.name
+            Else
+                attrUri = ""
+                attrQN = attr.name
+            End If
+
+            xsdXPath = ".//" & NS_XS_PR & ":attribute[@name = '" & attr.name & "']/" & NS_XS_PR & ":annotation/" & NS_XS_PR & ":documentation[@xml:lang = '" & sAppLang & "']"
+            set xsdNode = xsdDOM.documentElement.selectSingleNode(xsdXPath)
+            if Not (xsdNode Is Nothing) then
+                attrKirjeldav = xsdNode.text
+            else
+                attrKirjeldav = attrQN
+            end if
+            
+            esinebStr = ""
+            set esinevad = sel_skeem.options
+            for each esineb in esinevad
+                tekst = esineb.innerText
+                tekst = Mid(tekst, InStr(1, tekst, "<") + 1)
+                tekst = Mid(tekst, 1, InStr(1, tekst, ">") - 1)
+                ix = InStr(1, tekst, " ")
+                if (ix > 0) then
+                    elNimi = Mid(tekst, 1, ix - 1)
+                    tekst = Mid(tekst, ix + 1)
+                    tekst = Replace(tekst, "[obl]", "")
+                    atribuudid = Split(tekst, " ")
+                    leidub = false
+                    for each atribuut in atribuudid
+                        if (atribuut = "@" & attrQn) then
+                            leidub = true
+                            exit for
+                        end if
+                    next
+                    if (leidub) then
+                        if (InStr(1, esinebStr & ", ", ", " & elNimi & ", ") < 1) then
+                            esinebStr = esinebStr & ", " & elNimi
+                        end if
+                    end if
+                end if
+            next
+
+'			set esinevad = xsdDOM.documentElement.selectNodes("xs:element[@name][.//xs:attribute[@ref = '" & attrQN & "']]")
+'			for each esineb in esinevad
+'			    esinebStr = esinebStr & ", " & xsdTnsPr & ":" & esineb.getAttribute("name")
+'			next
+
+            htmlId = "attr_" & Replace(attrQN, ":", "-")
+
+
+            '1. RIDA - esineb, näidata
+            set rida = tbl_Atribuudid.insertRow
+            Call rida.setAttribute("confElemAttrName", attrQN)
+
+            '1.
+            set kast = rida.insertCell
+            kast.style.width = "80%"
+            html = "<span style = 'text-decoration:underline;font-weight:bold;width:100%;background-color:Aqua;'>@" & attrQN & " - " & attrKirjeldav & " (esineb " & Mid(esinebStr, 3) & ")</span>"
+            kast.colSpan = 7
+            kast.innerHTML = html
+
+            set currentAttr = currentConfElem.selectSingleNode("attr[@name = '" & attrQN & "']")
+
+            '2.
+            set currentConfAttr = currentAttr.selectSingleNode("attr_Display")
+            set kast = rida.insertCell
+''            kast.style.width = "20mm"
+            html = "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+                vis = ""
+            else
+                vis = "hidden"
+            end if
+            html = html & " confProp='attr_Display' id='chk_Show_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = ""
+            end if
+            html = html & "<label" & labelStuff & " id='lbl_chk_Show_" & htmlId & "' for='chk_Show_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>Näidata</label>"
+            kast.innerHTML = html
+
+
+            '2. RIDA - ei trüki, sümbolid
+            set rida = tbl_Atribuudid.insertRow
+            rida.style.visibility = vis
+            Call rida.setAttribute("confElemAttrName", attrQN)
+
+            '1.
+            set currentConfAttr = currentAttr.selectSingleNode("attr_NotInPrint")
+            set kast = rida.insertCell
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = ""
+            end if
+            html = "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='attr_NotInPrint' id='chk_NotInPrint_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label" & labelStuff & " id='lbl_chk_NotInPrint_" & htmlId & "' for='chk_NotInPrint_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>Ei trüki</label>"
+'            kast.colSpan = 1
+            kast.innerHTML = html
+
+            '2.
+            set currentConfAttr = currentAttr.selectSingleNode("attr_SymbolsRound/attr_SymbolRoundBefore")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = ""
+            end if
+            set kast = rida.insertCell
+            html = "<label" & labelStuff & " id='lbl_inp_SymbolRoundBefore_" & htmlId & "' for='inp_SymbolRoundBefore_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>Süm. ümber: </label>"
+            html = html & "<input confProp='attr_SymbolsRound/attr_SymbolRoundBefore' id='inp_SymbolRoundBefore_" & htmlId & "' type='text' value='" & getConfVal(currentConfAttr) & "' style='width:2cm;' onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />"
+            set currentConfAttr = currentAttr.selectSingleNode("attr_SymbolsRound/attr_SymbolRoundAfter")
+            html = html & "<input confProp='attr_SymbolsRound/attr_SymbolRoundAfter' id='inp_SymbolRoundAfter_" & htmlId & "' type='text' value='" & getConfVal(currentConfAttr) & "' style='width:2cm;' onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />"
+            kast.colSpan = 7
+            kast.innerHTML = html
+
+
+            '3. RIDA - font, suurus, värv, taust, asendus
+            set rida = tbl_Atribuudid.insertRow
+            rida.style.visibility = vis
+            Call rida.setAttribute("confElemAttrName", attrQN)
+            '1.
+            set kast = rida.insertCell
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_font-family")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            html = "<label" & labelStuff & " id='lbl_inp_Font_" & htmlId & "' for='inp_Font_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>Font </label>"
+            html = html & "<input type='text' id='inp_Font_" & htmlId & "' style='width:2cm;' confProp='colorsFont/attr_font-family' value='" & currentConfAttr.text & "' />"
+'            kast.colSpan = 1
+            kast.innerHTML = html
+            '3.
+            set kast = rida.insertCell
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_font-size")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            html = "<label" & labelStuff & " id='lbl_inp_FontSize_" & htmlId & "' for='inp_FontSize_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>Suurus </label>"
+            html = html & "<input type='text' id='inp_FontSize_" & htmlId & "' style='width:1cm;' confProp='colorsFont/attr_font-size' value='" & currentConfAttr.text & "' />"
+'            kast.colSpan = 1
+            kast.innerHTML = html
+            '5.
+            set kast = rida.insertCell
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_color")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            html = "<label" & labelStuff & " id='lbl_inp_Color_" & htmlId & "' for='inp_Color_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>Värv </label>"
+            html = html & "<input type='text' id='inp_Color_" & htmlId & "' style='width:1cm;' confProp='colorsFont/attr_color' value='" & currentConfAttr.text & "' />"
+'            kast.colSpan = 1
+            kast.innerHTML = html
+            '7.
+            set kast = rida.insertCell
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_background-color")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            html = "<label" & labelStuff & " id='lbl_inp_BgColor_" & htmlId & "' for='inp_BgColor_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>Taust </label>"
+            html = html & "<input type='text' id='inp_BgColor_" & htmlId & "' style='width:1cm;' confProp='colorsFont/attr_background-color' value='" & currentConfAttr.text & "' />"
+'            kast.colSpan = 1
+            kast.innerHTML = html
+            '8.
+            set kast = rida.insertCell
+            set currentConfAttr = currentAttr.selectSingleNode("attr_ReplaceText")
+            html = "<label class='thisPageNoCond' id='lbl_inp_ReplaceText_" & htmlId & "' for='inp_ReplaceText_" & htmlId & "'>Asendus: </label>"
+            html = html & "<input confProp='attr_ReplaceText' id='inp_attr_ReplaceText_" & htmlId & "' type='text' value='" & getConfVal(currentConfAttr) & "' style='width:2cm;' onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />"
+            kast.colSpan = 4
+            kast.innerHTML = html
+
+
+            '2. RIDA - bold, italic, underline ...
+            set rida = tbl_Atribuudid.insertRow
+            rida.style.visibility = vis
+            Call rida.setAttribute("confElemAttrName", attrQN)
+            
+            '1.
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_font-weight_bold")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            set kast = rida.insertCell
+            html = "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='colorsFont/attr_font-weight_bold' id='chk_Bold_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label" & labelStuff & " id='lbl_chk_Bold_" & htmlId & "' for='chk_Bold_" & htmlId & "' style = 'font-weight:bold;' oncontextmenu='lblOnContextMenu()'>B</label>"
+
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_font-style_italic")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            html = html & "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='colorsFont/attr_font-style_italic' id='chk_Italic_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label" & labelStuff & " id='lbl_chk_Italic_" & htmlId & "' for='chk_Italic_" & htmlId & "' style = 'font-style:italic;' oncontextmenu='lblOnContextMenu()'>I</label>"
+
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_text-decoration_underline")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            html = html & "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='colorsFont/attr_text-decoration_underline' id='chk_Underline_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label" & labelStuff & " id='lbl_chk_Underline_" & htmlId & "' for='chk_Underline_" & htmlId & "' style = 'text-decoration:underline;' oncontextmenu='lblOnContextMenu()'>U</label>"
+
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_font-variant_small-caps")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            html = html & "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='colorsFont/attr_font-variant_small-caps' id='chk_UCase_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label" & labelStuff & " id='lbl_chk_UCase_" & htmlId & "' for='chk_UCase_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>↑a<span style = 'font-variant:small-caps;'>a</span></label>"
+
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_vertical-align_sub")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            html = html & "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='colorsFont/attr_vertical-align_sub' id='chk_SubScript_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label" & labelStuff & " id='lbl_chk_SubScript_" & htmlId & "' for='chk_SubScript_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>X<sub>n</sub></label>"
+
+            set currentConfAttr = currentAttr.selectSingleNode("colorsFont/attr_vertical-align_super")
+            condValue = currentConfAttr.getAttribute("cond")
+            if (IsNull(condValue)) then
+                condValue = ""
+            end if
+            if (Len(condValue) > 0) then
+                labelStuff = " class='fromText' style = 'background-color:" & withCondBgColor & ";' title = '" & condValue & "'"
+            else
+                labelStuff = " class='fromText'"
+            end if
+            html = html & "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='colorsFont/attr_vertical-align_super' id='chk_SuperScript_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label" & labelStuff & " id='lbl_chk_SuperScript_" & htmlId & "' for='chk_SuperScript_" & htmlId & "' oncontextmenu='lblOnContextMenu()'>X<sup>n</sup></label>"
+
+            html = html & "&nbsp;&nbsp;&nbsp;"
+
+            set currentConfAttr = currentAttr.selectSingleNode("attr_DisplayLocationBefore")
+            html = html & "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='attr_DisplayLocationBefore' id='chk_ShowBefore_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label class='thisPageNoCond' id='lbl_chk_ShowBefore_" & htmlId & "' for='chk_ShowBefore_" & htmlId & "'>Ees</label>"
+            
+            set currentConfAttr = currentAttr.selectSingleNode("attr_DisplayLocationAfter")
+            html = html & "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='attr_DisplayLocationAfter' id='chk_ShowAfter_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label class='thisPageNoCond' id='lbl_chk_ShowAfter_" & htmlId & "' for='chk_ShowAfter_" & htmlId & "'>Taga</label>"
+
+            set currentConfAttr = currentAttr.selectSingleNode("attr_SpaceBefore")
+            html = html & "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='attr_SpaceBefore' id='chk_SpaceBeforeAfter_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label class='thisPageNoCond' id='lbl_chk_SpaceBeforeAfter_" & htmlId & "' for='chk_SpaceBeforeAfter_" & htmlId & "'>Tühikuga</label>"
+
+            set currentConfAttr = currentAttr.selectSingleNode("attr_IsLink")
+            html = html & "<input"
+            if (currentConfAttr.text = "1") then
+                html = html & " checked"
+            end if
+            html = html & " confProp='attr_IsLink' id='chk_IsLink_" & htmlId & "' type='checkbox' onclick='chkOnClick()' />"
+            html = html & "<label class='thisPageNoCond' id='lbl_chk_IsLink_" & htmlId & "' for='chk_IsLink_" & htmlId & "'>Link</label>"
+
+            kast.colSpan = 8
+            kast.innerHTML = html
+
+
+            'Peavad siin olema, et kogu atribuudi tabel valmis oleks
+            set obj = tbl_Atribuudid.all("chk_Show_" & htmlId)
+            Call chk_Show_Proc(obj)
+
+		next
+    end if
+end if
+
+if (div_Eelvaade.getElementsByTagName("SPAN").length > 0) then
+    If Not IsEmpty(clickedEelvaadeObj) then
+        clickedEelvaadeObj.style.backgroundColor = clickedEelvaadeBgColor
+    end if
+
+    Dim vaateSpan
+    set vaateSpan = div_Eelvaade.all(opt.id & "/text()[1]", 0)
+
+    if Not (vaateSpan Is Nothing) then
+        if (vaateSpan.tagName = "SPAN") then
+            set clickedEelvaadeObj = vaateSpan
+            clickedEelvaadeBgColor = clickedEelvaadeObj.style.backgroundColor
+            clickedEelvaadeObj.style.backgroundColor = "silver"
+            clickedEelvaadeObj.scrollIntoView()
+        end if
+    end if
+end if
+
+End Sub 'setElemLayout
+
+
+Dim clickedEelvaadeObj, clickedEelvaadeBgColor
+'-----------------------------------------------------------------------------------
+Sub eelvaadeOnClick()
+If Not IsEmpty(clickedEelvaadeObj) then
+    clickedEelvaadeObj.style.backgroundColor = clickedEelvaadeBgColor
+end if
+
+Dim oSrc
+set oSrc = window.event.srcElement
+
+if (oSrc.tagName = "SPAN") then
+    set clickedEelvaadeObj = oSrc
+    clickedEelvaadeBgColor = clickedEelvaadeObj.style.backgroundColor
+    clickedEelvaadeObj.style.backgroundColor = "silver"
+    
+    Dim opt, optId, rex
+    set rex = New RegExp
+    rex.Global = True
+    rex.Pattern = "(\[\d+\])"
+    optId = clickedEelvaadeObj.id
+
+    if (Len(optId) > 0) then
+        optId = rex.Replace(Mid(optId, 1, InStrRev(optId, "/") - 1), "[1]")
+        set opt = sel_Skeem.options(optId, 0)
+        if Not (opt Is Nothing) then
+            opt.scrollIntoView()
+            opt.selected = true
+            Call setElemLayout()
+        end if
+    end if
+elseif (oSrc.tagName = "A") then
+    window.event.returnValue = false
+end if
+End Sub 'eelvaadeOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub saveGendViewAs()
+
+Dim smdArgs, retVal, cmdId, dirName, filePtrn
+cmdId = "näitaVaateid"
+dirName = "xsl/"
+filePtrn = gendXslStandard + "*.xsl"
+smdArgs = dic_desc & PD & sAppLang & PD & usrName & PD & cmdId & PD & dirName & PD & filePtrn & PD & gendXslNimi
+retVal = window.showModalDialog("nimekiri.htm", smdArgs, "dialogHeight:425px;dialogWidth:800px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no")
+if (Len(retVal) > 0) then
+    if (retVal = "___kustutati___") then
+        window.returnValue = retVal
+        window.close()
+    else
+        gendXslNimi = gendXslStandard & "_" & retVal
+        salvestaVaade("")
+    end if
+end if
+End Sub 'saveGendViewAs
+
+
+'-----------------------------------------------------------------------------------
+Sub saveGendView()
+salvestaVaade("")
+End Sub 'saveGendView
+
+
+'-----------------------------------------------------------------------------------
+Sub salvestaVaade(nimetus)
+Dim ret
+ret = doPreviewArt()
+
+if (ret = 0) then
+    Exit Sub
+end if
+
+btn_Save.disabled = true
+
+Dim xh, PD
+PD = ChrW(&HE001)
+
+Dim uusXsl, indDom, uusConfXml
+set indDom = IDD("", "", False, False, Nothing)
+indDom.preserveWhiteSpace = false
+Call gendViewDom.transformNodeToObject(xslIndented, indDom)
+uusXsl = indDom.xml
+
+set indDom = IDD("", "", False, False, Nothing)
+indDom.preserveWhiteSpace = true
+Call viewConfDom.transformNodeToObject(xslIndented, indDom)
+uusConfXml = indDom.xml
+
+Dim rex
+set rex = New RegExp
+rex.Global = true
+rex.Multiline = true
+rex.Pattern = "(^\s*$)"
+uusConfXml = rex.Replace(uusConfXml, "")
+
+Dim saba
+saba = Mid(gendXslNimi, Len(gendXslStandard) + 1)
+
+
+set xh = exCGISync("../tools.cgi", "saveGendView" & PD & dic_desc & PD & usrName & PD & _
+                    uusXsl & PD & _
+                    uusConfXml & PD & _
+                    cssRules & PD & _
+                    saba)
+
+if (xh.statusText = "OK") then
+    Dim rspDOM, loadStatus, sta, msg
+    set rspDOM = IDD("", "", False, False, Nothing) 'IDD - InitDomDoc
+    loadStatus = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+    
+    if (loadStatus) then
+        sta = rspDOM.selectSingleNode("rsp/sta").text
+        if (sta = "Success") then
+            vaadeSalvestatud = true
+            msg = "Vaate XSL, CSS ja konfiguratsiooni salvestamine"
+            if (Len(saba) > 0) then
+                msg = msg & " (" & Mid(saba, 2) & ")"
+            end if
+            msg = msg & " OK!"
+            MsgBox msg, vbInformation, "Vaate genereerimine"
+        end if
+    end if
+else
+    MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+        xh.responseText, _
+        vbCritical
+end if
+
+btn_Save.disabled = false
+
+End Sub 'salvestaVaade
+
+
+'-----------------------------------------------------------------------------------
+Sub btnQuitOnClick()
+window.close()
+End Sub 'btnQuitOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub lblOnContextMenu()
+if (IsEmpty(displayedElem)) then
+    Exit Sub
+end if
+
+Dim oSrc, forElement, confProp, obj, attrQn, currentConfItem, condValue
+set oSrc = window.event.srcElement
+if (oSrc.tagName = "A" or oSrc.tagName = "SPAN" or oSrc.tagName = "SUB" or oSrc.tagName = "SUP") then 'elemendi color ja bgcolor; elemendi ja atrbuudi suurtähed; atribuudi SUP ja SUB
+    set oSrc = oSrc.parentElement
+end if
+set forElement = document.all(oSrc.htmlFor)
+'kui nt <select> - ist on tehtud combo ...
+if (forElement Is Nothing) then
+    confProp = oSrc.getAttribute("confprop")
+else
+    confProp = forElement.getAttribute("confprop")
+end if
+
+if (tbl_Atribuudid.contains(oSrc)) then
+    set obj = oSrc
+    do
+        set obj = obj.parentElement
+    loop until (obj.tagName = "TR")
+    attrQn = obj.getAttribute("confElemAttrName")
+    set currentConfItem = displayedElem.selectSingleNode("attrs/attr[@name = '" & attrQn & "']/" & confProp)
+else
+    set currentConfItem = displayedElem.selectSingleNode(confProp)
+end if
+condValue = currentConfItem.getAttribute("cond")
+if (IsNull(condValue)) then
+    condValue = ""
+end if
+
+Dim tval
+'InputBox: prompt, title, default
+tval = InputBox("Sisesta tingimus!", "Tingimus", condValue)
+if (tval = "") then 'ka Cancel
+    Call currentConfItem.removeAttribute("cond")
+    oSrc.style.backgroundColor = ""
+    oSrc.title = ""
+    Exit Sub
+else
+    Call currentConfItem.setAttribute("cond", tval)
+    oSrc.style.backgroundColor = withCondBgColor
+    oSrc.title = tval
+end if
+End Sub 'lblOnContextMenu
+
+
+'-----------------------------------------------------------------------------------
+Sub salvestaXSLT()
+if IsEmpty(displayedElem) then
+    Exit Sub
+end if
+
+Dim currentConfItem, confProp, confAlgus, confLopp, ix, confAlgusItem, confLoppItem
+confProp = window.event.srcElement.getAttribute("confProp")
+set currentConfItem = displayedElem.selectSingleNode(confProp)
+
+Dim tekst, smdArgs, nVal
+tekst = getConfVal(currentConfItem)
+smdArgs = Array(tekst, "", "vaba XSLT tekst")
+nVal = window.showModalDialog("getValue.htm", _
+    smdArgs, _
+    "dialogHeight:300px;dialogWidth:1024px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no")
+if (nVal = "") then
+'    Call currentConfItem.parentNode.removeChild(currentConfItem)
+    currentConfItem.text = ""
+    Exit Sub
+end if
+Call appendFrag(currentConfItem, nVal, true)
+End Sub 'salvestaXSLT
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+    window.close()
+end if
+End Sub 'bodyOnKeyUp
+
+
+-->
+    </script>
+</head>
+<body style="background-color: buttonface" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+    <div id="div_AdminToimetamisala" style="visibility: hidden;">
+        <table id="tbl_Gen" border="1" style="width: 100%; height: 90%; table-layout: fixed;">
+            <tr>
+                <td id="td_Skeem" style="width: 17%;" valign="top">
+                    <div id="div_SelectContainer" style="overflow: auto; width: 100%; height: 100%;">
+                        <select id="sel_Skeem" size="3" onchange="setElemLayout()">
+                        </select>
+                    </div>
+                </td>
+                <td id="td_Element" style="width: 55%;" valign="top">
+                    <table id="tbl_chkShow" border="1" style="width: 100%;" rules="all">
+                        <tr>
+                            <td>
+                                <span id='elemName' style='text-decoration: underline; font-weight: bold; width: 100%;
+                                    background-color: Aqua;'></span>
+                            </td>
+                            <td style="width: 17mm;">
+                                <input confprop='global' id='chk_Global' type='checkbox' onclick='chkOnClick()' />
+                                <label class='thisPageNoCond' id='lbl_chk_Global' for='chk_Global'>
+                                    Glob.</label>
+                            </td>
+                            <td style="width: 20mm;">
+                                <input checked confprop='display' id='chk_Show' type='checkbox' onclick='chkOnClick()' />
+                                <label id='lbl_chk_Show' for='chk_Show' oncontextmenu='lblOnContextMenu()'>
+                                    Näidata</label>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="div_Element" style='height: 93%; overflow: auto;'>
+                        <table id="tbl_Element" border="1" style="width: 100%;">
+                            <tr>
+                                <td>
+                                    <input confprop='notInPrint' id='chk_NotInPrint' type='checkbox' onclick='chkOnClick()' />
+                                    <label id='lbl_chk_NotInPrint' for='chk_NotInPrint' oncontextmenu='lblOnContextMenu()'>
+                                        Ei trüki</label>
+                                    <input confprop='newLine' id='chk_NewLine' type='checkbox' onclick='chkOnClick()' />
+                                    <label id='lbl_chk_NewLine' for='chk_NewLine' oncontextmenu='lblOnContextMenu()'>
+                                        Uus rida</label>
+                                    <label class='thisPageNoCond' id='lbl_inp_ContainsIn' for='inp_ContainsIn'>
+                                        Sisaldub</label>
+                                    <input confprop='containsIn' id='inp_ContainsIn' type='text' value='' style="width: 6cm;"
+                                        onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                    <label class='thisPageNoCond' id='lbl_inp_FirstLanguage' for='inp_FirstLanguage'>
+                                        Lähtekeel:</label>
+                                    <input confprop='firstLanguage' id='inp_FirstLanguage' type='text' value='' style="width: 1cm;"
+                                        onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table id="tbl_Symbols" border="1" style="width: 100%;" rules="all">
+                                        <tr>
+                                            <td>
+                                                <label id='lbl_inp_SymbolBefore' for='inp_SymbolBefore' oncontextmenu='lblOnContextMenu()'>
+                                                    Süm. eelm:</label>
+                                                <input confprop='symbolBefore/symbol' id='inp_SymbolBefore' type='text' value=''
+                                                    style="width: 2cm;" onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                            </td>
+                                            <td>
+                                                <label id='lbl_inp_SymbolRoundBefore' for='inp_SymbolRoundBefore' oncontextmenu='lblOnContextMenu()'>
+                                                    ümber:</label>
+                                                <input confprop='symbolsRound/symbolRoundBefore' id='inp_SymbolRoundBefore' type='text'
+                                                    value='' style="width: 2cm;" onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                                <input confprop="symbolsRound/beginsWith" id="inp_BeginsWith" type="button" value="A"
+                                                    title="Algab ..." onclick="salvestaXSLT()" />
+                                                <label id='lbl_inp_Algab' for='inp_Algab' oncontextmenu='lblOnContextMenu()'>
+                                                    ees:</label>
+                                                <input confprop='symbolsRound/algab' id='inp_Algab' type='text' value='' style="width: 1cm;"
+                                                    onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                                <label id='lbl_inp_Lopeb' for='inp_Lopeb' oncontextmenu='lblOnContextMenu()'>
+                                                    taga:</label>
+                                                <input confprop='symbolsRound/lopeb' id='inp_Lopeb' type='text' value='' style="width: 1cm;"
+                                                    onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                                <input confprop="symbolsRound/endsWith" id="inp_EndsWith" type="button" value="L"
+                                                    title="Lõpeb ..." onclick="salvestaXSLT()" />
+                                                <input confprop='symbolsRound/symbolRoundAfter' id='inp_SymbolRoundAfter' type='text'
+                                                    value='' style="width: 2cm;" onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                            </td>
+                                            <td>
+                                                <label id='lbl_inp_SymbolBetweenRepeating' for='inp_SymbolBetweenRepeating' oncontextmenu='lblOnContextMenu()'>
+                                                    vahel:</label>
+                                                <input confprop='symbolBetweenRepeating/symbol' id='inp_SymbolBetweenRepeating' type='text'
+                                                    value='' style="width: 2cm;" onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table id="tbl_ColorsFont" border="1" style="width: 100%;" rules="all">
+                                        <tr>
+                                            <td>
+                                                <label class="fromText" confprop='colorsFont/font-family' id='lbl_sel_Font' for='sel_Font'
+                                                    oncontextmenu='lblOnContextMenu()'>
+                                                    Font</label>
+                                            </td>
+                                            <td colspan='3'>
+                                                <select id="sel_Font" style='width: 245px;'>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <label class="fromText" confprop='colorsFont/font-size' id='lbl_sel_FontSize' for='sel_FontSize'
+                                                    oncontextmenu='lblOnContextMenu()'>
+                                                    Suurus</label>
+                                            </td>
+                                            <td>
+                                                <select id='sel_FontSize' style='width: 100px;'>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label class="fromText" confprop='colorsFont/color' id='lbl_sel_Color' for='sel_Color'
+                                                    oncontextmenu='lblOnContextMenu()'>
+                                                    <a href='../help/tips.htm#Colors' target='_blank'>Värv</a></label>
+                                            </td>
+                                            <td>
+                                                <select id="sel_Color" opt_type="image" style='width: 100px;'>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <label class="fromText" confprop='colorsFont/background-color' id='lbl_sel_BgColor'
+                                                    for='sel_BgColor' oncontextmenu='lblOnContextMenu()'>
+                                                    <a href='../help/tips.htm#Colors' target='_blank'>Taust</a></label>
+                                            </td>
+                                            <td>
+                                                <select id="sel_BgColor" opt_type="image" style='width: 100px;'>
+                                                </select>
+                                            </td>
+                                            <td colspan="2">
+                                                <label class='thisPageNoCond' id='lbl_inp_ReplaceText' for='inp_ReplaceText'>
+                                                    Asendus:</label>
+                                                <input confprop='replaceText' id='inp_ReplaceText' type='text' value='' style="width: 4cm;"
+                                                    onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input confprop='colorsFont/font-weight_bold' id='chk_Bold' type='checkbox' onclick='chkOnClick()' />
+                                    <label class="fromText" id='lbl_chk_Bold' for='chk_Bold' style="font-weight: bold;"
+                                        oncontextmenu='lblOnContextMenu()'>
+                                        B</label>
+                                    <input confprop='colorsFont/font-style_italic' id='chk_Italic' type='checkbox' onclick='chkOnClick()' />
+                                    <label class="fromText" id='lbl_chk_Italic' for='chk_Italic' style="font-style: italic;"
+                                        oncontextmenu='lblOnContextMenu()'>
+                                        I</label>
+                                    <input confprop='colorsFont/text-decoration_underline' id='chk_Underline' type='checkbox'
+                                        onclick='chkOnClick()' />
+                                    <label class="fromText" id='lbl_chk_Underline' for='chk_Underline' style="text-decoration: underline;"
+                                        oncontextmenu='lblOnContextMenu()'>
+                                        U</label>
+                                    <input confprop='colorsFont/font-variant_small-caps' id='chk_UCase' type='checkbox'
+                                        onclick='chkOnClick()' />
+                                    <label class="fromText" id='lbl_chk_UCase' for='chk_UCase'>
+                                        ↑a<span style="font-variant: small-caps;" oncontextmenu='lblOnContextMenu()'>a</span></label>
+                                    <label class="fromText" oncontextmenu='lblOnContextMenu()' id='lbl_inp_LetterSpacing'
+                                        for='inp_LetterSpacing'>
+                                        Sõrendus</label>
+                                    <input confprop='colorsFont/letterSpacing' id='inp_LetterSpacing' type='text' value=''
+                                        style="width: 1cm;" onchange='tbOnChange()' oncontextmenu='tbOnContextMenu()' />
+                                    <input confprop='colorsFont/text-decoration_line-through' id='chk_LineThrough' type='checkbox'
+                                        onclick='chkOnClick()' />
+                                    <label class="fromText" id='lbl_chk_LineThrough' for='chk_LineThrough' style="text-decoration: line-through;"
+                                        oncontextmenu='lblOnContextMenu()'>
+                                        S</label>
+                                    <input confprop='isLink' id='chk_IsLink' type='checkbox' onclick='chkOnClick()' />
+                                    <label class="fromText" id='lbl_chk_IsLink' for='chk_IsLink' oncontextmenu='lblOnContextMenu()'>
+                                        Link</label>
+                                    <input confprop='applyChilds' id='chk_applyChilds' type='checkbox' onclick='chkOnClick()' />
+                                    <label id='lbl_applyChilds' for='chk_applyChilds' oncontextmenu='lblOnContextMenu()'>
+                                        Allelem</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table id="tbl_Atribuudid" border="1" style="width: 100%;" rules="all">
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td id="td_Eelvaade" valign="top">
+                    <div id="div_Eelvaade" style='background-color: AntiqueWhite; height: 93%; overflow: auto;'
+                        onclick='eelvaadeOnClick()'>
+                        Eelvaade</div>
+                    <table id="tbl_Refresh" border="1" style="width: 100%;">
+                        <tr>
+                            <td>
+                                <input id='btn_PrevievArt' type='button' value='art' title="Värskenda eelvaadet" onclick='doPreviewArt()' />
+                                <input id='btn_SelectArt' type='button' value='...' title="Vali muu artikkel" onclick='doSelectArt()' />
+                            </td>
+                            <td>
+                                <input id='btn_PrevievRefresh' type='button' value='tA' title="Tingartikli eelvaade" onclick='doPreviewTingArt()' />
+                            </td>
+                            <td>
+                                <input id='btn_Save' type='button' value='Salvesta' onclick='saveGendView()' />
+                                <input id='btn_SaveAs' type='button' value='Salvesta ...' onclick='saveGendViewAs()' />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table id="tbl_Ops" border="1" style="width: 100%;">
+            <tr>
+                <td>
+                    <input id='btn_Quit' type='button' value='    OK    ' onclick='btnQuitOnClick()' />
+                    <!--<A HREF="javascript:history.go(0)">Värskenda</A>-->
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="langConst" style="display: none;">
+        <div id="langConst_et">
+            var DOC_TITLE = "Artikli vaate kujundus"; var COL_SHOW = "Näi-data"; var COL_DESC
+            = "Kirjeldav nimi"; var COL_TYPE = "Tüüp"; var COL_MIN = "Min"; var COL_MAX = "Max";
+            var COL_SPACE = "Tühik"; var COL_BEFORE = "Ette"; var COL_ELEMENT = "Nr ja element";
+            var COL_CONTENT = "Sisu"; var COL_AFTER = "Taha"; var COL_PATH = "Rada"; var CONF_EDIT_TITLE
+            = "Muuda"; var SAVE_ENTRY_VIEW_XSL = "Artikli vaate XSL genereerimine"; var SAVE_CONF_XML
+            = "Artikli vaate konfiguratsiooni salvestamine"; var SAVE_XSL_BTN_TEXT = "Genereeri
+            vaade"; var SAVE_CONF_BTN_TEXT = "Salvesta konfiguratsioon";
+        </div>
+        <div id="langConst_en">
+            var DOC_TITLE = "Entry layout design"; var COL_SHOW = "Show"; var COL_DESC = "Descriptive
+            name"; var COL_TYPE = "Type"; var COL_MIN = "Min"; var COL_MAX = "Max"; var COL_SPACE
+            = "Space"; var COL_BEFORE = "Before"; var COL_ELEMENT = "Element"; var COL_CONTENT
+            = "Content"; var COL_AFTER = "After"; var COL_PATH = "Path"; var CONF_EDIT_TITLE
+            = "Edit"; var SAVE_ENTRY_VIEW_XSL = "Generate entry layout XSL"; var SAVE_CONF_XML
+            = "Save entry layout configuration"; var SAVE_XSL_BTN_TEXT = "Generate layout";
+            var SAVE_CONF_BTN_TEXT = "Save configuration";
+        </div>
+    </div>
+    <object id="dlgHelper" classid="clsid:3050f819-98b5-11cf-bb82-00aa00bdce0b" width="0px"
+        height="0px">
+    </object>
+</body>
+</html>

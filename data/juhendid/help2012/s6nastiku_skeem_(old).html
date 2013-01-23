@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <title>ekieki - Sõnastiku skeem (old)</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+Sõnastiku skeemi (struktuuri) saab näha eraldi aknas vastava nupu abil: <img src="/mainSpace/files/nupp_skeem.png" alt="nupp_skeem.png" title="nupp_skeem.png" /> Skeem (XML reeglistik) (paremal ülal). Avanevas aknas kirjeldatakse sõnastikus kasutusel olevad nimeruumid, atribuudid, elemendid, artikli hierarhiline struktuur ning sõnastikus kasutusel olevad andmetüübid. Skeemi saab muuta EELexi skeemieditoriga, selle kohta vt <a class="wiki_link_new" href="Skeemi%20genereerimine.html">Skeemi genereerimine</a>.<br />
+<br />
+<img src="/mainSpace/files/skeemifail_nimeruumid.png" alt="skeemifail_nimeruumid.png" title="skeemifail_nimeruumid.png" /><br />
+<br />
+<img src="/mainSpace/files/skeemifail_atrib.png" alt="skeemifail_atrib.png" title="skeemifail_atrib.png" style="height: 230px; width: 800px;" /><br />
+<br />
+<img src="/mainSpace/files/skeemifail_sisugael.png" alt="skeemifail_sisugael.png" title="skeemifail_sisugael.png" style="height: 333px; width: 800px;" /><br />
+<br />
+<img src="/mainSpace/files/skeemifail_skeem.png" alt="skeemifail_skeem.png" title="skeemifail_skeem.png" style="height: 297px; width: 800px;" /><br />
+<span style="display: block; text-align: justify;"><strong>Täisnimi</strong>: elemendi nimeruum (q), silt (sr, A, mg ja teised), atribuudid (algavad @-märgiga). Püstkriipsud nimeruumi ees näitavad, mitmendal tasemel see element asub juurelemendi (sõnaraamat ehk q:sr) suhtes.</span><br />
+<br />
+<span style="display: block; text-align: justify;"><strong>Korduvus</strong>: esimene arv sulgudes näitab, mitu korda minimaalselt element peab oma vanemelemendis sisalduma, teine arv: mitu korda maksimaalselt ta vanemelemendis võib sisalduda.</span><br />
+<span style="display: block; text-align: justify;"><strong>Tüüp</strong>:</span><br />
+<span style="display: block; text-align: justify;"><strong>St</strong> (<em>simpletype</em>) lihttüüp, sisuks saab olla ainult tekst; </span><br />
+<span style="display: block; text-align: justify;"><strong>Ct</strong> (<em>complextype</em>) komplekstüüpi - element võib omada tunnuseid ning tema sisuks võivad peale teksti olla ka teised elemendid.</span><br />
+<br />
+<span style="display: block; text-align: justify;"><strong>Sisu</strong> (mis antud elemendil võib olla):</span><br />
+<span style="display: block; text-align: justify;"><strong>To</strong> (<em>textonly</em>) tüübi sisuks võib olla ainult tekst,</span><br />
+<span style="display: block; text-align: justify;"><strong>Eo</strong> (<em>elementonly</em>) tüübi sisuks võivad olla ainult teised elemendid,</span><br />
+<span style="display: block; text-align: justify;"><strong>Mx</strong>(mixed) tüübi sisuks saab olla nii tekst kui ka teised elemendid.</span><br />
+<br />
+<span style="display: block; text-align: justify;"><strong>Sisu mudel</strong> (andmemudel, mis kehtib elemendis sisalduvate teiste elementide jaoks):</span><br />
+<span style="display: block; text-align: justify;"><strong>Sq</strong> (<em>sequence</em>) tähistab kindlaksmääratud järjekorda, Allelemente maksimaalselt üks kord suvalises järjestuses,</span><br />
+<span style="display: block; text-align: justify;"><strong>Ch</strong>(choice): ühte elementi loetelust ning</span><br />
+<span style="display: block; text-align: justify;"><strong>Any</strong>: suvalised elemendid suvalises järjestuses.</span><br />
+<br />
+Infot elemendi tüübi ja korduvuse kohta näeb ka artikli struktuuri näitavast menüüst (Toimetamisala kohal vasakul):<br />
+<span style="display: block; text-align: justify;"><img src="/mainSpace/files/son_avaleht_elemendi_otsing.png" alt="son_avaleht_elemendi_otsing.png" title="son_avaleht_elemendi_otsing.png" /></span>
+    </div>
+  </body>
+</html>

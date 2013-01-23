@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>procs_TextContMenu.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/dxf.html">dxf</a></li>
+            
+                <li><a href="..&#x2F;classes/komponendid.html">komponendid</a></li>
+            
+                <li><a href="..&#x2F;classes/kontrollid.html">kontrollid</a></li>
+            
+                <li><a href="..&#x2F;classes/lisad.html">lisad</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_app.html">procs_app</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_edt.html">procs_edt</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_TextContMenu.html">procs_TextContMenu</a></li>
+            
+                <li><a href="..&#x2F;classes/tools.html">tools</a></li>
+            
+                <li><a href="..&#x2F;classes/tools_dx.html">tools_dx</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: procs_TextContMenu.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+* procs_TextContMenu.js
+* Kontekstmenüüdega opereerimine.
+*
+* @class procs_TextContMenu
+*&#x2F;
+
+&#x2F;**
+* &#x2F;&#x2F;et vahepeal openmenuid ära ei kaoks;
+* 
+* @property openmenuid
+* @type {String} HTML elemendi id.
+*&#x2F;
+var openmenuid;
+&#x2F;**
+* See muutuja on mujal, aga hoitakse menüü elementi.
+* 
+* @property tn_cmenu
+* @type {String} HTML element.
+*&#x2F;
+
+&#x2F;**
+*     Käsitleb nii cmenu (tavaline kontekstmenüü) kui ka tn_cmenu (mixed=true #text sees tekkiv kontekstmenüü) onmouseover-it ja onmouseout-i. Ühel ajal korraga nad lahti ei ole, capture on korraga ühel neist
+*
+* @method SwitchCMenu
+*&#x2F;
+function SwitchCMenu() {
+    var cmel, pixY, opnMnuHeight, subMenu;
+
+    cmel = event.srcElement;
+    if (cmel.className == &quot;mi&quot;) {
+        &#x2F;&#x2F;et vahepeal openmenuid ära ei kaoks;
+        if ((cmel.parentElement.id == &quot;cmenu&quot; || cmel.parentElement.id == &quot;tn_cmenu&quot;)) {
+            if (openmenuid) { &#x2F;&#x2F;&#x27;alammenüü id;
+                document.getElementById(openmenuid).style.display = &quot;none&quot;;
+                openmenuid = &quot;&quot;;
+            }
+        }
+        cmel.className = &quot;hi&quot;;
+        if ((cmel.parentElement.id == &quot;cmenu&quot;)) {
+            if ((cmel.id == &quot;add_before&quot;)) {
+                openmenuid = &quot;sm_before&quot;;
+            } else if ((cmel.id == &quot;add_after&quot;)) {
+                openmenuid = &quot;sm_after&quot;;
+            } else if ((cmel.id == &quot;add_insert&quot;)) {
+                openmenuid = &quot;sm_insert&quot;;
+            } else if ((cmel.id == &quot;add_attrs&quot;)) {
+                openmenuid = &quot;sm_attrs&quot;;
+            } else if ((cmel.id == &quot;paste_node&quot;)) {
+                openmenuid = &quot;paste_node_options&quot;;
+            } else if ((cmel.id == &quot;assembleAndComplete&quot;)) {
+                openmenuid = &quot;aacContMenu&quot;;
+            }
+            if (openmenuid) {
+                subMenu = document.getElementById(openmenuid);
+                if (subMenu.innerHTML != &quot;&quot;) {
+                    subMenu.style.pixelLeft = cmenu.style.pixelLeft + cmenu.offsetWidth;
+                    subMenu.style.pixelTop = cmenu.style.pixelTop + cmel.offsetTop;
+                    subMenu.style.display = &quot;&quot;;
+                }
+            }
+        }
+        if ((cmel.parentElement.id == &quot;tn_cmenu&quot;)) {
+            if ((jsLeft(cmel.id, 7) == &quot;tn_add_&quot;)) { &#x2F;&#x2F;&#x27;before, after, insert;
+                openmenuid = &quot;tn_sm_&quot; + jsMid(cmel.id, 7);
+            } else if ((jsLeft(cmel.id, 4) == &quot;sym_&quot;)) { &#x2F;&#x2F;&#x27;queries, entities, styles, latin_1, latin_2, marks, combin, greek, cyrillic, udmurtian, mari, mymisc, etymology;
+                openmenuid = &quot;insert_&quot; + jsMid(cmel.id, 4);
+            }
+            if ((openmenuid != &quot;&quot;)) {
+                subMenu = document.getElementById(openmenuid);
+                if ((subMenu.innerHTML != &quot;&quot;)) {
+                    subMenu.style.display = &quot;&quot;;
+                    subMenu.style.pixelLeft = tn_cmenu.style.pixelLeft + (2 * tn_cmenu.offsetWidth) &#x2F; 3;
+                    opnMnuHeight = subMenu.offsetHeight;
+                    if ((opnMnuHeight &gt; tn_cmenu.offsetHeight)) {
+                        &#x2F;&#x2F;üles v alla liikudes on asi erinev: sellepärast veel lahutatud &#x27;cmel.offsetHeight&#x27;;
+                        if ((window.event.screenY - window.screenTop - cmel.offsetTop - cmel.offsetHeight &lt; (opnMnuHeight - tn_cmenu.offsetHeight))) {
+                            pixY = tn_cmenu.style.pixelTop;
+                        } else {
+                            pixY = tn_cmenu.style.pixelTop + tn_cmenu.offsetHeight - opnMnuHeight;
+                        }
+                    } else {
+                        pixY = tn_cmenu.style.pixelTop + cmel.offsetTop - (opnMnuHeight &#x2F; 4);
+                    }
+                    subMenu.style.pixelTop = pixY;
+                }
+            }
+        }
+    } else if ((cmel.className == &quot;hi&quot;)) {
+        cmel.className = &quot;mi&quot;;
+    } else if ((cmel.className == &quot;mi_span&quot;)) {
+        cmel.className = &quot;hi_span&quot;;
+        if (!(jsLeft(cmel.id, 7) == &quot;switch_&quot;)) {
+            if ((cmel.parentElement.style.pixelTop - window.screenTop &lt; document.getElementById(&quot;big_character&quot;).offsetHeight)) {
+                pixY = cmel.parentElement.style.pixelTop + cmel.parentElement.offsetHeight;
+            } else {
+                pixY = cmel.parentElement.style.pixelTop - 82;
+            }
+            &#x2F;&#x2F;big_character: html, x, y, fontStyle, fontFamily;
+            ShowBigCharacter(cmel.innerHTML, cmel.parentElement.style.pixelLeft + cmel.offsetLeft, pixY, cmel.style.fontStyle, cmel.style.fontFamily);
+        }
+    } else if ((cmel.className == &quot;hi_span&quot;)) {
+        HideBigCharacter();
+        cmel.className = &quot;mi_span&quot;;
+    }
+} &#x2F;&#x2F;SwitchCMenu
+
+
+&#x2F;**
+* Näitab kontekstmenüüd määratud kohas.    
+*
+* @method DisplayTNCMenu
+* @param {Int} posx
+* @param {Int} posy
+*&#x2F;
+function DisplayTNCMenu(posx, posy) {
+    tn_cmenu.style.pixelLeft = posx;
+    tn_cmenu.style.pixelTop = posy;
+    tn_cmenu.style.display = &quot;&quot;;
+    tn_cmenu.style.cursor = &quot;default&quot;;
+    tn_cmenu.setCapture();
+} &#x2F;&#x2F;DisplayTNCMenu
+
+&#x2F;**
+* Käivitatakse klõpsu peale.
+*
+* @method ClickTNCMenu
+*&#x2F;
+function ClickTNCMenu() {
+    var cmel
+    cmel = window.event.srcElement
+
+    &#x2F;&#x2F;peamenüü (tn_cmenu) sees olevad div-id
+    &#x2F;&#x2F;&quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;tn_add_before&#x27;&gt;Lisa ette&lt;&#x2F;div&gt;&quot;
+    &#x2F;&#x2F;&quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;tn_add_insert&#x27;&gt;Lisa sisse&lt;&#x2F;div&gt;&quot;
+    &#x2F;&#x2F;&quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;tn_add_after&#x27;&gt;Lisa järele&lt;&#x2F;div&gt;&quot;
+    &#x2F;&#x2F;&quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;del_tn&#x27;&gt;Kustuta&lt;&#x2F;div&gt;&quot;
+
+    if ((cmel.className == &quot;dl&quot; || cmel.className == &quot;md&quot;)) {
+        return;
+    }
+
+    &#x2F;&#x2F;klõps põhimenüüs
+    if ((cmel.parentElement.id == &quot;tn_cmenu&quot;)) {
+        if ((openmenuid == &quot;&quot;)) {
+            if ((cmel.className == &quot;hi&quot;)) {
+                cmel.className = &quot;mi&quot;;
+            } else if ((cmel.className == &quot;hi_span&quot;)) {
+                cmel.className = &quot;mi_span&quot;;
+            }
+            document.releaseCapture();
+        }
+        &#x2F;&#x2F;klõps alammenüüdes või üldse kuskil mujal
+    } else {
+        if ((cmel.className == &quot;hi&quot;)) {
+            cmel.className = &quot;mi&quot;;
+        } else if ((cmel.className == &quot;hi_span&quot;)) {
+            cmel.className = &quot;mi_span&quot;;
+        }
+        document.releaseCapture();
+    }
+
+    &#x2F;&#x2F;cmel.id =
+    &#x2F;&#x2F;qn(0); item.uri(1); typename(item)(2); typename(item.type)(3);
+    &#x2F;&#x2F;item.type.contentType(4); item.type.name(5); item.minOcc(6);
+    &#x2F;&#x2F;item.maxOcc(7); kirjeldav(8); item.name(9)
+    var tarr;
+    tarr = cmel.id.split(&quot;;&quot;)
+
+    var norm_elem = null;
+
+    &#x2F;&#x2F;ette, sisse, järele alammenüüd:
+    &#x2F;&#x2F;tn_sm_before, tn_sm_insert, tn_sm_after
+    var newnode, tt, tt1, tt2, rng, i;
+
+    if (cmel.parentElement.id.substr(0, 6) == &quot;tn_sm_&quot;) { &#x2F;&#x2F; ette, sisse, järele
+        if (yldStruDom.documentElement.getAttribute(&quot;pr_sd:ver&quot;) == &quot;2.0&quot;) {
+            newnode = oEditDOM.createDocumentFragment();
+            var frDocRoot = newnode.appendChild(oEditDOM.createNode(NODE_ELEMENT, tarr[0], tarr[1]));
+            var yldStruNode = yldStruDom.selectSingleNode(&quot;.&#x2F;&#x2F;&quot; + tarr[0]);
+            getMajors(yldStruNode, frDocRoot);
+        }
+        else {
+            newnode = GetAddElementFromFile(tarr[0], tarr[1]);
+        }
+    }
+
+    if ((cmel.parentElement.id == &quot;tn_sm_before&quot;)) {
+        norm_elem = selectedNode;
+        norm_elem.insertBefore(newnode, clickedNode);
+    } else if ((cmel.parentElement.id == &quot;tn_sm_insert&quot;)) {
+        norm_elem = selectedNode;
+        tt = contextClicked.value;
+        rng = document.selection.createRange();
+        rng.text = JR;
+        i = contextClicked.value.indexOf(JR);
+        tt1 = jsMid(contextClicked.value, 0, i);
+        tt2 = jsMid(contextClicked.value, i + 1);
+        oClicked.innerHTML = tt
+
+        var dfr, tnode;
+        dfr = oEditDOM.createDocumentFragment();
+
+        if ((tt1 != &quot;&quot;)) {
+            tnode = oEditDOM.createNode(NODE_TEXT, &quot;&quot;, &quot;&quot;);
+            tnode.text = tt1;
+            dfr.appendChild(tnode);
+        }
+        dfr.appendChild(newnode);
+        if ((tt2 != &quot;&quot;)) {
+            tnode = oEditDOM.createNode(NODE_TEXT, &quot;&quot;, &quot;&quot;);
+            tnode.text = tt2;
+            dfr.appendChild(tnode);
+        }
+        norm_elem.replaceChild(dfr, clickedNode);
+    } else if ((cmel.parentElement.id == &quot;tn_sm_after&quot;)) {
+        norm_elem = selectedNode;
+        norm_elem.insertBefore(newnode, clickedNode.nextSibling);
+    } else if ((cmel.id == &quot;del_tn&quot;)) {
+        norm_elem = selectedNode;
+        norm_elem.removeChild(clickedNode);
+    } else if ((jsLeft(cmel.parentElement.id, 7) == &quot;insert_&quot;)) {
+        rng = document.selection.createRange();
+        tt = cmel.value;
+        tt = jsReplace(tt, &quot;&lt;&quot;, &quot;&amp;lt;&quot;);
+        tt = jsReplace(tt, &quot;&gt;&quot;, &quot;&amp;gt;&quot;);
+        &#x2F;&#x2F; rng.text = cmel.value
+        rng.text = tt;
+    } else if ((jsLeft(cmel.id, 7) == &quot;switch_&quot;)) { &#x2F;&#x2F;&#x27;bold, em, sub, sup, u vahetused;
+        rng = document.selection.createRange();
+        tt1 = cmel.value;  &#x2F;&#x2F;muutuja alustav osa, &amp;ba; nt;
+        tt2 = jsMid(tt1, 0, tt1.length - 2) + &quot;l;&quot;;
+        var lopuTyhik;
+        lopuTyhik = &quot;&quot;;
+        if ((jsRight(rng.text, 1) == &quot; &quot;)) {
+            lopuTyhik = &quot; &quot;;
+        }
+        tt = jsTrim(rng.text);
+        if ((jsLeft(tt, tt1.length) == tt1)) { &#x2F;&#x2F;algabki muutuja algosaga ...;
+            tt = jsMid(tt, tt.indexOf(&quot;;&quot;) + 1);
+            tt = jsMid(tt, 0, tt.lastIndexOf(&quot;&amp;&quot;));
+            rng.text = tt + lopuTyhik;
+        } else {
+            rng.text = tt1 + tt + tt2 + lopuTyhik;
+        }
+    } else if ((cmel.id == &quot;add_copied&quot;)) {
+        rng = document.selection.createRange();
+        rng.text = sTextToCopy;
+    }
+    &#x2F;&#x2F;norm_elem: märk muudatustest
+    if (norm_elem) {
+        norm_elem.normalize();
+        setATTAPlokid(norm_elem);
+        vaatedRefresh(2);
+    }
+} &#x2F;&#x2F;ClickTNCMenu
+
+
+&#x2F;**
+* Kui seda funktsiooni on kutsutud, siis kontekstmenüüd enam ei tule.    
+*
+* @method DisableContextMenu
+* 
+*&#x2F;
+function DisableContextMenu() {
+    event.returnValue = false;
+} &#x2F;&#x2F;DisableContextMenu
+
+
+&#x2F;**
+* Peidab menüü ära.
+*
+* @method HideDivMenu
+*&#x2F;
+function HideDivMenu() {
+    var dam = document.getElementById(&quot;div_AttrsMenu&quot;);
+    if (dam) {
+        dam.style.display = &quot;none&quot;; &#x2F;&#x2F;&#x27;otsitava elemendi atribuutide kõrvalmenüü;
+    }
+    &#x2F;&#x2F;kõikvõimalikud kõrvalmenüüd
+    if (openmenuid) { &#x2F;&#x2F;&#x27;elemendi ja teksti kontekstmenüü kõrvalmenüüd (lisa ette, muutujad, tähed jm)
+        document.getElementById(openmenuid).style.display = &quot;none&quot;;
+        openmenuid = &quot;&quot;;
+    }
+    var bc = document.getElementById(&quot;big_character&quot;);
+    if (bc)
+        bc.style.display = &quot;none&quot;; &#x2F;&#x2F;&#x27;lisatav täht suurelt;
+    &#x2F;&#x2F;menüü ise
+    var divObj = event.srcElement;
+    divObj.style.display = &quot;none&quot;;
+    divObj.style.cursor = &quot;auto&quot;;
+} &#x2F;&#x2F;HideDivMenu
+
+&#x2F;**
+* Näitab tähte suuremalt kui menüüs näha.
+*
+* @method ShowBigCharacter
+* @param {String} cHTML Mida näidatakse.
+* @param {Int} x Pikslites.
+* @param {Int} y Pikslites.
+* @param {String} fs Font Style.
+* @param {String} ff Font Family.
+*&#x2F;
+function ShowBigCharacter(cHTML, x, y, fs, ff) {
+    big_character.innerHTML = cHTML;
+    big_character.style.fontStyle = fs;
+    big_character.style.fontFamily = ff;
+    big_character.style.pixelLeft = x;
+    big_character.style.pixelTop = y;
+    big_character.style.display = &quot;&quot;;
+} &#x2F;&#x2F;ShowBigCharacter
+
+&#x2F;**
+* Peidab suure tähepildi ära.
+*
+* @method HideBigCharacter
+*&#x2F;
+function HideBigCharacter() {
+    big_character.innerHTML = &quot;&quot;;
+    big_character.style.display = &quot;none&quot;;
+} &#x2F;&#x2F;HideBigCharacter
+
+
+&#x2F;**
+* Pannakse kokku sümbolite menüü.
+*
+* @method FillInsertSymbolsMenu
+*&#x2F;
+function FillInsertSymbolsMenu() {
+
+    var menuItem = document.getElementById(&quot;tn_cmenu&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;tn_cmenu\&quot; style=\&quot;display:none; position:absolute; width:300px;background-color:menu; border:outset 3px gray\&quot; onmouseover=\&quot;SwitchCMenu()\&quot; onmouseout=\&quot;SwitchCMenu()\&quot; onclick=\&quot;ClickTNCMenu()\&quot; oncontextmenu=\&quot;DisableContextMenu()\&quot; onlosecapture=\&quot;HideDivMenu()\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_symbols&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_symbols\&quot; style=\&quot;display:none; position:absolute; width:2px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_queries&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_queries\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_entities&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_entities\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_latin_1&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_latin_1\&quot; style=\&quot;display:none; position:absolute; width:460px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_latin_2&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_latin_2\&quot; style=\&quot;display:none; position:absolute; width:460px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_marks&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_marks\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_combin&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_combin\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_greek&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_greek\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_cyrillic&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_cyrillic\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_udmurtian&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_udmurtian\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_mari&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_mari\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_etymology&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_etymology\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;insert_pronunc&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_pronunc\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+    menuItem = document.getElementById(&quot;big_character&quot;);
+    if (!menuItem) {
+        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;big_character\&quot; style=\&quot;display:none; position:absolute; height:80px; width:80px;background-color:menu; border:outset 3px gray; text-align:center; font-size:xx-large\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+    }
+
+
+
+&#x2F;&#x2F;    if ((document.body.all(&quot;tn_cmenu&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;tn_cmenu\&quot; style=\&quot;display:none; position:absolute; width:300px;background-color:menu; border:outset 3px gray\&quot; onmouseover=\&quot;SwitchCMenu()\&quot; onmouseout=\&quot;SwitchCMenu()\&quot; onclick=\&quot;ClickTNCMenu()\&quot; oncontextmenu=\&quot;DisableContextMenu()\&quot; onlosecapture=\&quot;HideDivMenu()\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_symbols&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_symbols\&quot; style=\&quot;display:none; position:absolute; width:2px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_queries&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_queries\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_entities&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_entities\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_latin_1&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_latin_1\&quot; style=\&quot;display:none; position:absolute; width:460px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_latin_2&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_latin_2\&quot; style=\&quot;display:none; position:absolute; width:460px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_marks&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_marks\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_combin&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_combin\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_greek&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_greek\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_cyrillic&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_cyrillic\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_udmurtian&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_udmurtian\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_mari&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_mari\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_etymology&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_etymology\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;insert_pronunc&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;insert_pronunc\&quot; style=\&quot;display:none; position:absolute; width:366px;background-color:menu; border:outset 3px gray\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    if ((document.body.all(&quot;big_character&quot;) == null)) {
+&#x2F;&#x2F;        document.body.appendChild(document.createElement(&quot;&lt;div id=\&quot;big_character\&quot; style=\&quot;display:none; position:absolute; height:80px; width:80px;background-color:menu; border:outset 3px gray; text-align:center; font-size:xx-large\&quot;&gt;&lt;&#x2F;div&gt;&quot;));
+&#x2F;&#x2F;    }
+
+    var vlyh, ixCode, hex4Nr;
+    vlyh = &quot;&amp;vt;&quot; + String.fromCharCode(&quot;0x&quot; + jsMid(FRACTION_SLASH, 3, 4)) + String.fromCharCode(&quot;0x&quot; + jsMid(RIGHTWARDS_ARROW, 3, 4));
+    var inssym
+
+    &#x2F;&#x2F;Põhimenüü
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_queries&#x27;&gt;Päringud&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_entities&#x27;&gt;&quot; + MNU_INS_SYM_ENTS_STYLES + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_latin_1&#x27;&gt;&quot; + MNU_INS_SYM_LATIN_1 + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_latin_2&#x27;&gt;&quot; + MNU_INS_SYM_LATIN_2 + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_marks&#x27;&gt;&quot; + MNU_INS_SYM_SYM_LIGATURES + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_combin&#x27;&gt;&quot; + MNU_INS_SYM_COMB_SYM + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_greek&#x27;&gt;&quot; + MNU_INS_SYM_GREEK + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_cyrillic&#x27;&gt;&quot; + MNU_INS_SYM_CYRILLIC + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_pronunc&#x27;&gt;&quot; + MNU_INS_SYM_PRONUNCIATION + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_etymology&#x27;&gt;&quot; + MNU_INS_SYM_ETHYMOLOGY + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_udmurtian&#x27;&gt;&quot; + MNU_INS_SYM_UDMURTIAN + &quot;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;mi&#x27; id=&#x27;sym_mari&#x27;&gt;&quot; + MNU_INS_SYM_MARI + &quot;&lt;&#x2F;div&gt;&quot;;
+    insert_symbols.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;Päringud&#x27;&lt;&#x2F;div&gt;&quot;;
+    &#x2F;&#x2F;(?õ) - jätab kirjastiilide muutujad arvestamata
+    inssym = inssym + &quot;&lt;div class=&#x27;mi&#x27; value=&#x27;§§[^a-zA-ZšžõäöüŠŽÕÄÖÜ_,&amp;;!\\d\\s\\-\\.\\&#x2F;\\(\\)\\[\\]]&#x27;&gt;MITTE (eesti + märgid)&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div class=&#x27;mi&#x27; value=&#x27;§§[^a-zA-Zа-яА-ЯёЁšžõäöüŠŽÕÄÖÜ_,&amp;;!\\d\\s\\-\\.\\&#x2F;\\(\\)\\[\\]]&#x27;&gt;MITTE (eesti + vene + märgid)&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;div class=&#x27;mi&#x27; value=&#x27;§§[^а-яА-ЯёЁ_,&amp;;!\\d\\s\\-\\.\\&#x2F;\\(\\)\\[\\]]]&#x27;&gt;MITTE (vene + märgid)&lt;&#x2F;div&gt;&quot;;
+    insert_queries.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_ENTS_STYLES + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis ehk: &amp;ehk;&#x27; value=&#x27;&amp;ehk;&#x27; style=&#x27;font-style:italic&#x27;&gt;ehk&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis Hrl: &amp;Hrl;&#x27; value=&#x27;&amp;Hrl;&#x27; style=&#x27;font-style:italic&#x27;&gt;Hrl&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis hrl: &amp;hrl;&#x27; value=&#x27;&amp;hrl;&#x27; style=&#x27;font-style:italic&#x27;&gt;hrl&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis ja: &amp;ja;&#x27; value=&#x27;&amp;ja;&#x27; style=&#x27;font-style:italic&#x27;&gt;ja&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis jne: &amp;jne;&#x27; value=&#x27;&amp;jne;&#x27; style=&#x27;font-style:italic&#x27;&gt;jne&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis jt: &amp;jt;&#x27; value=&#x27;&amp;jt;&#x27; style=&#x27;font-style:italic&#x27;&gt;jt&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis ka: &amp;ka;&#x27; value=&#x27;&amp;ka;&#x27; style=&#x27;font-style:italic&#x27;&gt;ka&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis nt: &amp;nt;&#x27; value=&#x27;&amp;nt;&#x27; style=&#x27;font-style:italic&#x27;&gt;nt&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis puudub: &amp;puudub;&#x27; value=&#x27;&amp;puudub;&#x27; style=&#x27;font-style:italic&#x27;&gt;puudub&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis v: &amp;v;&#x27; value=&#x27;&amp;v;&#x27; style=&#x27;font-style:italic&#x27;&gt;v&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;vd: 1)  &amp;vt;  (raamatus),  2)  -&gt;  (veebis)&#x27; value=&#x27;1)  &amp;vt;  (raamatus),  2)  &quot; + RIGHTWARDS_ARROW + &quot;  (veebis)&#x27;&gt;vd&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Viitelühend&#x27; value=&#x27;&quot; + vlyh + &quot;&#x27;&gt;&quot; + vlyh + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis vm: &amp;vm;&#x27; value=&#x27;&amp;vm;&#x27; style=&#x27;font-style:italic&#x27;&gt;vm&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis vms: &amp;vms;&#x27; value=&#x27;&amp;vms;&#x27; style=&#x27;font-style:italic&#x27;&gt;vms&lt;&#x2F;span&gt;&quot;;
+    &#x2F;&#x2F; Lisatud Vene õpilase ÕSi tarbeks
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis напр.: +напр.;&#x27; value=&#x27;+напр.;&#x27; style=&#x27;font-style:italic&#x27;&gt;напр.&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis и др.: +и др.;&#x27; value=&#x27;+и др.;&#x27; style=&#x27;font-style:italic&#x27;&gt;и&amp;nbsp;др.&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis и т. п.: +и т. п.;&#x27; value=&#x27;+и т. п.;&#x27; style=&#x27;font-style:italic&#x27;&gt;и&amp;nbsp;т.&amp;nbsp;п.&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kursiivis г.: +г.;&#x27; value=&#x27;+г.;&#x27; style=&#x27;font-style:italic&#x27;&gt;г.&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Väiksem kui &lt;&#x27; value=&#x27;&amp;lt;&#x27;&gt;&amp;lt;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Suurem kui &gt;&#x27; value=&#x27;&amp;gt;&#x27;&gt;&amp;gt;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kirjastiili muutuse algus: &amp;ema;&#x27; value=&#x27;&amp;ema;&#x27;&gt;&amp;ema;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kirjastiili muutuse lõpp: &amp;eml;&#x27; value=&#x27;&amp;eml;&#x27;&gt;&amp;eml;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Alaindeksi algus: &amp;suba;&#x27; value=&#x27;&amp;suba;&#x27;&gt;&amp;suba;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Alaindeksi lõpp: &amp;subl;&#x27; value=&#x27;&amp;subl;&#x27;&gt;&amp;subl;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Ülaindeksi algus: &amp;supa;&#x27; value=&#x27;&amp;supa;&#x27;&gt;&amp;supa;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Ülaindeksi lõpp: &amp;supl;&#x27; value=&#x27;&amp;supl;&#x27;&gt;&amp;supl;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Poolpaks algus: &amp;ba;&#x27; value=&#x27;&amp;ba;&#x27;&gt;&amp;ba;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Poolpaks lõpp: &amp;bl;&#x27; value=&#x27;&amp;bl;&#x27;&gt;&amp;bl;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Allajoonitud algus: &amp;la;&#x27; value=&#x27;&amp;la;&#x27;&gt;&amp;la;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Allajoonitud lõpp: &amp;ll;&#x27; value=&#x27;&amp;ll;&#x27;&gt;&amp;ll;&lt;&#x2F;span&gt;&quot;;
+    insert_entities.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_LATIN_1 + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0041;&#x27; title=&#x27;U+0041&#x27;&gt;&amp;#x0041;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;A
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0061;&#x27; title=&#x27;U+0061&#x27;&gt;&amp;#x0061;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;a
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C0;&#x27; title=&#x27;U+00C0&#x27;&gt;&amp;#x00C0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E0;&#x27; title=&#x27;U+00E0&#x27;&gt;&amp;#x00E0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C1;&#x27; title=&#x27;U+00C1&#x27;&gt;&amp;#x00C1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E1;&#x27; title=&#x27;U+00E1&#x27;&gt;&amp;#x00E1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C2;&#x27; title=&#x27;U+00C2&#x27;&gt;&amp;#x00C2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E2;&#x27; title=&#x27;U+00E2&#x27;&gt;&amp;#x00E2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C3;&#x27; title=&#x27;U+00C3&#x27;&gt;&amp;#x00C3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E3;&#x27; title=&#x27;U+00E3&#x27;&gt;&amp;#x00E3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C5;&#x27; title=&#x27;U+00C5&#x27;&gt;&amp;#x00C5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E5;&#x27; title=&#x27;U+00E5&#x27;&gt;&amp;#x00E5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0100;&#x27; title=&#x27;U+0100&#x27;&gt;&amp;#x0100;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0101;&#x27; title=&#x27;U+0101&#x27;&gt;&amp;#x0101;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0102;&#x27; title=&#x27;U+0102&#x27;&gt;&amp;#x0102;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0103;&#x27; title=&#x27;U+0103&#x27;&gt;&amp;#x0103;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0104;&#x27; title=&#x27;U+0104&#x27;&gt;&amp;#x0104;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0105;&#x27; title=&#x27;U+0105&#x27;&gt;&amp;#x0105;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01CD;&#x27; title=&#x27;U+01CD&#x27;&gt;&amp;#x01CD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01CE;&#x27; title=&#x27;U+01CE&#x27;&gt;&amp;#x01CE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E0;&#x27; title=&#x27;U+01E0&#x27;&gt;&amp;#x01E0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E1;&#x27; title=&#x27;U+01E1&#x27;&gt;&amp;#x01E1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01FA;&#x27; title=&#x27;U+01FA&#x27;&gt;&amp;#x01FA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01FB;&#x27; title=&#x27;U+01FB&#x27;&gt;&amp;#x01FB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0200;&#x27; title=&#x27;U+0200&#x27;&gt;&amp;#x0200;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0201;&#x27; title=&#x27;U+0201&#x27;&gt;&amp;#x0201;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0202;&#x27; title=&#x27;U+0202&#x27;&gt;&amp;#x0202;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0203;&#x27; title=&#x27;U+0203&#x27;&gt;&amp;#x0203;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E00;&#x27; title=&#x27;U+1E00&#x27;&gt;&amp;#x1E00;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E01;&#x27; title=&#x27;U+1E01&#x27;&gt;&amp;#x1E01;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA0;&#x27; title=&#x27;U+1EA0&#x27;&gt;&amp;#x1EA0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA1;&#x27; title=&#x27;U+1EA1&#x27;&gt;&amp;#x1EA1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA2;&#x27; title=&#x27;U+1EA2&#x27;&gt;&amp;#x1EA2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA3;&#x27; title=&#x27;U+1EA3&#x27;&gt;&amp;#x1EA3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA4;&#x27; title=&#x27;U+1EA4&#x27;&gt;&amp;#x1EA4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA5;&#x27; title=&#x27;U+1EA5&#x27;&gt;&amp;#x1EA5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA6;&#x27; title=&#x27;U+1EA6&#x27;&gt;&amp;#x1EA6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA7;&#x27; title=&#x27;U+1EA7&#x27;&gt;&amp;#x1EA7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA8;&#x27; title=&#x27;U+1EA8&#x27;&gt;&amp;#x1EA8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EA9;&#x27; title=&#x27;U+1EA9&#x27;&gt;&amp;#x1EA9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EAA;&#x27; title=&#x27;U+1EAA&#x27;&gt;&amp;#x1EAA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EAB;&#x27; title=&#x27;U+1EAB&#x27;&gt;&amp;#x1EAB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EAC;&#x27; title=&#x27;U+1EAC&#x27;&gt;&amp;#x1EAC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EAD;&#x27; title=&#x27;U+1EAD&#x27;&gt;&amp;#x1EAD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EAE;&#x27; title=&#x27;U+1EAE&#x27;&gt;&amp;#x1EAE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EAF;&#x27; title=&#x27;U+1EAF&#x27;&gt;&amp;#x1EAF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB0;&#x27; title=&#x27;U+1EB0&#x27;&gt;&amp;#x1EB0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB1;&#x27; title=&#x27;U+1EB1&#x27;&gt;&amp;#x1EB1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB2;&#x27; title=&#x27;U+1EB2&#x27;&gt;&amp;#x1EB2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB3;&#x27; title=&#x27;U+1EB3&#x27;&gt;&amp;#x1EB3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB4;&#x27; title=&#x27;U+1EB4&#x27;&gt;&amp;#x1EB4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB5;&#x27; title=&#x27;U+1EB5&#x27;&gt;&amp;#x1EB5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB6;&#x27; title=&#x27;U+1EB6&#x27;&gt;&amp;#x1EB6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB7;&#x27; title=&#x27;U+1EB7&#x27;&gt;&amp;#x1EB7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C4;&#x27; title=&#x27;U+00C4&#x27;&gt;&amp;#x00C4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E4;&#x27; title=&#x27;U+00E4&#x27;&gt;&amp;#x00E4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01DE;&#x27; title=&#x27;U+01DE&#x27;&gt;&amp;#x01DE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01DF;&#x27; title=&#x27;U+01DF&#x27;&gt;&amp;#x01DF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0042;&#x27; title=&#x27;U+0042&#x27;&gt;&amp;#x0042;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;B
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0062;&#x27; title=&#x27;U+0062&#x27;&gt;&amp;#x0062;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;b
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0182;&#x27; title=&#x27;U+0182&#x27;&gt;&amp;#x0182;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0183;&#x27; title=&#x27;U+0183&#x27;&gt;&amp;#x0183;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0184;&#x27; title=&#x27;U+0184&#x27;&gt;&amp;#x0184;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0185;&#x27; title=&#x27;U+0185&#x27;&gt;&amp;#x0185;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E02;&#x27; title=&#x27;U+1E02&#x27;&gt;&amp;#x1E02;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E03;&#x27; title=&#x27;U+1E03&#x27;&gt;&amp;#x1E03;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E04;&#x27; title=&#x27;U+1E04&#x27;&gt;&amp;#x1E04;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E05;&#x27; title=&#x27;U+1E05&#x27;&gt;&amp;#x1E05;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E06;&#x27; title=&#x27;U+1E06&#x27;&gt;&amp;#x1E06;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E07;&#x27; title=&#x27;U+1E07&#x27;&gt;&amp;#x1E07;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0043;&#x27; title=&#x27;U+0043&#x27;&gt;&amp;#x0043;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;C
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0063;&#x27; title=&#x27;U+0063&#x27;&gt;&amp;#x0063;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;c
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C7;&#x27; title=&#x27;U+00C7&#x27;&gt;&amp;#x00C7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E7;&#x27; title=&#x27;U+00E7&#x27;&gt;&amp;#x00E7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0106;&#x27; title=&#x27;U+0106&#x27;&gt;&amp;#x0106;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0107;&#x27; title=&#x27;U+0107&#x27;&gt;&amp;#x0107;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0108;&#x27; title=&#x27;U+0108&#x27;&gt;&amp;#x0108;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0109;&#x27; title=&#x27;U+0109&#x27;&gt;&amp;#x0109;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x010A;&#x27; title=&#x27;U+010A&#x27;&gt;&amp;#x010A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x010B;&#x27; title=&#x27;U+010B&#x27;&gt;&amp;#x010B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x010C;&#x27; title=&#x27;U+010C&#x27;&gt;&amp;#x010C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x010D;&#x27; title=&#x27;U+010D&#x27;&gt;&amp;#x010D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0187;&#x27; title=&#x27;U+0187&#x27;&gt;&amp;#x0187;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0188;&#x27; title=&#x27;U+0188&#x27;&gt;&amp;#x0188;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E08;&#x27; title=&#x27;U+1E08&#x27;&gt;&amp;#x1E08;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E09;&#x27; title=&#x27;U+1E09&#x27;&gt;&amp;#x1E09;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0044;&#x27; title=&#x27;U+0044&#x27;&gt;&amp;#x0044;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0064;&#x27; title=&#x27;U+0064&#x27;&gt;&amp;#x0064;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00D0;&#x27; title=&#x27;U+00D0&#x27;&gt;&amp;#x00D0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F0;&#x27; title=&#x27;U+00F0&#x27;&gt;&amp;#x00F0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x010E;&#x27; title=&#x27;U+010E&#x27;&gt;&amp;#x010E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x010F;&#x27; title=&#x27;U+010F&#x27;&gt;&amp;#x010F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0110;&#x27; title=&#x27;U+0110&#x27;&gt;&amp;#x0110;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0111;&#x27; title=&#x27;U+0111&#x27;&gt;&amp;#x0111;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x018B;&#x27; title=&#x27;U+018B&#x27;&gt;&amp;#x018B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x018C;&#x27; title=&#x27;U+018C&#x27;&gt;&amp;#x018C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E0A;&#x27; title=&#x27;U+1E0A&#x27;&gt;&amp;#x1E0A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E0B;&#x27; title=&#x27;U+1E0B&#x27;&gt;&amp;#x1E0B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E0C;&#x27; title=&#x27;U+1E0C&#x27;&gt;&amp;#x1E0C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E0D;&#x27; title=&#x27;U+1E0D&#x27;&gt;&amp;#x1E0D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E0E;&#x27; title=&#x27;U+1E0E&#x27;&gt;&amp;#x1E0E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E0F;&#x27; title=&#x27;U+1E0F&#x27;&gt;&amp;#x1E0F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E10;&#x27; title=&#x27;U+1E10&#x27;&gt;&amp;#x1E10;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E11;&#x27; title=&#x27;U+1E11&#x27;&gt;&amp;#x1E11;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E12;&#x27; title=&#x27;U+1E12&#x27;&gt;&amp;#x1E12;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E13;&#x27; title=&#x27;U+1E13&#x27;&gt;&amp;#x1E13;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0045;&#x27; title=&#x27;U+0045&#x27;&gt;&amp;#x0045;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;E
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0065;&#x27; title=&#x27;U+0065&#x27;&gt;&amp;#x0065;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;e
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C8;&#x27; title=&#x27;U+00C8&#x27;&gt;&amp;#x00C8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E8;&#x27; title=&#x27;U+00E8&#x27;&gt;&amp;#x00E8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C9;&#x27; title=&#x27;U+00C9&#x27;&gt;&amp;#x00C9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E9;&#x27; title=&#x27;U+00E9&#x27;&gt;&amp;#x00E9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00CA;&#x27; title=&#x27;U+00CA&#x27;&gt;&amp;#x00CA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00EA;&#x27; title=&#x27;U+00EA&#x27;&gt;&amp;#x00EA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00CB;&#x27; title=&#x27;U+00CB&#x27;&gt;&amp;#x00CB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00EB;&#x27; title=&#x27;U+00EB&#x27;&gt;&amp;#x00EB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0112;&#x27; title=&#x27;U+0112&#x27;&gt;&amp;#x0112;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0113;&#x27; title=&#x27;U+0113&#x27;&gt;&amp;#x0113;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0114;&#x27; title=&#x27;U+0114&#x27;&gt;&amp;#x0114;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0115;&#x27; title=&#x27;U+0115&#x27;&gt;&amp;#x0115;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0116;&#x27; title=&#x27;U+0116&#x27;&gt;&amp;#x0116;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0117;&#x27; title=&#x27;U+0117&#x27;&gt;&amp;#x0117;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0118;&#x27; title=&#x27;U+0118&#x27;&gt;&amp;#x0118;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0119;&#x27; title=&#x27;U+0119&#x27;&gt;&amp;#x0119;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x011A;&#x27; title=&#x27;U+011A&#x27;&gt;&amp;#x011A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x011B;&#x27; title=&#x27;U+011B&#x27;&gt;&amp;#x011B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0204;&#x27; title=&#x27;U+0204&#x27;&gt;&amp;#x0204;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0205;&#x27; title=&#x27;U+0205&#x27;&gt;&amp;#x0205;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0206;&#x27; title=&#x27;U+0206&#x27;&gt;&amp;#x0206;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0207;&#x27; title=&#x27;U+0207&#x27;&gt;&amp;#x0207;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E14;&#x27; title=&#x27;U+1E14&#x27;&gt;&amp;#x1E14;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E15;&#x27; title=&#x27;U+1E15&#x27;&gt;&amp;#x1E15;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E16;&#x27; title=&#x27;U+1E16&#x27;&gt;&amp;#x1E16;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E17;&#x27; title=&#x27;U+1E17&#x27;&gt;&amp;#x1E17;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E18;&#x27; title=&#x27;U+1E18&#x27;&gt;&amp;#x1E18;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E19;&#x27; title=&#x27;U+1E19&#x27;&gt;&amp;#x1E19;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E1A;&#x27; title=&#x27;U+1E1A&#x27;&gt;&amp;#x1E1A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E1B;&#x27; title=&#x27;U+1E1B&#x27;&gt;&amp;#x1E1B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E1C;&#x27; title=&#x27;U+1E1C&#x27;&gt;&amp;#x1E1C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E1D;&#x27; title=&#x27;U+1E1D&#x27;&gt;&amp;#x1E1D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB8;&#x27; title=&#x27;U+1EB8&#x27;&gt;&amp;#x1EB8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EB9;&#x27; title=&#x27;U+1EB9&#x27;&gt;&amp;#x1EB9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EBA;&#x27; title=&#x27;U+1EBA&#x27;&gt;&amp;#x1EBA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EBB;&#x27; title=&#x27;U+1EBB&#x27;&gt;&amp;#x1EBB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EBC;&#x27; title=&#x27;U+1EBC&#x27;&gt;&amp;#x1EBC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EBD;&#x27; title=&#x27;U+1EBD&#x27;&gt;&amp;#x1EBD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EBE;&#x27; title=&#x27;U+1EBE&#x27;&gt;&amp;#x1EBE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EBF;&#x27; title=&#x27;U+1EBF&#x27;&gt;&amp;#x1EBF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC0;&#x27; title=&#x27;U+1EC0&#x27;&gt;&amp;#x1EC0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC1;&#x27; title=&#x27;U+1EC1&#x27;&gt;&amp;#x1EC1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC2;&#x27; title=&#x27;U+1EC2&#x27;&gt;&amp;#x1EC2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC3;&#x27; title=&#x27;U+1EC3&#x27;&gt;&amp;#x1EC3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC4;&#x27; title=&#x27;U+1EC4&#x27;&gt;&amp;#x1EC4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC5;&#x27; title=&#x27;U+1EC5&#x27;&gt;&amp;#x1EC5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC6;&#x27; title=&#x27;U+1EC6&#x27;&gt;&amp;#x1EC6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC7;&#x27; title=&#x27;U+1EC7&#x27;&gt;&amp;#x1EC7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0046;&#x27; title=&#x27;U+0046&#x27;&gt;&amp;#x0046;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;F
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0066;&#x27; title=&#x27;U+0066&#x27;&gt;&amp;#x0066;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;f
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0191;&#x27; title=&#x27;U+0191&#x27;&gt;&amp;#x0191;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0192;&#x27; title=&#x27;U+0192&#x27;&gt;&amp;#x0192;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E1E;&#x27; title=&#x27;U+1E1E&#x27;&gt;&amp;#x1E1E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E1F;&#x27; title=&#x27;U+1E1F&#x27;&gt;&amp;#x1E1F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0047;&#x27; title=&#x27;U+0047&#x27;&gt;&amp;#x0047;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;G
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0067;&#x27; title=&#x27;U+0067&#x27;&gt;&amp;#x0067;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;g
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x011C;&#x27; title=&#x27;U+011C&#x27;&gt;&amp;#x011C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x011D;&#x27; title=&#x27;U+011D&#x27;&gt;&amp;#x011D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x011E;&#x27; title=&#x27;U+011E&#x27;&gt;&amp;#x011E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x011F;&#x27; title=&#x27;U+011F&#x27;&gt;&amp;#x011F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0120;&#x27; title=&#x27;U+0120&#x27;&gt;&amp;#x0120;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0121;&#x27; title=&#x27;U+0121&#x27;&gt;&amp;#x0121;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0122;&#x27; title=&#x27;U+0122&#x27;&gt;&amp;#x0122;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0123;&#x27; title=&#x27;U+0123&#x27;&gt;&amp;#x0123;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E4;&#x27; title=&#x27;U+01E4&#x27;&gt;&amp;#x01E4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E5;&#x27; title=&#x27;U+01E5&#x27;&gt;&amp;#x01E5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E6;&#x27; title=&#x27;U+01E6&#x27;&gt;&amp;#x01E6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E7;&#x27; title=&#x27;U+01E7&#x27;&gt;&amp;#x01E7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01F4;&#x27; title=&#x27;U+01F4&#x27;&gt;&amp;#x01F4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01F5;&#x27; title=&#x27;U+01F5&#x27;&gt;&amp;#x01F5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E20;&#x27; title=&#x27;U+1E20&#x27;&gt;&amp;#x1E20;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E21;&#x27; title=&#x27;U+1E21&#x27;&gt;&amp;#x1E21;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0048;&#x27; title=&#x27;U+0048&#x27;&gt;&amp;#x0048;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;H
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0068;&#x27; title=&#x27;U+0068&#x27;&gt;&amp;#x0068;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;h
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0124;&#x27; title=&#x27;U+0124&#x27;&gt;&amp;#x0124;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0125;&#x27; title=&#x27;U+0125&#x27;&gt;&amp;#x0125;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0126;&#x27; title=&#x27;U+0126&#x27;&gt;&amp;#x0126;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0127;&#x27; title=&#x27;U+0127&#x27;&gt;&amp;#x0127;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E22;&#x27; title=&#x27;U+1E22&#x27;&gt;&amp;#x1E22;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E23;&#x27; title=&#x27;U+1E23&#x27;&gt;&amp;#x1E23;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E24;&#x27; title=&#x27;U+1E24&#x27;&gt;&amp;#x1E24;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E25;&#x27; title=&#x27;U+1E25&#x27;&gt;&amp;#x1E25;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E26;&#x27; title=&#x27;U+1E26&#x27;&gt;&amp;#x1E26;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E27;&#x27; title=&#x27;U+1E27&#x27;&gt;&amp;#x1E27;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E28;&#x27; title=&#x27;U+1E28&#x27;&gt;&amp;#x1E28;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E29;&#x27; title=&#x27;U+1E29&#x27;&gt;&amp;#x1E29;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E2A;&#x27; title=&#x27;U+1E2A&#x27;&gt;&amp;#x1E2A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E2B;&#x27; title=&#x27;U+1E2B&#x27;&gt;&amp;#x1E2B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0049;&#x27; title=&#x27;U+0049&#x27;&gt;&amp;#x0049;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;I
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0069;&#x27; title=&#x27;U+0069&#x27;&gt;&amp;#x0069;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;i
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00CC;&#x27; title=&#x27;U+00CC&#x27;&gt;&amp;#x00CC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00EC;&#x27; title=&#x27;U+00EC&#x27;&gt;&amp;#x00EC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00CD;&#x27; title=&#x27;U+00CD&#x27;&gt;&amp;#x00CD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00ED;&#x27; title=&#x27;U+00ED&#x27;&gt;&amp;#x00ED;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00CE;&#x27; title=&#x27;U+00CE&#x27;&gt;&amp;#x00CE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00EE;&#x27; title=&#x27;U+00EE&#x27;&gt;&amp;#x00EE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00CF;&#x27; title=&#x27;U+00CF&#x27;&gt;&amp;#x00CF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00EF;&#x27; title=&#x27;U+00EF&#x27;&gt;&amp;#x00EF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0128;&#x27; title=&#x27;U+0128&#x27;&gt;&amp;#x0128;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0129;&#x27; title=&#x27;U+0129&#x27;&gt;&amp;#x0129;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x012A;&#x27; title=&#x27;U+012A&#x27;&gt;&amp;#x012A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x012B;&#x27; title=&#x27;U+012B&#x27;&gt;&amp;#x012B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x012C;&#x27; title=&#x27;U+012C&#x27;&gt;&amp;#x012C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x012D;&#x27; title=&#x27;U+012D&#x27;&gt;&amp;#x012D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x012E;&#x27; title=&#x27;U+012E&#x27;&gt;&amp;#x012E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x012F;&#x27; title=&#x27;U+012F&#x27;&gt;&amp;#x012F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0130;&#x27; title=&#x27;U+0130&#x27;&gt;&amp;#x0130;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0131;&#x27; title=&#x27;U+0131&#x27;&gt;&amp;#x0131;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01CF;&#x27; title=&#x27;U+01CF&#x27;&gt;&amp;#x01CF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D0;&#x27; title=&#x27;U+01D0&#x27;&gt;&amp;#x01D0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0208;&#x27; title=&#x27;U+0208&#x27;&gt;&amp;#x0208;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0209;&#x27; title=&#x27;U+0209&#x27;&gt;&amp;#x0209;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x020A;&#x27; title=&#x27;U+020A&#x27;&gt;&amp;#x020A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x020B;&#x27; title=&#x27;U+020B&#x27;&gt;&amp;#x020B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E2C;&#x27; title=&#x27;U+1E2C&#x27;&gt;&amp;#x1E2C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E2D;&#x27; title=&#x27;U+1E2D&#x27;&gt;&amp;#x1E2D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E2E;&#x27; title=&#x27;U+1E2E&#x27;&gt;&amp;#x1E2E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E2F;&#x27; title=&#x27;U+1E2F&#x27;&gt;&amp;#x1E2F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC8;&#x27; title=&#x27;U+1EC8&#x27;&gt;&amp;#x1EC8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EC9;&#x27; title=&#x27;U+1EC9&#x27;&gt;&amp;#x1EC9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ECA;&#x27; title=&#x27;U+1ECA&#x27;&gt;&amp;#x1ECA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ECB;&#x27; title=&#x27;U+1ECB&#x27;&gt;&amp;#x1ECB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x004A;&#x27; title=&#x27;U+004A&#x27;&gt;&amp;#x004A;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;J
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x006A;&#x27; title=&#x27;U+006A&#x27;&gt;&amp;#x006A;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;j
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0134;&#x27; title=&#x27;U+0134&#x27;&gt;&amp;#x0134;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0135;&#x27; title=&#x27;U+0135&#x27;&gt;&amp;#x0135;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x004B;&#x27; title=&#x27;U+004B&#x27;&gt;&amp;#x004B;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;K
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x006B;&#x27; title=&#x27;U+006B&#x27;&gt;&amp;#x006B;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;k
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0136;&#x27; title=&#x27;U+0136&#x27;&gt;&amp;#x0136;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0137;&#x27; title=&#x27;U+0137&#x27;&gt;&amp;#x0137;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0198;&#x27; title=&#x27;U+0198&#x27;&gt;&amp;#x0198;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0199;&#x27; title=&#x27;U+0199&#x27;&gt;&amp;#x0199;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E8;&#x27; title=&#x27;U+01E8&#x27;&gt;&amp;#x01E8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E9;&#x27; title=&#x27;U+01E9&#x27;&gt;&amp;#x01E9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E30;&#x27; title=&#x27;U+1E30&#x27;&gt;&amp;#x1E30;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E31;&#x27; title=&#x27;U+1E31&#x27;&gt;&amp;#x1E31;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E32;&#x27; title=&#x27;U+1E32&#x27;&gt;&amp;#x1E32;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E33;&#x27; title=&#x27;U+1E33&#x27;&gt;&amp;#x1E33;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E34;&#x27; title=&#x27;U+1E34&#x27;&gt;&amp;#x1E34;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E35;&#x27; title=&#x27;U+1E35&#x27;&gt;&amp;#x1E35;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x004C;&#x27; title=&#x27;U+004C&#x27;&gt;&amp;#x004C;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;L
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x006C;&#x27; title=&#x27;U+006C&#x27;&gt;&amp;#x006C;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;l
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0139;&#x27; title=&#x27;U+0139&#x27;&gt;&amp;#x0139;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x013A;&#x27; title=&#x27;U+013A&#x27;&gt;&amp;#x013A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x013B;&#x27; title=&#x27;U+013B&#x27;&gt;&amp;#x013B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x013C;&#x27; title=&#x27;U+013C&#x27;&gt;&amp;#x013C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x013D;&#x27; title=&#x27;U+013D&#x27;&gt;&amp;#x013D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x013E;&#x27; title=&#x27;U+013E&#x27;&gt;&amp;#x013E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x013F;&#x27; title=&#x27;U+013F&#x27;&gt;&amp;#x013F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0140;&#x27; title=&#x27;U+0140&#x27;&gt;&amp;#x0140;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0141;&#x27; title=&#x27;U+0141&#x27;&gt;&amp;#x0141;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0142;&#x27; title=&#x27;U+0142&#x27;&gt;&amp;#x0142;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E36;&#x27; title=&#x27;U+1E36&#x27;&gt;&amp;#x1E36;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E37;&#x27; title=&#x27;U+1E37&#x27;&gt;&amp;#x1E37;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E38;&#x27; title=&#x27;U+1E38&#x27;&gt;&amp;#x1E38;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E39;&#x27; title=&#x27;U+1E39&#x27;&gt;&amp;#x1E39;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E3A;&#x27; title=&#x27;U+1E3A&#x27;&gt;&amp;#x1E3A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E3B;&#x27; title=&#x27;U+1E3B&#x27;&gt;&amp;#x1E3B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E3C;&#x27; title=&#x27;U+1E3C&#x27;&gt;&amp;#x1E3C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E3D;&#x27; title=&#x27;U+1E3D&#x27;&gt;&amp;#x1E3D;&lt;&#x2F;span&gt;&quot;;
+    &#x2F;&#x2F;A - L
+    insert_latin_1.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_LATIN_2 + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x004D;&#x27; title=&#x27;U+004D&#x27;&gt;&amp;#x004D;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;M
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x006D;&#x27; title=&#x27;U+006D&#x27;&gt;&amp;#x006D;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;m
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E3E;&#x27; title=&#x27;U+1E3E&#x27;&gt;&amp;#x1E3E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E3F;&#x27; title=&#x27;U+1E3F&#x27;&gt;&amp;#x1E3F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E40;&#x27; title=&#x27;U+1E40&#x27;&gt;&amp;#x1E40;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E41;&#x27; title=&#x27;U+1E41&#x27;&gt;&amp;#x1E41;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E42;&#x27; title=&#x27;U+1E42&#x27;&gt;&amp;#x1E42;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E43;&#x27; title=&#x27;U+1E43&#x27;&gt;&amp;#x1E43;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x004E;&#x27; title=&#x27;U+004E&#x27;&gt;&amp;#x004E;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;N
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x006E;&#x27; title=&#x27;U+006E&#x27;&gt;&amp;#x006E;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;n
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00D1;&#x27; title=&#x27;U+00D1&#x27;&gt;&amp;#x00D1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F1;&#x27; title=&#x27;U+00F1&#x27;&gt;&amp;#x00F1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0143;&#x27; title=&#x27;U+0143&#x27;&gt;&amp;#x0143;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0144;&#x27; title=&#x27;U+0144&#x27;&gt;&amp;#x0144;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0145;&#x27; title=&#x27;U+0145&#x27;&gt;&amp;#x0145;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0146;&#x27; title=&#x27;U+0146&#x27;&gt;&amp;#x0146;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0147;&#x27; title=&#x27;U+0147&#x27;&gt;&amp;#x0147;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0148;&#x27; title=&#x27;U+0148&#x27;&gt;&amp;#x0148;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x014A;&#x27; title=&#x27;U+014A&#x27;&gt;&amp;#x014A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x014B;&#x27; title=&#x27;U+014B&#x27;&gt;&amp;#x014B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E44;&#x27; title=&#x27;U+1E44&#x27;&gt;&amp;#x1E44;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E45;&#x27; title=&#x27;U+1E45&#x27;&gt;&amp;#x1E45;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E46;&#x27; title=&#x27;U+1E46&#x27;&gt;&amp;#x1E46;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E47;&#x27; title=&#x27;U+1E47&#x27;&gt;&amp;#x1E47;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E48;&#x27; title=&#x27;U+1E48&#x27;&gt;&amp;#x1E48;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E49;&#x27; title=&#x27;U+1E49&#x27;&gt;&amp;#x1E49;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E4A;&#x27; title=&#x27;U+1E4A&#x27;&gt;&amp;#x1E4A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E4B;&#x27; title=&#x27;U+1E4B&#x27;&gt;&amp;#x1E4B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x004F;&#x27; title=&#x27;U+004F&#x27;&gt;&amp;#x004F;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;O
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x006F;&#x27; title=&#x27;U+006F&#x27;&gt;&amp;#x006F;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;o
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00D2;&#x27; title=&#x27;U+00D2&#x27;&gt;&amp;#x00D2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F2;&#x27; title=&#x27;U+00F2&#x27;&gt;&amp;#x00F2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00D3;&#x27; title=&#x27;U+00D3&#x27;&gt;&amp;#x00D3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F3;&#x27; title=&#x27;U+00F3&#x27;&gt;&amp;#x00F3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00D4;&#x27; title=&#x27;U+00D4&#x27;&gt;&amp;#x00D4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F4;&#x27; title=&#x27;U+00F4&#x27;&gt;&amp;#x00F4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00D8;&#x27; title=&#x27;U+00D8&#x27;&gt;&amp;#x00D8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F8;&#x27; title=&#x27;U+00F8&#x27;&gt;&amp;#x00F8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x014C;&#x27; title=&#x27;U+014C&#x27;&gt;&amp;#x014C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x014D;&#x27; title=&#x27;U+014D&#x27;&gt;&amp;#x014D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x014E;&#x27; title=&#x27;U+014E&#x27;&gt;&amp;#x014E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x014F;&#x27; title=&#x27;U+014F&#x27;&gt;&amp;#x014F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0150;&#x27; title=&#x27;U+0150&#x27;&gt;&amp;#x0150;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0151;&#x27; title=&#x27;U+0151&#x27;&gt;&amp;#x0151;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01A0;&#x27; title=&#x27;U+01A0&#x27;&gt;&amp;#x01A0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01A1;&#x27; title=&#x27;U+01A1&#x27;&gt;&amp;#x01A1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D1;&#x27; title=&#x27;U+01D1&#x27;&gt;&amp;#x01D1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D2;&#x27; title=&#x27;U+01D2&#x27;&gt;&amp;#x01D2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01EA;&#x27; title=&#x27;U+01EA&#x27;&gt;&amp;#x01EA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01EB;&#x27; title=&#x27;U+01EB&#x27;&gt;&amp;#x01EB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01EC;&#x27; title=&#x27;U+01EC&#x27;&gt;&amp;#x01EC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01ED;&#x27; title=&#x27;U+01ED&#x27;&gt;&amp;#x01ED;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01FE;&#x27; title=&#x27;U+01FE&#x27;&gt;&amp;#x01FE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01FF;&#x27; title=&#x27;U+01FF&#x27;&gt;&amp;#x01FF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x020C;&#x27; title=&#x27;U+020C&#x27;&gt;&amp;#x020C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x020D;&#x27; title=&#x27;U+020D&#x27;&gt;&amp;#x020D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x020E;&#x27; title=&#x27;U+020E&#x27;&gt;&amp;#x020E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x020F;&#x27; title=&#x27;U+020F&#x27;&gt;&amp;#x020F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E50;&#x27; title=&#x27;U+1E50&#x27;&gt;&amp;#x1E50;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E51;&#x27; title=&#x27;U+1E51&#x27;&gt;&amp;#x1E51;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E52;&#x27; title=&#x27;U+1E52&#x27;&gt;&amp;#x1E52;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E53;&#x27; title=&#x27;U+1E53&#x27;&gt;&amp;#x1E53;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ECC;&#x27; title=&#x27;U+1ECC&#x27;&gt;&amp;#x1ECC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ECD;&#x27; title=&#x27;U+1ECD&#x27;&gt;&amp;#x1ECD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ECE;&#x27; title=&#x27;U+1ECE&#x27;&gt;&amp;#x1ECE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ECF;&#x27; title=&#x27;U+1ECF&#x27;&gt;&amp;#x1ECF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED0;&#x27; title=&#x27;U+1ED0&#x27;&gt;&amp;#x1ED0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED1;&#x27; title=&#x27;U+1ED1&#x27;&gt;&amp;#x1ED1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED2;&#x27; title=&#x27;U+1ED2&#x27;&gt;&amp;#x1ED2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED3;&#x27; title=&#x27;U+1ED3&#x27;&gt;&amp;#x1ED3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED4;&#x27; title=&#x27;U+1ED4&#x27;&gt;&amp;#x1ED4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED5;&#x27; title=&#x27;U+1ED5&#x27;&gt;&amp;#x1ED5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED6;&#x27; title=&#x27;U+1ED6&#x27;&gt;&amp;#x1ED6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED7;&#x27; title=&#x27;U+1ED7&#x27;&gt;&amp;#x1ED7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED8;&#x27; title=&#x27;U+1ED8&#x27;&gt;&amp;#x1ED8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1ED9;&#x27; title=&#x27;U+1ED9&#x27;&gt;&amp;#x1ED9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EDA;&#x27; title=&#x27;U+1EDA&#x27;&gt;&amp;#x1EDA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EDB;&#x27; title=&#x27;U+1EDB&#x27;&gt;&amp;#x1EDB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EDC;&#x27; title=&#x27;U+1EDC&#x27;&gt;&amp;#x1EDC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EDD;&#x27; title=&#x27;U+1EDD&#x27;&gt;&amp;#x1EDD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EDE;&#x27; title=&#x27;U+1EDE&#x27;&gt;&amp;#x1EDE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EDF;&#x27; title=&#x27;U+1EDF&#x27;&gt;&amp;#x1EDF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE0;&#x27; title=&#x27;U+1EE0&#x27;&gt;&amp;#x1EE0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE1;&#x27; title=&#x27;U+1EE1&#x27;&gt;&amp;#x1EE1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE2;&#x27; title=&#x27;U+1EE2&#x27;&gt;&amp;#x1EE2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE3;&#x27; title=&#x27;U+1EE3&#x27;&gt;&amp;#x1EE3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00D5;&#x27; title=&#x27;U+00D5&#x27;&gt;&amp;#x00D5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F5;&#x27; title=&#x27;U+00F5&#x27;&gt;&amp;#x00F5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E4C;&#x27; title=&#x27;U+1E4C&#x27;&gt;&amp;#x1E4C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E4D;&#x27; title=&#x27;U+1E4D&#x27;&gt;&amp;#x1E4D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E4E;&#x27; title=&#x27;U+1E4E&#x27;&gt;&amp;#x1E4E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E4F;&#x27; title=&#x27;U+1E4F&#x27;&gt;&amp;#x1E4F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00D6;&#x27; title=&#x27;U+00D6&#x27;&gt;&amp;#x00D6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F6;&#x27; title=&#x27;U+00F6&#x27;&gt;&amp;#x00F6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0050;&#x27; title=&#x27;U+0050&#x27;&gt;&amp;#x0050;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;P
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0070;&#x27; title=&#x27;U+0070&#x27;&gt;&amp;#x0070;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;p
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01A4;&#x27; title=&#x27;U+01A4&#x27;&gt;&amp;#x01A4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01A5;&#x27; title=&#x27;U+01A5&#x27;&gt;&amp;#x01A5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E54;&#x27; title=&#x27;U+1E54&#x27;&gt;&amp;#x1E54;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E55;&#x27; title=&#x27;U+1E55&#x27;&gt;&amp;#x1E55;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E56;&#x27; title=&#x27;U+1E56&#x27;&gt;&amp;#x1E56;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E57;&#x27; title=&#x27;U+1E57&#x27;&gt;&amp;#x1E57;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0051;&#x27; title=&#x27;U+0051&#x27;&gt;&amp;#x0051;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;Q
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0071;&#x27; title=&#x27;U+0071&#x27;&gt;&amp;#x0071;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;q
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0052;&#x27; title=&#x27;U+0052&#x27;&gt;&amp;#x0052;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;R
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0072;&#x27; title=&#x27;U+0072&#x27;&gt;&amp;#x0072;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;r
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0154;&#x27; title=&#x27;U+0154&#x27;&gt;&amp;#x0154;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0155;&#x27; title=&#x27;U+0155&#x27;&gt;&amp;#x0155;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0156;&#x27; title=&#x27;U+0156&#x27;&gt;&amp;#x0156;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0157;&#x27; title=&#x27;U+0157&#x27;&gt;&amp;#x0157;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0158;&#x27; title=&#x27;U+0158&#x27;&gt;&amp;#x0158;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0159;&#x27; title=&#x27;U+0159&#x27;&gt;&amp;#x0159;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0210;&#x27; title=&#x27;U+0210&#x27;&gt;&amp;#x0210;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0211;&#x27; title=&#x27;U+0211&#x27;&gt;&amp;#x0211;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0212;&#x27; title=&#x27;U+0212&#x27;&gt;&amp;#x0212;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0213;&#x27; title=&#x27;U+0213&#x27;&gt;&amp;#x0213;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E58;&#x27; title=&#x27;U+1E58&#x27;&gt;&amp;#x1E58;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E59;&#x27; title=&#x27;U+1E59&#x27;&gt;&amp;#x1E59;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E5A;&#x27; title=&#x27;U+1E5A&#x27;&gt;&amp;#x1E5A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E5B;&#x27; title=&#x27;U+1E5B&#x27;&gt;&amp;#x1E5B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E5C;&#x27; title=&#x27;U+1E5C&#x27;&gt;&amp;#x1E5C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E5D;&#x27; title=&#x27;U+1E5D&#x27;&gt;&amp;#x1E5D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E5E;&#x27; title=&#x27;U+1E5E&#x27;&gt;&amp;#x1E5E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E5F;&#x27; title=&#x27;U+1E5F&#x27;&gt;&amp;#x1E5F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0053;&#x27; title=&#x27;U+0053&#x27;&gt;&amp;#x0053;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;S
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0073;&#x27; title=&#x27;U+0073&#x27;&gt;&amp;#x0073;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;s
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x015A;&#x27; title=&#x27;U+015A&#x27;&gt;&amp;#x015A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x015B;&#x27; title=&#x27;U+015B&#x27;&gt;&amp;#x015B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x015C;&#x27; title=&#x27;U+015C&#x27;&gt;&amp;#x015C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x015D;&#x27; title=&#x27;U+015D&#x27;&gt;&amp;#x015D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x015E;&#x27; title=&#x27;U+015E&#x27;&gt;&amp;#x015E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x015F;&#x27; title=&#x27;U+015F&#x27;&gt;&amp;#x015F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E60;&#x27; title=&#x27;U+1E60&#x27;&gt;&amp;#x1E60;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E61;&#x27; title=&#x27;U+1E61&#x27;&gt;&amp;#x1E61;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E62;&#x27; title=&#x27;U+1E62&#x27;&gt;&amp;#x1E62;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E63;&#x27; title=&#x27;U+1E63&#x27;&gt;&amp;#x1E63;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E64;&#x27; title=&#x27;U+1E64&#x27;&gt;&amp;#x1E64;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E65;&#x27; title=&#x27;U+1E65&#x27;&gt;&amp;#x1E65;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E68;&#x27; title=&#x27;U+1E68&#x27;&gt;&amp;#x1E68;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E69;&#x27; title=&#x27;U+1E69&#x27;&gt;&amp;#x1E69;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0160;&#x27; title=&#x27;U+0160&#x27;&gt;&amp;#x0160;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0161;&#x27; title=&#x27;U+0161&#x27;&gt;&amp;#x0161;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E66;&#x27; title=&#x27;U+1E66&#x27;&gt;&amp;#x1E66;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E67;&#x27; title=&#x27;U+1E67&#x27;&gt;&amp;#x1E67;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0054;&#x27; title=&#x27;U+0054&#x27;&gt;&amp;#x0054;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;T
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0074;&#x27; title=&#x27;U+0074&#x27;&gt;&amp;#x0074;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;t
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0162;&#x27; title=&#x27;U+0162&#x27;&gt;&amp;#x0162;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0163;&#x27; title=&#x27;U+0163&#x27;&gt;&amp;#x0163;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0164;&#x27; title=&#x27;U+0164&#x27;&gt;&amp;#x0164;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0165;&#x27; title=&#x27;U+0165&#x27;&gt;&amp;#x0165;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0166;&#x27; title=&#x27;U+0166&#x27;&gt;&amp;#x0166;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0167;&#x27; title=&#x27;U+0167&#x27;&gt;&amp;#x0167;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01AC;&#x27; title=&#x27;U+01AC&#x27;&gt;&amp;#x01AC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01AD;&#x27; title=&#x27;U+01AD&#x27;&gt;&amp;#x01AD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E6A;&#x27; title=&#x27;U+1E6A&#x27;&gt;&amp;#x1E6A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E6B;&#x27; title=&#x27;U+1E6B&#x27;&gt;&amp;#x1E6B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E6C;&#x27; title=&#x27;U+1E6C&#x27;&gt;&amp;#x1E6C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E6D;&#x27; title=&#x27;U+1E6D&#x27;&gt;&amp;#x1E6D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E6E;&#x27; title=&#x27;U+1E6E&#x27;&gt;&amp;#x1E6E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E6F;&#x27; title=&#x27;U+1E6F&#x27;&gt;&amp;#x1E6F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E70;&#x27; title=&#x27;U+1E70&#x27;&gt;&amp;#x1E70;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E71;&#x27; title=&#x27;U+1E71&#x27;&gt;&amp;#x1E71;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0055;&#x27; title=&#x27;U+0055&#x27;&gt;&amp;#x0055;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;U
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0075;&#x27; title=&#x27;U+0075&#x27;&gt;&amp;#x0075;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;u
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00D9;&#x27; title=&#x27;U+00D9&#x27;&gt;&amp;#x00D9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F9;&#x27; title=&#x27;U+00F9&#x27;&gt;&amp;#x00F9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00DA;&#x27; title=&#x27;U+00DA&#x27;&gt;&amp;#x00DA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00FA;&#x27; title=&#x27;U+00FA&#x27;&gt;&amp;#x00FA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00DB;&#x27; title=&#x27;U+00DB&#x27;&gt;&amp;#x00DB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00FB;&#x27; title=&#x27;U+00FB&#x27;&gt;&amp;#x00FB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0168;&#x27; title=&#x27;U+0168&#x27;&gt;&amp;#x0168;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0169;&#x27; title=&#x27;U+0169&#x27;&gt;&amp;#x0169;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x016A;&#x27; title=&#x27;U+016A&#x27;&gt;&amp;#x016A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x016B;&#x27; title=&#x27;U+016B&#x27;&gt;&amp;#x016B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x016C;&#x27; title=&#x27;U+016C&#x27;&gt;&amp;#x016C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x016D;&#x27; title=&#x27;U+016D&#x27;&gt;&amp;#x016D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x016E;&#x27; title=&#x27;U+016E&#x27;&gt;&amp;#x016E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x016F;&#x27; title=&#x27;U+016F&#x27;&gt;&amp;#x016F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0170;&#x27; title=&#x27;U+0170&#x27;&gt;&amp;#x0170;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0171;&#x27; title=&#x27;U+0171&#x27;&gt;&amp;#x0171;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0172;&#x27; title=&#x27;U+0172&#x27;&gt;&amp;#x0172;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0173;&#x27; title=&#x27;U+0173&#x27;&gt;&amp;#x0173;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01AF;&#x27; title=&#x27;U+01AF&#x27;&gt;&amp;#x01AF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01B0;&#x27; title=&#x27;U+01B0&#x27;&gt;&amp;#x01B0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D3;&#x27; title=&#x27;U+01D3&#x27;&gt;&amp;#x01D3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D4;&#x27; title=&#x27;U+01D4&#x27;&gt;&amp;#x01D4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0214;&#x27; title=&#x27;U+0214&#x27;&gt;&amp;#x0214;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0215;&#x27; title=&#x27;U+0215&#x27;&gt;&amp;#x0215;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0216;&#x27; title=&#x27;U+0216&#x27;&gt;&amp;#x0216;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0217;&#x27; title=&#x27;U+0217&#x27;&gt;&amp;#x0217;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E72;&#x27; title=&#x27;U+1E72&#x27;&gt;&amp;#x1E72;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E73;&#x27; title=&#x27;U+1E73&#x27;&gt;&amp;#x1E73;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E74;&#x27; title=&#x27;U+1E74&#x27;&gt;&amp;#x1E74;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E75;&#x27; title=&#x27;U+1E75&#x27;&gt;&amp;#x1E75;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E76;&#x27; title=&#x27;U+1E76&#x27;&gt;&amp;#x1E76;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E77;&#x27; title=&#x27;U+1E77&#x27;&gt;&amp;#x1E77;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E78;&#x27; title=&#x27;U+1E78&#x27;&gt;&amp;#x1E78;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E79;&#x27; title=&#x27;U+1E79&#x27;&gt;&amp;#x1E79;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E7A;&#x27; title=&#x27;U+1E7A&#x27;&gt;&amp;#x1E7A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E7B;&#x27; title=&#x27;U+1E7B&#x27;&gt;&amp;#x1E7B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE4;&#x27; title=&#x27;U+1EE4&#x27;&gt;&amp;#x1EE4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE5;&#x27; title=&#x27;U+1EE5&#x27;&gt;&amp;#x1EE5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE6;&#x27; title=&#x27;U+1EE6&#x27;&gt;&amp;#x1EE6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE7;&#x27; title=&#x27;U+1EE7&#x27;&gt;&amp;#x1EE7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE8;&#x27; title=&#x27;U+1EE8&#x27;&gt;&amp;#x1EE8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EE9;&#x27; title=&#x27;U+1EE9&#x27;&gt;&amp;#x1EE9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EEA;&#x27; title=&#x27;U+1EEA&#x27;&gt;&amp;#x1EEA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EEB;&#x27; title=&#x27;U+1EEB&#x27;&gt;&amp;#x1EEB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EEC;&#x27; title=&#x27;U+1EEC&#x27;&gt;&amp;#x1EEC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EED;&#x27; title=&#x27;U+1EED&#x27;&gt;&amp;#x1EED;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EEE;&#x27; title=&#x27;U+1EEE&#x27;&gt;&amp;#x1EEE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EEF;&#x27; title=&#x27;U+1EEF&#x27;&gt;&amp;#x1EEF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF0;&#x27; title=&#x27;U+1EF0&#x27;&gt;&amp;#x1EF0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF1;&#x27; title=&#x27;U+1EF1&#x27;&gt;&amp;#x1EF1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00DC;&#x27; title=&#x27;U+00DC&#x27;&gt;&amp;#x00DC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00FC;&#x27; title=&#x27;U+00FC&#x27;&gt;&amp;#x00FC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D5;&#x27; title=&#x27;U+01D5&#x27;&gt;&amp;#x01D5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D6;&#x27; title=&#x27;U+01D6&#x27;&gt;&amp;#x01D6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D7;&#x27; title=&#x27;U+01D7&#x27;&gt;&amp;#x01D7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D8;&#x27; title=&#x27;U+01D8&#x27;&gt;&amp;#x01D8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01D9;&#x27; title=&#x27;U+01D9&#x27;&gt;&amp;#x01D9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01DA;&#x27; title=&#x27;U+01DA&#x27;&gt;&amp;#x01DA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01DB;&#x27; title=&#x27;U+01DB&#x27;&gt;&amp;#x01DB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01DC;&#x27; title=&#x27;U+01DC&#x27;&gt;&amp;#x01DC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0056;&#x27; title=&#x27;U+0056&#x27;&gt;&amp;#x0056;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;V
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0076;&#x27; title=&#x27;U+0076&#x27;&gt;&amp;#x0076;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;v
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E7C;&#x27; title=&#x27;U+1E7C&#x27;&gt;&amp;#x1E7C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E7D;&#x27; title=&#x27;U+1E7D&#x27;&gt;&amp;#x1E7D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E7E;&#x27; title=&#x27;U+1E7E&#x27;&gt;&amp;#x1E7E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E7F;&#x27; title=&#x27;U+1E7F&#x27;&gt;&amp;#x1E7F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0057;&#x27; title=&#x27;U+0057&#x27;&gt;&amp;#x0057;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;W
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0077;&#x27; title=&#x27;U+0077&#x27;&gt;&amp;#x0077;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;w
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0174;&#x27; title=&#x27;U+0174&#x27;&gt;&amp;#x0174;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0175;&#x27; title=&#x27;U+0175&#x27;&gt;&amp;#x0175;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E80;&#x27; title=&#x27;U+1E80&#x27;&gt;&amp;#x1E80;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E81;&#x27; title=&#x27;U+1E81&#x27;&gt;&amp;#x1E81;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E82;&#x27; title=&#x27;U+1E82&#x27;&gt;&amp;#x1E82;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E83;&#x27; title=&#x27;U+1E83&#x27;&gt;&amp;#x1E83;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E84;&#x27; title=&#x27;U+1E84&#x27;&gt;&amp;#x1E84;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E85;&#x27; title=&#x27;U+1E85&#x27;&gt;&amp;#x1E85;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E86;&#x27; title=&#x27;U+1E86&#x27;&gt;&amp;#x1E86;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E87;&#x27; title=&#x27;U+1E87&#x27;&gt;&amp;#x1E87;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E88;&#x27; title=&#x27;U+1E88&#x27;&gt;&amp;#x1E88;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E89;&#x27; title=&#x27;U+1E89&#x27;&gt;&amp;#x1E89;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0058;&#x27; title=&#x27;U+0058&#x27;&gt;&amp;#x0058;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;X
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0078;&#x27; title=&#x27;U+0078&#x27;&gt;&amp;#x0078;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;x
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E8A;&#x27; title=&#x27;U+1E8A&#x27;&gt;&amp;#x1E8A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E8B;&#x27; title=&#x27;U+1E8B&#x27;&gt;&amp;#x1E8B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E8C;&#x27; title=&#x27;U+1E8C&#x27;&gt;&amp;#x1E8C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E8D;&#x27; title=&#x27;U+1E8D&#x27;&gt;&amp;#x1E8D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0059;&#x27; title=&#x27;U+0059&#x27;&gt;&amp;#x0059;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;Y
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0079;&#x27; title=&#x27;U+0079&#x27;&gt;&amp;#x0079;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;y
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00DD;&#x27; title=&#x27;U+00DD&#x27;&gt;&amp;#x00DD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00FD;&#x27; title=&#x27;U+00FD&#x27;&gt;&amp;#x00FD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0176;&#x27; title=&#x27;U+0176&#x27;&gt;&amp;#x0176;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0177;&#x27; title=&#x27;U+0177&#x27;&gt;&amp;#x0177;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0178;&#x27; title=&#x27;U+0178&#x27;&gt;&amp;#x0178;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00FF;&#x27; title=&#x27;U+00FF&#x27;&gt;&amp;#x00FF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01B3;&#x27; title=&#x27;U+01B3&#x27;&gt;&amp;#x01B3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01B4;&#x27; title=&#x27;U+01B4&#x27;&gt;&amp;#x01B4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E8E;&#x27; title=&#x27;U+1E8E&#x27;&gt;&amp;#x1E8E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E8F;&#x27; title=&#x27;U+1E8F&#x27;&gt;&amp;#x1E8F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF2;&#x27; title=&#x27;U+1EF2&#x27;&gt;&amp;#x1EF2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF3;&#x27; title=&#x27;U+1EF3&#x27;&gt;&amp;#x1EF3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF4;&#x27; title=&#x27;U+1EF4&#x27;&gt;&amp;#x1EF4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF5;&#x27; title=&#x27;U+1EF5&#x27;&gt;&amp;#x1EF5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF6;&#x27; title=&#x27;U+1EF6&#x27;&gt;&amp;#x1EF6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF7;&#x27; title=&#x27;U+1EF7&#x27;&gt;&amp;#x1EF7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF8;&#x27; title=&#x27;U+1EF8&#x27;&gt;&amp;#x1EF8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1EF9;&#x27; title=&#x27;U+1EF9&#x27;&gt;&amp;#x1EF9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x005A;&#x27; title=&#x27;U+005A&#x27;&gt;&amp;#x005A;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;Z
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x007A;&#x27; title=&#x27;U+007A&#x27;&gt;&amp;#x007A;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;z
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0179;&#x27; title=&#x27;U+0179&#x27;&gt;&amp;#x0179;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x017A;&#x27; title=&#x27;U+017A&#x27;&gt;&amp;#x017A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x017B;&#x27; title=&#x27;U+017B&#x27;&gt;&amp;#x017B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x017C;&#x27; title=&#x27;U+017C&#x27;&gt;&amp;#x017C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01B5;&#x27; title=&#x27;U+01B5&#x27;&gt;&amp;#x01B5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01B6;&#x27; title=&#x27;U+01B6&#x27;&gt;&amp;#x01B6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E90;&#x27; title=&#x27;U+1E90&#x27;&gt;&amp;#x1E90;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E91;&#x27; title=&#x27;U+1E91&#x27;&gt;&amp;#x1E91;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E92;&#x27; title=&#x27;U+1E92&#x27;&gt;&amp;#x1E92;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E93;&#x27; title=&#x27;U+1E93&#x27;&gt;&amp;#x1E93;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E94;&#x27; title=&#x27;U+1E94&#x27;&gt;&amp;#x1E94;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1E95;&#x27; title=&#x27;U+1E95&#x27;&gt;&amp;#x1E95;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x017D;&#x27; title=&#x27;U+017D&#x27;&gt;&amp;#x017D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x017E;&#x27; title=&#x27;U+017E&#x27;&gt;&amp;#x017E;&lt;&#x2F;span&gt;&quot;;
+    &#x2F;&#x2F;M - Z
+    insert_latin_2.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    &#x2F;&#x2F;LIGATUURID
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_SYM_LIGATURES + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00C6;&#x27;&gt;&amp;#x00C6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00E6;&#x27;&gt;&amp;#x00E6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0132;&#x27;&gt;&amp;#x0132;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0133;&#x27;&gt;&amp;#x0133;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0152;&#x27;&gt;&amp;#x0152;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0153;&#x27;&gt;&amp;#x0153;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01C4;&#x27;&gt;&amp;#x01C4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01C5;&#x27;&gt;&amp;#x01C5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01C6;&#x27;&gt;&amp;#x01C6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01C7;&#x27;&gt;&amp;#x01C7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01C8;&#x27;&gt;&amp;#x01C8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01C9;&#x27;&gt;&amp;#x01C9;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01CA;&#x27;&gt;&amp;#x01CA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01CB;&#x27;&gt;&amp;#x01CB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01CC;&#x27;&gt;&amp;#x01CC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E2;&#x27;&gt;&amp;#x01E2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01E3;&#x27;&gt;&amp;#x01E3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01F1;&#x27;&gt;&amp;#x01F1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01F2;&#x27;&gt;&amp;#x01F2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01F3;&#x27;&gt;&amp;#x01F3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01FC;&#x27;&gt;&amp;#x01FC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x01FD;&#x27;&gt;&amp;#x01FD;&lt;&#x2F;span&gt;&quot;;
+
+    &#x2F;&#x2F;sümbolid
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;katus U+005E&#x27; value=&#x27;&quot; + CIRCUMFLEX + &quot;&#x27;&gt;&quot; + CIRCUMFLEX + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;graavis U+0060&#x27; value=&#x27;&quot; + GRAVE + &quot;&#x27;&gt;&quot; + GRAVE + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;tagurpidi hüüumärk U+00A1&#x27; value=&#x27;&quot; + INVERTED_EXCLAMATION + &quot;&#x27;&gt;&quot; + INVERTED_EXCLAMATION + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;sent U+00A2&#x27; value=&#x27;&quot; + CENT_SIGN + &quot;&#x27;&gt;&quot; + CENT_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;jeen U+00A5&#x27; value=&#x27;&quot; + YEN_SIGN + &quot;&#x27;&gt;&quot; + YEN_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+00A6&#x27; value=&#x27;&quot; + BROKEN_BAR + &quot;&#x27;&gt;&quot; + BROKEN_BAR + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;treema U+00A8&#x27; value=&#x27;&quot; + DIAERESIS + &quot;&#x27;&gt;&quot; + DIAERESIS + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+00A9&#x27; value=&#x27;&quot; + COPYRIGHT_SIGN + &quot;&#x27;&gt;&quot; + COPYRIGHT_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;eitus U+00AC&#x27; value=&#x27;&quot; + NOT_SIGN + &quot;&#x27;&gt;&quot; + NOT_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+00AE&#x27; value=&#x27;&quot; + REGISTERED_SIGN + &quot;&#x27;&gt;&quot; + REGISTERED_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;makron U+00AF&#x27; value=&#x27;&quot; + MACRON + &quot;&#x27;&gt;&quot; + MACRON + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;kraad U+00B0&#x27; value=&#x27;&quot; + DEGREE_SIGN + &quot;&#x27;&gt;&quot; + DEGREE_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;akuut U+00B4&#x27; value=&#x27;&quot; + ACUTE + &quot;&#x27;&gt;&quot; + ACUTE + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;mikro U+00B5&#x27; value=&#x27;&quot; + MICRO_SIGN + &quot;&#x27;&gt;&quot; + MICRO_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+00B6&#x27; value=&#x27;&quot; + PILCROW_SIGN + &quot;&#x27;&gt;&quot; + PILCROW_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;punkt keskel U+00B7&#x27; value=&#x27;&quot; + MIDDLE_DOT + &quot;&#x27;&gt;&quot; + MIDDLE_DOT + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;sedilla U+00B8&#x27; value=&#x27;&quot; + CEDILLA + &quot;&#x27;&gt;&quot; + CEDILLA + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;tagurpidi küsimärk U+00BF&#x27; value=&#x27;&quot; + INVERTED_QUESTION + &quot;&#x27;&gt;&quot; + INVERTED_QUESTION + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;korrutamismärk U+00D7&#x27; value=&#x27;&quot; + MULTIPLICATION_SIGN + &quot;&#x27;&gt;&quot; + MULTIPLICATION_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;jagamismärk U+00F7&#x27; value=&#x27;&quot; + DIVISION_SIGN + &quot;&#x27;&gt;&quot; + DIVISION_SIGN + &quot;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;veel sümboleid ...
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;mõttekriips U+2013&#x27; value=&#x27;&quot; + EN_DASH + &quot;&#x27;&gt;&quot; + EN_DASH + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;mõttekriips akuudiga U+2013 U+0301&#x27; value=&#x27;&amp;#x2013;&amp;#x0301;&#x27;&gt;&amp;#x2013;&amp;#x0301;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;vasakpoolne ülakoma U+2018&#x27; value=&#x27;&quot; + LEFT_SINGLE_QUOTATION_MARK + &quot;&#x27;&gt;&quot; + LEFT_SINGLE_QUOTATION_MARK + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;parempoolne ülakoma U+2019&#x27; value=&#x27;&quot; + RIGHT_SINGLE_QUOTATION_MARK + &quot;&#x27;&gt;&quot; + RIGHT_SINGLE_QUOTATION_MARK + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;pistoda U+2020&#x27; value=&#x27;&amp;#x2020;&#x27;&gt;&amp;#x2020;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;topeltpistoda U+2021&#x27; value=&#x27;&amp;#x2021;&#x27;&gt;&amp;#x2021;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;vasakpoolne alumine jutumärk U+201E&#x27; value=&#x27;&quot; + DOUBLE_LOW9_QUOTATION_MARK + &quot;&#x27;&gt;&quot; + DOUBLE_LOW9_QUOTATION_MARK + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;parempoolne jutumärk U+201D&#x27; value=&#x27;&quot; + RIGHT_DOUBLE_QUOTATION_MARK + &quot;&#x27;&gt;&quot; + RIGHT_DOUBLE_QUOTATION_MARK + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;priim (minutid, jalad) U+2032&#x27; value=&#x27;&quot; + PRIME + &quot;&#x27;&gt;&quot; + PRIME + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;topeltpriim (sekundid, tollid) U+2033&#x27; value=&#x27;&quot; + DOUBLE_PRIME + &quot;&#x27;&gt;&quot; + DOUBLE_PRIME + &quot;&lt;&#x2F;span&gt;&quot;
+
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Oom U+2126&#x27; value=&#x27;&quot; + OHM_SIGN + &quot;&#x27;&gt;&quot; + OHM_SIGN + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Ongström U+212B&#x27; value=&#x27;&quot; + ANGSTROM_SIGN + &quot;&#x27;&gt;&quot; + ANGSTROM_SIGN + &quot;&lt;&#x2F;span&gt;&quot;
+
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;vasakule nool U+2190&#x27; value=&#x27;&quot; + LEFTWARDS_ARROW + &quot;&#x27;&gt;&quot; + LEFTWARDS_ARROW + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;üles nool U+2191&#x27; value=&#x27;&quot; + UPWARDS_ARROW + &quot;&#x27;&gt;&quot; + UPWARDS_ARROW + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;paremale nool U+2192&#x27; value=&#x27;&quot; + RIGHTWARDS_ARROW + &quot;&#x27;&gt;&quot; + RIGHTWARDS_ARROW + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;alla nool U+2193&#x27; value=&#x27;&quot; + DOWNWARDS_ARROW + &quot;&#x27;&gt;&quot; + DOWNWARDS_ARROW + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;väike suurtäht U U+1D1C&#x27; value=&#x27;&amp;#x1D1C;&#x27;&gt;&amp;#x1D1C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;modif väike suurtäht U U+1D41&#x27; value=&#x27;&amp;#x1D41;&#x27;&gt;&amp;#x1D41;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;poolik o alumine U+1D17&#x27; value=&#x27;&amp;#x1D17;&#x27;&gt;&amp;#x1D17;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;modif poolik o alumine U+1D55&#x27; value=&#x27;&amp;#x1D55;&#x27;&gt;&amp;#x1D55;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;alakaar U+203F&#x27; value=&#x27;&amp;#x203F;&#x27;&gt;&amp;#x203F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;naeratus U+2323&#x27; value=&#x27;&amp;#x2323;&#x27;&gt;&amp;#x2323;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;alumine pool ringist U+25E1&#x27; value=&#x27;&amp;#x25E1;&#x27;&gt;&amp;#x25E1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;täpp U+2022&#x27; value=&#x27;&quot; + BULLET + &quot;&#x27;&gt;&quot; + BULLET + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;kolmnurkne täpp U+2023&#x27; value=&#x27;&quot; + TRIANGULAR_BULLET + &quot;&#x27;&gt;&quot; + TRIANGULAR_BULLET + &quot;&lt;&#x2F;span&gt;&quot;
+
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must ruuduke U+25A0&#x27; value=&#x27;&amp;#x25A0;&#x27;&gt;&amp;#x25A0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge ruuduke U+25A1&#x27; value=&#x27;&amp;#x25A1;&#x27;&gt;&amp;#x25A1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge ruuduke ümarate nurkadega U+25A2&#x27; value=&#x27;&amp;#x25A2;&#x27;&gt;&amp;#x25A2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge ruuduke väikese musta ruudukesega U+25A3&#x27; value=&#x27;&amp;#x25A3;&#x27;&gt;&amp;#x25A3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;väike must ruuduke U+25AA&#x27; value=&#x27;&amp;#x25AA;&#x27;&gt;&amp;#x25AA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;väike valge ruuduke U+25AB&#x27; value=&#x27;&amp;#x25AB;&#x27;&gt;&amp;#x25AB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must ristkülik U+25AC&#x27; value=&#x27;&amp;#x25AC;&#x27;&gt;&amp;#x25AC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge ristkülik U+25AD&#x27; value=&#x27;&amp;#x25AD;&#x27;&gt;&amp;#x25AD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must vertikaalne ristkülik U+25AE&#x27; value=&#x27;&amp;#x25AE;&#x27;&gt;&amp;#x25AE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge vertikaalne ristkülik U+25AF&#x27; value=&#x27;&amp;#x25AF;&#x27;&gt;&amp;#x25AF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must rööpkülik U+25B0&#x27; value=&#x27;&amp;#x25B0;&#x27;&gt;&amp;#x25B0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge rööpkülik U+25B1&#x27; value=&#x27;&amp;#x25B1;&#x27;&gt;&amp;#x25B1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must tipuga üles kolmnurk U+25B2&#x27; value=&#x27;&amp;#x25B2;&#x27;&gt;&amp;#x25B2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge tipuga üles kolmnurk U+25B3&#x27; value=&#x27;&amp;#x25B3;&#x27;&gt;&amp;#x25B3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge tipuga paremale kolmnurk U+25B7&#x27; value=&#x27;&amp;#x25B7;&#x27;&gt;&amp;#x25B7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must tipuga paremale kolmnurk U+25BA&#x27; value=&#x27;&amp;#x25BA;&#x27;&gt;&amp;#x25BA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must tipuga alla kolmnurk U+25BC&#x27; value=&#x27;&amp;#x25BC;&#x27;&gt;&amp;#x25BC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge tipuga alla kolmnurk U+25BD&#x27; value=&#x27;&amp;#x25BD;&#x27;&gt;&amp;#x25BD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge tipuga vasakule kolmnurk U+25C1&#x27; value=&#x27;&amp;#x25C1;&#x27;&gt;&amp;#x25C1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must tipuga vasakule kolmnurk U+25C4&#x27; value=&#x27;&amp;#x25C4;&#x27;&gt;&amp;#x25C4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must ruutu U+25C6&#x27; value=&#x27;&amp;#x25C6;&#x27;&gt;&amp;#x25C6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge ruutu U+25C7&#x27; value=&#x27;&amp;#x25C7;&#x27;&gt;&amp;#x25C7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;seest tühi romb (Lozenge) U+25CA&#x27; value=&#x27;&amp;#x25CA;&#x27;&gt;&amp;#x25CA;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;seest tühi ring (White Circle) U+25CB&#x27; value=&#x27;&amp;#x25CB;&#x27;&gt;&amp;#x25CB;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;seest täis ring (Black Circle) U+25CF&#x27; value=&#x27;&amp;#x25CF;&#x27;&gt;&amp;#x25CF;&lt;&#x2F;span&gt;&quot;
+
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;pluss-miinus U+00B1&#x27; value=&#x27;&amp;#x00B1;&#x27;&gt;&amp;#x00B1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;murrukriips U+2044&#x27; value=&#x27;&amp;#x2044;&#x27;&gt;&amp;#x2044;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;jagamiskriips U+2215&#x27; value=&#x27;&amp;#x2215;&#x27;&gt;&amp;#x2215;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;lõpmatus U+221E&#x27; value=&#x27;&amp;#x221E;&#x27;&gt;&amp;#x221E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;kuulub U+2208&#x27; value=&#x27;&amp;#x2208;&#x27;&gt;&amp;#x2208;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ei kuulu U+2209&#x27; value=&#x27;&amp;#x2209;&#x27;&gt;&amp;#x2209;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;MOTT U+220E&#x27; value=&#x27;&amp;#x220E;&#x27;&gt;&amp;#x220E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;loogiline JA U+2227&#x27; value=&#x27;&amp;#x2227;&#x27;&gt;&amp;#x2227;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;loogiline VÕI U+2228&#x27; value=&#x27;&amp;#x2228;&#x27;&gt;&amp;#x2228;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ühisosa U+2229&#x27; value=&#x27;&amp;#x2229;&#x27;&gt;&amp;#x2229;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ühend U+222A&#x27; value=&#x27;&amp;#x222A;&#x27;&gt;&amp;#x222A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;integraal U+222B&#x27; value=&#x27;&amp;#x222B;&#x27;&gt;&amp;#x222B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;unaarne ühend U+22C3&#x27; value=&#x27;&amp;#x22C3;&#x27;&gt;&amp;#x22C3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;suletud ühend U+2A4C&#x27; value=&#x27;&amp;#x2A4C;&#x27;&gt;&amp;#x2A4C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;meetriline lühenduskaar U+23D1&#x27; value=&#x27;&amp;#x23D1;&#x27;&gt;&amp;#x23D1;&lt;&#x2F;span&gt;&quot;
+
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;radioaktiivne U+2622&#x27; value=&#x27;&amp;#x2622;&#x27;&gt;&amp;#x2622;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;sirp ja vasar U+262D&#x27; value=&#x27;&amp;#x262D;&#x27;&gt;&amp;#x262D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;rahu U+262E&#x27; value=&#x27;&amp;#x262E;&#x27;&gt;&amp;#x262E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;yin yang U+262F&#x27; value=&#x27;&amp;#x262F;&#x27;&gt;&amp;#x262F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Veenus U+2640&#x27; value=&#x27;&amp;#x2640;&#x27;&gt;&amp;#x2640;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Marss U+2642&#x27; value=&#x27;&amp;#x2642;&#x27;&gt;&amp;#x2642;&lt;&#x2F;span&gt;&quot;;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge kuningas U+2654&#x27; value=&#x27;&amp;#x2654;&#x27;&gt;&amp;#x2654;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge lipp U+2655&#x27; value=&#x27;&amp;#x2655;&#x27;&gt;&amp;#x2655;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge vanker U+2656&#x27; value=&#x27;&amp;#x2656;&#x27;&gt;&amp;#x2656;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge oda U+2657&#x27; value=&#x27;&amp;#x2657;&#x27;&gt;&amp;#x2657;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge ratsu U+2658&#x27; value=&#x27;&amp;#x2658;&#x27;&gt;&amp;#x2658;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge ettur U+2659&#x27; value=&#x27;&amp;#x2659;&#x27;&gt;&amp;#x2659;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must kuningas U+265A&#x27; value=&#x27;&amp;#x265A;&#x27;&gt;&amp;#x265A;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must lipp U+265B&#x27; value=&#x27;&amp;#x265B;&#x27;&gt;&amp;#x265B;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must vanker U+265C&#x27; value=&#x27;&amp;#x265C;&#x27;&gt;&amp;#x265C;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must oda U+265D&#x27; value=&#x27;&amp;#x265D;&#x27;&gt;&amp;#x265D;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must ratsu U+265E&#x27; value=&#x27;&amp;#x265E;&#x27;&gt;&amp;#x265E;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must ettur U+265F&#x27; value=&#x27;&amp;#x265F;&#x27;&gt;&amp;#x265F;&lt;&#x2F;span&gt;&quot;
+
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must poti mast U+2660&#x27; value=&#x27;&amp;#x2660;&#x27;&gt;&amp;#x2660;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge ärtu mast U+2661&#x27; value=&#x27;&amp;#x2661;&#x27;&gt;&amp;#x2661;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge ruutu mast U+2662&#x27; value=&#x27;&amp;#x2662;&#x27;&gt;&amp;#x2662;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;must risti mast U+2663&#x27; value=&#x27;&amp;#x2663;&#x27;&gt;&amp;#x2663;&lt;&#x2F;span&gt;&quot;
+
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;veerandnoot U+2669&#x27; value=&#x27;&amp;#x2669;&#x27;&gt;&amp;#x2669;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;kaheksandiknoot U+266A&#x27; value=&#x27;&amp;#x266A;&#x27;&gt;&amp;#x266A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;kaheksandikud U+266B&#x27; value=&#x27;&amp;#x266B;&#x27;&gt;&amp;#x266B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;kuueteistkümnendikud U+266C&#x27; value=&#x27;&amp;#x266C;&#x27;&gt;&amp;#x266C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;bemoll U+266D&#x27; value=&#x27;&amp;#x266D;&#x27;&gt;&amp;#x266D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;bekaar U+266E&#x27; value=&#x27;&amp;#x266E;&#x27;&gt;&amp;#x266E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;diees U+266F&#x27; value=&#x27;&amp;#x266F;&#x27;&gt;&amp;#x266F;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;breevis U+02D8&#x27; value=&#x27;&amp;#x02D8;&#x27;&gt;&amp;#x02D8;&lt;&#x2F;span&gt;&quot;
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;makron akuudiga U+02C9 U+0301&#x27; value=&#x27;&amp;#x02C9;&amp;#x0301;&#x27;&gt;&amp;#x02C9;&amp;#x0301;&lt;&#x2F;span&gt;&quot;
+
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;g-võti U+1D11E [font-family:symbola]&#x27; value=&#x27;&amp;#x1D11E;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D11E;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola] g clef&#x27; value=&#x27;&amp;gclef;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D11E;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola]&#x27; value=&#x27;&amp;#x1D11F;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D11F;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola] g clef ottava alta&#x27; value=&#x27;&amp;gclefottavaalta;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D11F;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D120 [font-family:symbola]&#x27; value=&#x27;&amp;#x1D120;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D120;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola] g clef ottava bassa&#x27; value=&#x27;&amp;gclefottavabassa;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D120;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D121 [font-family:symbola]&#x27; value=&#x27;&amp;#x1D121;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D121;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola] c clef&#x27; value=&#x27;&amp;cclef;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D121;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D122 [font-family:symbola]&#x27; value=&#x27;&amp;#x1D122;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D122;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola] f clef&#x27; value=&#x27;&amp;fclef;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D122;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D123 [font-family:symbola]&#x27; value=&#x27;&amp;#x1D123;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D123;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola] f clef ottava alta&#x27; value=&#x27;&amp;fclefottavaalta;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D123;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D124 [font-family:symbola]&#x27; value=&#x27;&amp;#x1D124;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D124;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola] f clef ottava bassa&#x27; value=&#x27;&amp;fclefottavabassa;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D124;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D125 [font-family:symbola]&#x27; value=&#x27;&amp;#x1D125;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D125;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola] drum clef 1&#x27; value=&#x27;+drumclef1;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D125;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D126 [font-family:symbola]&#x27; value=&#x27;&amp;#x1D126;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D126;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;U+1D11F [font-family:symbola] drum clef 2&#x27; value=&#x27;+drumclef2;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D126;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;fermaat U+1D110 [font-family:symbola]&#x27; value=&#x27;&amp;#x1D110;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D110;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;fermaat U+1D110 [font-family:symbola] fermata&#x27; value=&#x27;&amp;fermata;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D110;&lt;&#x2F;span&gt;&quot;;
+    &#x2F;&#x2F;1D10B = D834, DD0B
+    &#x2F;&#x2F;inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;segno U+1D10B [font-family:symbola]&#x27; value=&#x27;&amp;#x1D10B;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D10B;&lt;&#x2F;span&gt;&quot;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;segno U+1D10B [font-family:symbola] segno&#x27; value=&#x27;&amp;segno;&#x27; style=&#x27;font-family:symbola&#x27;&gt;&amp;#x1D10B;&lt;&#x2F;span&gt;&quot;
+
+    &#x2F;&#x2F;Margiti soovitud WingDings fondi asjad (lähendatud Unicode-le) 05. juuni 2011
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;üles paremale suunatud pliiats U+2710&#x27; value=&#x27;&amp;#x2710;&#x27;&gt;&amp;#x2710;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valged käärid U+2704&#x27; value=&#x27;&amp;#x2704;&#x27;&gt;&amp;#x2704;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ümbrik U+2709&#x27; value=&#x27;&amp;#x2709;&#x27;&gt;&amp;#x2709;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;liivakell U+231B&#x27; value=&#x27;&amp;#x231B;&#x27;&gt;&amp;#x231B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;kirjutav käsi U+270D&#x27; value=&#x27;&amp;#x270D;&#x27;&gt;&amp;#x270D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge paremale suunatud nimetissõrm U+261E&#x27; value=&#x27;&amp;#x261E;&#x27;&gt;&amp;#x261E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge hapu nägu U+2639&#x27; value=&#x27;&amp;#x2639;&#x27;&gt;&amp;#x2639;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge naeratav nägu U+263A&#x27; value=&#x27;&amp;#x263A;&#x27;&gt;&amp;#x263A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;valge kiirtega päike U+263C&#x27; value=&#x27;&amp;#x263C;&#x27;&gt;&amp;#x263C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;lumehelves U+2744&#x27; value=&#x27;&amp;#x2744;&#x27;&gt;&amp;#x2744;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;huviväärsus U+2318&#x27; value=&#x27;&amp;#x2318;&#x27;&gt;&amp;#x2318;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ringikujuline mustal taustal paremale nool U+27B2&#x27; value=&#x27;&amp;#x27B2;&#x27;&gt;&amp;#x27B2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;topeltnool vasakule U+21D0&#x27; value=&#x27;&amp;#x21D0;&#x27;&gt;&amp;#x21D0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;topeltnool üles U+21D1&#x27; value=&#x27;&amp;#x21D1;&#x27;&gt;&amp;#x21D1;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;topeltnool paremale U+21D2&#x27; value=&#x27;&amp;#x21D2;&#x27;&gt;&amp;#x21D2;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;topeltnool alla U+21D3&#x27; value=&#x27;&amp;#x21D3;&#x27;&gt;&amp;#x21D3;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;topeltnool vasakule, paremale U+21D4&#x27; value=&#x27;&amp;#x21D4;&#x27;&gt;&amp;#x21D4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;linnukesega märkeruut U+2611&#x27; value=&#x27;&amp;#x2611;&#x27;&gt;&amp;#x2611;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;tagurpidi väike v U+028C&#x27; value=&#x27;&amp;#x028C;&#x27;&gt;&amp;#x028C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;väike kreeka lambda suurtäht U+1D27&#x27; value=&#x27;&amp;#x1D27;&#x27;&gt;&amp;#x1D27;&lt;&#x2F;span&gt;&quot;;
+    insert_marks.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_COMB_SYM + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. graavis U+0300&#x27; value=&#x27;&quot; + COMBINING_GRAVE + &quot;&#x27;&gt;&quot; + COMBINING_GRAVE + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. akuut U+0301&#x27; value=&#x27;&quot; + COMBINING_ACUTE + &quot;&#x27;&gt;&quot; + COMBINING_ACUTE + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. katus U+0302&#x27; value=&#x27;&quot; + COMBINING_CIRCUMFLEX + &quot;&#x27;&gt;&quot; + COMBINING_CIRCUMFLEX + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. tilde U+0303&#x27; value=&#x27;&quot; + COMBINING_TILDE + &quot;&#x27;&gt;&quot; + COMBINING_TILDE + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. makron U+0304&#x27; value=&#x27;&quot; + COMBINING_MACRON + &quot;&#x27;&gt;&quot; + COMBINING_MACRON + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. ülajoon U+0305&#x27; value=&#x27;&quot; + COMBINING_OVERLINE + &quot;&#x27;&gt;&quot; + COMBINING_OVERLINE + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. kaar U+0306&#x27; value=&#x27;&quot; + COMBINING_BREVE + &quot;&#x27;&gt;&quot; + COMBINING_BREVE + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. ülapunkt U+0307&#x27; value=&#x27;&quot; + COMBINING_DOT_ABOVE + &quot;&#x27;&gt;&quot; + COMBINING_DOT_ABOVE + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. treema U+0308&#x27; value=&#x27;&quot; + COMBINING_DIAERESIS + &quot;&#x27;&gt;&quot; + COMBINING_DIAERESIS + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;komb. kolmveerandpikkus U+1DFE&#x27; value=&#x27;&amp;#x1DFE;&#x27;&gt;&amp;#x1DFE;&lt;&#x2F;span&gt;&quot;;
+    for (ixCode = 777; ixCode &lt;= 879; ixCode++) {
+        hex4Nr = jsStrRepeat(4 - hex(ixCode, true).constructor, &quot;0&quot;) + hex(ixCode, true);
+        inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27; U+&quot; + hex4Nr + &quot;&#x27; value=&#x27;&amp;#x&quot; + hex4Nr + &quot;;&#x27;&gt;&amp;#x&quot; + hex4Nr + &quot;;&lt;&#x2F;span&gt;&quot;;
+    }
+    insert_combin.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_GREEK + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Alfa&#x27; value=&#x27;&amp;Alpha;&#x27;&gt;&amp;Alpha;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;alfa&#x27; value=&#x27;&amp;alpha;&#x27;&gt;&amp;alpha;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Beeta&#x27; value=&#x27;&amp;Beta;&#x27;&gt;&amp;Beta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;beeta&#x27; value=&#x27;&amp;beta;&#x27;&gt;&amp;beta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Gamma&#x27; value=&#x27;&amp;Gamma;&#x27;&gt;&amp;Gamma;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;gamma&#x27; value=&#x27;&amp;gamma;&#x27;&gt;&amp;gamma;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Delta&#x27; value=&#x27;&amp;Delta;&#x27;&gt;&amp;Delta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;delta&#x27; value=&#x27;&amp;delta;&#x27;&gt;&amp;delta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Epsilon&#x27; value=&#x27;&amp;Epsilon;&#x27;&gt;&amp;Epsilon;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;epsilon&#x27; value=&#x27;&amp;epsilon;&#x27;&gt;&amp;epsilon;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Dzeeta&#x27; value=&#x27;&amp;Zeta;&#x27;&gt;&amp;Zeta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;dzeeta&#x27; value=&#x27;&amp;zeta;&#x27;&gt;&amp;zeta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Eeta&#x27; value=&#x27;&amp;Eta;&#x27;&gt;&amp;Eta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;eeta&#x27; value=&#x27;&amp;eta;&#x27;&gt;&amp;eta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Teeta&#x27; value=&#x27;&amp;Theta;&#x27;&gt;&amp;Theta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;teeta&#x27; value=&#x27;&amp;theta;&#x27;&gt;&amp;theta;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Ioota&#x27; value=&#x27;&amp;Iota;&#x27;&gt;&amp;Iota;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ioota&#x27; value=&#x27;&amp;iota;&#x27;&gt;&amp;iota;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Kapa&#x27; value=&#x27;&amp;Kappa;&#x27;&gt;&amp;Kappa;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;kapa&#x27; value=&#x27;&amp;kappa;&#x27;&gt;&amp;kappa;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Lambda&#x27; value=&#x27;&amp;Lambda;&#x27;&gt;&amp;Lambda;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;lambda&#x27; value=&#x27;&amp;lambda;&#x27;&gt;&amp;lambda;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Müü&#x27; value=&#x27;&amp;Mu;&#x27;&gt;&amp;Mu;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;müü&#x27; value=&#x27;&amp;mu;&#x27;&gt;&amp;mu;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Nüü&#x27; value=&#x27;&amp;Nu;&#x27;&gt;&amp;Nu;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;nüü&#x27; value=&#x27;&amp;nu;&#x27;&gt;&amp;nu;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Ksii&#x27; value=&#x27;&amp;Xi;&#x27;&gt;&amp;Xi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ksii&#x27; value=&#x27;&amp;xi;&#x27;&gt;&amp;xi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Omikron&#x27; value=&#x27;&amp;Omicron;&#x27;&gt;&amp;Omicron;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;omikron&#x27; value=&#x27;&amp;omicron;&#x27;&gt;&amp;omicron;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Pii&#x27; value=&#x27;&amp;Pi;&#x27;&gt;&amp;Pi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;pii&#x27; value=&#x27;&amp;pi;&#x27;&gt;&amp;pi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Roo&#x27; value=&#x27;&amp;Rho;&#x27;&gt;&amp;Rho;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;roo&#x27; value=&#x27;&amp;rho;&#x27;&gt;&amp;rho;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Sigma&#x27; value=&#x27;&amp;Sigma;&#x27;&gt;&amp;Sigma;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;sigma&#x27; value=&#x27;&amp;sigma;&#x27;&gt;&amp;sigma;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Tau&#x27; value=&#x27;&amp;Tau;&#x27;&gt;&amp;Tau;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;tau&#x27; value=&#x27;&amp;tau;&#x27;&gt;&amp;tau;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Üpsilon&#x27; value=&#x27;&amp;Upsilon;&#x27;&gt;&amp;Upsilon;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;üpsilon&#x27; value=&#x27;&amp;upsilon;&#x27;&gt;&amp;upsilon;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Fii&#x27; value=&#x27;&amp;Phi;&#x27;&gt;&amp;Phi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;fii&#x27; value=&#x27;&amp;phi;&#x27;&gt;&amp;phi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Hii&#x27; value=&#x27;&amp;Chi;&#x27;&gt;&amp;Chi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;hii&#x27; value=&#x27;&amp;chi;&#x27;&gt;&amp;chi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Psii&#x27; value=&#x27;&amp;Psi;&#x27;&gt;&amp;Psi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;psii&#x27; value=&#x27;&amp;psi;&#x27;&gt;&amp;psi;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Oomega&#x27; value=&#x27;&amp;Omega;&#x27;&gt;&amp;Omega;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;oomega&#x27; value=&#x27;&amp;omega;&#x27;&gt;&amp;omega;&lt;&#x2F;span&gt;&quot;;
+    insert_greek.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_CYRILLIC + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0410;&#x27; title=&#x27;U+0410&#x27;&gt;&amp;#x0410;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0430;&#x27; title=&#x27;U+0430&#x27;&gt;&amp;#x0430;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0411;&#x27; title=&#x27;U+0411&#x27;&gt;&amp;#x0411;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0431;&#x27; title=&#x27;U+0431&#x27;&gt;&amp;#x0431;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0412;&#x27; title=&#x27;U+0412&#x27;&gt;&amp;#x0412;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0432;&#x27; title=&#x27;U+0432&#x27;&gt;&amp;#x0432;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0413;&#x27; title=&#x27;U+0413&#x27;&gt;&amp;#x0413;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0433;&#x27; title=&#x27;U+0433&#x27;&gt;&amp;#x0433;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0414;&#x27; title=&#x27;U+0414&#x27;&gt;&amp;#x0414;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0434;&#x27; title=&#x27;U+0434&#x27;&gt;&amp;#x0434;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0415;&#x27; title=&#x27;U+0415&#x27;&gt;&amp;#x0415;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0435;&#x27; title=&#x27;U+0435&#x27;&gt;&amp;#x0435;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0401;&#x27; title=&#x27;U+0401&#x27;&gt;&amp;#x0401;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0451;&#x27; title=&#x27;U+0451&#x27;&gt;&amp;#x0451;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0416;&#x27; title=&#x27;U+0416&#x27;&gt;&amp;#x0416;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0436;&#x27; title=&#x27;U+0436&#x27;&gt;&amp;#x0436;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0417;&#x27; title=&#x27;U+0417&#x27;&gt;&amp;#x0417;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0437;&#x27; title=&#x27;U+0437&#x27;&gt;&amp;#x0437;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0418;&#x27; title=&#x27;U+0418&#x27;&gt;&amp;#x0418;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0438;&#x27; title=&#x27;U+0438&#x27;&gt;&amp;#x0438;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0419;&#x27; title=&#x27;U+0419&#x27;&gt;&amp;#x0419;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0439;&#x27; title=&#x27;U+0439&#x27;&gt;&amp;#x0439;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x041A;&#x27; title=&#x27;U+041A&#x27;&gt;&amp;#x041A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x043A;&#x27; title=&#x27;U+043A&#x27;&gt;&amp;#x043A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x041B;&#x27; title=&#x27;U+041B&#x27;&gt;&amp;#x041B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x043B;&#x27; title=&#x27;U+043B&#x27;&gt;&amp;#x043B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x041C;&#x27; title=&#x27;U+041C&#x27;&gt;&amp;#x041C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x043C;&#x27; title=&#x27;U+043C&#x27;&gt;&amp;#x043C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x041D;&#x27; title=&#x27;U+041D&#x27;&gt;&amp;#x041D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x043D;&#x27; title=&#x27;U+043D&#x27;&gt;&amp;#x043D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x041E;&#x27; title=&#x27;U+041E&#x27;&gt;&amp;#x041E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x043E;&#x27; title=&#x27;U+043E&#x27;&gt;&amp;#x043E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x041F;&#x27; title=&#x27;U+041F&#x27;&gt;&amp;#x041F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x043F;&#x27; title=&#x27;U+043F&#x27;&gt;&amp;#x043F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0420;&#x27; title=&#x27;U+0420&#x27;&gt;&amp;#x0420;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0440;&#x27; title=&#x27;U+0440&#x27;&gt;&amp;#x0440;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0421;&#x27; title=&#x27;U+0421&#x27;&gt;&amp;#x0421;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0441;&#x27; title=&#x27;U+0441&#x27;&gt;&amp;#x0441;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0422;&#x27; title=&#x27;U+0422&#x27;&gt;&amp;#x0422;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0442;&#x27; title=&#x27;U+0442&#x27;&gt;&amp;#x0442;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0423;&#x27; title=&#x27;U+0423&#x27;&gt;&amp;#x0423;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0443;&#x27; title=&#x27;U+0443&#x27;&gt;&amp;#x0443;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0424;&#x27; title=&#x27;U+0424&#x27;&gt;&amp;#x0424;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0444;&#x27; title=&#x27;U+0444&#x27;&gt;&amp;#x0444;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0425;&#x27; title=&#x27;U+0425&#x27;&gt;&amp;#x0425;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0445;&#x27; title=&#x27;U+0445&#x27;&gt;&amp;#x0445;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0426;&#x27; title=&#x27;U+0426&#x27;&gt;&amp;#x0426;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0446;&#x27; title=&#x27;U+0446&#x27;&gt;&amp;#x0446;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0427;&#x27; title=&#x27;U+0427&#x27;&gt;&amp;#x0427;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0447;&#x27; title=&#x27;U+0447&#x27;&gt;&amp;#x0447;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0428;&#x27; title=&#x27;U+0428&#x27;&gt;&amp;#x0428;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0448;&#x27; title=&#x27;U+0448&#x27;&gt;&amp;#x0448;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0429;&#x27; title=&#x27;U+0429&#x27;&gt;&amp;#x0429;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0449;&#x27; title=&#x27;U+0449&#x27;&gt;&amp;#x0449;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x042A;&#x27; title=&#x27;U+042A&#x27;&gt;&amp;#x042A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x044A;&#x27; title=&#x27;U+044A&#x27;&gt;&amp;#x044A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x042B;&#x27; title=&#x27;U+042B&#x27;&gt;&amp;#x042B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x044B;&#x27; title=&#x27;U+044B&#x27;&gt;&amp;#x044B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x042C;&#x27; title=&#x27;U+042C&#x27;&gt;&amp;#x042C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x044C;&#x27; title=&#x27;U+044C&#x27;&gt;&amp;#x044C;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x042D;&#x27; title=&#x27;U+042D&#x27;&gt;&amp;#x042D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x044D;&#x27; title=&#x27;U+044D&#x27;&gt;&amp;#x044D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x042E;&#x27; title=&#x27;U+042E&#x27;&gt;&amp;#x042E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x044E;&#x27; title=&#x27;U+044E&#x27;&gt;&amp;#x044E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x042F;&#x27; title=&#x27;U+042F&#x27;&gt;&amp;#x042F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x044F;&#x27; title=&#x27;U+044F&#x27;&gt;&amp;#x044F;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0462;&#x27; title=&#x27;suur jätt U+0462&#x27;&gt;&amp;#x0462;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0463;&#x27; title=&#x27;väike jätt U+0463&#x27;&gt;&amp;#x0463;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0406;&#x27; title=&#x27;suur I U+0406&#x27;&gt;&amp;#x0406;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0456;&#x27; title=&#x27;väike I U+0456&#x27;&gt;&amp;#x0456;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0472;&#x27; title=&#x27;suur fita U+0472&#x27;&gt;&amp;#x0472;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0473;&#x27; title=&#x27;väike fita U+0473&#x27;&gt;&amp;#x0473;&lt;&#x2F;span&gt;&quot;;
+    insert_cyrillic.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_UDMURTIAN + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04DC;&#x27; title=&#x27;U+04DC&#x27;&gt;&amp;#x04DC;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04DD;&#x27; title=&#x27;U+04DD&#x27;&gt;&amp;#x04DD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04DE;&#x27; title=&#x27;U+04DE&#x27;&gt;&amp;#x04DE;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04DF;&#x27; title=&#x27;U+04DF&#x27;&gt;&amp;#x04DF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04E4;&#x27; title=&#x27;U+04E4&#x27;&gt;&amp;#x04E4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04E5;&#x27; title=&#x27;U+04E5&#x27;&gt;&amp;#x04E5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04F4;&#x27; title=&#x27;U+04F4&#x27;&gt;&amp;#x04F4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04F5;&#x27; title=&#x27;U+04F5&#x27;&gt;&amp;#x04F5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04E6;&#x27; title=&#x27;U+04E6&#x27;&gt;&amp;#x04E6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04E7;&#x27; title=&#x27;U+04E7&#x27;&gt;&amp;#x04E7;&lt;&#x2F;span&gt;&quot;;
+    insert_udmurtian.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_MARI + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04A4;&#x27; title=&#x27;CYRILLIC CAPITAL LIGATURE EN GHE - U+04A4&#x27;&gt;&amp;#x04A4;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04A5;&#x27; title=&#x27;CYRILLIC SMALL LIGATURE EN GHE - U+04A5&#x27;&gt;&amp;#x04A5;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04E6;&#x27; title=&#x27;CYRILLIC CAPITAL LETTER O WITH DIAERESIS - U+04E6&#x27;&gt;&amp;#x04E6;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04E7;&#x27; title=&#x27;CYRILLIC SMALL LETTER O WITH DIAERESIS - U+04E7&#x27;&gt;&amp;#x04E7;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04F0;&#x27; title=&#x27;CYRILLIC CAPITAL LETTER U WITH DIAERESIS - U+04F0&#x27;&gt;&amp;#x04F0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x04F1;&#x27; title=&#x27;CYRILLIC SMALL LETTER U WITH DIAERESIS - U+04F1&#x27;&gt;&amp;#x04F1;&lt;&#x2F;span&gt;&quot;;
+    insert_mari.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_PRONUNCIATION + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1D9E;&#x27; title=&#x27;modif väike eeta U+1D9E&#x27;&gt;&amp;#x1D9E;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x00F0;&#x27; title=&#x27;väike eeta U+00F0&#x27;&gt;&amp;#x00F0;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1D4A;&#x27; title=&#x27;modif väike šva U+1D4A&#x27;&gt;&amp;#x1D4A;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0259;&#x27; title=&#x27;väike šva U+0259&#x27;&gt;&amp;#x0259;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1D51;&#x27; title=&#x27;modif väike ng U+1D51&#x27;&gt;&amp;#x1D51;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x014B;&#x27; title=&#x27;väike ng U+014B&#x27;&gt;&amp;#x014B;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0275;&#x27; title=&#x27;väike pulgaga o U+0275&#x27;&gt;&amp;#x0275;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1DBF;&#x27; title=&#x27;modif väike teeta U+1DBF&#x27;&gt;&amp;#x1DBF;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x03B8;&#x27; title=&#x27;väike teeta U+03B8&#x27;&gt;&amp;#x03B8;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;(n)&#x27; title=&#x27;eelneva täishääliku ninahääldus&#x27;&gt;(n)&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;(r)&#x27; title=&#x27;nõrgalt häälduv r (pms ingl)&#x27;&gt;(r)&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0299;&#x27; title=&#x27;kapiteel-B U+0299&#x27;&gt;&amp;#x0299;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1D05;&#x27; title=&#x27;kapiteel-D U+1D05&#x27;&gt;&amp;#x1D05;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0262;&#x27; title=&#x27;kapiteel-G U+0262&#x27;&gt;&amp;#x0262;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1D0D;&#x27; title=&#x27;kapiteel-M U+1D0D&#x27;&gt;&amp;#x1D0D;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0274;&#x27; title=&#x27;kapiteel-N U+0274&#x27;&gt;&amp;#x0274;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0280;&#x27; title=&#x27;kapiteel-R U+0280&#x27;&gt;&amp;#x0280;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1D22;&#x27; title=&#x27;kapiteel-Z U+1D22&#x27;&gt;&amp;#x1D22;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0254;&#x27; title=&#x27;lahtine o U+0254&#x27;&gt;&amp;#x0254;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x0250;&#x27; title=&#x27;kummuli a U+0250&#x27;&gt;&amp;#x0250;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x1D43;&#x27; title=&#x27;üla-a U+1D43&#x27;&gt;&amp;#x1D43;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; value=&#x27;&amp;#x02DB;&#x27; title=&#x27;ogonek U+02DB&#x27;&gt;&amp;#x02DB;&lt;&#x2F;span&gt;&quot;;
+    insert_pronunc.innerHTML = inssym
+
+    inssym = &quot;&quot;;
+    inssym = inssym + &quot;&lt;div style=&#x27;width:100%&#x27; class=&#x27;md&#x27;&gt;&#x27;&quot; + MNU_INS_SYM_ETHYMOLOGY + &quot;&#x27;&lt;&#x2F;div&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;a ringi ja makroniga&#x27; value=&#x27;&amp;#x00E5;&amp;#x0304;&#x27;&gt;&amp;#x00E5;&amp;#x0304;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;pööratud e U+01DD&#x27; value=&#x27;&amp;#x01DD;&#x27;&gt;&amp;#x01DD;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;pööratud e ülakaarega&#x27; value=&#x27;ə̑&#x27;&gt;ə̑&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;e alakaarega&#x27; value=&#x27;e̮&#x27;&gt;e̮&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;i alakaarega&#x27; value=&#x27;i̮&#x27;&gt;i̮&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ezh karoniga&#x27; value=&#x27;&quot; + String.fromCharCode(0x01EF) + &quot;&#x27;&gt;&quot; + String.fromCharCode(0x01EF) + &quot;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;väike ezh;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ezh&#x27; value=&#x27;&quot; + String.fromCharCode(0x0292) + &quot;&#x27;&gt;&quot; + String.fromCharCode(0x0292) + &quot;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;väike ezh;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ezh karoni ja akuudiga&#x27; value=&#x27;&quot; + String.fromCharCode(0x01EF) + String.fromCharCode(0x0301) + &quot;&#x27; style=&#x27;width:48px;&#x27;&gt;&quot; + String.fromCharCode(0x01EF) + String.fromCharCode(0x0301) + &quot;&lt;&#x2F;span&gt;&quot;; &#x2F;&#x2F;&#x27;väike ezh + kombineeruv;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ezh akuudiga&#x27; value=&#x27;&quot; + String.fromCharCode(0x0292) + String.fromCharCode(0x0301) + &quot;&#x27; style=&#x27;width:48px;&#x27;&gt;&quot; + String.fromCharCode(0x0292) + String.fromCharCode(0x0301) + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;e vasakule poole nooleotsaga all&#x27; value=&#x27;e&quot; + String.fromCharCode(0x0354) + &quot;&#x27;&gt;e&quot; + String.fromCharCode(0x0354) + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;i vasakule poole nooleotsaga all&#x27; value=&#x27;i&quot; + String.fromCharCode(0x0354) + &quot;&#x27;&gt;i&quot; + String.fromCharCode(0x0354) + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;e paremale poole nooleotsaga all&#x27; value=&#x27;e&quot; + String.fromCharCode(0x0355) + &quot;&#x27;&gt;e&quot; + String.fromCharCode(0x0355) + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;i paremale poole nooleotsaga all&#x27; value=&#x27;i&quot; + String.fromCharCode(0x0355) + &quot;&#x27;&gt;i&quot; + String.fromCharCode(0x0355) + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;kõrisulghäälik  U+0294&#x27; value=&#x27;&amp;#x0294;&#x27;&gt;&amp;#x0294;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;õ tsirkumfleksiga all&#x27; value=&#x27;õ&quot; + String.fromCharCode(0x032D) + &quot;&#x27;&gt;õ&quot; + String.fromCharCode(0x032D) + &quot;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;þ&#x27; value=&#x27;þ&#x27;&gt;þ&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;ß&#x27; value=&#x27;ß&#x27;&gt;ß&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Latin capital letter B with stroke&#x27; value=&#x27;Ƀ&#x27;&gt;&amp;#x0243;&lt;&#x2F;span&gt;&quot;;
+    inssym = inssym + &quot;&lt;span class=&#x27;mi_span&#x27; title=&#x27;Latin small letter B with stroke&#x27; value=&#x27;ƀ&#x27;&gt;&amp;#x0180;&lt;&#x2F;span&gt;&quot;;
+    insert_etymology.innerHTML = inssym;
+} &#x2F;&#x2F;FillInsertSymbolsMenu;
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

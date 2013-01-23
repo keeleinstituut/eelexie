@@ -1,0 +1,233 @@
+﻿<html>
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+	<title>Video</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+		<script type="text/javascript" src="tools.js"></script>
+
+        <script type="text/javascript">
+        <!--
+
+            var PD = String.fromCharCode(0xE001);
+            var lastRow;
+
+            var dic_desc, appLang, usrName, fBase, fDir, fPtrn;
+
+            function fillRows() {
+                lastRow = null;
+                while (tbodyDirListing.rows.length > 0) {
+                    tbodyDirListing.deleteRow(0);
+                }
+                spnInfo.innerText = dic_desc + fBase + fDir + fPtrn;
+
+                var xh = exCGISync("../tools.cgi", "getFilesInfo" + PD + dic_desc + PD + usrName + PD +
+                        "__sr/" + dic_desc + fBase + fDir + PD +
+                        fPtrn);
+
+                if (xh.statusText == "OK") {
+                    var rspDOM = IDD("", "", false, false, null);
+                    var sta = rspDOM.load(xh.responseXML); //responseXML: TypeName = DomDocument
+                    if (sta) {
+                        var srvSta = rspDOM.selectSingleNode("rsp/sta").text;
+                        if (srvSta == "Success") {
+                            var fNodes = rspDOM.selectNodes("rsp/outDOM/fsi");
+                            var rida, veerg;
+                            for (ix = 0; ix < fNodes.length; ix++) {
+                                var fNode = fNodes[ix];
+                                rida = tbodyDirListing.insertRow();
+                                veerg = rida.insertCell(); // ikoon
+                                var tElem = fNode.selectSingleNode("t")
+                                if (tElem.text == 'dir') {
+                                    veerg.innerHTML = "<img src='../graphics/Folder_16x16.png'></img>";
+                                }
+                                veerg = rida.insertCell(); // nimi
+                                var n = fNode.selectSingleNode("n").text;
+                                veerg.innerText = n;
+                                rida.id = n;
+                                rida.setAttribute("t", tElem.text);
+                                veerg = rida.insertCell(); // suurus
+                                veerg.innerText = " ";
+                                if (tElem.text == 'file') {
+                                    n = new Number(fNode.selectSingleNode("s").text);
+                                    var s = n.toLocaleString();
+                                    veerg.innerText = s.substr(0, s.indexOf(","));
+                                }
+                                veerg = rida.insertCell(); // kp
+                                veerg.innerText = " ";
+                                if (tElem.text == 'file') {
+                                    veerg.innerText = fNode.selectSingleNode("d").text;
+                                }
+                            }
+                        }
+                        else {
+                            alert("Operatsiooni staatus serveris: " + srvSta);
+                        }
+                    }
+                    else {
+                        alert("Vastuse laadimise viga: " + rspDOM.parseError.reason);
+                    }
+                }
+                else {
+                    alert(xh.status + ": " + xh.statusText + "\n\n" + xh.responseText);
+                }
+            }
+
+            function bodyOnLoad() {
+                var dlgArgs = window.dialogArguments;
+                dic_desc = dlgArgs.dic_desc;
+                appLang = dlgArgs.appLang;
+                usrName = dlgArgs.usrName;
+                fBase = dlgArgs.fBase; // "/__video/"
+                fDir = dlgArgs.fDir; // "a/"
+                fPtrn = dlgArgs.fPtrn; // "*.*"
+                fillRows();
+            }
+
+            function tblOnClick() {
+                if (lastRow != null) {
+                    lastRow.style.backgroundColor = "";
+                    lastRow.style.color = "";
+                }
+                lastRow = window.event.srcElement.parentElement;
+                lastRow.style.backgroundColor = "blue";
+                lastRow.style.color = "white";
+            }
+
+            function setReturnVal() {
+                if (lastRow == null) {
+                    return;
+                }
+                var t = lastRow.getAttribute("t");
+                if (fDir == "") { // __video, 'fBase'
+                    if (t == "dir") {
+                        if (lastRow.id == ".." || lastRow.id == ".") {
+                        }
+                        else {
+                            fDir += lastRow.id + "/";
+                            fillRows();
+                        }
+                    }
+                    else { // olgu, ka juurikas võib faile olla ...
+                        window.returnValue = lastRow.id; // fDir == ""
+                        window.close();
+                    }
+                }
+                else { // mingi alamkaust
+                    if (t == "dir") {
+                        switch (lastRow.id) {
+                            case ".":
+                                fDir = "";
+                                break;
+                            case "..":
+                                var fDirName = fDir.substr(0, fDir.length - 1);
+                                var ix = fDirName.lastIndexOf("/");
+                                if (ix > -1) {
+                                    fDir = fDirName.substr(0, ix + 1); //koos /
+                                }
+                                else {
+                                    fDir = "";
+                                }
+                                break;
+                            default:
+                                fDir += lastRow.id + "/";
+                                break;
+                        }
+                        fillRows();
+                    }
+                    else {
+                        window.returnValue = fDir + lastRow.id;
+                        window.close();
+                    }
+                }
+            }
+
+            function tblOnDblClick() {
+                setReturnVal();
+            }
+
+            function addFile() {
+                oForm.dic_desc.value = dic_desc;
+                oForm.fBase.value = fBase;
+                oForm.fDir.value = fDir;
+                oForm.submit();
+            }
+
+            function delFile() {
+                if (lastRow == null) {
+                    return;
+                }
+                var t = lastRow.getAttribute("t");
+                if (t == "dir") {
+                    return;
+                }
+                var xh = exCGISync("../tools.cgi", "deleteFile" + PD + dic_desc + PD + usrName + PD +
+                        "__sr/" + dic_desc + fBase + fDir + lastRow.id);
+
+                if (xh.statusText == "OK") {
+                    var rspDOM = IDD("", "", false, false, null);
+                    var sta = rspDOM.load(xh.responseXML); //responseXML: TypeName = DomDocument
+                    if (sta) {
+                        var srvSta = rspDOM.selectSingleNode("rsp/sta").text;
+                        if (srvSta == "Success") {
+                            fillRows();
+                        }
+                        else {
+                            alert("Operatsiooni staatus serveris: " + srvSta);
+                        }
+                    }
+                    else {
+                        alert("Vastuse laadimise viga: " + rspDOM.parseError.reason);
+                    }
+                }
+                else {
+                    alert(xh.status + ": " + xh.statusText + "\n\n" + xh.responseText);
+                }
+            }
+
+            function bodyOnKeyUp() {
+            }
+        -->
+        </script>
+
+	</head>
+	<body style="background-color:buttonface" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+		<div id="idBody" style="padding:5mm 10mm 5mm 10mm;">
+
+            <span id="spnInfo" style="font-weight:bold;font-size:large"></span>
+
+            <br />
+            <br />
+
+            <div id="idTable" style="width:90%;height:400;overflow:auto">
+            <table id="tblDirListing" border="1" style="background-color:White;border-style:solid;border-width:1;border-color:Black;width:100%" onclick="tblOnClick()" ondblclick="tblOnDblClick()">
+                <thead style='background-color:navy;color:white;text-align:left'>
+                    <tr>
+                        <th style="width:20">&nbsp;</th>
+                        <th>Nimi</th>
+                        <th>Suurus</th>
+                        <th>Kuupäev</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyDirListing"></tbody>
+            </table>
+            </div>
+            <br />
+		    <input type="button" value=" Vali " onclick="setReturnVal()" />
+		    <input type="button" value=" Värskenda " onclick="fillRows()" />
+		    <input type="button" value=" Lisa " onclick="addFile()" />
+		    <input type="button" value=" Kustuta " onclick="delFile()" />
+            <FORM id="oForm" NAME="oForm" ACTION="../sendFile.cgi" ENCTYPE="multipart/form-data" METHOD="post">
+                <INPUT id="dic_desc" name="dic_desc" TYPE="hidden" VALUE="">
+                <INPUT id="fBase" name="fBase" TYPE="hidden" VALUE="">
+                <INPUT id="fDir" name="fDir" TYPE="hidden" VALUE="">
+            </FORM>
+		</div>
+	</body>
+</html>

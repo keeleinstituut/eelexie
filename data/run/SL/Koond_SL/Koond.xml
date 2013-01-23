@@ -1,0 +1,39 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Koond
+</name>
+</assembly>
+<members>
+<member name="M:Koond.MainPage.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="M:Koond.Home.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="M:Koond.ErrorWindow.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="M:Koond.App.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="M:Koond.srLoend.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="M:Koond.Algus.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member><member name="M:Koond.About.InitializeComponent">
+	<summary>
+InitializeComponent
+</summary>
+</member>
+</members>
+</doc>

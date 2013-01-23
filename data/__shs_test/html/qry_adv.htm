@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+	<title>P‰ringute graafiline kasutajaliides</title>
+    <script language=vbscript type="text/vbscript">
+    <!--
+Sub bodyOnLoad()
+inpValue.focus()
+End Sub 'bodyOnLoad
+    -->
+    </script>
+  </head>
+  <body style="background-color:buttonface" onload="bodyOnLoad()">
+    <div id="divBody" style="padding-left:10mm;padding-top:5mm;">
+        <table id="tblQuery" border="1" style="width:90%;">
+            <tr>
+                <td valign="top" style="width:50%;">
+                </td>
+                <td>
+                    <table id="tblSettings" border="1" style="width:100%;">
+                        <tr>
+                            <td colspan="2">
+                                <span id="spnElName" style="font-weight:bold;">Elemendi nimi</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width:25%;">
+                                <label for="inpUseCase" accesskey="s"><u>S</u>‰tted</label>
+                            </td>
+                            <td align="right">
+						        <input id="inpUseCase" type="checkbox" checked title="Linnuke: otsing on tıstutundetu" />
+						        <input id="inpUseSymbols" type="checkbox" title="Linnuke: otsitakse kıiki m‰rke" />
+						        <input id="inpUseGlobal" type="checkbox" checked title="Linnuke: otsitakse kogu artiklist (globaalne)" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="inpValue" accesskey="v"><u>V</u>‰‰rtus</label>
+                            </td>
+                            <td align="right">
+                                <input id="inpValue" type="text" style="width:100%;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label for="selOperators" accesskey="o"><u>O</u>peraator</label>
+                            </td>
+                            <td align="right">
+                                <select id="selOperators" style="width:100%;">
+                                    <option id="and">Loogiline JA</option>
+                                    <option id="or">Loogiline V’I</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="right">
+						        <input id="inpAddCondition" type="button" value="Lisa tingimus" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div id="divXPath" style="width:100%;height:4cm;"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="right">
+						        <input id="inpDelete" type="button" value="Kustuta" disabled />
+						        <input id="inpParenthesis" type="button" value="Lisa sulud" disabled />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+  </body>
+</html>

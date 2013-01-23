@@ -1,0 +1,98 @@
+﻿<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>Vigased viited</title>
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="pragma" content="no-cache">
+        <!--<meta http-equiv="refresh" content="10">-->
+        
+        <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+        <meta name="author" content="Andres Loopmann">
+        <meta name="keywords" content="EELex">
+
+		<script type="text/javascript" src="tools.js"></script>
+		<script type="text/vbscript">
+
+		<!--
+Option Explicit
+
+Dim dic_desc, sAppLang, PD, retVal, usrName, volId, DICPR
+
+
+'-----------------------------------------------------------------------------------
+Sub SbodyOnLoad()
+PD = ChrW(&HE001)
+Dim inArr
+
+inArr = Split(window.dialogArguments, PD)
+
+dic_desc = inArr(0)
+usrName = inArr(1)
+sAppLang = inArr(2)
+DICPR = inArr(3)
+
+    
+document.title = document.title & ": " & dic_desc
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub BtnOKOnClick()
+
+    window.returnValue = "<qn>" & DICPR & ":" & idviit.value & "</qn>" & "<qn2>" & DICPR & ":" & idviit2.value & "</qn2>"
+    window.close()
+End Sub 'BtnOKOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub btnLoobuOnClick()
+    window.returnValue = ""
+    window.close()
+
+End Sub 
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+
+if (window.event.keyCode = 27) then
+    window.returnValue = ""
+	window.close()
+end if
+End Sub 'bodyOnKeyUp
+
+			-->
+
+		</script>
+	</head>
+	<body style="background-color:buttonface" onkeyup="bodyOnKeyUp()" onload="SbodyOnLoad()">
+		<div id="idBody" style="PADDING-LEFT: 10mm; PADDING-TOP: 5mm">
+		    <br />
+            <span id="spnVols"></span>
+		    <div id="idDivLink"></div>
+		            <table id="tblUsers" border="1">
+            <tr style="background-color: Navy; color: White">
+                <th>
+                    Viit
+                </th>
+                <th>
+                    <input id="idviit" type="text" value="tvt"/>
+                </th>
+            </tr>
+            <tr style="background-color: Navy; color: White">
+                <th>
+                    Kuhu
+                </th>
+                <th>
+                    <input id="idviit2" type="text" value="m"/>
+                </th>
+            </tr>
+        </table>
+		    <br />
+		    <br />
+		    <input id="idOKBtn" type="button" value="OK" onclick="BtnOKOnClick()" />
+		    <input id="idLoobuBtn" type="button" value="Loobu" onclick="btnLoobuOnClick()" />
+		</div>
+	</body>
+</html>

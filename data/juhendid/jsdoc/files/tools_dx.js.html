@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>tools_dx.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/dxf.html">dxf</a></li>
+            
+                <li><a href="..&#x2F;classes/komponendid.html">komponendid</a></li>
+            
+                <li><a href="..&#x2F;classes/kontrollid.html">kontrollid</a></li>
+            
+                <li><a href="..&#x2F;classes/lisad.html">lisad</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_app.html">procs_app</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_edt.html">procs_edt</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_TextContMenu.html">procs_TextContMenu</a></li>
+            
+                <li><a href="..&#x2F;classes/tools.html">tools</a></li>
+            
+                <li><a href="..&#x2F;classes/tools_dx.html">tools_dx</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: tools_dx.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+* tools_dx.js
+* Brauserisõltumatu verstiooni oma
+*
+* @class tools_dx
+*&#x2F;
+
+&#x2F;**
+* Hoiab highlight&#x27;i ajal ajutist värvi.
+* 
+* @property str_TDBGCol
+* @type {String}
+*&#x2F;
+var str_TDBGCol;
+var xmlHTTPAsync, myAsync;
+var httpRequest = null;
+
+&#x2F;&#x2F; readyState Property (IXMLHTTPRequest)
+var XMLHTTP_UNINITIALIZED = 0;
+var XMLHTTP_LOADING = 1;
+var XMLHTTP_LOADED = 2;
+var XMLHTTP_INTERACTIVE = 3;
+var XMLHTTP_COMPLETED = 4;
+
+
+
+&#x2F;**
+* Eventhandler. Higlight&#x27;ib asju, kui hiirega neile peale minna. Kasutab muutujat str_TDBGCol.
+*
+* @method SwitchTD
+* @param {Object} event
+* @returns {Boolean} true, kui leiti.
+*&#x2F;
+function SwitchTD(event) {
+    var obj_tdelem = event.target.parentNode;
+    switch (event.type) {
+        case &quot;mouseover&quot;:
+            str_TDBGCol = obj_tdelem.style.backgroundColor;
+            obj_tdelem.style.borderColor = &quot;Black&quot;;
+            obj_tdelem.style.backgroundColor = &quot;Background&quot;;
+            break;
+        case &quot;mouseout&quot;:
+            obj_tdelem.style.borderColor = str_TDBGCol;
+            obj_tdelem.style.backgroundColor = str_TDBGCol;
+            break;
+    }
+} &#x2F;&#x2F;SwitchTD
+
+
+&#x2F;**
+* InitDomDoc. Luuakse uus xmldomdoc.
+*
+* @method IDD
+* @param {String} domsrc Allika tüüp. &quot;string&quot;, &quot;file&quot;, &quot;&quot;.
+* @param {String} domstr Viide allikale või allikas ise, sõltuvalt muutuja domsrc väärtusest. Kui domsrc on &quot;&quot;, siis funktsioon loob tühja dokumendi.
+* @param {Boolean} res_ext Kas lahendada välised viited. (Ei kasutata.)
+* @param {Boolean} val_on_parse Kas laadimisel valideeritakse. (Ei kasutata.)
+* @param {Object} domsc Skeem või null. (Ei kasutata.)
+* @returns {Object} xmldomdoc objekt.
+*&#x2F;
+function IDD(domsrc, domstr, res_ext, val_on_parse, domsc) {
+
+    var xmlDoc = null;
+    switch (domsrc.toLowerCase()) {
+        case &quot;string&quot;:
+            xmlDoc = BuildXMLFromString(domstr);
+            break;
+        case &quot;file&quot;:
+            &#x2F;&#x2F;            if (!httpRequest) {
+            httpRequest = CreateHTTPRequestObject();
+            &#x2F;&#x2F;            }
+            if (httpRequest) {
+                &#x2F;&#x2F; The requested file must be in the same domain that the page is served from.
+                &#x2F;&#x2F; kas GET korral on lootus&#x2F;oht saada käšitud XML faile? Jah, konf failgi on käšitud, GET on kasutu.
+                &#x2F;&#x2F; method, url, async, user, pw
+                httpRequest.open(&quot;POST&quot;, domstr, false, &#x27;&#x27;, &#x27;&#x27;);
+                httpRequest.send();
+
+                if (httpRequest.statusText == &quot;OK&quot;) {
+                    xmlDoc = ParseHTTPResponse(httpRequest);
+                }
+            }
+            break;
+        case &quot;&quot;:
+            &#x2F;&#x2F;  &amp;&amp; document.implementation.createDocumentType
+            if (document.implementation.createDocument) {
+&#x2F;&#x2F;                var fruitDocType = document.implementation.createDocumentType(&quot;fruit&quot;, &quot;SYSTEM&quot;, &quot;&lt;!ENTITY tf &#x27;tropical fruit&#x27;&gt;&quot;);
+&#x2F;&#x2F;                object.createDocument (namespaceURI, qualifiedName, docTypeObj);
+&#x2F;&#x2F;                xmlDoc = document.implementation.createDocument(&quot;&quot;, &quot;fruits&quot;, fruitDocType);
+
+                &#x2F;&#x2F;Note: The createDocument method is supported in Internet Explorer from version 9, but it creates an HTML document, not an XML document. 
+                xmlDoc = document.implementation.createDocument(&quot;&quot;, &quot;&quot;, null);
+
+&#x2F;&#x2F;                var fruitNode = xmlDoc.createElement(&quot;fruit&quot;);
+&#x2F;&#x2F;                fruitNode.setAttribute(&quot;name&quot;, &quot;avocado&quot;);
+&#x2F;&#x2F;                xmlDoc.documentElement.appendChild(fruitNode);
+            }
+            break;
+    }
+
+    return xmlDoc;
+
+} &#x2F;&#x2F; IDD
+
+
+
+&#x2F;**
+* Teisendab XML stringi objektiks.
+*
+* @method BuildXMLFromString
+* @param {String} text
+* @returns {Object} MSXML dokumendi objekt. null, kui ei õnnestu. 
+*&#x2F;
+function BuildXMLFromString(text) {
+    var xmlDoc = null;
+    if (window.DOMParser) { &#x2F;&#x2F; all browsers, except IE before version 9
+        var parser = new DOMParser();
+        try {
+            xmlDoc = parser.parseFromString(text, &quot;text&#x2F;xml&quot;);
+        } catch (e) {
+            &#x2F;&#x2F; if text is not well-formed, 
+            &#x2F;&#x2F; it raises an exception in IE from version 9
+            alert(&quot;XML parsing error (&#x27;DOMParser()&#x27;.&#x27;parseFromString&#x27;).&quot;);
+            return null;
+        }
+    }
+    else {  &#x2F;&#x2F; Internet Explorer before version 9
+        xmlDoc = CreateMSXMLDocumentObject();
+        if (!xmlDoc) {
+            alert(&quot;Cannot create MSXMLDocument object&quot;);
+            return null;
+        }
+        xmlDoc.loadXML(text);
+    }
+
+    var errorMsg = null;
+    if (xmlDoc.parseError &amp;&amp; xmlDoc.parseError.errorCode != 0) {
+        errorMsg = &quot;XML Parsing Error: &quot; + xmlDoc.parseError.reason
+                          + &quot; at line &quot; + xmlDoc.parseError.line
+                          + &quot; at position &quot; + xmlDoc.parseError.linepos;
+    }
+    else {
+        if (xmlDoc.documentElement) {
+            if (xmlDoc.documentElement.nodeName == &quot;parsererror&quot;) {
+                errorMsg = xmlDoc.documentElement.childNodes[0].nodeValue;
+            }
+        }
+        else {
+            errorMsg = &quot;XML Parsing Error!&quot;;
+        }
+    }
+
+    if (errorMsg) {
+        alert(errorMsg + &quot;\n\n&quot; + text);
+        return null;
+    }
+
+    return xmlDoc;
+} &#x2F;&#x2F; BuildXMLFromString
+
+
+&#x2F;**
+* Teeb (Ajax) päringust xml objekti.
+*
+* @method ParseHTTPResponse
+* @param {Object} myRequest 
+* @returns {Object} MSXML dokumendi objekt. null, kui ei õnnestu. 
+*&#x2F;
+function ParseHTTPResponse(myRequest) {
+    var xmlDoc = myRequest.responseXML;
+
+    &#x2F;&#x2F; if responseXML is not valid, try to create the XML document from the responseText property
+    if (!xmlDoc || !xmlDoc.documentElement) {
+        xmlDoc = BuildXMLFromString(myRequest.responseText);
+    }
+
+    &#x2F;&#x2F; if there was an error while parsing the XML document
+    var errorMsg = null;
+    if (xmlDoc) {
+        if (xmlDoc.parseError &amp;&amp; xmlDoc.parseError.errorCode != 0) {
+            errorMsg = &quot;XML Parsing Error: &quot; + xmlDoc.parseError.reason
+                  + &quot; at line &quot; + xmlDoc.parseError.line
+                  + &quot; at position &quot; + xmlDoc.parseError.linepos;
+        }
+        else {
+            if (xmlDoc.documentElement) {
+                if (xmlDoc.documentElement.nodeName == &quot;parsererror&quot;) {
+                    errorMsg = xmlDoc.documentElement.childNodes[0].nodeValue;
+                }
+            }
+        }
+    }
+    if (errorMsg) {
+        alert(errorMsg);
+        return null;
+    }
+
+    &#x2F;&#x2F; ok, the XML document is valid
+    return xmlDoc;
+} &#x2F;&#x2F; ParseHTTPResponse
+
+
+
+&#x2F;**
+* Tagastab MSXML dokumendi objekti. (IE funktsioon. Tõenäoliselt ei kasutata.)
+*
+* @method CreateMSXMLDocumentObject
+* @returns {Object} null, kui ei õnnestu.
+*&#x2F;
+function CreateMSXMLDocumentObject() {
+    if (typeof (ActiveXObject) != &quot;undefined&quot;) {
+        &#x2F;&#x2F;        var progIDs = [
+        &#x2F;&#x2F;                        &quot;Msxml2.DOMDocument.6.0&quot;,
+        &#x2F;&#x2F;                        &quot;Msxml2.DOMDocument.5.0&quot;,
+        &#x2F;&#x2F;                        &quot;Msxml2.DOMDocument.4.0&quot;,
+        &#x2F;&#x2F;                        &quot;Msxml2.DOMDocument.3.0&quot;,
+        &#x2F;&#x2F;                        &quot;MSXML2.DOMDocument&quot;,
+        &#x2F;&#x2F;                        &quot;MSXML.DOMDocument&quot;
+        &#x2F;&#x2F;                      ];
+
+        var progIDs = [
+                        &quot;Msxml2.DOMDocument.6.0&quot;,
+                        &quot;Msxml2.DOMDocument.3.0&quot;,
+                        &quot;MSXML2.DOMDocument&quot;,
+                        &quot;MSXML.DOMDocument&quot;
+                      ];
+        for (var i = 0; i &lt; progIDs.length; i++) {
+            try {
+                return new ActiveXObject(progIDs[i]);
+            } catch (e) { };
+        }
+    }
+    return null;
+} &#x2F;&#x2F; CreateMSXMLDocumentObject
+
+
+&#x2F;**
+* Tagastab Http requesti objekti.
+*
+* @method CreateHTTPRequestObject
+* @returns {Object} 
+*&#x2F;
+function CreateHTTPRequestObject() {
+    &#x2F;&#x2F; although IE supports the XMLHttpRequest object, it does not work on local files.
+    var forceActiveX = (window.ActiveXObject &amp;&amp; location.protocol === &quot;file:&quot;);
+    if (window.XMLHttpRequest &amp;&amp; !forceActiveX) {
+        &#x2F;&#x2F; Firefox, Opera 8.0+, Safari, IE 7+
+        return new XMLHttpRequest();
+    }
+    else {
+        try {
+            &#x2F;&#x2F; IE 5.5+
+            &#x2F;&#x2F; 6+ korral on: new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;);
+            return new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+        } catch (e) {
+            alert(&quot;Your browser doesn&#x27;t support HTTP request (&#x27;XMLHttpRequest&#x27;&#x2F;&#x27;Microsoft.XMLHTTP&#x27; object)!\n\n&quot; + e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;);
+        }
+    }
+    return null;
+}
+
+
+
+&#x2F;**
+* Tagastab Ajax objekti. 
+*
+* @method getXmlHttpObject
+* @returns {Object} = new XMLHttpRequest();
+*&#x2F;
+function getXmlHttpObject() {
+    var xmlHttp = null;
+    try {
+        &#x2F;&#x2F; Firefox, Opera 8.0+, Safari, IE 7+
+        xmlHttp = new XMLHttpRequest();
+    }
+    catch (e) {
+        try {
+            &#x2F;&#x2F; Internet Explorer 6+
+            xmlHttp = new ActiveXObject(&quot;Msxml2.XMLHTTP&quot;);
+        }
+        catch (e) {
+            &#x2F;&#x2F; IE 5.5+
+            xmlHttp = new ActiveXObject(&quot;Microsoft.XMLHTTP&quot;);
+        }
+    }
+    return xmlHttp;
+}
+
+
+&#x2F;**
+* Returns whether the HTTP request was successful.
+*
+* @method IsRequestSuccessful
+* @param {Object} httpRequest
+* @returns {Boolean} 
+*&#x2F;
+function IsRequestSuccessful(httpRequest) {
+    &#x2F;&#x2F; IE: sometimes 1223 instead of 204
+    var success = (httpRequest.status == 0 ||
+        (httpRequest.status &gt;= 200 &amp;&amp; httpRequest.status &lt; 300) ||
+        httpRequest.status == 304 || httpRequest.status == 1223);
+
+    return success;
+}
+
+
+&#x2F;**
+* Sünkroonne cgi postituspäring.
+*
+* @method exCGISync
+* @param {String} srvCGIFile Aadress, kuhu postitatakse.
+* @param {String} cmdId Postituse sisu.
+* @returns {Object} Request object.
+*&#x2F;
+function exCGISync(srvCGIFile, cmdId) {
+    var xh = getXmlHttpObject();
+    if (xh == null) {
+        alert(&quot;Your browser does not support XMLHttp!&quot;);
+        window.status = &quot;&quot;;
+        return null;
+    }
+    xh.open(&quot;POST&quot;, srvCGIFile, false); &#x2F;&#x2F;async = false
+    xh.setRequestHeader(&quot;Content-Type&quot;, &quot;text&#x2F;plain; charset=&#x27;utf-8&#x27;;&quot;);
+    xh.send(cmdId);
+    return xh;
+} &#x2F;&#x2F; exCGISync
+
+
+&#x2F;**
+* Ülakomade panemine millegi järgi. 
+*
+* @method GCV
+* @param {String} sInpStr
+* @param {String} lisa String, mis lisatakse vahele.
+* @param {Int} kuhu Positsioon, kuhu lisatakse.
+* @returns {String} 
+*&#x2F;
+function GCV(sInpStr, lisa, kuhu) {
+    var sGCV, i, tarr;
+    sGCV = &quot;&quot;
+
+    if (sInpStr == &quot;&#x27;&quot;) {
+        if (kuhu == 0) {
+            sGCV = &quot;\&quot;&quot; + lisa + &quot;&#x27;\&quot;&quot;;
+        } else {
+            sGCV = &quot;\&quot;&#x27;&quot; + lisa + &quot;\&quot;&quot;;
+        }
+    } else if (sInpStr.indexOf(&quot;&#x27;&quot;) &gt; -1) {
+        tarr = sInpStr.split(&quot;&#x27;&quot;);
+        for (i = 0; i &lt; tarr.length; i++) {
+            if (tarr[i]) {
+                sGCV = sGCV + &quot;,&#x27;&quot; + tarr[i] + &quot;&#x27;&quot;;
+            }
+
+            if (i &lt; tarr.length - 1) {
+                sGCV = sGCV + &quot;,\&quot;&#x27;\&quot;&quot;;
+            }
+        }
+        if (lisa) {
+            if (kuhu == 0) {
+                sGCV = &quot;concat(&#x27;&quot; + lisa + &quot;&#x27;, &quot; + sGCV.substr(1) + &quot;)&quot;;
+            } else {
+                sGCV = &quot;concat(&quot; + sGCV.substr(1) + &quot;, &#x27;&quot; + lisa + &quot;&#x27;)&quot;;
+            }
+        } else {
+            sGCV = &quot;concat(&quot; + sGCV.substr(1) + &quot;)&quot;;
+        }
+    } else {
+        if (kuhu == 0) {
+            sGCV = &quot;&#x27;&quot; + lisa + sInpStr + &quot;&#x27;&quot;;
+        } else {
+            sGCV = &quot;&#x27;&quot; + sInpStr + lisa + &quot;&#x27;&quot;;
+        }
+    }
+    return sGCV;
+} &#x2F;&#x2F;GCV
+
+&#x2F;**
+* Teeb asünkroonse päringu servfuncs.cgi-st ja vastus läheb funktsiooni doHttpReadyStateChange.
+*
+* @method QueryResponseAsync
+* @param {Object} oPrmDom XML objekt päringuga.
+*&#x2F;
+function QueryResponseAsync(oPrmDom) {
+    xmlHTTPAsync = getXmlHttpObject();
+    xmlHTTPAsync.onreadystatechange = doHttpReadyStateChange;
+    xmlHTTPAsync.open(&quot;POST&quot;, &quot;srvfuncs.cgi&quot;, true);
+    xmlHTTPAsync.setRequestHeader(&quot;Content-Type&quot;, &quot;text&#x2F;xml; charset=&#x27;utf-8&#x27;;&quot;);
+    xmlHTTPAsync.send(getXmlString(oPrmDom));
+} &#x2F;&#x2F;QueryResponseAsync
+
+
+&#x2F;**
+* Töötleb päringu vastust ja edastatakse funktsiooniga asyncCompleted.
+*
+* @method doHttpReadyStateChange
+*&#x2F;
+function doHttpReadyStateChange() {
+    if (xmlHTTPAsync.readyState == XMLHTTP_COMPLETED) {
+        if (IsRequestSuccessful(xmlHTTPAsync)) {
+            var oSrvRspDOM = ParseHTTPResponse(xmlHTTPAsync);
+            asyncCompleted(oSrvRspDOM);
+        } else {
+            alert(xmlHTTPAsync.statusText);
+            asyncCompleted(null);
+        }
+    }
+} &#x2F;&#x2F;doHttpReadyStateChange
+
+&#x2F;**
+* Teeb asünkroonse päringu  antud aadressil ja vastus läheb funktsiooni myAsyncStateChanged.
+*
+* @method exCGIASync
+* @param {String} srvCGIFile Aadress.
+* @param {String} cmdId Postituse sisu.
+*&#x2F;
+function exCGIASync(srvCGIFile, cmdId) {
+    &#x2F;&#x2F;    myAsync = getXmlHttpObject();
+    if (myAsync = getXmlHttpObject()) { &#x2F;&#x2F; jah, siin on tõesti omistamine, mitte võrdlus
+        myAsync.onreadystatechange = myAsyncStateChanged;
+        myAsync.open(&quot;POST&quot;, srvCGIFile, true); &#x2F;&#x2F; async == true
+        myAsync.setRequestHeader(&quot;Content-Type&quot;, &quot;text&#x2F;plain; charset=&#x27;utf-8&#x27;;&quot;);
+        myAsync.send(cmdId);
+    }
+    return;
+} &#x2F;&#x2F; exCGIASync
+
+&#x2F;**
+* Kontrollib, kas päring on valmis, kui on, siis saadab selle edasi funktsioonile toCaller.
+*
+* @method myAsyncStateChanged
+*&#x2F;
+function myAsyncStateChanged() {
+    if (myAsync.readyState == XMLHTTP_COMPLETED) {
+        toCaller(myAsync);
+    }
+}
+
+&#x2F;**
+* Valideerib XMLi. Näitab errorit. (Aga IDD on tegemata.)
+*
+* @method ValidateXML
+* @param {Object} oXMLNode XMLi objekt.
+* @param {Object} oSchemaCache Läheb IDD viimaseks väärtuseks.
+* @returns {Boolean} true, kui valiidne. 
+*&#x2F;
+function ValidateXML(oXMLNode, oSchemaCache) {
+    var tempdom = IDD(&quot;&quot;, &quot;&quot;, false, true, oSchemaCache);
+    var domsta = tempdom.loadXML(oXMLNode.xml);
+    if (!domsta) {
+        var pe = tempdom.parseError;
+        if (pe.errorCode != 0) {
+            ShowXMLParseError(tempdom);
+        }
+        return false;
+    }
+    else
+        return true;
+} &#x2F;&#x2F; ValidateXML
+
+
+&#x2F;**
+* Näitab kasutajale XMLi valideerimise viga.
+*
+* @method ShowXMLParseError
+* @param {Object} srcDOM XML objekt, kus viga oli.
+*&#x2F;
+function ShowXMLParseError(srcDOM) {
+    var sValErrTxt, pikkus = 100;
+    var pe = srcDOM.parseError;
+    var pestr = FILE_WORD + &quot;:\t&quot; + pe.url + &quot;\n&quot; +
+					ERROR_WORD + &quot;\t0x&quot; + hex(pe.errorCode, true) + &quot; (&quot; + pe.errorCode + &quot;): &quot; + pe.reason + &quot;\n&quot; +
+					LINE_WORD + &quot;\t&quot; + pe.line + &quot;, pos &quot; + pe.linepos + &quot; (filepos &quot; + pe.filepos + &quot;).\n\n&quot; +
+					SRC_TEXT + &quot;:\t&quot; + pe.srcText;
+    alert(VAL_ERR + &#x27;\n\n&#x27; + pestr);
+} &#x2F;&#x2F; ShowXMLParseError
+
+
+&#x2F;**
+* Unikaalse nime koostamiseks tõstutundetule keskkonnale (näiteks css). Tähed teisendatakse numbrilisteks koodideks. 
+*
+* @method unNameXsl 
+* @param {String} inpStr Sisendstring
+* @return {String} 
+*&#x2F;
+function unNameXsl(inpStr) {
+    var unStr = &#x27;&#x27;, i;
+    &#x2F;&#x2F; unStr = inpStr.replace(&#x2F;:&#x2F;, &quot;-&quot;);
+    for (i = 0; i &lt; inpStr.length; i++) {
+        unStr += &#x27;_&#x27; + inpStr.charCodeAt(i);
+    }
+    return unStr;
+} &#x2F;&#x2F; unNameXsl
+
+
+&#x2F;**
+* Teeb sisendstringi esitähe suureks. 
+*
+* @method captl 
+* @param {String} inpStr Sisendstring
+* @return {String} Väljund.
+*&#x2F;
+function captl(inpStr) {
+    return inpStr.substr(0, 1).toUpperCase() + inpStr.substr(1);
+} &#x2F;&#x2F; captl
+
+&#x2F;**
+* Sorteerib järjendi (array) kasutades funktsiooni arrSort. Liidab vastuse \b-ga
+*
+* @method arrSort 
+* @param {Array} myArr
+* @return {String} 
+*&#x2F;
+function arrSort(myArr) {
+    return myArr.sort(ciSort).join(&#x27;\b&#x27;);
+    &#x2F;&#x2F;    return myArr.toArray().sort(ciSort).join(&#x27;\b&#x27;);
+}
+
+&#x2F;**
+* Sorteerimise abifunktsioon ( ci - &quot;case insensitive&quot;, tõstutundetu).
+*
+* @method ciSort 
+* @param {String} param1
+* @param {String} param2
+* @return {Int}  String.localeCompare
+*&#x2F;
+function ciSort(param1, param2) {
+    var first = param1.toLowerCase();
+    var second = param2.toLowerCase();
+    return first.localeCompare(second);
+}
+
+&#x2F;**
+*  Sorteerimise abifunktsioon. Võrdleb esimese sisendstringi esitähte teise stringiga (mõlemad lowercase).
+*
+* @method mdArrSortCi 
+* @param {String} param1 ?
+* @param {String} param2
+* @return {Int} String.localeCompare
+*&#x2F;
+function mdArrSortCi(param1, param2) {
+    var first = param1[0].toLowerCase();
+    var second = param2.toLowerCase();
+    return first.localeCompare(second);
+}
+
+
+&#x2F;**
+*  Tagastab sisendstringi positsioonilt mystart stringi pikkusega mylength.
+*
+* @method jsMid 
+* @param {String} mystring Sisendstring.
+* @param {Int} mystart Alguspositsioon.
+* @param {Int} mylength Tähtede arv.
+* @return {String} 
+*&#x2F;
+function jsMid(mystring, mystart, mylength) {
+    return mystring.substr(mystart, mylength);
+}
+
+
+&#x2F;**
+*   Stringi vasakust poolest niipalju kui vaja.
+*
+* @method jsLeft 
+* @param {String} mystring
+* @param {Int} mylength
+* @return {String} 
+*&#x2F;
+function jsLeft(mystring, mylength) {
+    return mystring.substr(0, mylength);
+}
+
+&#x2F;**
+*  Stringi paremast poolest niipalju kui vaja.
+*
+* @method jsRight 
+* @param {String} mystring
+* @param {Int} mylength
+* @return {String} 
+*&#x2F;
+function jsRight(mystring, mylength) {
+    return mystring.substr(mystring.length - mylength);
+}
+
+&#x2F;**
+*  Asendab mystringi seest jupp oldStr stringiga newStr.
+*
+* @method jsReplace 
+* @param {String} mystring
+* @param {String} oldStr
+* @param {String} newStr
+* @return {String} 
+*&#x2F;
+function jsReplace(mystring, oldStr, newStr) {
+    &#x2F;&#x2F;    return mystring.replace(oldStr, newStr);
+    &#x2F;&#x2F;    var r = new RegExp(oldStr, &quot;g&quot;);
+    &#x2F;&#x2F;    return mystring.replace(r, newStr);
+    &#x2F;&#x2F;    var rets = mystring;
+    &#x2F;&#x2F;    var j = 0;
+    &#x2F;&#x2F;    while (rets.indexOf(oldStr) &gt; -1) {
+    &#x2F;&#x2F;        rets = rets.replace(oldStr, newStr);
+    &#x2F;&#x2F;        j += 1;
+    &#x2F;&#x2F;        if (j &gt; 20)
+    &#x2F;&#x2F;            blahh;
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;    return rets;
+    return mystring.split(oldStr).join(newStr);
+}
+
+
+&#x2F;**
+* Tagasatb algus- ja lõpu wild characteridest vabastatud otsitava.
+*
+* @method getSrPn2
+* @param {String} algPtrn String, mida puhastada vaja.
+* @param {String} mode Päringu tüüp - kas &quot;MySql&quot; või &quot;XML&quot;.
+* @returns {String} Puhastatud string.
+*&#x2F;
+function getSrPn2(algPtrn, mode) {
+    &#x2F;&#x2F;tulemuseks newPtrn - srchPtrn (algus ja lõputärnidest vabastatud otsitav)
+    &#x2F;&#x2F;mode - &quot;MySql&quot;, &quot;XML&quot;
+    var i, ptrn, newPtrn;
+    if ((jsLeft(algPtrn, 1) == &quot;*&quot;)) {
+        ptrn = jsMid(algPtrn, 1);
+        newPtrn = &quot;&quot;;
+    } else {
+        ptrn = algPtrn;
+        newPtrn = &quot;^&quot;;
+    }
+    for (i = 0; i &lt; ptrn.length; i++) {
+        if ((jsMid(ptrn, i, 1) == &quot;\\&quot;)) {
+            if ((i &lt; ptrn.length - 1)) {
+                if ((jsMid(ptrn, i + 1, 1) == &quot;\\&quot;)) {
+                    if ((mode == &quot;MySql&quot;)) {
+                        newPtrn = newPtrn + &quot;\\\\\\\\&quot;;
+                    } else {
+                        newPtrn = newPtrn + &quot;\\\\&quot;;
+                    }
+                    i = i + 1;
+                } else if ((jsMid(ptrn, i + 1, 1) == &quot;*&quot;)) {
+                    if ((mode == &quot;MySql&quot;)) {
+                        newPtrn = newPtrn + &quot;\\\\*&quot;;
+                    } else {
+                        newPtrn = newPtrn + &quot;\\*&quot;;
+                    }
+                    i = i + 1;
+                } else if ((jsMid(ptrn, i + 1, 1) == &quot;?&quot;)) {
+                    if ((mode == &quot;MySql&quot;)) {
+                        newPtrn = newPtrn + &quot;\\\\?&quot;;
+                    } else {
+                        newPtrn = newPtrn + &quot;\\?&quot;;
+                    }
+                    i = i + 1;
+                } else if ((specCh.indexOf(jsMid(ptrn, i + 1, 1)) &gt; -1)) {
+                    if ((mode == &quot;MySql&quot;)) {
+                        newPtrn = newPtrn + &quot;\\\\&quot; + jsMid(ptrn, i + 1, 1);
+                    } else {
+                        newPtrn = newPtrn + &quot;\\&quot; + jsMid(ptrn, i + 1, 1);
+                    }
+                    i = i + 1;
+                } else {
+                    if ((mode == &quot;MySql&quot;)) {
+                        &#x2F;&#x2F;                        newPtrn = newPtrn + &quot;\\\\\\\\&quot;;
+                    } else {
+                        &#x2F;&#x2F;                        newPtrn = newPtrn + &quot;\\\\&quot;;
+                    }
+                }
+            } else {
+                if ((mode == &quot;MySql&quot;)) {
+                    &#x2F;&#x2F;                    newPtrn = newPtrn + &quot;\\\\\\\\&quot;;
+                } else {
+                    &#x2F;&#x2F;                    newPtrn = newPtrn + &quot;\\\\&quot;;
+                }
+            }
+            if ((i == ptrn.length - 1)) {
+                newPtrn = newPtrn + &quot;$&quot;;
+            }
+        } else if ((specCh.indexOf(jsMid(ptrn, i, 1)) &gt; -1)) {
+            if ((jsMid(ptrn, i, 1) == &quot;*&quot;)) {
+                if ((i &gt; 0 &amp;&amp; i &lt; ptrn.length - 1)) {
+                    newPtrn = newPtrn + &quot;.*&quot;;
+                }
+            } else if ((jsMid(ptrn, i, 1) == &quot;?&quot;)) {
+                if ((mode == &quot;MySql&quot;)) {
+                    &#x2F;&#x2F;MySQL REGEXP otsib baidi, mitte tähe kaupa !!!!!!!!!!!!!!;
+                    &#x2F;&#x2F;                newPtrn = newPtrn + &quot;(.|Š|Ž|Õ|Ä|Ö|Ü|š|ž|õ|ä|ö|ü)&quot;
+                    &#x2F;&#x2F;                newPtrn = newPtrn + &quot;([[:alpha:]]|Š|Ž|Õ|Ä|Ö|Ü|š|ž|õ|ä|ö|ü)&quot;
+                    &#x2F;&#x2F;{1,2} - üks täpitäht v kaks tavalist tähte;
+                    newPtrn = newPtrn + &quot;.{1,2}&quot;;
+                } else {
+                    newPtrn = newPtrn + &quot;.&quot;;
+                }
+                if ((i == ptrn.length - 1)) {
+                    newPtrn = newPtrn + &quot;$&quot;;
+                }
+            } else {
+                if ((mode == &quot;MySql&quot;)) {
+                    newPtrn = newPtrn + &quot;\\&quot;;
+                }
+                newPtrn = newPtrn + &quot;\\&quot; + jsMid(ptrn, i, 1);
+                if ((i == ptrn.length - 1)) {
+                    newPtrn = newPtrn + &quot;$&quot;;
+                }
+            }
+        } else {
+            newPtrn = newPtrn + jsMid(ptrn, i, 1);
+            if ((i == ptrn.length - 1)) {
+                newPtrn = newPtrn + &quot;$&quot;;
+            }
+        }
+    }
+    return newPtrn;
+} &#x2F;&#x2F;getSrPn2
+
+
+&#x2F;**
+* Tagastab MySQLi päringu.
+*
+* @method getSqlQuery
+* @param {String} qn
+* @param {String} txt
+* @param {String} onTeksti
+* @param {String} wsym
+* @param {String} wcase
+* @param {String} extvalpath
+* @param {String} elRada
+* @param {String} msAttCond
+* @returns {String}
+*&#x2F;
+function getSqlQuery(qn, txt, onTeksti, wsym, wcase, extvalpath, elRada, msAttCond) {
+    var rexBinary, volId, volCond, ret;
+    rexBinary = &quot;&quot;;
+    if (wcase == 1) {
+        rexBinary = &quot;BINARY &quot;;
+    }
+    volId = dhxBar.getListOptionSelected(&quot;volSelect&quot;);
+    volCond = dic_desc + &quot;.vol_nr = &quot; + jsMid(volId, 3, 1);
+    if (volId == dic_desc + &quot;All&quot;) {
+        volCond = dic_desc + &quot;.vol_nr &gt; 0&quot;;
+    }
+
+    &#x2F;&#x2F;MySQL LIKE on tegelikult string võrdlemise funktsioon: expr LIKE pat
+    &#x2F;&#x2F;&quot;lihtne&quot; regexp
+    var mySqlLikePtrn = getMySqlLikePtrn(txt)
+
+    var mySqlPtrn = getSrPn2(txt, &quot;MySql&quot;);
+    &#x2F;&#x2F;need kuradi ^ või [:&lt;:] EI OLE MySQL-is üks ja sama stringi alguse korral!
+    mySqlPtrn = jsReplace(mySqlPtrn, &quot;^&quot;, &quot;(^|[[:&lt;:]])&quot;);
+    mySqlPtrn = jsReplace(mySqlPtrn, &quot;$&quot;, &quot;($|[[:&gt;:]])&quot;);
+
+    ret = &quot;&quot;;
+    if (qn == qn_ms) {
+        var msTekstTing;
+        if (txt == &quot;*&quot;) {
+            msTekstTing = &quot;&quot;;
+        } else {
+            msTekstTing = &quot;msid.ms LIKE &quot; + rexBinary + mySqlLikePtrn;
+            &#x2F;&#x2F;withSymbols: 0-sümboliteta; -1-sümboliteta ja fak tekstiga; 1-sümbolitega;
+            if (wsym &lt; 1) {
+                msTekstTing = &quot;msid.ms_nos LIKE &quot; + rexBinary + mySqlLikePtrn;
+                if (fakult.length &gt; 0 &amp;&amp; wsym == -1) {
+                    msTekstTing = msTekstTing + &quot; OR msid.ms_nos_alt LIKE &quot; + rexBinary + mySqlLikePtrn;
+                }
+            }
+            msTekstTing = &quot; AND (&quot; + msTekstTing + &quot;)&quot;;
+        }
+        ret = &quot;SELECT &quot; + dic_desc + &quot;.md AS md, &quot; + &quot;msid.ms AS l, &quot; +
+            &quot;msid.ms_att_i AS ms_att_i, msid.ms_att_liik AS ms_att_liik, &quot; +
+            &quot;msid.ms_att_ps AS ms_att_ps, msid.ms_att_tyyp AS ms_att_tyyp, msid.ms_att_mliik AS ms_att_mliik, &quot; +
+            &quot;msid.ms_att_k AS ms_att_k, msid.ms_att_mm AS ms_att_mm, msid.ms_att_st AS ms_att_st, &quot; +
+            &quot;msid.ms_att_vm AS ms_att_vm, msid.ms_att_all AS ms_att_all, msid.ms_att_uus AS ms_att_uus, &quot; +
+            &quot;msid.ms_att_zs AS ms_att_zs, msid.ms_att_u AS ms_att_u, msid.ms_att_em AS ms_att_em, &quot; +
+            dic_desc + &quot;.G AS G, &quot; + dic_desc + &quot;.art AS art, &quot; +
+            dic_desc + &quot;.K AS K, &quot; + dic_desc + &quot;.KL AS KL, &quot; +
+            dic_desc + &quot;.T AS T, &quot; + dic_desc + &quot;.TA AS TA, &quot; + dic_desc + &quot;.TL AS TL, &quot; +
+            dic_desc + &quot;.PT AS PT, &quot; + dic_desc + &quot;.PTA AS PTA, &quot; +
+            dic_desc + &quot;.vol_nr AS vol_nr &quot; + &quot;FROM msid, &quot; + dic_desc +
+            &quot; WHERE (&quot; + dic_desc + &quot;.G = msid.G&quot; +
+            &quot; AND msid.dic_code = &#x27;&quot; + dic_desc + &quot;&#x27;&quot; + msTekstTing + msAttCond + &quot; AND &quot; + volCond + &quot;)&quot; +
+            &quot; ORDER BY &quot; + dic_desc + &quot;.ms_att_OO&quot;;
+    } else {
+        var elementValNimi, artValNimi, elementTing, fromTing;
+        elementValNimi = &quot;val&quot;;
+        artValNimi = &quot;art&quot;;
+        if (wsym &lt; 1) {
+            elementValNimi = &quot;val_nos&quot;;
+            artValNimi = &quot;art_alt&quot;;
+        }
+        if (onTeksti &amp;&amp; mySqlDataVer == &quot;2&quot;) {
+            elementTing = &quot;elemendid_&quot; + dic_desc + &quot;.nimi = &#x27;&quot; + qn + &quot;&#x27;&quot;;
+            if (txt == &quot;*&quot;) {
+            } else {
+                &#x2F;&#x2F;siin peaks midagi optimiseerima, nt päring sl=&#x27;*&#x27;;
+                elementTing = elementTing + &quot; AND elemendid_&quot; + dic_desc + &quot;.&quot; + elementValNimi + &quot; LIKE &quot; + rexBinary + mySqlLikePtrn;
+            }
+            if (!(jsLeft(elRada, 3) == &quot;.&#x2F;&#x2F;&quot; || elRada == &quot;&quot;)) { &#x2F;&#x2F;&#x27;on lokaalne; &quot;.&#x2F;&#x2F;&quot; korral on globaalne, &quot;&quot; korral on &#x27;art&#x27;;
+                elementTing = elementTing + &quot; AND elemendid_&quot; + dic_desc + &quot;.rada = &#x27;&quot; + elRada + &quot;&#x27;&quot;;
+            }
+            elementTing = &quot; AND (&quot; + elementTing + msAttCond + &quot;)&quot;;
+            fromTing = &quot;&quot;;
+            if ((msAttCond.indexOf(&quot;atribuudid_&quot; + dic_desc) &gt; -1)) {
+                &#x2F;&#x2F;1 = 1;
+                if ((msAttCond.indexOf(&quot;select &quot; + dic_desc, 1) &lt; 0)) {
+                    fromTing = &quot;, atribuudid_&quot; + dic_desc;
+                }
+            }
+            ret = &quot;SELECT &quot; + dic_desc + &quot;.md AS md, &quot; + &quot;elemendid_&quot; + dic_desc + &quot;.val AS l, &quot; +
+                dic_desc + &quot;.G AS G, &quot; + dic_desc + &quot;.art AS art, &quot; +
+                dic_desc + &quot;.K AS K, &quot; + dic_desc + &quot;.KL AS KL, &quot; +
+                dic_desc + &quot;.T AS T, &quot; + dic_desc + &quot;.TA AS TA, &quot; + dic_desc + &quot;.TL AS TL, &quot; +
+                dic_desc + &quot;.PT AS PT, &quot; + dic_desc + &quot;.PTA AS PTA, &quot; +
+                dic_desc + &quot;.vol_nr AS vol_nr &quot; + &quot;FROM &quot; + dic_desc + &quot;, elemendid_&quot; + dic_desc + fromTing +
+                &quot; WHERE (&quot; + dic_desc + &quot;.G = elemendid_&quot; + dic_desc + &quot;.G&quot; + elementTing +
+                &quot; AND &quot; + volCond + &quot;)&quot; +
+                &quot; ORDER BY &quot; + dic_desc + &quot;.ms_att_OO&quot;;
+        } else {
+            if (txt == &quot;*&quot;) {
+                elementTing = &quot; != &#x27;&#x27;&quot;;
+            } else if (txt == &quot;=NULL&quot;) {
+                elementTing = &quot; != &#x27;&#x27;&quot;;
+            } else if (txt.substr(0, 1) == &quot;§&quot;) {
+                elementTing = &quot; != &#x27;&#x27;&quot;;
+            } else {
+                elementTing = &quot; regexp &quot; + rexBinary + &quot;&#x27;&quot; + mySqlPtrn + &quot;&#x27;&quot;;
+            }
+            ret = &quot;SELECT &quot; + dic_desc + &quot;.md AS md, &quot; +
+                &quot;ExtractValue(&quot; + dic_desc + &quot;.art, \&quot;&quot; + extvalpath + &quot;\&quot;) AS l, &quot; +
+                dic_desc + &quot;.G AS G, &quot; + dic_desc + &quot;.art AS art, &quot; +
+                dic_desc + &quot;.K AS K, &quot; + dic_desc + &quot;.KL AS KL, &quot; +
+                dic_desc + &quot;.T AS T, &quot; + dic_desc + &quot;.TA AS TA, &quot; + dic_desc + &quot;.TL AS TL, &quot; +
+                dic_desc + &quot;.PT AS PT, &quot; + dic_desc + &quot;.PTA AS PTA, &quot; +
+                dic_desc + &quot;.vol_nr AS vol_nr &quot; + &quot;FROM &quot; + dic_desc +
+                &quot; WHERE (ExtractValue(&quot; + dic_desc + &quot;.&quot; + artValNimi + &quot;, \&quot;&quot; + extvalpath + &quot;\&quot;)&quot; + elementTing +
+                &quot; AND &quot; + volCond + &quot;)&quot; +
+                &quot; ORDER BY &quot; + dic_desc + &quot;.ms_att_OO&quot;;
+        }
+    }
+
+    return ret;
+} &#x2F;&#x2F;getSqlQuery
+
+&#x2F;**
+* Muudetakse (asendatakse, iskeibitakse) MySQL-like päring.
+*
+* @method getMySqlLikePtrn 
+* @param {String} inp MySQL-like päring.
+* @param {String} Muudetud päring.
+*&#x2F;
+function getMySqlLikePtrn(inp) {
+    var ret, escCh, escCl;
+    ret = inp;
+
+    &#x2F;&#x2F;MySql LIKE bug:
+    &#x2F;&#x2F;select * from msid where dic_code=&#x27;ss_&#x27; &amp;&amp; vol_nr&gt;0;
+    &#x2F;&#x2F; select * from msid where dic_code=&#x27;ss_&#x27; &amp;&amp; vol_nr&gt;0 &amp;&amp; ms like &#x27;%\\\\%&#x27;;
+    &#x2F;&#x2F; select * from msid where dic_code=&#x27;ss_&#x27; &amp;&amp; vol_nr&gt;0 &amp;&amp; locate(&#x27;\\&#x27;, ms)&gt;0;
+    &#x2F;&#x2F; select * from msid where dic_code=&#x27;ss_&#x27; &amp;&amp; vol_nr&gt;0 &amp;&amp; ms like &#x27;%\\tõde&#x27;;
+    &#x2F;&#x2F; select * from msid where dic_code=&#x27;ss_&#x27; &amp;&amp; vol_nr&gt;0 &amp;&amp; ms like &#x27;%\\kirjandus&#x27;;
+    &#x2F;&#x2F; select * from msid where dic_code=&#x27;ss_&#x27; &amp;&amp; vol_nr&gt;0 &amp;&amp; ms like &#x27;%€\%&#x27; escape &#x27;€&#x27;;
+
+    if (ret.indexOf(&quot;\\&quot;) &gt; -1) {
+        escCh = &quot;¡&quot;;
+        escCl = &quot; ESCAPE &#x27;¡&#x27;&quot;;
+    } else {
+        escCh = &quot;\\&quot;;
+        escCl = &quot;&quot;;
+    }
+    &#x2F;&#x2F; märksõnad &lt;m&gt;
+    &#x2F;&#x2F; ss_ (sama puuk mis allpool?: (msid.ms LIKE &#x27;%¡\kon%&#x27; ESCAPE &#x27;¡&#x27;) annab nii kaldkriipsu kui ka &#x27;kon&#x27;)
+    ret = jsReplace(ret, &quot;\\\\&quot;, &quot;\uE003&quot;);
+    &#x2F;&#x2F; ss1
+    ret = jsReplace(ret, &quot;\\*&quot;, &quot;\uE001&quot;);
+    &#x2F;&#x2F; ss_, fin
+    ret = jsReplace(ret, &quot;\\?&quot;, &quot;\uE002&quot;);
+    &#x2F;&#x2F; qs_, evs
+    ret = jsReplace(ret, &quot;_&quot;, &quot;\\_&quot;);
+    &#x2F;&#x2F; qs_
+    ret = jsReplace(ret, &quot;&#x27;&quot;, escCh + &quot;&#x27;&quot;);
+    &#x2F;&#x2F; evs (puuk?: (msid.ms LIKE &#x27;%\%m%&#x27;) annab justnagu &#x27;%&#x27; ning &#x27;m&#x27;)
+    ret = jsReplace(ret, &quot;%&quot;, escCh + &quot;%&quot;);
+    ret = jsReplace(ret, &quot;?&quot;, &quot;_&quot;);
+    ret = jsReplace(ret, &quot;*&quot;, &quot;%&quot;);
+    ret = jsReplace(ret, &quot;\uE001&quot;, &quot;*&quot;);
+    ret = jsReplace(ret, &quot;\uE002&quot;, &quot;?&quot;);
+    ret = jsReplace(ret, &quot;\uE003&quot;, escCh + &quot;\\&quot;);
+    if (ret.indexOf(&quot;&#x27;&quot;) &gt; -1) {
+        ret = &quot;\&quot;&quot; + ret + &quot;\&quot;&quot;;
+    } else {
+        ret = &quot;&#x27;&quot; + ret + &quot;&#x27;&quot;;
+    }
+    ret = ret + escCl
+
+    return ret;
+} &#x2F;&#x2F;getMySqlLikePtrn
+
+
+&#x2F;**
+*  return myNum.toFixed(myDd);
+*
+* @method jsFormatNumber 
+* @param {Int} myNum
+* @param {Int} myDd
+* @return {String} 
+*&#x2F;
+function jsFormatNumber(myNum, myDd) {
+    return myNum.toFixed(myDd);
+}
+
+
+&#x2F;**
+*  Kontrollib, kas objekt on undefined.
+*
+* @method jsIsNull 
+* @param {Object} thing Kontrollitav objekt.
+* @return {Boolean} true, kui undefined.
+*&#x2F;
+function jsIsNull(thing) {
+    if (typeof (thing) == &quot;undefined&quot;)
+        return true;
+    else
+        return false;
+}
+
+
+&#x2F;**
+*  Kontrollib, kas objekt on tüüpi date.
+*
+* @method jsIsDate 
+* @param {String} sDate Kontrollitav kuupäev.
+* @return {Boolean} true või false
+*&#x2F;
+function jsIsDate(sDate) {
+    var scratch = new Date(sDate);
+    if (scratch.toString() == &quot;NaN&quot; || scratch.toString() == &quot;Invalid Date&quot;) {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+
+&#x2F;**
+*  Keerab stringi tagurpidi.
+*
+* @method jsStrReverse 
+* @param {String} s  
+* @return {String} 
+*&#x2F;
+function jsStrReverse(s) {
+    var rets = &#x27;&#x27;;
+    for (var ixChar = 0; ixChar &lt; s.length; ixChar++) {
+        rets = s.charAt(ixChar) + rets;
+    }
+    return rets;
+}
+
+
+&#x2F;**
+*  Tagastab XML elemendi väärtuse. 
+*
+* @method xmlElementTextValue 
+* @param {Object} myElem  XML element.
+* @return {String} 
+*&#x2F;
+function xmlElementTextValue(myElem) {
+    if (!myElem)
+        return &#x27;&#x27;;
+    if (&#x27;textContent&#x27; in myElem)
+        return myElem.textContent;
+    else
+        return myElem.text; &#x2F;&#x2F; MSXML
+}
+
+
+&#x2F;**
+* Asendab funktsiooni showModalDialog(url, par, feat); mis on Operas puudu. Näitab dialoogi ja tagastab selle vastuse.
+*
+* @method modalDlg 
+* @param {String} url Aadress dialoogile.
+* @param {String} par Dialoogi parameetrid.
+* @param {String} feat Features, kas resizable jms. 
+* @return {String} 
+*&#x2F;
+function modalDlg(url, par, feat) {
+    var retVal;
+    if (window.showModalDialog) {
+        retVal = showModalDialog(url, par, feat);
+    }
+    else {
+        &#x2F;&#x2F; kasutada on mõtet:
+        &#x2F;&#x2F; dialogHeight, dialogLeft, dialogTop, dialogWidth, center, resizable, scroll, status
+        &#x2F;&#x2F; open puhul:
+        &#x2F;&#x2F; left, top, height, width, location, menubar, scrollbars, status, titlebar, toolbar
+        var newFeats = feat.toLowerCase();
+        newFeats = newFeats.replace(&#x2F;dialog&#x2F;gi, &quot; &quot;);
+        newFeats = newFeats.replace(&#x2F;:&#x2F;g, &quot;=&quot;);
+        newFeats = newFeats.replace(&#x2F;;&#x2F;g, &quot;,&quot;);
+        newFeats = newFeats.replace(&#x2F;\bscroll\b&#x2F;g, &quot;scrollbars&quot;);
+        newFeats = jsTrim(newFeats);
+        newFeats += &quot;,location=no,menubar=no,titlebar=yes,toolbar=no&quot;;
+
+        &#x2F;&#x2F;        &#x2F;&#x2F; for similar functionality in Opera, but it&#x27;s not modal!
+        &#x2F;&#x2F;        &#x2F;&#x2F; url, nimi (_blank, _parent, _self, _top, &#x27;name&#x27;), omadused, mingi ajalugu sättimine
+        &#x2F;&#x2F;        var modal = window.open(url, &quot;eelexDlg&quot;, newFeats, null);
+        &#x2F;&#x2F;        modal.dialogArguments = sharedObject;
+
+        var sMD_element = document.getElementById(&#x27;eeLexDlg&#x27;);
+        var sMD_frame;
+        if (sMD_element) {
+            sMD_frame = sMD_element.getElementsByTagName(&quot;iframe&quot;)[0];
+            sMD_frame.setAttribute(&quot;src&quot;, url);
+            sMD_element.style.display = &#x27;block&#x27;;
+        }
+        else {
+            var sMD_width, sMD_height;
+            &#x2F;&#x2F;        sMD_width = screen.availWidth - 100;
+            &#x2F;&#x2F;        sMD_height = screen.availHeight - 200;
+
+            var tarr = newFeats.split(&quot;,&quot;);
+            for (var i in tarr) {
+                tarr[i] = tarr[i].replace(&#x2F;\bpx\b&#x2F;, &quot;&quot;);
+                if (tarr[i].indexOf(&quot;width&quot;) &gt;= 0) sMD_width = tarr[i].substr(tarr[i].indexOf(&quot;=&quot;) + 1);
+                if (tarr[i].indexOf(&quot;height&quot;) &gt;= 0) sMD_height = tarr[i].substr(tarr[i].indexOf(&quot;=&quot;) + 1);
+            }
+
+            document.getElementById(&#x27;spn_eeLexDlgParms&#x27;).innerHTML = par;
+
+            var sMD_container, sMD_top;
+            sMD_element = document.createElement(&#x27;div&#x27;);
+            sMD_element.style = &quot;position: fixed; top:0; left: 0; padding:0; margin:0; width: 100%; height: 100%; min-height:100%; background:#333333; z-index:2147483647&quot;;
+            sMD_element.setAttribute(&quot;align&quot;, &quot;center&quot;);
+            sMD_element.setAttribute(&quot;id&quot;, &quot;eeLexDlg&quot;);
+
+            sMD_container = document.createElement(&#x27;div&#x27;);
+            &#x2F;&#x2F;            sMD_container.style = &quot;padding:0;margin:0;margin-top:10px;width:&quot; + sMD_width + &quot;px;height:&quot; + sMD_height + &quot;px;background:#FFFFFF;&quot;;
+            sMD_container.style = &quot;padding:0;margin:0;margin-top:10px;width:&quot; + sMD_width + &quot;px;height:&quot; + sMD_height + &quot;px;background:#333333;&quot;;
+            sMD_element.appendChild(sMD_container);
+
+            sMD_top = document.createElement(&#x27;div&#x27;);
+            sMD_top.style = &quot;padding:2;margin:0;width:100%;height:14px;background:#34586E;color:#FFFFFF;font-family:Arial;font-size:11px;border-top: 1px solid #5E8399;border-left:1px solid #668BA1;border-right:1px solid #162E3D;border-bottom:1px solid #162E3D;cursor:pointer;&quot;;
+            sMD_top.setAttribute(&quot;align&quot;, &quot;center&quot;);
+            sMD_top.setAttribute(&quot;onclick&quot;, &quot;javascript:document.getElementById(&#x27;eeLexDlg&#x27;).style.display=&#x27;none&#x27;;&quot;);
+            sMD_top.innerHTML = &quot;Opera valedialoog v0.0 - Sulgemiseks vajuta siia&quot;;
+
+            &#x2F;&#x2F;el iframe
+            sMD_frame = document.createElement(&#x27;iframe&#x27;);
+            sMD_frame.setAttribute(&quot;src&quot;, url);
+            sMD_frame.setAttribute(&quot;width&quot;, sMD_width);
+            sMD_frame.setAttribute(&quot;height&quot;, sMD_height);
+            sMD_frame.setAttribute(&quot;scrolling&quot;, &quot;auto&quot;);
+
+            sMD_container.appendChild(sMD_top);
+            sMD_container.appendChild(sMD_frame);
+
+            document.body.appendChild(sMD_element);
+        }
+    }
+    return retVal;
+}
+
+
+&#x2F;**
+* Eventhandler. Nagu ei tee midagi.
+*
+* @method onDomTextModified 
+* @param {Object} event
+*&#x2F;
+function onDomTextModified(event) {
+    &#x2F;&#x2F; event.prevValue
+    var currentValue = event.newValue;
+    if (currentValue != event.target.data) { &#x2F;&#x2F; Firefox
+        currentValue = event.target.data;
+    }
+
+    document.getElementById(&#x27;eeLexDlg&#x27;).style.display = &#x27;none&#x27;;
+
+    if (currentValue != &quot;0&quot;) {
+        var dlgId = currentValue.substr(0, currentValue.indexOf(JR));
+        var retVal = currentValue.substr(currentValue.indexOf(JR) + 1);
+
+        if (dlgId == &quot;eelex_setup&quot;) {
+            eelexSetupOK(retVal);
+        }
+    }
+}
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

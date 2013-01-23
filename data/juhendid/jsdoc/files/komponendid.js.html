@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>komponendid.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/dxf.html">dxf</a></li>
+            
+                <li><a href="..&#x2F;classes/komponendid.html">komponendid</a></li>
+            
+                <li><a href="..&#x2F;classes/kontrollid.html">kontrollid</a></li>
+            
+                <li><a href="..&#x2F;classes/lisad.html">lisad</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_app.html">procs_app</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_edt.html">procs_edt</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_TextContMenu.html">procs_TextContMenu</a></li>
+            
+                <li><a href="..&#x2F;classes/tools.html">tools</a></li>
+            
+                <li><a href="..&#x2F;classes/tools_dx.html">tools_dx</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: komponendid.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+* komponendid.js.
+* Kasutatakse ka brauserisõltumatus versioonis.
+*
+* @class komponendid
+*&#x2F;
+
+&#x2F;**
+* Arvatavasti paneb kokku sõnastike toimetuslogi päringu.
+*
+* @method showDicLogs
+*&#x2F;
+function showDicLogs() {
+    var myForward = document.getElementById(&quot;forward&quot;);
+    if (!myForward) {
+        myForward = document.createElement(&quot;form&quot;);
+        myForward.setAttribute(&quot;name&quot;, &quot;forward&quot;);
+        myForward.setAttribute(&quot;method&quot;, &quot;post&quot;);
+        myForward.setAttribute(&quot;action&quot;, &quot;dicLogs.cgi&quot;);
+        myForward.setAttribute(&quot;target&quot;, &quot;_blank&quot;);
+        myForward.innerHTML = &quot;&lt;input id=&#x27;dic_desc&#x27; name=&#x27;dic_desc&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; + &quot;&lt;input id=&#x27;appLang&#x27; name=&#x27;appLang&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par1&#x27; name=&#x27;par1&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par2&#x27; name=&#x27;par2&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par3&#x27; name=&#x27;par3&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_S&#x27; name=&#x27;par_S&#x27; type=&#x27;hidden&#x27; value=&#x27; checked&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_L&#x27; name=&#x27;par_L&#x27; type=&#x27;hidden&#x27; value=&#x27; checked&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_K&#x27; name=&#x27;par_K&#x27; type=&#x27;hidden&#x27; value=&#x27; checked&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_T&#x27; name=&#x27;par_T&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_I&#x27; name=&#x27;par_I&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_W&#x27; name=&#x27;par_W&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_C&#x27; name=&#x27;par_C&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_H&#x27; name=&#x27;par_H&#x27; type=&#x27;hidden&#x27; value=&#x27; checked&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_GS&#x27; name=&#x27;par_GS&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_GV&#x27; name=&#x27;par_GV&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_X&#x27; name=&#x27;par_X&#x27; type=&#x27;hidden&#x27; value=&#x27;&#x27;&gt;&quot; +
+                    &quot;&lt;input id=&#x27;par_B&#x27; name=&#x27;par_B&#x27; type=&#x27;hidden&#x27; value=&#x27; checked&#x27;&gt;&quot;;
+        document.body.appendChild(myForward);
+    }
+    if ((myForward)) {
+        myForward.dic_desc.value = dic_desc;
+        myForward.appLang.value = sAppLang;
+        myForward.par1.value = document.title;
+        myForward.submit();
+    }
+} &#x2F;&#x2F; showDicLogs
+
+
+&#x2F;**
+* Kontrollib XMLi valiidsust serveris. TODO: Äkki on köite valideerimine hoopis.
+* Kasutab StartOperation(cmdXmlDom);
+*
+* @method srvXmlValidate
+*&#x2F;
+function srvXmlValidate() {
+
+    var seldId, seldTekst, pathName = window.location.pathname; &#x2F;&#x2F; ilma sabadeta (?, #), algab &#x27;&#x2F;&#x27;; nt &quot;&#x2F;__shs_test&#x2F;art.cgi&quot;
+    var scriptName = pathName.substr(pathName.lastIndexOf(&#x27;&#x2F;&#x27;) + 1);
+
+
+    if (scriptName == &quot;art.cgi&quot;) { &#x2F;&#x2F; IE versioon
+        var volSelElement = document.getElementById(&quot;sel_Vol&quot;); &#x2F;&#x2F; art.cgi, IE versioon
+        seldId = volSelElement.options[volSelElement.selectedIndex].id;
+        seldTekst = volSelElement.options[volSelElement.selectedIndex].innerHTML;
+    } else if (scriptName == &quot;art_dx.cgi&quot;) { &#x2F;&#x2F; &quot;sõltumatu&quot; versioon
+        seldId = dhxBar.getListOptionSelected(&quot;volSelect&quot;);
+        seldTekst = dhxBar.getListOptionText(&quot;volSelect&quot;, seldId);
+    }
+
+    if (seldId == sAllVolId) {
+        alert(CHK_VOL_ERR);
+        return;
+    }
+
+    var cmdXml, cmdXmlDom, qM;
+&#x2F;&#x2F;    qM = qryMethod;
+    qM = &quot;MySql&quot;;
+
+    &#x2F;&#x2F;    if (window.event.ctrlLeft) {
+    &#x2F;&#x2F;        qM = &quot;XML&quot;;
+    &#x2F;&#x2F;    }
+
+    sCmdId = &quot;srvXmlValidate&quot;;
+    sQryInfo = seldTekst + &quot;: &quot; + &quot;Köite valideerimine&quot;;
+
+    &#x2F;&#x2F; need, kus võib olla muutujaid (entity), ära siia tekstina pane ...
+    cmdXml = &quot;&lt;prm&gt;&quot; +
+                    &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+                    &quot;&lt;vol&gt;&quot; + seldId + &quot;&lt;&#x2F;vol&gt;&quot; +
+                    &quot;&lt;nfo&gt;&quot; + sQryInfo + &quot;&lt;&#x2F;nfo&gt;&quot; +
+                    &quot;&lt;qn&gt;&quot; + DICPR + &quot;:artikkel&lt;&#x2F;qn&gt;&quot; +
+                    &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+                  &quot;&lt;&#x2F;prm&gt;&quot;;
+
+    cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+    if (!(cmdXmlDom &amp;&amp; getXmlString(cmdXmlDom))) { &#x2F;&#x2F; kui on viga, siis IE-s on xml=&#x27;&#x27;
+        alert(&quot;Viga &#x27;cmdXmlDom&#x27;-s&quot;);
+        return;
+    }
+
+    StartOperation(cmdXmlDom);
+
+} &#x2F;&#x2F; srvXmlValidate
+
+&#x2F;**
+* Näitab eelmist, järgmist, viimast või esimest artiklit. Kutsutakse välja Toimetamisala ülaservast noolenuppudelt.
+* 
+* @method showPrevNextEntry
+* @param {Int} samm Kui 0, siis antakse esimene; kui 1, antakse järgmine; kui -1, antakse eelmine; kui 1000000, antakse viimane.
+*&#x2F;
+function showPrevNextEntry(samm) {
+
+    var seldId, seldTekst, pathName = window.location.pathname; &#x2F;&#x2F; ilma sabadeta (?, #), algab &#x27;&#x2F;&#x27;; nt &quot;&#x2F;__shs_test&#x2F;art.cgi&quot;
+    var scriptName = pathName.substr(pathName.lastIndexOf(&#x27;&#x2F;&#x27;) + 1);
+
+    if (scriptName == &quot;art.cgi&quot;) { &#x2F;&#x2F; IE versioon
+        if (salvestaJaKatkesta()) {
+            return;
+        }
+        var volSelElement = document.getElementById(&quot;sel_Vol&quot;); &#x2F;&#x2F; art.cgi, IE versioon
+        seldId = volSelElement.options[volSelElement.selectedIndex].id;
+        seldTekst = volSelElement.options[volSelElement.selectedIndex].innerHTML;
+    } else if (scriptName == &quot;art_dx.cgi&quot;) { &#x2F;&#x2F; &quot;sõltumatu&quot; versioon
+        seldId = dhxBar.getListOptionSelected(&quot;volSelect&quot;);
+        seldTekst = dhxBar.getListOptionText(&quot;volSelect&quot;, seldId);
+    }
+
+    if (seldId == sAllVolId) {
+        if (scriptName == &quot;art.cgi&quot;) { &#x2F;&#x2F; IE versioon
+            sel_Vol.selectedIndex = 0;
+            seldId = volSelElement.options[volSelElement.selectedIndex].id;
+        } else if (scriptName == &quot;art_dx.cgi&quot;) { &#x2F;&#x2F; &quot;sõltumatu&quot; versioon
+            setButtonSelectId(&quot;volSelect&quot;, dic_desc + &quot;1&quot;);
+            seldId = dhxBar.getListOptionSelected(&quot;volSelect&quot;);
+        }
+    }
+
+    var artGuid = &#x27;&#x27;, art_xpath;
+    sCmdId = &quot;prevNextRead&quot;;
+    if (samm == 0) {
+        sQryInfo = NAME_FIRST;
+        art_xpath = DICPR + &quot;:A[position() = 1]&quot;;
+    } else if (samm == 1000000) {
+        sQryInfo = NAME_LAST;
+        art_xpath = DICPR + &quot;:A[position() = last()]&quot;;
+    } else { &#x2F;&#x2F;1 v -1;
+        if (oEditDOMRoot.hasChildNodes()) {
+            artGuid = getXmlSingleNodeValue(oEditDOMRoot, DICPR + &quot;:A&#x2F;&quot; + qn_guid);
+            if (samm == -1) {
+                sQryInfo = NAME_PREVIOUS;
+                art_xpath = DICPR + &quot;:A[&quot; + qn_guid + &quot; = &#x27;&quot; + artGuid + &quot;&#x27;]&#x2F;preceding-sibling::&quot; + DICPR + &quot;:A[1]&quot;;
+            } else if (samm == 1) {
+                sQryInfo = NAME_NEXT;
+                art_xpath = DICPR + &quot;:A[&quot; + qn_guid + &quot; = &#x27;&quot; + artGuid + &quot;&#x27;]&#x2F;following-sibling::&quot; + DICPR + &quot;:A[1]&quot;;
+            }
+        } else {
+            sQryInfo = NAME_FIRST;
+            samm = 0;
+            art_xpath = DICPR + &quot;:A[position() = 1]&quot;;
+        }
+    }
+
+    var cmdXml, cmdXmlDom, qM;
+    &#x2F;&#x2F;    qM = qryMethod;
+    qM = &quot;MySql&quot;;
+
+    &#x2F;&#x2F;    if ((window.event.ctrlLeft)) {
+    &#x2F;&#x2F;        qM = &quot;XML&quot;;
+    &#x2F;&#x2F;    }
+
+    &#x2F;&#x2F; need, kus võib olla muutujaid (entity), ära siia tekstina pane ...
+    cmdXml = &quot;&lt;prm&gt;&quot; +
+                    &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+                    &quot;&lt;vol&gt;&quot; + seldId + &quot;&lt;&#x2F;vol&gt;&quot; +
+                    &quot;&lt;nfo&gt;&quot; + sQryInfo + &quot;&lt;&#x2F;nfo&gt;&quot; +
+                    &quot;&lt;axp&gt;&quot; + art_xpath + &quot;&lt;&#x2F;axp&gt;&quot; +
+                    &quot;&lt;exp&gt;&quot; + samm + &quot;&lt;&#x2F;exp&gt;&quot; +
+                    &quot;&lt;G&gt;&quot; + artGuid + &quot;&lt;&#x2F;G&gt;&quot; +
+                    &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+                  &quot;&lt;&#x2F;prm&gt;&quot;;
+
+    cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+    if (!(cmdXmlDom &amp;&amp; getXmlString(cmdXmlDom))) { &#x2F;&#x2F; kui on viga, siis IE-s on xml=&#x27;&#x27;
+        alert(&quot;Viga &#x27;cmdXmlDom&#x27;-s&quot;);
+        return;
+    }
+
+    StartOperation(cmdXmlDom);
+
+} &#x2F;&#x2F;showPrevNextEntry
+
+
+&#x2F;**
+* Kutsutakse välja nupu &quot;Lisa artikkel&quot; alt (Sõnastiku akna ülaservas kollane tärn).
+* 
+* @method imgArtAddClick
+*&#x2F;
+function imgArtAddClick() {
+
+    var seldId, seldTekst, pathName = window.location.pathname; &#x2F;&#x2F; ilma sabadeta (?, #), algab &#x27;&#x2F;&#x27;; nt &quot;&#x2F;__shs_test&#x2F;art.cgi&quot;
+    var scriptName = pathName.substr(pathName.lastIndexOf(&#x27;&#x2F;&#x27;) + 1);
+
+    var elemTextValue;
+
+    if (scriptName == &quot;art.cgi&quot;) { &#x2F;&#x2F; IE versioon
+        if (salvestaJaKatkesta()) {
+            return;
+        }
+        var volSelElement = document.getElementById(&quot;sel_Vol&quot;); &#x2F;&#x2F; art.cgi, IE versioon
+        seldId = volSelElement.options[volSelElement.selectedIndex].id;
+        seldTekst = volSelElement.options[volSelElement.selectedIndex].innerHTML;
+        elemTextValue = jsTrim(inp_ElemText.value);
+    } else if (scriptName == &quot;art_dx.cgi&quot;) { &#x2F;&#x2F; &quot;sõltumatu&quot; versioon
+        seldId = dhxBar.getListOptionSelected(&quot;volSelect&quot;);
+        seldTekst = dhxBar.getListOptionText(&quot;volSelect&quot;, seldId);
+        elemTextValue = jsTrim(dhxBar.getValue(&quot;txtElemOtsitav&quot;));
+    }
+
+    if (seldId == sDeldVolId || seldId == sAllVolId) {
+        alert(CHK_VOL_ERR);
+        return;
+    }
+
+    var seldVolNr = seldId.substr(3, 1);
+
+    var oConfigDOM = IDD(&quot;File&quot;, &quot;shsconfig_&quot; + dic_desc + &quot;.xml&quot;, false, false, null);
+    if (!oConfigDOM) {
+        alert(&quot;Puudub konfiguratsioonifail &#x27;shsconfig_&quot; + dic_desc + &quot;.xml&#x27;!&quot;);
+        return;
+    }
+
+    var sParms, smdArgs, psTrue = false, showDlg = true;
+    var tarr, msVal = &#x27;&#x27;, homNrVal = &#x27;&#x27;, psVal = &#x27;&#x27;;
+
+    if (dic_desc == &quot;ss_&quot; || dic_desc == &quot;ss1&quot;) {
+        psTrue = true;
+    }
+
+    &#x2F;&#x2F;    showDlg = jsStringToBoolean(getXmlSingleNodeValue(oConfigDOM.documentElement, &quot;newArtDlg&quot;));
+    var cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;newArtDlg&quot;)[0];
+    if (cfgElem) {
+        showDlg = jsStringToBoolean(getXmlNodeValue(cfgElem));
+    }
+
+    if (showDlg) {
+        msVal = elemTextValue;
+        smdArgs = new Array(seldVolNr, msVal, dic_desc, sAppLang, &quot;&quot;, psTrue, msLang);
+        sParms = window.showModalDialog(&quot;html&#x2F;newart.htm&quot;, smdArgs, &quot;dialogHeight:600px;dialogWidth:800px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no&quot;);
+        if (!sParms) {
+            return;
+        }
+        &#x2F;&#x2F;msval + JR + homnrvalue + JR + psVal
+        tarr = sParms.split(JR);
+
+        msVal = jsTrim(tarr[0]);
+        homNrVal = jsTrim(tarr[1]);
+        psVal = jsTrim(tarr[2]);
+
+        if (dic_vols_count &gt; 1) {
+            var vahemik, otsad, v6rreldav, puhas;
+            vahemik = getXmlSingleNodeValue(oConfigDOM.documentElement, &quot;vols&#x2F;vol[@nr = &#x27;&quot; + seldVolNr + &quot;&#x27;]&quot;);
+            &#x2F;&#x2F; PSV teine köide &#x27;AB&#x27; artiklid: &lt;vol nr=&quot;2&quot;&gt;AB: A - Y&lt;&#x2F;vol&gt;
+            if (vahemik.indexOf(&quot; - &quot;) &gt; -1) {
+                vahemik = jsTrim(vahemik.substr(vahemik.indexOf(&quot;:&quot;) + 1));
+                otsad = vahemik.split(&quot; - &quot;);
+                if (psVal) {
+                    v6rreldav = psVal;
+                } else {
+                    v6rreldav = msVal;
+                }
+                puhas = RemoveSymbols(v6rreldav, &quot;&quot;); &#x2F;&#x2F;&#x27;2. parm VÕIB OLLA;
+                if (!((jsStrComp(puhas.substr(0, otsad[0].length), otsad[0], 1) &gt;= 0) &amp;&amp; (jsStrComp(puhas.substr(0, otsad[1].length), otsad[1], 1) &lt;= 0))) {
+                    alert(CHK_VOL_ERR);
+                    return;
+                }
+            }
+        }
+    }
+
+
+    var oFrDom, oFrDomRoot;
+
+    if (yldStruDom.documentElement.getAttribute(&quot;pr_sd:ver&quot;) == &quot;2.0&quot;) { &#x2F;&#x2F; aõltumatu peaks alati siia jõudma
+        oFrDom = IDD(&quot;&quot;, &quot;&quot;, false, false, null);
+        oFrDomRoot = oFrDom.appendChild(createMyNSElement(oFrDom, DICPR + &quot;:A&quot;, DICURI));
+        yldStruNode = getXmlSingleNode(yldStruDom, &quot;.&#x2F;&#x2F;&quot; + DICPR + &quot;:A&quot;);
+        getMajors(yldStruNode, oFrDomRoot);
+    }
+    else {
+        oFrDom = IDD(&quot;File&quot;, &quot;xml&#x2F;&quot; + dic_desc + &quot;&#x2F;ag_&quot; + unName(DICPR + &quot;:A&quot;) + &quot;.xml&quot;, false, false, null);
+        if (!oFrDom) {
+            alert(&quot;pr_sd:ver != &#x27;2.0&#x27;: puudub konfiguratsioonifail &#x27;ag_&quot; + unName(DICPR + &quot;:A&quot;) + &quot;.xml&#x27;!&quot;);
+            return;
+        }
+        oFrDomRoot = oFrDom.documentElement;
+        &#x2F;&#x2F; äkki sõltumatu ikkagi jõuab kuidagi siia?
+        try {
+            AddEmptyTexts(oFrDom);
+        }
+        catch (e) {
+            alert(e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;);
+        }
+    }
+
+    if (window.ActiveXObject) { &#x2F;&#x2F; MSXML, IE
+        oFrDom.setProperty(&quot;SelectionLanguage&quot;, &quot;XPath&quot;);
+        oFrDom.setProperty(&quot;SelectionNamespaces&quot;, sXmlNsList);
+    }
+
+    var oCNode, uusAttr, srchPtrn;
+    oCNode = getXmlSingleNode(oFrDom, first_default);
+
+    if (!showDlg) {
+        msVal = jsTrim(getXmlNodeValue(oCNode)); &#x2F;&#x2F; äkki on skeemi poolt juba täidetud (autonumber vms (vka))
+        if (msVal == &quot;&quot;) {
+            msVal = &quot;-&quot;;
+        }
+    }
+    &#x2F;&#x2F; IE versioonis globaalne
+    sMarkSona = msVal;
+    setXmlNodeValue(oCNode, sMarkSona);
+
+
+    if (homNrVal != &quot;&quot;) {
+        uusAttr = createMyNSAttribute(oFrDom, qn_homnr, DICURI);
+        setXmlNodeValue(uusAttr, homNrVal);
+        setMyNSNamedItem(oCNode, uusAttr);
+    }
+    if (psVal != &quot;&quot;) {
+        uusAttr = createMyNSAttribute(oFrDom, DICPR + &quot;:ps&quot;, DICURI);
+        setXmlNodeValue(uusAttr, psVal);
+        setMyNSNamedItem(oCNode, uusAttr);
+    }
+
+    if (dic_desc == &quot;har&quot;) {
+        uusAttr = createMyNSAttribute(oFrDom, DICPR + &quot;:tyyp&quot;, DICURI);
+        setXmlNodeValue(uusAttr, &quot;ee&quot;); &#x2F;&#x2F;&#x27;eelistermin;
+        setMyNSNamedItem(oCNode, uusAttr);
+    } else if (dic_desc == &quot;ss_&quot;) {
+        uusAttr = createMyNSAttribute(oFrDom, DICPR + &quot;:mliik&quot;, DICURI);
+        setXmlNodeValue(uusAttr, &quot;uus&quot;);
+        setMyNSNamedItem(oCNode, uusAttr);
+    } else if (dic_desc == &quot;ss1&quot;) {
+        uusAttr = createMyNSAttribute(oFrDom, DICPR + &quot;:u&quot;, DICURI);
+        setXmlNodeValue(uusAttr, &quot;uus&quot;);
+        setMyNSNamedItem(oCNode, uusAttr);
+    }
+
+    &#x2F;&#x2F;mssv alles peale hom-nrt i jt atribuute
+    &#x2F;&#x2F; getSortVal(oCNode, true, true): oMNode, inclHoms, yvOrder
+    &#x2F;&#x2F; IE versioonis globaalne
+    sMSortVal = getSortVal(oCNode, true, true);
+
+    uusAttr = createMyNSAttribute(oFrDom, qn_sort_attr, DICURI);
+    setXmlNodeValue(uusAttr, sMSortVal);
+    setMyNSNamedItem(oCNode, uusAttr);
+
+    srchPtrn = &quot;^&quot; + sMSortVal + &quot;$&quot;;
+
+
+    var sNewGuid, refNode, refXPath; ;
+    &#x2F;&#x2F;           623BCC4E-45B1-4333-A1C1-4AA9BA9CD582
+    sNewGuid = &quot;00000001-0002-0003-0004-000000000005&quot;;
+    oCNode = getXmlSingleNode(oFrDom, DICPR + &quot;:A&#x2F;&quot; + qn_guid); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+    if (!oCNode) {
+        refXPath = DICPR + &quot;:K | &quot; + DICPR + &quot;:KA | &quot; + DICPR + &quot;:KL | &quot; + DICPR + &quot;:T | &quot; + DICPR + &quot;:TA | &quot; + DICPR + &quot;:TL | &quot; + DICPR + &quot;:PT | &quot; + DICPR + &quot;:PTA | &quot; + DICPR + &quot;:X | &quot; + DICPR + &quot;:XA&quot;;
+        refNode = getXmlSingleNode(oFrDomRoot, refXPath); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+        oCNode = oFrDomRoot.insertBefore(createMyNSElement(oFrDom, qn_guid, DICURI), refNode);
+    }
+    setXmlNodeValue(oCNode, sNewGuid);
+
+    oCNode = getXmlSingleNode(oFrDom, DICPR + &quot;:A&#x2F;&quot; + qn_autor); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+    if (!oCNode) {
+        refXPath = DICPR + &quot;:KA | &quot; + DICPR + &quot;:KL | &quot; + DICPR + &quot;:T | &quot; + DICPR + &quot;:TA | &quot; + DICPR + &quot;:TL | &quot; + DICPR + &quot;:PT | &quot; + DICPR + &quot;:PTA | &quot; + DICPR + &quot;:X | &quot; + DICPR + &quot;:XA&quot;;
+        refNode = getXmlSingleNode(oFrDomRoot, refXPath); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+        oCNode = oFrDomRoot.insertBefore(createMyNSElement(oFrDom, qn_autor, DICURI), refNode);
+    }
+    setXmlNodeValue(oCNode, sUsrName);
+    oCNode = getXmlSingleNode(oFrDom, DICPR + &quot;:A&#x2F;&quot; + qn_akp); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+    if (!oCNode) {
+        refXPath = DICPR + &quot;:KL | &quot; + DICPR + &quot;:T | &quot; + DICPR + &quot;:TA | &quot; + DICPR + &quot;:TL | &quot; + DICPR + &quot;:PT | &quot; + DICPR + &quot;:PTA | &quot; + DICPR + &quot;:X | &quot; + DICPR + &quot;:XA&quot;;
+        refNode = getXmlSingleNode(oFrDomRoot, refXPath); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+        oCNode = oFrDomRoot.insertBefore(createMyNSElement(oFrDom, qn_akp, DICURI), refNode);
+    }
+    setXmlNodeValue(oCNode, GetXSDDateTime(new Date()));
+    oCNode = getXmlSingleNode(oFrDom, DICPR + &quot;:A&#x2F;&quot; + qn_toimetaja); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+    if (!oCNode) {
+        refXPath = DICPR + &quot;:TA | &quot; + DICPR + &quot;:TL | &quot; + DICPR + &quot;:PT | &quot; + DICPR + &quot;:PTA | &quot; + DICPR + &quot;:X | &quot; + DICPR + &quot;:XA&quot;;
+        refNode = getXmlSingleNode(oFrDomRoot, refXPath); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+        oCNode = oFrDomRoot.insertBefore(createMyNSElement(oFrDom, qn_toimetaja, DICURI), refNode);
+    }
+    setXmlNodeValue(oCNode, sUsrName);
+    oCNode = getXmlSingleNode(oFrDom, DICPR + &quot;:A&#x2F;&quot; + qn_tkp); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+    if (!oCNode) {
+        refXPath = DICPR + &quot;:TL | &quot; + DICPR + &quot;:PT | &quot; + DICPR + &quot;:PTA | &quot; + DICPR + &quot;:X | &quot; + DICPR + &quot;:XA&quot;;
+        refNode = getXmlSingleNode(oFrDomRoot, refXPath); &#x2F;&#x2F; oFrDomRoot on &#x27;A&#x27;
+        oCNode = oFrDomRoot.insertBefore(createMyNSElement(oFrDom, qn_tkp, DICURI), refNode);
+    }
+    setXmlNodeValue(oCNode, GetXSDDateTime(new Date()));
+
+
+    &#x2F;&#x2F; globaalsed
+    sQryInfo = sMSortVal;
+
+    var seldQn = qn_ms;  &#x2F;&#x2F;pärast otsitakse nn homonüümseid märksõnu, st millised veel sama märksõnaga on;
+&#x2F;&#x2F;    qM = qryMethod;
+    var qM = &quot;MySql&quot;;
+
+    var homonyymsed = &#x27;&#x27;, sql = &#x27;&#x27;, elm_xpath = &#x27;&#x27;, art_xpath = &#x27;&#x27;;
+    homonyymsed = first_default.substr(first_default.indexOf(&quot;&#x2F;&quot;) + 1) + &quot;[. = &quot; + GCV(msVal, &quot;&quot;, 2);
+    sql = &quot;SELECT &quot; + dic_desc +
+        &quot;.md AS md, msid.ms AS l, msid.ms_att_i AS ms_att_i, msid.ms_att_liik AS ms_att_liik, msid.ms_att_ps AS ms_att_ps, &quot; +
+        &quot;msid.ms_att_tyyp AS ms_att_tyyp, msid.ms_att_mliik AS ms_att_mliik, msid.ms_att_k AS ms_att_k, msid.ms_att_mm AS ms_att_mm, &quot; +
+        &quot;msid.ms_att_st AS ms_att_st, msid.ms_att_vm AS ms_att_vm, msid.ms_att_all AS ms_att_all, msid.ms_att_uus AS ms_att_uus, &quot; +
+        &quot;msid.ms_att_zs AS ms_att_zs, &quot; +
+        dic_desc + &quot;.G AS G, &quot; + dic_desc + &quot;.art AS art, &quot; + dic_desc + &quot;.K AS K, &quot; + dic_desc + &quot;.T AS T, &quot; + dic_desc + &quot;.TA AS TA, &quot; +
+        dic_desc + &quot;.PT AS PT, &quot; + dic_desc + &quot;.vol_nr AS vol_nr &quot; + &quot;FROM msid, &quot; + dic_desc + &quot; &quot; + 
+        &quot;WHERE (&quot; + dic_desc + &quot;.G = msid.G &quot; + &quot;AND msid.dic_code = &#x27;&quot; + dic_desc + &quot;&#x27; &quot; + &quot;AND (msid.ms = \&quot;&quot; + msVal + &quot;\&quot;&quot;;
+    homonyymsed = homonyymsed + &quot;]&quot;;
+    sql = sql + &quot;) &quot; + &quot;AND msid.vol_nr = &quot; + seldVolNr;
+    sql = sql + &quot;) &quot;; &#x2F;&#x2F;&#x27;WHERE tingimuse lõpp;
+    sql = sql + &quot;ORDER BY &quot; + dic_desc + &quot;.ms_att_OO&quot;;
+    elm_xpath = homonyymsed;
+    homonyymsed = DICPR + &quot;:A[&quot; + homonyymsed + &quot;]&quot;;
+    art_xpath = homonyymsed;
+
+
+    var hasHtml = &quot;0&quot;;
+    var artHtml = &quot;&quot;;
+
+    if (scriptName == &quot;art.cgi&quot;) { &#x2F;&#x2F; IE versioon
+        showDbgVar(&quot;sCmdId&quot;, sCmdId, &quot;imgArtAddClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;sQryInfo&quot;, sQryInfo, &quot;imgArtAddClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;art_xpath&quot;, art_xpath, &quot;imgArtAddClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;elm_xpath&quot;, elm_xpath, &quot;imgArtAddClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;srchPtrn&quot;, srchPtrn, &quot;imgArtAddClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;sql&quot;, sql, &quot;imgArtAddClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;qM&quot;, qM, &quot;imgArtAddClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date())
+
+        hasHtml = &quot;1&quot;;
+
+        var xslOrigViewDom = IDD(&quot;File&quot;, &quot;xsl&#x2F;&quot; + xslViewName + &quot;.xsl&quot;, true, false, null);
+        if (!(xslOrigViewDom &amp;&amp; getXmlString(xslOrigViewDom))) { &#x2F;&#x2F; kui on viga, siis IE-s on xml=&#x27;&#x27;
+            alert(&quot;Viga &#x27;xslOrigViewDom&#x27;-s&quot;);
+            return;
+        }
+        xslOrigViewDom.setProperty(&quot;AllowXsltScript&quot;, true);
+        xslOrigViewDom.setProperty(&quot;SelectionLanguage&quot;, &quot;XPath&quot;);
+        xslOrigViewDom.setProperty(&quot;SelectionNamespaces&quot;, sXmlNsList);
+
+        xslOrigViewDom.documentElement.selectSingleNode(&quot;xsl:variable[@name = &#x27;printing&#x27;]&quot;).text = &quot;1&quot;;
+        xslOrigViewDom.documentElement.selectSingleNode(&quot;xsl:variable[@name = &#x27;showShaded&#x27;]&quot;).text = &quot;0&quot;;
+
+        artHtml = oEditDOM.transformNode(xslOrigViewDom);
+        artHtml = artHtml.replace(&quot; xmlns:al=\&quot;&quot; + scriptsUri + &quot;\&quot;&quot;, &quot;&quot;);
+        artHtml = artHtml.replace(&quot; xmlns:pref=\&quot;&quot; + DICURI + &quot;\&quot;&quot;, &quot;&quot;);
+        artHtml = artHtml.replace(&quot; xmlns:&quot; + DICPR + &quot;=\&quot;&quot; + DICURI + &quot;\&quot;&quot;, &quot;&quot;);
+        artHtml = &quot;&lt;![CDATA[&quot; + artHtml + &quot;]]&gt;&quot;;
+    }
+
+    sCmdId = &quot;ClientAdd&quot;;
+    &#x2F;&#x2F; need, kus võib olla muutujaid (entity), ära siia tekstina pane ...
+    var cmdXml = &quot;&lt;prm&gt;&quot; +
+                    &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+                    &quot;&lt;vol&gt;&quot; + seldId + &quot;&lt;&#x2F;vol&gt;&quot; +
+                    &quot;&lt;nfo&gt;&lt;&#x2F;nfo&gt;&quot; +
+                    &quot;&lt;axp&gt;&lt;&#x2F;axp&gt;&quot; +
+                    &quot;&lt;exp&gt;&lt;&#x2F;exp&gt;&quot; +
+                    &quot;&lt;wC&gt;0&lt;&#x2F;wC&gt;&quot; +
+                    &quot;&lt;wS&gt;1&lt;&#x2F;wS&gt;&quot; +
+                    &quot;&lt;fSrP&gt;&lt;&#x2F;fSrP&gt;&quot; +
+                    &quot;&lt;sql&gt;&lt;&#x2F;sql&gt;&quot; +
+                    &quot;&lt;qn&gt;&quot; + seldQn + &quot;&lt;&#x2F;qn&gt;&quot; +
+                    &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+                    &quot;&lt;hasHtml&gt;&quot; + hasHtml + &quot;&lt;&#x2F;hasHtml&gt;&quot; +
+                    &quot;&lt;html&gt;&quot; + artHtml + &quot;&lt;&#x2F;html&gt;&quot; +
+                    &quot;&lt;brVer&gt;&quot; + brVer + &quot;&lt;&#x2F;brVer&gt;&quot; +
+                &quot;&lt;&#x2F;prm&gt;&quot;;
+
+    var cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+    if (!(cmdXmlDom &amp;&amp; getXmlString(cmdXmlDom))) { &#x2F;&#x2F; kui on viga, siis IE-s on xml=&#x27;&#x27;
+        alert(&quot;Viga &#x27;cmdXmlDom&#x27;-s&quot;);
+        return;
+    }
+
+    &#x2F;&#x2F; need, kus võib olla muutujaid (entity), väärtusta nii:
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;nfo&quot;, sQryInfo);
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;axp&quot;, art_xpath);
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;exp&quot;, elm_xpath);
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;fSrP&quot;, srchPtrn);
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;sql&quot;, sql);
+
+    cmdXmlDom.documentElement.appendChild(oFrDomRoot);
+    StartOperation(cmdXmlDom);
+
+} &#x2F;&#x2F;imgArtAddClick
+
+
+&#x2F;** 
+* Kontrollib artikli xml-i valiidsust ja salvestab artikli. Kutsutakse välja salvestamise nupust (Toimetamisala ülaservas). 
+*
+* @method imgArtSaveClick
+*&#x2F;
+function imgArtSaveClick() {
+    &#x2F;&#x2F; algus v kustutatud
+    if (!oEditDOMRoot.hasChildNodes()) {
+        return;
+    }
+
+    var oArtBackup = oEditDOMRoot.firstChild.cloneNode(true);
+
+    setMsvVals();
+
+    var seldId, seldTekst, pathName = window.location.pathname; &#x2F;&#x2F; ilma sabadeta (?, #), algab &#x27;&#x2F;&#x27;; nt &quot;&#x2F;__shs_test&#x2F;art.cgi&quot;
+    var scriptName = pathName.substr(pathName.lastIndexOf(&#x27;&#x2F;&#x27;) + 1);
+
+    ArtSaveChecks();  &#x2F;&#x2F;SP-s mallid, har, geo, med: vasteplokkide järjestamine
+
+    DeleteEmptys(oEditDOMRoot);
+
+    var jooksevArtStr = getXmlString(oEditDOM);
+    if (jooksevArtStr == artOrgString) {
+        oEditDOMRoot.replaceChild(oArtBackup, oEditDOMRoot.firstChild);
+        return;
+    }
+
+    var lisad = getXmlSingleNode(oEditDOMRoot.firstChild, DICPR + &quot;:pa&quot;);
+    while (lisad) {
+        lisad.parentNode.removeChild(lisad);
+        lisad = getXmlSingleNode(oEditDOMRoot.firstChild, DICPR + &quot;:pa&quot;);
+    }
+
+    var oTNode, refElem = null;
+    oTNode = getXmlSingleNode(oEditDOMRoot.firstChild, qn_toimetaja);
+    &#x2F;&#x2F;Juhuks, kui andmebaasis on algselt toimetaja puudu.
+    &#x2F;&#x2F;Salvestamise kellaaeg &lt;TA&gt; käib ainult serveri kaudu
+    if (!oTNode) {
+        var follNimed = getFollowingSiblings(qn_art, qn_toimetaja);
+        if (follNimed != &quot;Ei saa&quot;) {
+            if (follNimed.length &gt; 0) {
+                refNode = getXmlSingleNode(oEditDOMRoot.firstChild, follNimed);
+            }
+            oTNode = oEditDOMRoot.firstChild.insertBefore(createMyNSElement(oEditDOM, qn_toimetaja, DICURI), refNode);
+        }
+    }
+    setXmlNodeValue(oTNode, sUsrName);
+
+    if (scriptName == &quot;art.cgi&quot;) { &#x2F;&#x2F; IE versioon
+        if (!(ValidateXML(oEditDOM, oXsdSc))) {
+            oEditDOMRoot.replaceChild(oArtBackup, oEditDOMRoot.firstChild);
+            return;
+        }
+    }
+
+    var msNode, artGuid;
+    msNode = getXmlSingleNode(oEditDOMRoot, first_default);
+    artGuid = getXmlSingleNodeValue(oEditDOMRoot, DICPR + &quot;:A&#x2F;&quot; + qn_guid);
+
+    &#x2F;&#x2F; IE versioonis globaalsed
+    sMSortVal = msNode.getAttribute(qn_sort_attr);
+    sMarkSona = getXmlNodeValue(msNode);
+
+    var seldVolNr = sFromVolume.substr(3, 1);
+
+    var srchPtrn = &quot;^&quot; + sMSortVal + &quot;$&quot;;
+    var homNr = msNode.getAttribute(DICPR + &quot;:i&quot;);
+    if (!homNr)
+        homNr = &#x27;&#x27;;
+
+    var homonyymsed = &#x27;&#x27;, sql = &#x27;&#x27;, elm_xpath = &#x27;&#x27;, art_xpath = &#x27;&#x27;;
+    if (!(sMarkSona == sOrgMarkSona &amp;&amp; homNr == sOrgHomnr)) {
+
+        homonyymsed = first_default.substr(first_default.indexOf(&quot;&#x2F;&quot;) + 1) + &quot;[. = &quot; + GCV(sOrgMarkSona, &quot;&quot;, 2);
+
+        sql = &quot;SELECT &quot; + dic_desc + &quot;.md AS md, msid.ms AS l, msid.ms_att_i AS ms_att_i, &quot; +
+                    &quot;msid.ms_att_liik AS ms_att_liik, msid.ms_att_ps AS ms_att_ps, msid.ms_att_tyyp AS ms_att_tyyp, &quot; +
+                    &quot;msid.ms_att_mliik AS ms_att_mliik, msid.ms_att_k AS ms_att_k, msid.ms_att_mm AS ms_att_mm, &quot; +
+                    &quot;msid.ms_att_st AS ms_att_st, msid.ms_att_vm AS ms_att_vm, msid.ms_att_all AS ms_att_all, &quot; +
+                    &quot;msid.ms_att_uus AS ms_att_uus, msid.ms_att_zs AS ms_att_zs, &quot; +
+                    dic_desc + &quot;.G AS G, &quot; + dic_desc + &quot;.art AS art, &quot; + dic_desc + &quot;.K AS K, &quot; +
+                    dic_desc + &quot;.T AS T, &quot; + dic_desc + &quot;.TA AS TA, &quot; + dic_desc + &quot;.PT AS PT, &quot; +
+                    dic_desc + &quot;.vol_nr AS vol_nr &quot; +
+                    &quot;FROM msid, &quot; + dic_desc + &quot; &quot; +
+                    &quot;WHERE (&quot; + dic_desc + &quot;.G = msid.G &quot; + &quot;AND msid.dic_code = &#x27;&quot; + dic_desc + &quot;&#x27; &quot; +
+                    &quot;AND (msid.ms = \&quot;&quot; + toXmlString(sOrgMarkSona) + &quot;\&quot;&quot;;
+        if (sMarkSona != sOrgMarkSona) {
+            homonyymsed = homonyymsed + &quot; or . = &quot; + GCV(sMarkSona, &quot;&quot;, 2);
+            sql = sql + &quot; OR msid.ms = \&quot;&quot; + toXmlString(sMarkSona) + &quot;\&quot;&quot;;
+        }
+        homonyymsed = homonyymsed + &quot;]&quot;;
+        sql = sql + &quot;) &quot; + &quot;AND msid.vol_nr = &quot; + seldVolNr;
+        sql = sql + &quot;) &quot;; &#x2F;&#x2F;&#x27;WHERE tingimuse lõpp;
+        sql = sql + &quot;ORDER BY &quot; + dic_desc + &quot;.ms_att_OO&quot;;
+        elm_xpath = homonyymsed;
+        homonyymsed = DICPR + &quot;:A[&quot; + homonyymsed + &quot;]&quot;;
+        art_xpath = homonyymsed;
+    }
+
+    sCmdId = &quot;ClientWrite&quot;;
+    sQryInfo = sMSortVal
+
+    var qM, seldQn;
+&#x2F;&#x2F;    qM = qryMethod;
+    qM = &quot;MySql&quot;;
+    seldQn = qn_ms;
+
+
+    var hasHtml = &quot;0&quot;;
+    var artHtml = &quot;&quot;;
+
+    if (scriptName == &quot;art.cgi&quot;) { &#x2F;&#x2F; IE versioon
+        showDbgVar(&quot;sOrgMarkSona&quot;, &quot;&#x27;&quot; + sOrgMarkSona + &quot;&#x27;&quot;, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;sMarkSona&quot;, &quot;&#x27;&quot; + sMarkSona + &quot;&#x27;&quot;, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;sOrgHomnr&quot;, &quot;&#x27;&quot; + sOrgHomnr + &quot;&#x27;&quot;, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;homNr&quot;, &quot;&#x27;&quot; + homNr + &quot;&#x27;&quot;, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;sCmdId&quot;, sCmdId, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;sQryInfo&quot;, sQryInfo, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;art_xpath&quot;, art_xpath, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;elm_xpath&quot;, elm_xpath, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;sql&quot;, sql, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;artMuudatused&quot;, artMuudatused, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+        showDbgVar(&quot;qM&quot;, qM, &quot;imgArtSaveClick&quot;, &quot;lõpp&quot;, &quot; &quot;, new Date());
+
+        hasHtml = &quot;1&quot;;
+
+        var xslOrigViewDom = IDD(&quot;File&quot;, &quot;xsl&#x2F;&quot; + xslViewName + &quot;.xsl&quot;, true, false, null);
+        if (!(xslOrigViewDom &amp;&amp; getXmlString(xslOrigViewDom))) { &#x2F;&#x2F; kui on viga, siis IE-s on xml=&#x27;&#x27;
+            alert(&quot;Viga &#x27;xslOrigViewDom&#x27;-s&quot;);
+            return;
+        }
+        xslOrigViewDom.setProperty(&quot;AllowXsltScript&quot;, true);
+        xslOrigViewDom.setProperty(&quot;SelectionLanguage&quot;, &quot;XPath&quot;);
+        xslOrigViewDom.setProperty(&quot;SelectionNamespaces&quot;, sXmlNsList);
+
+        xslOrigViewDom.documentElement.selectSingleNode(&quot;xsl:variable[@name = &#x27;printing&#x27;]&quot;).text = &quot;1&quot;;
+        xslOrigViewDom.documentElement.selectSingleNode(&quot;xsl:variable[@name = &#x27;showShaded&#x27;]&quot;).text = &quot;0&quot;;
+
+        artHtml = oEditDOM.transformNode(xslOrigViewDom);
+        artHtml = artHtml.replace(&quot; xmlns:al=\&quot;&quot; + scriptsUri + &quot;\&quot;&quot;, &quot;&quot;);
+        artHtml = artHtml.replace(&quot; xmlns:pref=\&quot;&quot; + DICURI + &quot;\&quot;&quot;, &quot;&quot;);
+        artHtml = artHtml.replace(&quot; xmlns:&quot; + DICPR + &quot;=\&quot;&quot; + DICURI + &quot;\&quot;&quot;, &quot;&quot;);
+        artHtml = &quot;&lt;![CDATA[&quot; + artHtml + &quot;]]&gt;&quot;;
+    }
+
+    var cmdXml, cmdXmlDom;
+    &#x2F;&#x2F; need, kus võib olla muutujaid (entity), ära siia tekstina pane ...
+    cmdXml = &quot;&lt;prm&gt;&quot; +
+                    &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+                    &quot;&lt;vol&gt;&quot; + sFromVolume + &quot;&lt;&#x2F;vol&gt;&quot; +
+                    &quot;&lt;nfo&gt;&lt;&#x2F;nfo&gt;&quot; +
+                    &quot;&lt;axp&gt;&lt;&#x2F;axp&gt;&quot; +
+                    &quot;&lt;exp&gt;&lt;&#x2F;exp&gt;&quot; +
+                    &quot;&lt;wC&gt;0&lt;&#x2F;wC&gt;&quot; +
+                    &quot;&lt;wS&gt;1&lt;&#x2F;wS&gt;&quot; +
+                    &quot;&lt;fSrP&gt;&lt;&#x2F;fSrP&gt;&quot; +
+                    &quot;&lt;qn&gt;&quot; + seldQn + &quot;&lt;&#x2F;qn&gt;&quot; +
+                    &quot;&lt;G&gt;&quot; + artGuid + &quot;&lt;&#x2F;G&gt;&quot; +
+                    &quot;&lt;sql&gt;&lt;&#x2F;sql&gt;&quot; +
+                    &quot;&lt;artCh&gt;&lt;&#x2F;artCh&gt;&quot; +
+                    &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+                    &quot;&lt;hasHtml&gt;&quot; + hasHtml + &quot;&lt;&#x2F;hasHtml&gt;&quot; +
+                    &quot;&lt;html&gt;&quot; + artHtml + &quot;&lt;&#x2F;html&gt;&quot; +
+                    &quot;&lt;brVer&gt;&quot; + brVer + &quot;&lt;&#x2F;brVer&gt;&quot; +
+                  &quot;&lt;&#x2F;prm&gt;&quot;;
+
+    cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+    if (!(cmdXmlDom &amp;&amp; getXmlString(cmdXmlDom))) { &#x2F;&#x2F; kui on viga, siis IE-s on xml=&#x27;&#x27;
+        alert(&quot;Viga &#x27;cmdXmlDom&#x27;-s&quot;);
+        return;
+    }
+
+    &#x2F;&#x2F; need, kus võib olla muutujaid (entity), väärtusta nii:
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;nfo&quot;, sQryInfo);
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;axp&quot;, art_xpath);
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;exp&quot;, elm_xpath);
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;fSrP&quot;, srchPtrn);
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;sql&quot;, sql);
+    setXmlSingleNodeValue(cmdXmlDom.documentElement, &quot;artCh&quot;, artMuudatused);
+
+    cmdXmlDom.documentElement.appendChild(oEditDOMRoot.firstChild.cloneNode(true));
+    StartOperation(cmdXmlDom);
+
+} &#x2F;&#x2F;imgArtSaveClick
+
+&#x2F;** 
+* Kustutab elemendi seest tühjad elemendid.
+*
+* @method DeleteEmptys
+* @param {Object} deleteFrom Element, mille seest kustutatakse.
+*&#x2F;
+function DeleteEmptys(deleteFrom) {
+    var maha, vanem;
+    maha = getXmlSingleNode(deleteFrom, &quot;.&#x2F;&#x2F;*[normalize-space(.) = &#x27;&#x27;][not(local-name() = &#x27;lTL&#x27; or local-name() = &#x27;eTL&#x27;)]&quot;);
+    while (maha) {
+        maha.parentNode.removeChild(maha);
+        maha = getXmlSingleNode(deleteFrom, &quot;.&#x2F;&#x2F;*[normalize-space(.) = &#x27;&#x27;][not(local-name() = &#x27;lTL&#x27; or local-name() = &#x27;eTL&#x27;)]&quot;);
+    }
+    maha = getXmlSingleNode(deleteFrom, &quot;.&#x2F;&#x2F;*[not(text() or *)][not(local-name() = &#x27;lTL&#x27; or local-name() = &#x27;eTL&#x27;)]&quot;);
+    while (maha) {
+        maha.parentNode.removeChild(maha);
+        maha = getXmlSingleNode(deleteFrom, &quot;.&#x2F;&#x2F;*[not(text() or *)][not(local-name() = &#x27;lTL&#x27; or local-name() = &#x27;eTL&#x27;)]&quot;);
+    }
+    maha = getXmlSingleNode(deleteFrom, &quot;.&#x2F;&#x2F;@*[. = &#x27;&#x27;][not(local-name() = &#x27;mm&#x27; or local-name() = &#x27;mlm&#x27;)]&quot;);
+    while (maha) {
+        vanem = getXmlSingleNode(maha, &quot;..&quot;); &#x2F;&#x2F; &#x27;ownerElement&#x27; ei lähe mitte
+        vanem.removeAttributeNode(maha);
+        maha = getXmlSingleNode(deleteFrom, &quot;.&#x2F;&#x2F;@*[. = &#x27;&#x27;][not(local-name() = &#x27;mm&#x27; or local-name() = &#x27;mlm&#x27;)]&quot;);
+    }
+} &#x2F;&#x2F;DeleteEmptys
+
+
+&#x2F;** 
+* Otsib kõik default_query märksõnad ja lisab neile sorteerimisväärtuse (atribuut @O). Kasutab getSortVal.
+*
+* @method setMsvVals
+*&#x2F;
+function setMsvVals() {
+
+    var mNodes = getXmlNodesSnapshot(oEditDOMRoot, default_query);
+    var mNode, ix;
+    if (&#x27;snapshotLength&#x27; in mNodes) {
+        for (ix = 0; ix &lt; mNodes.snapshotLength; ix++) {
+            mNode = mNodes.snapshotItem(ix);
+            setMyNSAttribute(mNode, DICURI, qn_sort_attr, getSortVal(mNode, true, true));
+        }
+    } else if (&#x27;length&#x27; in mNodes) { &#x2F;&#x2F; nodeList, MSXML
+        for (ix = 0; ix &lt; mNodes.length; ix++) {
+            mNode = mNodes[ix];
+            setMyNSAttribute(mNode, DICURI, qn_sort_attr, getSortVal(mNode, true, true));
+        }
+    }
+} &#x2F;&#x2F;setMsvVals
+
+
+&#x2F;** 
+* Arvutab sorteerimisväärtuse. 
+*
+* @method getSortVal
+* @param {Object} oMNode Element, millest tekst võtta.
+* @param {Boolean} inclHoms Kas lisada homonüüminumber.
+* @param {Boolean} yvOrder Kas sorteerida põhisõna juurde.
+* @returns {String} sorteerimisväärtus
+*&#x2F;
+function getSortVal(oMNode, inclHoms, yvOrder) {
+
+    var nmVal, tekstNood, i, rex;
+
+    nmVal = &quot;&quot;;
+    &#x2F;&#x2F;nmVal = oMNode.text
+    &#x2F;&#x2F;*** &lt;r&gt; märksõna sees peab jääma järjestusest välja ([kedagi] risti lööma)
+    var tekstNoodid = getXmlNodes(oMNode, &quot;text()&quot;);
+    if (tekstNoodid.iterateNext) {
+        tekstNood = tekstNoodid.iterateNext();
+        while (tekstNood) {
+            nmVal += getXmlNodeValue(tekstNood);
+            tekstNood = tekstNoodid.iterateNext();
+        }
+    } else if (&#x27;length&#x27; in tekstNoodid) { &#x2F;&#x2F; nodeList, MSXML
+        for (i = 0; i &lt; tekstNoodid.length; i++) {
+            nmVal += tekstNoodid[i].text;
+        }
+    }
+    nmVal = jsTrim(nmVal);
+    if (nmVal == &quot;&quot;) {
+        nmVal = &quot;-&quot;;
+    }
+
+    &#x2F;&#x2F;muutujad (entities) maha
+    rex = &#x2F;&amp;\w+;&#x2F;g;
+    nmVal = nmVal.replace(rex, &quot;&quot;);
+
+    &#x2F;&#x2F;Unicode koodid maha
+    rex = &#x2F;#U([\dA-Fa-f]{4})&#x2F;g;
+    nmVal = nmVal.replace(rex, String.fromCharCode(&quot;0x\1&quot;));
+    rex = &#x2F;\\u([\dA-Fa-f]{4})&#x2F;g;
+    nmVal = nmVal.replace(rex, String.fromCharCode(&quot;0x\1&quot;));
+
+    &#x2F;&#x2F;ASCII koodid maha
+    rex = &#x2F;#(\d{2})&#x2F;g;
+    nmVal = nmVal.replace(rex, String.fromCharCode(&quot;0x\1&quot;));
+
+    nmVal = nmVal.replace(&#x2F;€&#x2F;g, &quot;E&quot;);
+    nmVal = nmVal.replace(&#x2F;µ&#x2F;g, &quot;m&quot;);
+
+    &#x2F;&#x2F;Ligatuurid kaheks
+    nmVal = nmVal.replace(&#x2F;Æ&#x2F;g, &quot;AE&quot;);
+    nmVal = nmVal.replace(&#x2F;æ&#x2F;g, &quot;ae&quot;);
+
+    nmVal = nmVal.replace(&#x2F;Ĳ&#x2F;g, &quot;IJ&quot;);
+    nmVal = nmVal.replace(&#x2F;ĳ&#x2F;g, &quot;ij&quot;);
+    nmVal = nmVal.replace(&#x2F;Œ&#x2F;g, &quot;OE&quot;);
+    nmVal = nmVal.replace(&#x2F;œ&#x2F;g, &quot;oe&quot;);
+
+    nmVal = nmVal.replace(&#x2F;Ǆ&#x2F;g, &quot;DŽ&quot;);
+    nmVal = nmVal.replace(&#x2F;ǅ&#x2F;g, &quot;Dž&quot;);
+    nmVal = nmVal.replace(&#x2F;ǆ&#x2F;g, &quot;dž&quot;);
+    nmVal = nmVal.replace(&#x2F;Ǉ&#x2F;g, &quot;LJ&quot;);
+    nmVal = nmVal.replace(&#x2F;ǈ&#x2F;g, &quot;Lj&quot;);
+    nmVal = nmVal.replace(&#x2F;ǉ&#x2F;g, &quot;lj&quot;);
+    nmVal = nmVal.replace(&#x2F;Ǌ&#x2F;g, &quot;NJ&quot;);
+    nmVal = nmVal.replace(&#x2F;ǋ&#x2F;g, &quot;Nj&quot;);
+    nmVal = nmVal.replace(&#x2F;ǌ&#x2F;g, &quot;nj&quot;);
+
+    nmVal = nmVal.replace(&#x2F;Ǣ&#x2F;g, &quot;AE&quot;);
+    nmVal = nmVal.replace(&#x2F;ǣ&#x2F;g, &quot;ae&quot;);
+
+    nmVal = nmVal.replace(&#x2F;Ǳ&#x2F;g, &quot;DZ&quot;);
+    nmVal = nmVal.replace(&#x2F;ǲ&#x2F;g, &quot;Dz&quot;);
+    nmVal = nmVal.replace(&#x2F;ǳ&#x2F;g, &quot;dz&quot;);
+
+    nmVal = nmVal.replace(&#x2F;Ǽ&#x2F;g, &quot;AE&quot;);
+    nmVal = nmVal.replace(&#x2F;ǽ&#x2F;g, &quot;ae&quot;);
+
+
+    if (dic_desc == &quot;evs&quot;) {
+        &#x2F;&#x2F;numbrite ees olevate alakriipsude hulka vähendatakse ühe võrra;
+        rex = &#x2F;_(?=\d)&#x2F;;
+        nmVal = nmVal.replace(rex, &quot;&quot;);
+
+        &#x2F;&#x2F;[+] (EVS-is) on ainult ms alguses (valikuline liitsõnapiir);
+        rex = new RegExp(&quot;\\[\\&quot; + msLsp + &quot;\\]&quot;, &quot;g&quot;);
+        nmVal = nmVal.replace(rex, msLsp);
+
+        var vt = &quot;%&quot;; &#x2F;&#x2F;&#x27;EVS-is ms alguses, tähistab viidet;
+        if (nmVal.substr(0, 1) == vt) { &#x2F;&#x2F;EVS
+            i = nmVal.indexOf(&quot;_&quot;);
+            if (i &gt; 0) {
+                &#x2F;&#x2F;EVS viidete korral toimib järjestus ainult kuni alakriipsudeni;
+                nmVal = nmVal.substr(1, i - 1) + vt;
+            } else {
+                nmVal = nmVal.substr(1) + vt;
+            }
+        }
+    }
+
+    if (msLsp.length &gt; 0) {
+        &#x2F;&#x2F;lsp - dest jäetakse viimane ja esimene alles, kuna määravad järjestust (liitsõnapiiridega sõnad on viimased);
+        rex = new RegExp(&quot;(?!^)\\&quot; + msLsp + &quot;(?!($|_))&quot;, &quot;g&quot;);
+        nmVal = nmVal.replace(rex, &quot;&quot;)
+
+        &#x2F;&#x2F;märksõna alguse liitsõnapiir viiakse lõppu (vajadusel _te ette);
+        if (nmVal.substr(0, 1) == msLsp) {
+            i = nmVal.indexOf(&quot;_&quot;);
+            if (i &gt; -1) {
+                nmVal = nmVal.substr(1, i - 1) + msLsp + nmVal.substr(i);
+            } else {
+                nmVal = nmVal.substr(1) + msLsp;
+            }
+        }
+    }
+
+    &#x2F;&#x2F;_ ei võeta maha, kuna määrab järjestust
+    var MSSV_PUNCT = &quot;_&quot; + msLsp;
+    if (dic_desc == &quot;evs&quot;) {
+        MSSV_PUNCT += &quot; &quot;;
+    }
+
+    &#x2F;&#x2F;    if (dic_desc == &quot;od_&quot; || dic_desc == &quot;its&quot;) {
+    &#x2F;&#x2F;        MSSV_PUNCT += &quot;0123456789&quot;;
+    &#x2F;&#x2F;    }
+
+    &#x2F;&#x2F;    &#x2F;&#x2F; transliteration
+    &#x2F;&#x2F;    &#x2F;&#x2F; enam-vähem kõik ladina tähed, akuudid, põikipulgad jne
+    &#x2F;&#x2F;    var tr_from = CAP_LETT_LA + REG_LETT_LA;
+    &#x2F;&#x2F;    var tr_to = BASIC_LA &#x2F;&#x2F;&quot;tõlgib eesti keelde&quot; ... (Š, Ž, ÕÄÖÜ jäävad nendeks samadeks);
+    &#x2F;&#x2F;    for (i = 0; i &lt; tr_from.length; i++) {
+    &#x2F;&#x2F;        nmVal = jsReplace(nmVal, tr_from.charAt(i), tr_to.charAt(i));
+    &#x2F;&#x2F;    }
+
+    &#x2F;&#x2F;    &#x2F;&#x2F; need, mida pole &#x27;CAP_LETT_LA&#x27;-s;
+    &#x2F;&#x2F;    var eriT6lk, eriVaste;
+    &#x2F;&#x2F;    eriT6lk = &quot;Å&quot;; &#x2F;&#x2F;&#x27;ongström;
+    &#x2F;&#x2F;    eriVaste = &quot;A&quot;;
+    &#x2F;&#x2F;    for (i = 0; i &lt; eriT6lk.length; i++) {
+    &#x2F;&#x2F;        nmVal = jsReplace(nmVal, eriT6lk.charAt(i), eriVaste.charAt(i));
+    &#x2F;&#x2F;    }
+
+    for (i = 0; i &lt; msTranslSrc.length; i++) {
+        if (i &lt; msTranslDst.length) {
+            nmVal = nmVal.replace(msTranslSrc.charAt(i), msTranslDst.charAt(i));
+        }
+        else {
+            nmVal = nmVal.replace(msTranslSrc.charAt(i), &quot;&quot;);
+        }
+    }
+
+
+    &#x2F;&#x2F; lubatud = MSSV_PUNCT + CAP_LETT_ET + REG_LETT_ET + CAP_LETT_RU + REG_LETT_RU;
+    var lubatud = MSSV_PUNCT + msAlpha;
+
+    &#x2F;&#x2F;Nüüd kõik liigsed sümbolid maha ...
+    var newVal = &quot;&quot;;
+    for (i = 0; i &lt; nmVal.length; i++) {
+        if (lubatud.indexOf(nmVal.charAt(i)) &gt; -1) {
+            newVal += nmVal.charAt(i);
+        }
+    }
+    if (newVal == &quot;&quot;) &#x2F;&#x2F;&#x27;polnud ühtegi lubatud tähte
+        newVal = &quot;A&quot;; &#x2F;&#x2F;&#x27;et midagi oleks ja oleks kohe ees nähtaval
+    nmVal = newVal;
+
+    &#x2F;&#x2F; sõnaalguline &#x27;h&#x27; ei lähe arvesse, kusjuures ilma &#x27;h&#x27;-ta kuju peab olema eeespool (&#x27;aab&#x27; &#x27;haab&#x27;)
+    &#x2F;&#x2F; peale märkide eemaldamist ...
+    if (dic_desc == &quot;ems&quot;) {
+        while (nmVal.substr(0, 1).toLowerCase() == &quot;h&quot;) {
+            nmVal = nmVal.substr(1);
+        }
+    }
+
+    var psVal;
+    &#x2F;&#x2F;f - fraseologismid
+    if (oMNode.getAttribute(DICPR + &quot;:liik&quot;) == &quot;f&quot;) {
+        &#x2F;&#x2F;@ps - põhisõna;
+        psVal = oMNode.getAttribute(DICPR + &quot;:ps&quot;);
+        if (psVal) {
+            nmVal = psVal + &quot;^&quot; + nmVal;
+        }
+    }
+
+    &#x2F;&#x2F;y - ühendid
+    if (yvOrder &amp;&amp; oMNode.getAttribute(DICPR + &quot;:liik&quot;) == &quot;y&quot;) {
+        &#x2F;&#x2F;@ps - põhisõna;
+        psVal = oMNode.getAttribute(DICPR + &quot;:ps&quot;);
+        if (psVal) {
+            nmVal = psVal + &quot;^^&quot; + nmVal;
+        } else {
+            if (dic_desc == &quot;evs&quot;) {
+                nmVal = nmVal.substr(nmVal.indexOf(&quot; &quot;) + 1) + &quot; &quot; + nmVal.substr(0, nmVal.indexOf(&quot; &quot;));
+            }
+        }
+    }
+
+    &#x2F;&#x2F;hom-nr MSSV lõppu
+    var hnr = oMNode.getAttribute(qn_homnr);
+    if (inclHoms &amp;&amp; hnr) {
+        &#x2F;&#x2F; Tehakse ainult kohanimeraamatu (knr) korral.;
+        if (dic_desc == &quot;knr&quot;) {
+            if (hnr.length == 1) {
+                hnr = &quot;0&quot; + hnr;
+            }
+        }
+        if ((msLsp.length &gt; 0) &amp;&amp; (nmVal.charAt(nmVal.length - 1) == msLsp)) {
+            nmVal = nmVal.substr(0, nmVal.length - 1) + hnr + msLsp;
+        } else {
+            nmVal = nmVal + hnr;
+        }
+    }
+
+    return nmVal;
+
+} &#x2F;&#x2F;getSortVal
+
+
+
+&#x2F;&#x2F; praegu - 21juun12 - ainult art.cgi (IE)
+&#x2F;&#x2F; 
+&#x2F;&#x2F;-----------------------------------------------------------------------------------
+&#x2F;&#x2F;-----------------------------------------------------------------------------------
+&#x2F;&#x2F;-----------------------------------------------------------------------------------
+&#x2F;** 
+* Lisab valmispäringud funktsiooniga LisaKoondParing. Valmispäringud on siin funktsioonis. Ainult art.cgi (IE).
+*
+* @method valmisParingud
+*&#x2F;
+function valmisParingud() {
+
+    &#x2F;&#x2F;&#x27;class = &#x27;mi&#x27;; id = sFullPath; value = &#x27;qname|name|URI|IsElement|kirjeldav&#x27;, name po &quot;&quot;, kirjeldav näitab, mis valitud
+    &#x2F;&#x2F;&#x27;id, val, tekst, submenu
+    &#x2F;&#x2F;&#x27;Toimetamist vajavad keeleplokid
+    &#x2F;&#x2F;par: rowId, rowVal, cellText1, subMenu
+    &#x2F;&#x2F;§h:KL and (not(.&#x2F;&#x2F;h:xp[@xml:lang = &#x27;ru&#x27;]) || .&#x2F;&#x2F;h:xp[@xml:lang = &#x27;ru&#x27; and not(@h:aKL)])
+
+    &#x2F;&#x2F;LisaKoondParing(&quot;q:A&#x2F;.&#x2F;&#x2F;q:avk[%s] || .&#x2F;&#x2F;q:lvk[%s] || .&#x2F;&#x2F;q:qvk[%s] || .&#x2F;&#x2F;q:svk[%s] || .&#x2F;&#x2F;q:evk[%s]&quot;,  &#x2F;&#x2F;                    &quot;q:avk, q:evk, q:lvk, q:qvk, q:svk||&quot; + DICURI + &quot;|0|vormilühendid&quot;,  &#x2F;&#x2F;                    &quot;Vormilühendid (q:avk, q:evk, q:lvk, q:qvk, q:svk)&quot;,  &#x2F;&#x2F;                    &quot;&quot;)
+    &#x2F;&#x2F;atribuutide alusel
+    &#x2F;&#x2F;LisaKoondParing(&quot;q:A&#x2F;.&#x2F;&#x2F;*[@q:liik=&quot;&quot;d&quot;&quot;][%s]&quot;, &quot;@q:liik=&quot;&quot;d&quot;&quot;|||0|tuletised&quot;, &quot;Tuletised (@q:liik=&quot;&quot;d&quot;&quot;)&quot;, &quot;&quot;)
+    &#x2F;&#x2F;LisaKoondParing(&quot;q:A&#x2F;.&#x2F;&#x2F;*[@q:anto=&quot;&quot;ap&quot;&quot;][%s]&quot;, &quot;@q:anto=&quot;&quot;ap&quot;&quot;|||0|anto-paarid&quot;, &quot;Anto-paarid (@q:anto=&quot;&quot;ap&quot;&quot;)&quot;, &quot;&quot;)
+    &#x2F;&#x2F;LisaKoondParing(&quot;q:A&#x2F;.&#x2F;&#x2F;*[@q:soov=&quot;&quot;hv&quot;&quot;][%s]&quot;, &quot;@q:soov=&quot;&quot;hv&quot;&quot;|||0|soov-paarid: {} vasakul&quot;, &quot;Soov-paarid: {} vasakul (@q:soov=&quot;&quot;hv&quot;&quot;)&quot;, &quot;&quot;)
+    &#x2F;&#x2F;LisaKoondParing(&quot;q:A&#x2F;.&#x2F;&#x2F;*[@q:soov=&quot;&quot;ep&quot;&quot;][%s]&quot;, &quot;@q:soov=&quot;&quot;ep&quot;&quot;|||0|soov-paarid: &quot;&quot;parem:&quot;&quot;&quot;, &quot;Soov-paarid: &quot;&quot;parem:&quot;&quot; (@q:soov=&quot;&quot;ep&quot;&quot;)&quot;, &quot;&quot;)
+    &#x2F;&#x2F;LisaKoondParing(&quot;q:A&#x2F;.&#x2F;&#x2F;*[@q:soov=&quot;&quot;np&quot;&quot;][%s]&quot;, &quot;@q:soov=&quot;&quot;np&quot;&quot;|||0|soov-paarid: &quot;&quot;parem kui&quot;&quot;&quot;, &quot;Soov-paarid: &quot;&quot;parem kui&quot;&quot; (@q:soov=&quot;&quot;np&quot;&quot;)&quot;, &quot;&quot;)
+
+    &#x2F;&#x2F;suvaline element
+    &#x2F;&#x2F;LisaKoondParing(&quot;q:A&#x2F;.&#x2F;&#x2F;*[%s]&quot;, &quot;*|||0|ükskõik milline element&quot;, &quot;*&quot;, &quot;&quot;)
+
+    if (asuKoht.indexOf(&quot;&#x2F;__shs_test&#x2F;&quot;) &lt; 0) {
+        if (qryMethodOrg == &quot;MySql&quot;) {
+            &#x2F;&#x2F;            LisaKoondParing(&quot;SELECT ss1.md AS md, msid.ms AS l, msid.ms_att_i AS ms_att_i, msid.ms_att_liik AS ms_att_liik, msid.ms_att_ps AS ms_att_ps, msid.ms_att_tyyp AS ms_att_tyyp, msid.ms_att_mliik AS ms_att_mliik, msid.ms_att_k AS ms_att_k, msid.ms_att_mm AS ms_att_mm, msid.ms_att_st AS ms_att_st, msid.ms_att_vm AS ms_att_vm, msid.ms_att_all AS ms_att_all, msid.ms_att_uus AS ms_att_uus, msid.ms_att_zs AS ms_att_zs, msid.ms_att_u AS ms_att_u, msid.ms_att_em AS ms_att_em, ss1.G AS G, ss1.art AS art, ss1.K AS K, ss1.KL AS KL, ss1.T AS T, ss1.TA AS TA, ss1.TL AS TL, ss1.PT AS PT, ss1.PTA AS PTA, ss1.vol_nr AS vol_nr FROM msid, ss1 WHERE (msid.dic_code = &#x27;ss1&#x27; AND ss1.vol_nr [%köiteTing%] AND ([%msVäli%] IN (SELECT [%msVäli%] FROM msid WHERE msid.dic_code = &#x27;psv&#x27; AND msid.vol_nr &gt; 0 AND [%msVäli%] LIKE [%t])) AND ss1.G = msid.G) ORDER BY ss1.vol_nr, ss1.ms_att_OO&quot;,
+            &#x2F;&#x2F;                &quot;s:m||&quot; + DICURI + &quot;|0|märksõnad, mis sisalduvad PSV-s|MySql&quot;,
+            &#x2F;&#x2F;                &quot;Märksõnad, mis sisalduvad PSV-s    &lt;--    &#x27;tingimus&#x27;&quot;,
+            &#x2F;&#x2F;                BLACK_RIGHT_POINTING_POINTER);
+            LisaKoondParing(&quot;mySqlYhisedMs&quot;,
+                &quot;||&quot; + DICURI + &quot;|0|Ühised märksõnad: &#x60;&quot; + dic_desc + &quot;&#x60;|MySql&quot;,
+                &quot;Ühised märksõnad: &#x60;&quot; + dic_desc + &quot;&#x60; ja ...&quot;,
+                BLACK_RIGHT_POINTING_POINTER);
+        }
+    }
+
+    if (dic_desc == &quot;har&quot;) {
+        LisaKoondParing(&quot;h:A&#x2F;h:KL and (not(.&#x2F;&#x2F;h:xp[@xml:lang = \&quot;[%t]\&quot;]) || .&#x2F;&#x2F;h:xp[@xml:lang = \&quot;[%t]\&quot; and not(@h:aKL)])&quot;,
+            &quot;h:A||&quot; + DICURI + &quot;|0|koostamata keeleplokid&quot;,
+            &quot;Koostamata keeleplokid    &lt;--    &#x27;xml:lang&#x27;&quot;, 
+            &quot;&quot;);
+    } else if (dic_desc == &quot;psv&quot;) {
+        LisaKoondParing(&quot;c:A&#x2F;.&#x2F;&#x2F;c:m[%s] or .&#x2F;&#x2F;c:m&#x2F;@c:ps[%s]&quot;,
+            &quot;c:m||&quot; + DICURI + &quot;|0|märksõna ja tema ühendid|XML&quot;,
+            &quot;Märksõna ja tema ühendid (c:m või c:m&#x2F;@s:ps)    &lt;--    &#x27;märksõna&#x27;&quot;,
+            &quot;&quot;);
+    } else if (dic_desc == &quot;qs_&quot;) {
+        &#x2F;&#x2F;suvaline element
+        LisaKoondParing(&quot;q:A&#x2F;.&#x2F;&#x2F;*[%s]&quot;,
+            &quot;*|||0|ükskõik milline element|XML&quot;,
+            &quot;*&quot;, 
+            &quot;&quot;);
+    } else if (dic_desc == &quot;ss_&quot;) {
+        LisaKoondParing(&quot;s:A&#x2F;.&#x2F;&#x2F;s:m[%s] or .&#x2F;&#x2F;s:m&#x2F;@s:ps[%s]&quot;,
+            &quot;s:m||&quot; + DICURI + &quot;|0|märksõna ja tema ühendid|XML&quot;,
+            &quot;Märksõna ja tema ühendid (s:m või s:m&#x2F;@s:ps)    &lt;--    &#x27;lemma&#x27;&quot;, 
+            &quot;&quot;);
+    } else if (dic_desc == &quot;ss1&quot;) {
+        LisaKoondParing(&quot;s:A&#x2F;.&#x2F;&#x2F;s:m[%s] or .&#x2F;&#x2F;s:m&#x2F;@s:ps[%s]&quot;,
+            &quot;s:m||&quot; + DICURI + &quot;|0|märksõna ja tema ühendid|XML&quot;,
+            &quot;Märksõna ja tema ühendid (s:m või s:m&#x2F;@s:ps)    &lt;--    &#x27;lemma&#x27;&quot;,
+            &quot;&quot;);
+    }
+
+} &#x2F;&#x2F; valmisParingud;
+
+&#x2F;** 
+* Müstiline funktsioon, mida kasutatakse funktsioonis valmisParingud. Ainult art.cgi (IE).
+*
+* @method LisaKoondParing
+* @param {String} rowId 
+* @param {String} rowVal
+* @param {String} cellText1
+* @param {String} subMenu
+*&#x2F;
+function LisaKoondParing(rowId, rowVal, cellText1, subMenu) {
+    var oNewTableRow, oNewRowCell;
+
+    oNewTableRow = oElMenuTable.insertRow();
+    oNewTableRow.className = &quot;mi&quot;;
+    oNewTableRow.id = rowId;
+    oNewTableRow.setAttribute(&quot;value&quot;, rowVal);
+
+    oNewRowCell = oNewTableRow.insertCell();
+    oNewRowCell.colSpan = 4;
+    oNewRowCell.innerText = cellText1;
+
+    oNewRowCell = oNewTableRow.insertCell();
+    oNewRowCell.innerHTML = subMenu;
+} &#x2F;&#x2F;LisaKoondParing
+
+
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

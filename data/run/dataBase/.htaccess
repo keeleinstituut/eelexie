@@ -1,0 +1,4 @@
+AuthType Digest
+AuthName "'dataBase'"
+AuthUserFile /var/www/EELex/shs_users/shs_digest_users.txt
+Require user ALoopmann

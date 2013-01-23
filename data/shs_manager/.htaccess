@@ -1,0 +1,7 @@
+Options -Indexes
+AuthType Digest
+AuthName "'SHS'"
+AuthUserFile /var/www/EELex/shs_users/shs_digest_users.txt
+AuthGroupFile /var/www/EELex/shs_users/shs_groups.txt
+Require group grp_DEV
+

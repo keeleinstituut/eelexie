@@ -1,0 +1,82 @@
+﻿<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8">
+		<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>Valik</title>
+		<script type="text/javascript" src="tools.js"></script>
+
+		<script language=vbscript type="text/vbscript">
+		<!--
+
+Option Explicit
+
+Dim JR, kood, kasutaja
+JR = ChrW(&HE001)
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+Dim inArr
+
+if IsArray(window.dialogArguments) then
+	inArr = window.dialogArguments
+    document.title = inArr(0)
+    kood = inArr(1)
+    kasutaja = inArr(2)
+end if
+
+End Sub 'bodyOnLoad
+
+		
+'-----------------------------------------------------------------------------------
+Function bodyOnKeyUp()
+if (window.event.keyCode = 27) then
+	window.close()
+elseif (window.event.keyCode = 13) then
+	SetReturnV()
+end if
+End Function 'bodyOnKeyUp
+
+
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+Dim sala
+sala = parool.value
+Dim xh
+set xh = exCGISync("../tools.cgi", "exsaCompPw" & JR & "ex_" & JR & kasutaja & JR & kood & JR & sala)
+if (xh.statusText = "OK") then
+	Dim oRespDom, sta
+	set oRespDom = xh.responseXML 'responseXML: TypeName = DomDocument
+	sta = oRespDom.selectSingleNode("rsp/sta").text
+	if (sta = "Success") then
+        spnStatus.innerHTML = "OK"
+        window.returnValue = "OK"
+        window.close()
+    elseif (sta = "Nomatch") then
+        spnStatus.innerHTML = "<font color='red'>Vale parool<font>"
+	end if
+else
+    MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & xh.responseText, vbCritical, "Sisselogimine"
+end if
+End Sub 'SetReturnV
+
+			-->
+		</script>
+	</head>
+	<body  style="background-color:buttonface" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+		<div id="idBody" style="padding:5mm 10mm 5mm 10mm;">
+		    <div id="divSelect">
+				<label for="parool" style="width:3cm;"><b>Parool:</b></label>
+				<input id="parool" name="parool" type="password" style="width:5cm;" />
+		    </div>
+		    <div id="idButtons" align="left">
+			    <input id="btnOk" onclick="SetReturnV()" type="button" value="   OK   ">
+			    <input id="btnCancel" onclick="window.close()" type="button" value=" Loobu ">
+		    </div>
+            <div id="idStatus">
+                <br />
+                <span id="spnStatus"></span>
+            </div>
+		</div>
+	</body>
+</html>

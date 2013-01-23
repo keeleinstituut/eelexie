@@ -1,0 +1,147 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+	<title>Valik loetelust</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+        <link href="dhtmlx/dhtmlxCombo/codebase/dhtmlxcombo.css" rel="STYLESHEET" type="text/css" />
+        <script src="dhtmlx/dhtmlxCombo/codebase/dhtmlxcommon.js" type="text/javascript"></script>
+        <script src="dhtmlx/dhtmlxCombo/codebase/dhtmlxcombo.js" type="text/javascript"></script>
+		<script src="tools.js" type="text/javascript"></script>
+
+        <script type="text/javascript">
+        
+        <!--
+        
+            var dic_desc, tyybiFail, tyybiNimi, algTekst, sAppLang, valikuDom;
+            var dhx_globalImgPath, z, inputValue;
+
+            var iTimerId, msViimane, msPraegu;
+            var msInterval = 750;
+
+            String.prototype.trim = function () {
+                return this.replace(/^\s*/, "").replace(/\s*$/, "");
+            }
+
+            function jsGetTime() {
+                var d = new Date();
+                return d.getTime();
+            }
+
+            function jsBodyOnLoad() {
+                var inArr = window.dialogArguments;
+                dic_desc = inArr[0];
+                tyybiFail = inArr[1];
+                tyybiNimi = inArr[2];
+                algTekst = inArr[3];
+                sAppLang = inArr[4];
+
+                valikuDom = IDD("File", "../" + tyybiFail, false, false, null);
+                valikuDom.setProperty("SelectionLanguage", "XPath");
+                var nss = "xmlns:xs='http://www.w3.org/2001/XMLSchema'";
+                valikuDom.setProperty("SelectionNamespaces", nss);
+
+                dhx_globalImgPath = "dhtmlx/dhtmlxCombo/codebase/imgs/";
+                
+                z = dhtmlXComboFromSelect("oLinkSelect");
+                inputValue = algTekst;
+
+                z.attachEvent("onSelectionChange", function jsValikuMuutus() {
+                    var xsdPath, tekst, xsdNode, kirjeldav;
+                    tekst = z.getComboText();
+                    xsdPath = "xs:simpleType[@name = '" + tyybiNimi + "']//xs:enumeration[@value = '" +
+                    tekst + "']/xs:annotation/xs:documentation[@xml:lang = '" + sAppLang + "']";
+                    xsdNode = valikuDom.documentElement.selectSingleNode(xsdPath);
+                    if (xsdNode != null) {
+                        kirjeldav = xsdNode.text;
+                        valDesc.innerText = kirjeldav;
+                    }
+                    else {
+                        valDesc.innerText = "-";
+                    }
+                });
+
+                z.setComboText(inputValue);
+                jsUuendaCombo();
+
+                z.attachEvent("onKeyPressed", function klahv(keyCode) {
+                    var currTekst = z.getComboText();
+                    if (currTekst != inputValue) {
+                        if (msViimane != null) {
+                            msPraegu = jsGetTime();
+                            if ((msPraegu - msViimane) < msInterval) {
+                                window.clearTimeout(iTimerId);
+                            }
+                        }
+                        iTimerId = window.setTimeout("jsUuendaCombo()", msInterval);
+                        inputValue = currTekst;
+                        msViimane = jsGetTime();
+                    }
+                });
+            }
+
+            function jsUuendaCombo() {
+                var comboTekst, xPath;
+
+                comboTekst = z.getComboText();
+
+                xPath = "xs:simpleType[@name = '" + tyybiNimi + "']//xs:enumeration";
+                if (comboTekst.length > 0) {
+                    xPath += "[starts-with(translate(@value, 'ABCDEFGHIJKLMNOPQRSŠZŽTUVWÕÄÖÜXY', 'abcdefghijklmnopqrsšzžtuvwõäöüxy'), '" + comboTekst.toLowerCase() + "')]";
+                }
+                xPath += "[position() < 11]";
+
+                var enums, enumVal;
+                enums = valikuDom.documentElement.selectNodes(xPath);
+
+                z.clearAll(false);
+
+                var xmlStr, i;
+                xmlStr = "<complete>";
+                for (i=0; i<enums.length; i++) {
+                    enumVal = enums[i].getAttribute("value");
+                    xmlStr = xmlStr + "<option value='" + enumVal + "'>" + enumVal + "</option>";
+                }
+                xmlStr = xmlStr + "</complete>";
+                z.loadXMLString(xmlStr);
+
+            }
+            
+            function jsSetReturnV() {
+                var seldTekst = z.getSelectedText();
+                if (seldTekst.length > 0) {
+                    window.returnValue = seldTekst;
+                    z.destructor();
+                    window.close();
+                }
+            }
+
+        -->
+        
+        </script>
+	</head>
+	<body  style="background-color:buttonface" onload="jsBodyOnLoad()">
+		<div id="oLinkDiv" style="padding: 2mm;">
+		    <table style="width:100%;">
+		        <tr>
+		            <td id="valDesc" style="width:60%;">
+		            </td>
+		            <td id="comboTD" style="width:285;">
+		                <select id="oLinkSelect" name="oLinkSelect" style="width:280;">
+		                </select>
+		            </td>
+		            <td valign="top">
+		                <input id="btnOK" type="button" value="  OK  " onclick="jsSetReturnV()" />
+		            </td>
+		        </tr>
+		    </table>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  id=""
+  type="" sõnastiku tüübi tähis: (""|"Yks"|"Mit"|"Trm"|"Muu") Tühju ja siin näite listis mitte leiduvaid EELexi tööttoas ei näidata
+  er="" Saadaval töö, test või mõlemad versioonid ("W"|"T"|"WT") 
+  lf= Login Fail, kui ei ole märgitud siis kasutatakse üldist ("qs_" puhul 'shs_login.cgi?app_id=qs_' võib ka lisada: app_lang="en")
+  Eestikeelne sõnastiku nimi on kohustuslikk,(<name l="et"></name>)
+  <comment> on majasisene märkus
+  <note> sisuu näidatakse login lehel (kasuta &lt; &gt;)
+    -->
+<LexList><lex id="dmo" type="Mit" er="WT" lf=""><name l="et">Demo sõnastik</name><comment>ex2'ist genereerinud: EKudritski 2012-12-17T17:43:27</comment></lex>
+</LexList>

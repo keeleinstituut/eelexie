@@ -1,0 +1,22 @@
+﻿§='м' and ='ж'
+§='м' and ='с'
+§x:tyyp='19' and x:tyyp='02'
+§='kaitse'
+§='*kaitse*isik*'
+§x:tyyp='19' and x:tyyp='02'
+§='k*s' or ='a*s'
+§>'e'
+§x:tyyp>'05' and x:tyyp<'09'
+§x:tyyp>'05' and x:tyyp<'09' and #x:tyyp=1
+§='*hrl*' and !='*hrl pl*'
+§='*hrl*' and not(='*hrl pl*')
+§x:slyld='s' and x:slyld='interj'
+§not(='м' or ='с' or ='ж')
+§not(x:vgsugu='м' or x:vgsugu='с' or x:vgsugu='ж')
+§x:vgsugu!='м' and x:vgsugu!='с' and x:vgsugu!='ж'
+§!='м' and !='с' and !='ж'
+§#x:autor>1
+§x:ms='a*' and x:hld='*'
+§x:ms='a*' and x:autor='Maimu Liiv'
+§#x:vstrek>1
+§x:akp>'20050330' and x:akp<'20050404'

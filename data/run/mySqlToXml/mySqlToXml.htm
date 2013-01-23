@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>mySqlToXml</title>
+</head>
+<script language="javascript" type="text/javascript">
+    function teeXml() {
+        sdata.action = "mySqlToXml.cgi";
+        sdata.submit();
+        return;
+    }
+</script>
+<body>
+
+<form name="sdata" method="post">
+	<input id="app_id" name="app_id" type="hidden">
+	<input id="app_lang" name="app_lang" type="hidden">
+</form>
+
+<input type="button" value="XML-koopia" onclick="teeXml()" />
+
+</body>
+</html>

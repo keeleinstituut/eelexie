@@ -1,0 +1,3372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>dxf.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/dxf.html">dxf</a></li>
+            
+                <li><a href="..&#x2F;classes/komponendid.html">komponendid</a></li>
+            
+                <li><a href="..&#x2F;classes/kontrollid.html">kontrollid</a></li>
+            
+                <li><a href="..&#x2F;classes/lisad.html">lisad</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_app.html">procs_app</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_edt.html">procs_edt</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_TextContMenu.html">procs_TextContMenu</a></li>
+            
+                <li><a href="..&#x2F;classes/tools.html">tools</a></li>
+            
+                <li><a href="..&#x2F;classes/tools_dx.html">tools_dx</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: dxf.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;**
+* dxf.js
+* Brauserisõltumatu versiooni proc_edit.js ja proc_app.js.
+*
+* @class dxf
+*&#x2F;
+&#x2F;&#x2F;Copyright© 2006 - 2012. Andres Loopmann, EKI, andres.loopmann@eki.ee. All rights reserved.
+&#x2F;**
+* Palju muutujaid.
+* 
+* @property PaljuMuutujaid
+*&#x2F;
+var asuKoht, asukohaInfo;
+var brVer = &quot;Unknown&quot;;
+
+var DICPR, DICURI, dic_desc, dic_vols_count;
+var sCmdId;
+var sQryInfo; &#x2F;&#x2F; päringu lahtiseletatud tekst
+
+var dhxLayout, dhxBar, dhxAccord, artLayout, dhxTalaBar, dhxValaBar, brGrid, sbMain;
+var elemInput;
+
+var talaDoc, talaElement, talaDiv, talaXslXsl1, talaXslXsl2, talaXsl, talaXslProse, talaCss;
+var valaDoc, valaElement, valaElementBgc, seldValaElementBgc = &quot;yellow&quot;, valaDiv, valaXsl, valaXslProse, valaCss;
+
+&#x2F;&#x2F; ühekaupa EELex-ist
+var trueTalaClick = true; &#x2F;&#x2F; et kas klõpsati otse elemendile v hoopis vaates
+var oClicked; &#x2F;&#x2F; klõpsatud HTML element
+var oClickedBorder; &#x2F;&#x2F;tema border
+var nodePath; &#x2F;&#x2F; klõpsatud HTML-i XPath tee
+var clType; &#x2F;&#x2F; klõpsatu tüüp:   &#x2F;&#x2F;et, etx1, etvw jt;
+var clEditable; &#x2F;&#x2F; kas on muudetav
+var scv; &#x2F;&#x2F; klõpsatud HTML-i originaaltekst (span content value)
+var elemlang; &#x2F;&#x2F; klõpsatud HTML-i lang atribuut
+
+var clickedNode; &#x2F;&#x2F; klõpsatud XML asi
+var selectedNode; &#x2F;&#x2F; element, mille küljes &quot;clickedNode&quot; on
+var fatherNode; &#x2F;&#x2F; &quot;selectedNode&quot; parent
+var snQName; &#x2F;&#x2F; &quot;selectedNode&quot; QName
+var artMuudatused; &#x2F;&#x2F; muudatused logide jaoks
+
+var artOrgString; &#x2F;&#x2F; oEditDOM algne xml, fillartframes alguses
+var urArray, urIndex = -1; &#x2F;&#x2F; undo&#x2F;redo puhvrid, puhvrite indeks
+
+var sUsrName; &#x2F;&#x2F; EELex kasutajanimi
+var srTegija; &#x2F;&#x2F; kas on toimetaja v ainult vaataja
+var sAppLang; &#x2F;&#x2F; kasutajaliidese keel
+var dest_language = &#x27;&#x27;; &#x2F;&#x2F; vastekeele väärtused
+var keelteValik; &#x2F;&#x2F; @xml:lang väärtusteks
+var sDicName; &#x2F;&#x2F; sõnaraamatu nimetus
+var qryMethod; &#x2F;&#x2F; XML v MySql
+var appDesc = &#x27;&#x27;; &#x2F;&#x2F; EXSA v EELex vahelise erinevuse märkimiseks. EELex-is puudub
+var eeLexAdmin; &#x2F;&#x2F; arendajad
+
+var cee; &#x2F;&#x2F; uus, editeeritav &lt;select&gt; v &lt;textarea&gt;
+
+&#x2F;&#x2F; XML värk
+var yldStruDom; &#x2F;&#x2F; genereerimisel saadud skeemi XML-kujuline esitus
+var oEditDOM; &#x2F;&#x2F; Dom, millesse sisestatakse artikkel, ja milles kogu töö toimub, juurikaks &lt;x:sr&gt;
+var oEditDOMRoot; &#x2F;&#x2F; sõnastiku juurikas &lt;sr&gt;
+
+&#x2F;&#x2F; otsingul
+var default_query, first_default;
+var qn_sort_attr, qn_homnr, qn_guid, qn_toimetaja, qn_tkp, qn_autor, qn_akp, qn_art;
+var neElems = &quot;&quot;, neAttribs = &quot;&quot;, fakult = &quot;&quot;, msLsp = &quot;&quot;, mySqlDataVer = &quot;&quot;;
+
+&#x2F;&#x2F; märksõna keel (@xml:lang), tähestik
+var msLang = &#x27;&#x27;, msAlpha = &#x27;&#x27;, msTranslSrc = &#x27;&#x27;, msTranslDst = &#x27;&#x27;;
+
+&#x2F;&#x2F; antud sõnastiku toimetajad
+var srToimetajad = &#x27;&#x27;;
+
+&#x2F;&#x2F; päringu tulemustest
+var sFromVolume, dtOpStart;
+
+&#x2F;&#x2F; plokid, milledel on aT, aTA atribuudid (automaatse salvestusinfo jaoks)
+var aTTAPlokid = &#x27;&#x27;;
+
+var sOrgMarkSona;
+var sOrgHomnr;
+
+var sDeldVolId, sAllVolId;
+
+var bgColor = &#x27;AntiqueWhite&#x27;; &#x2F;&#x2F; gold, #D0E3EF, AntiqueWhite, khaki, WhiteSmoke
+var editFont, editFontSize, viewFont, viewFontSize;
+
+
+&#x2F;**
+* Käivitatakse EELexi laadides. Teeb kõik algseadistused. Näiteks ka kiirklahvid.
+*
+* @method bodyOnLoad
+*&#x2F;
+function bodyOnLoad() {
+
+    if (window.ActiveXObject) {
+        return;
+    }
+
+    var fullAddress = window.location.href;
+
+    asuKoht = fullAddress.substr(0, fullAddress.lastIndexOf(&quot;&#x2F;&quot;) + 1); &#x2F;&#x2F; koos &#x27;&#x2F;&#x27;
+    if (asuKoht.indexOf(&quot;&#x2F;__shs_test&#x2F;&quot;) &lt; 0) {
+        asukohaInfo = &quot;&quot;;
+    }
+    else {
+        asukohaInfo = &quot; - T E S T B A A S&quot;;
+        bgColor = &quot;#D0E3EF&quot;;
+    }
+    brVer = getBrowserData();
+
+
+    var spn_SrvParms = document.getElementById(&quot;spn_SrvParms&quot;);
+    var tarr = spn_SrvParms.textContent.split(&quot;|&quot;);
+    sUsrName = tarr[0];
+    srTegija = jsStringToBoolean(tarr[1]);
+    dic_desc = tarr[2];
+    sAppLang = tarr[3];
+    sDicName = tarr[4]; &#x2F;&#x2F; Eesti keele põhisõnavara sõnastik
+    qryMethod = tarr[5];
+
+    var oConfigDOM, cfgElem, ix;
+
+    oConfigDOM = IDD(&quot;File&quot;, &quot;shsconfig_&quot; + dic_desc + &quot;.xml&quot;, false, false, null);
+    if (!oConfigDOM) {
+        alert(&quot;Puudub sõnastiku konf. fail &#x27;shsconfig_&quot; + dic_desc + &quot;.xml&#x27;!&quot;);
+        return;
+    }
+    try {
+        DICPR = oConfigDOM.documentElement.getElementsByTagName(&quot;dicpr&quot;)[0].textContent;
+        DICURI = oConfigDOM.documentElement.getElementsByTagName(&quot;dicuri&quot;)[0].textContent;
+        dic_vols_count = getXmlNodesSnapshot(oConfigDOM.documentElement, &quot;vols&#x2F;vol&quot;).snapshotLength;
+        default_query = oConfigDOM.documentElement.getElementsByTagName(&quot;default_query&quot;)[0].textContent;
+        first_default = oConfigDOM.documentElement.getElementsByTagName(&quot;first_default&quot;)[0].textContent;
+        qn_sort_attr = oConfigDOM.documentElement.getElementsByTagName(&quot;qn_sort_attr&quot;)[0].textContent;
+    }
+    catch (e) {
+        alert(e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;);
+        return;
+    }
+    cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;appDesc&quot;)[0]; &#x2F;&#x2F;&#x27;EXSA, EELex;
+    if (cfgElem) {
+        appDesc = cfgElem.textContent;
+    }
+
+    msAlpha = &quot;AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsŠšZzŽžTtUuVvWwÕõÄäÖöÜüXxYy&quot;;
+    cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;msLang&quot;)[0];
+    if (cfgElem) {
+        msLang = cfgElem.textContent;
+    }
+    if (msLang) {
+        cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;msAlpha&quot;)[0];
+        if (cfgElem) {
+            msAlpha = cfgElem.textContent;
+        }
+        else {
+            alert(&quot;Märksõna keel olemas (&#x27;&quot; + msLang + &quot;&#x27;), kuid puudub tähestik!&quot;);
+            return;
+        }
+        cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;msTranslSrc&quot;)[0];
+        if (cfgElem)
+            msTranslSrc = cfgElem.textContent;
+        cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;msTranslDst&quot;)[0];
+        if (cfgElem)
+            msTranslDst = cfgElem.textContent;
+    }
+
+    qn_ms = default_query.substr(default_query.lastIndexOf(&quot;&#x2F;&quot;) + 1);
+    qn_homnr = DICPR + &quot;:i&quot;;
+    qn_guid = DICPR + &quot;:G&quot;;
+    qn_toimetaja = DICPR + &quot;:T&quot;;
+    qn_tkp = DICPR + &quot;:TA&quot;;
+    qn_autor = DICPR + &quot;:K&quot;;
+    qn_akp = DICPR + &quot;:KA&quot;;
+    qn_art = DICPR + &quot;:A&quot;;
+
+
+    cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;neelems&quot;)[0];
+    if (cfgElem) {
+        neElems = cfgElem.textContent;
+    }
+    cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;neattribs&quot;)[0];
+    if (cfgElem) {
+        neAttribs = cfgElem.textContent;
+    }
+    cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;fakult&quot;)[0];
+    if (cfgElem) {
+        fakult = cfgElem.textContent;
+    }
+    cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;msLsp&quot;)[0];
+    if (cfgElem) {
+        msLsp = cfgElem.textContent;
+    }
+    cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;mySqlDataVer&quot;)[0];
+    if (cfgElem) {
+        mySqlDataVer = cfgElem.textContent;
+    }
+    cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;destLang&quot;)[0];
+    if (cfgElem) {
+        dest_language = cfgElem.textContent;
+        if (dest_language == &quot;et&quot;) { &#x2F;&#x2F;&#x27;nt Pärtel Lippus: Inglise-eesti foneetika terminite sõnastik
+            if (sAppLang == &quot;et&quot;) {
+                dest_language = &quot;&quot;;
+            }
+        }
+    }
+
+    &#x2F;&#x2F; fondid
+    editFont = getXmlSingleNodeValue(oConfigDOM.documentElement, &quot;colorsFonts&#x2F;editArea&#x2F;editFont&quot;);
+    editFontSize = getXmlSingleNodeValue(oConfigDOM.documentElement, &quot;colorsFonts&#x2F;editArea&#x2F;editFontSize&quot;);
+    viewFont = getXmlSingleNodeValue(oConfigDOM.documentElement, &quot;colorsFonts&#x2F;viewArea&#x2F;viewFont&quot;);
+    viewFontSize = getXmlSingleNodeValue(oConfigDOM.documentElement, &quot;colorsFonts&#x2F;viewArea&#x2F;viewFontSize&quot;);
+
+
+    &#x2F;&#x2F; tõlkekeeled, @xml:lang
+    keelteValik = new Array();
+    updKeelteValik(dic_desc + &quot;&#x2F;&quot; + dic_desc + &quot;_tyybid.xsd&quot;);
+
+
+    var eelexConf = IDD(&quot;File&quot;, &quot;shsConfig.xml&quot;, false, false, null);
+    if (!eelexConf) {
+        alert(&quot;Puudub EELex konf. fail &#x27;shsConfig.xml&#x27;!&quot;);
+        return;
+    }
+    try {
+        eeLexAdmin = eelexConf.documentElement.getElementsByTagName(&quot;eeLexAdmin&quot;)[0].textContent;
+    }
+    catch (e) {
+        alert(e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;);
+        return;
+    }
+
+    var userListDom = exCGISync(&quot;getusers.cgi&quot;, &quot;id&quot; + PD + dic_desc);
+    srToimetajad = userListDom.responseText;
+
+
+
+    talaXslXsl1 = IDD(&quot;File&quot;, &quot;xsl&#x2F;xsl1.xsl&quot;, false, false, null);
+
+    talaXslXsl2 = IDD(&quot;File&quot;, &quot;xsl&#x2F;gendXsl2_&quot; + dic_desc + &quot;.xsl&quot;, false, false, null);
+    if (!talaXslXsl2) {
+        alert(&quot;Skeemi ja toimetamisala genereerimine tegemata!&quot;);
+        return;
+    }
+    var talaXslNode = talaXslXsl2.documentElement.getElementsByTagNameNS(NS_XSL, &quot;variable&quot;)[1]; &#x2F;&#x2F; appLang
+    if (talaXslNode) {
+        if (talaXslNode.getAttribute(&quot;name&quot;) == &quot;appLang&quot;) {
+            talaXslNode.textContent = sAppLang;
+        }
+    }
+    talaXslNode = talaXslXsl2.documentElement.getElementsByTagNameNS(NS_XSL, &quot;variable&quot;)[9]; &#x2F;&#x2F; tblBrdCol
+    if (talaXslNode) {
+        if (talaXslNode.getAttribute(&quot;name&quot;) == &quot;tblBrdCol&quot;) {
+            talaXslNode.textContent = &quot;red&quot;;
+        }
+    }
+    talaXslNode = talaXslXsl2.documentElement.getElementsByTagNameNS(NS_XSL, &quot;variable&quot;)[10]; &#x2F;&#x2F; addGroupPicture
+    if (talaXslNode) {
+        if (talaXslNode.getAttribute(&quot;name&quot;) == &quot;addGroupPicture&quot;) {
+            &#x2F;&#x2F;            talaXslNode.textContent = &quot;graphics&#x2F;CopyHS.png&quot;;
+        }
+    }
+    talaXslNode = talaXslXsl2.documentElement.getElementsByTagNameNS(NS_XSL, &quot;variable&quot;)[11]; &#x2F;&#x2F; delGroupPicture
+    if (talaXslNode) {
+        if (talaXslNode.getAttribute(&quot;name&quot;) == &quot;delGroupPicture&quot;) {
+            &#x2F;&#x2F;            talaXslNode.textContent = &quot;graphics&#x2F;Trash.ico&quot;;
+        }
+    }
+    talaXslNode = talaXslXsl2.documentElement.getElementsByTagNameNS(NS_XSL, &quot;variable&quot;)[12]; &#x2F;&#x2F; createGroupPicture
+    if (talaXslNode) {
+        if (talaXslNode.getAttribute(&quot;name&quot;) == &quot;createGroupPicture&quot;) {
+            &#x2F;&#x2F;            talaXslNode.textContent = &quot;graphics&#x2F;Add.ico&quot;;
+        }
+    }
+    talaXslNode = talaXslXsl2.documentElement.getElementsByTagNameNS(NS_XSL, &quot;variable&quot;)[13]; &#x2F;&#x2F; addLisadPicture
+    if (talaXslNode) {
+        if (talaXslNode.getAttribute(&quot;name&quot;) == &quot;addLisadPicture&quot;) {
+            &#x2F;&#x2F;            talaXslNode.textContent = &quot;graphics&#x2F;Add.ico&quot;;
+        }
+    }
+    talaXslNode = talaXslXsl2.documentElement.getElementsByTagNameNS(NS_XSL, &quot;variable&quot;)[14]; &#x2F;&#x2F; delLisadPicture
+    if (talaXslNode) {
+        if (talaXslNode.getAttribute(&quot;name&quot;) == &quot;delLisadPicture&quot;) {
+            &#x2F;&#x2F;            talaXslNode.textContent = &quot;graphics&#x2F;Delete.ico&quot;;
+        }
+    }
+
+
+    valaXsl = IDD(&quot;File&quot;, &quot;xsl&#x2F;gendView_&quot; + dic_desc + &quot;.xsl&quot;, false, false, null);
+    if (!valaXsl) {
+        alert(&quot;Vaate genereerimine tegemata!&quot;);
+        return;
+    }
+    &#x2F;&#x2F;piltide kontekst, pildiJuurikas
+    var valaXslNode = valaXsl.documentElement.getElementsByTagNameNS(NS_XSL, &quot;variable&quot;)[0]; &#x2F;&#x2F; pildiJuurikas
+    if (valaXslNode) {
+        if (valaXslNode.getAttribute(&quot;name&quot;) == &quot;pildiJuurikas&quot;) {
+            valaXslNode.textContent = asuKoht + &quot;__sr&#x2F;&quot;;
+        }
+    }
+    &#x2F;&#x2F; kui ei ole MSIE, siis ka mitte value-of select=&quot;&quot; disable-output-escaping=&quot;yes&quot;
+    valaXslNode = valaXsl.documentElement.getElementsByTagNameNS(NS_XSL, &quot;variable&quot;)[3]; &#x2F;&#x2F; msie
+    if (valaXslNode) {
+        if (valaXslNode.getAttribute(&quot;name&quot;) == &quot;msie&quot;) {
+            valaXslNode.textContent = &quot;0&quot;;
+        }
+    }
+
+
+    yldStruDom = IDD(&quot;File&quot;, &quot;xml&#x2F;&quot; + dic_desc + &quot;&#x2F;stru_&quot; + dic_desc + &quot;.xml&quot;, false, false, null);
+    if (!yldStruDom) {
+        alert(&quot;Skeemi ja toimetamisala genereerimine tegemata!&quot;);
+        return;
+    }
+    &#x2F;&#x2F; The normalize method joins adjacent text nodes into a single text node and removes empty text nodes. 
+    &#x2F;&#x2F; Note: in Internet Explorer, the normalize method does not remove empty text nodes.
+    yldStruDom.normalize();
+
+
+    if (yldStruDom.documentElement.getAttribute(&quot;pr_sd:ver&quot;) == &quot;2.0&quot;) {
+        oEditDOM = IDD(&quot;&quot;, &quot;&quot;, false, false, null);
+        oEditDOMRoot = oEditDOM.appendChild(oEditDOM.createElementNS(DICURI, yldStruDom.documentElement.nodeName));
+        var xmlLang = yldStruDom.documentElement.getAttribute(&quot;xml:lang&quot;);
+        if (xmlLang) {
+            oEditDOMRoot.setAttribute(&quot;xml:lang&quot;, xmlLang);
+        }
+    } else {
+        alert(&quot;Skeemi ja toimetamisala genereerimine tegemata!&quot;);
+        return;
+    }
+
+    talaXsl = talaXslXsl2;
+    &#x2F;&#x2F;    if (document.implementation &amp;&amp; document.implementation.createDocument) {
+    talaXslProse = new XSLTProcessor();
+    if (talaXslProse) {
+        talaXslProse.importStylesheet(talaXsl);
+    } else {
+        alert(&quot;\&quot;new XSLTProcessor()\&quot; nurjus (&#x27;tala&#x27;)!&quot;);
+        return;
+    }
+
+    valaXslProse = new XSLTProcessor();
+    if (valaXslProse) {
+        valaXslProse.importStylesheet(valaXsl);
+    } else {
+        alert(&quot;\&quot;new XSLTProcessor()\&quot; nurjus (&#x27;vala&#x27;)!&quot;);
+        return;
+    }
+
+
+
+    &#x2F;&#x2F;    window.dhx_globalImgPath = &quot;html&#x2F;dhtmlx&#x2F;dhtmlxCombo&#x2F;codebase&#x2F;imgs&#x2F;&quot;;
+
+    dhxLayout = new dhtmlXLayoutObject(&quot;parentId&quot;, &quot;1C&quot;, &quot;dhx_skyblue&quot;);
+    dhxLayout.cells(&quot;a&quot;).hideHeader();
+    &#x2F;&#x2F;    dhxLayout.cont.obj._offsetTop = 10;
+    &#x2F;&#x2F;    dhxLayout.cont.obj._offsetHeight = -60;
+
+
+    dhxBar = dhxLayout.cells(&quot;a&quot;).attachToolbar();
+    dhxBar.setSkin(&quot;dhx_skyblue&quot;);
+    dhxBar.setIconsPath(&quot;graphics&#x2F;&quot;);
+
+    var barNr = 0;
+    dhxBar.addText(&quot;dhxBarMenu&quot;, ++barNr, &quot;&lt;div id=&#x27;srMenu&#x27;&gt;&lt;&#x2F;div&gt;&quot;);
+    var srMenuObj = document.getElementById(&quot;srMenu&quot;);
+    var srMenu = new dhtmlXMenuObject(srMenuObj, &quot;dhx_skyblue&quot;);
+    srMenu.setIconsPath(&quot;graphics&#x2F;&quot;);
+    var menuXml =
+        &quot;&lt;menu&gt;&quot; +
+          &quot;&lt;item id=&#x27;mnuSr&#x27; text=&#x27;Sõnastik&#x27; img=&#x27;hr_xp_shell32_16_256.ico&#x27;&gt;&quot; +
+              &quot;&lt;item id=&#x27;idViewLogs&#x27; text=&#x27;Toimetamise logi&#x27; img=&#x27;History.png&#x27;&#x2F;&gt;&quot; +
+              &quot;&lt;item id=&#x27;idSrvXmlValidate&#x27; text=&#x27;Köite valideerimine&#x27; img=&#x27;CheckGrammarHS.png&#x27;&#x2F;&gt;&quot; +
+          &quot;&lt;&#x2F;item&gt;&quot; +
+        &quot;&lt;&#x2F;menu&gt;&quot;;
+    srMenu.loadXMLString(menuXml);
+    srMenu.attachEvent(&quot;onClick&quot;, function (id, zoneId, casState) {
+        srMenuOnClick(id);
+    });
+
+    &#x2F;&#x2F;    dhxBar.addButton(id, pos, text, imgEnabled, imgDisabled);
+    dhxBar.addButton(&quot;btnValiArtikkel&quot;, ++barNr, null, &quot;TableHS.png&quot;, null); &#x2F;&#x2F; EditTableHS
+    dhxBar.setItemToolTip(&quot;btnValiArtikkel&quot;, &quot;Too esile otsingutulemuste loend&quot;);
+
+    dhxBar.addSeparator(&quot;seprPealeLoendit&quot;, ++barNr);
+
+    &#x2F;&#x2F;    dhxBar.addButton(id, pos, text, imgEnabled, imgDisabled);
+    dhxBar.addButton(&quot;btnLisaArtikkel&quot;, ++barNr, null, &quot;NewWindow.png&quot;, null);
+    dhxBar.setItemToolTip(&quot;btnLisaArtikkel&quot;, &quot;Lisa uus artikkel&quot;);
+
+    dhxBar.addSeparator(&quot;seprPealeLisamist&quot;, ++barNr);
+
+    sDeldVolId = dic_desc + &quot;0&quot;;
+    sAllVolId = dic_desc + &quot;All&quot;;
+
+    cfgElem = oConfigDOM.documentElement.getElementsByTagName(&quot;vols&quot;)[0];
+    if (cfgElem) {
+        var vols = cfgElem.getElementsByTagName(&quot;vol&quot;);
+        var opts = new Array();
+        var optArr;
+        for (ix = 0; ix &lt; vols.length; ix++) {
+            var vNr = vols[ix].getAttribute(&quot;nr&quot;);
+            var vTekst = vols[ix].textContent;
+            &#x2F;&#x2F;id - id of the option;
+            &#x2F;&#x2F; type - obj|sep, whether this option is an object or a separator;
+            &#x2F;&#x2F; text - label of the option (only for objects);
+            &#x2F;&#x2F; img - path to the option image (only for objects).
+            optArr = [dic_desc + vNr, &#x27;obj&#x27;, vNr + &#x27;. köide &#x27; + vTekst, null];
+            opts.push(optArr);
+        }
+        optArr = [&#x27;sep01&#x27;, &#x27;sep&#x27;, &#x27;&#x27;, &#x27;&#x27;];
+        opts.push(optArr);
+        optArr = [sAllVolId, &#x27;obj&#x27;, &#x27;Kõik köited&#x27;, null];
+        opts.push(optArr);
+        optArr = [sDeldVolId, &#x27;obj&#x27;, &#x27;Kustutatud&#x27;, null];
+        opts.push(optArr);
+    }
+    else {
+        return;
+    }
+
+    &#x2F;&#x2F;    toolbar.addButtonSelect(id, pos, text, opts, imgEnabled, imgDisabled, renderSelect, openAll, maxOpen);
+    dhxBar.addButtonSelect(&quot;volSelect&quot;, ++barNr, &quot;Vali köide&quot;, opts, null, null, true, true);
+    dhxBar.setWidth(&quot;volSelect&quot;, 100);
+
+    setButtonSelectId(&quot;volSelect&quot;, dic_desc + &quot;1&quot;);
+
+    if (qryMethod == &quot;MySql&quot; &amp;&amp; dic_vols_count &gt; 1) {
+        setButtonSelectId(&quot;volSelect&quot;, dic_desc + &quot;All&quot;);
+    }
+
+    opts = [[&#x27;elm_&#x27; + qn_ms, &#x27;obj&#x27;, &#x27;märksõna&#x27;, null]];
+    dhxBar.addButtonSelect(&quot;elemSelect&quot;, ++barNr, &quot;Element&quot;, opts, null, null, true, true);
+    setButtonSelectId(&quot;elemSelect&quot;, &#x27;elm_&#x27; + qn_ms);
+    dhxBar.setWidth(&quot;elemSelect&quot;, 200);
+
+    &#x2F;&#x2F;    toolbar.addInput(id, pos, value, width);
+    dhxBar.addInput(&quot;txtElemOtsitav&quot;, ++barNr, &quot;&quot;, 400);
+
+    &#x2F;&#x2F;    dhxBar.addButton(id, pos, text, imgEnabled, imgDisabled);
+    dhxBar.addButton(&quot;btnSrch&quot;, ++barNr, &quot; Otsi &quot;, null, null);
+    dhxBar.setItemToolTip(&quot;btnSrch&quot;, &quot;Käivita otsing&quot;);
+
+    dhxBar.attachEvent(&quot;onClick&quot;, function (id) {
+        toolBarOnClick(id);
+    });
+    dhxBar.attachEvent(&quot;onEnter&quot;, function (id, value) {
+        otsing(qryMethod);
+    });
+
+
+    var inputs = dhxBar.cont.getElementsByTagName(&quot;input&quot;); &#x2F;&#x2F; &#x27;DOMelem_input&#x27; on combo korral nt
+    for (ix = 0; ix &lt; inputs.length; ix++) {
+        var thisInput = inputs[ix];
+        if (thisInput.getAttribute(&quot;type&quot;) == &quot;text&quot; &amp;&amp; thisInput.tagName == &quot;INPUT&quot;) {
+            elemInput = thisInput;
+            break;
+        }
+    }
+
+
+    dhxAccord = dhxLayout.cells(&quot;a&quot;).attachAccordion();
+    &#x2F;&#x2F;    dhxAccord.setIconsPath(&quot;html&#x2F;dhtmlx&#x2F;dhtmlxAccordion&#x2F;codebase&#x2F;imgs&#x2F;dhxaccord_dhx_skyblue&quot;);
+
+    dhxAccord.addItem(&quot;artikkel&quot;, &quot;&quot;);
+    dhxAccord.cells(&quot;artikkel&quot;).setText(&quot;Artikkel &lt;span id=&#x27;artikliInfo&#x27; style=&#x27;font-weight:normal;&#x27;&gt;[&lt;span id=&#x27;artMsTekst&#x27;&gt;&lt;&#x2F;span&gt;&lt;span id=&#x27;artMsMuudetud&#x27; style=&#x27;color:red;&#x27;&gt;&lt;&#x2F;span&gt;] - &lt;span id=&#x27;spnNodeXPath&#x27;&gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&quot;);
+
+
+    artLayout = dhxAccord.cells(&quot;artikkel&quot;).attachLayout(&quot;2U&quot;);
+    artLayout.cells(&quot;a&quot;).hideHeader();
+    artLayout.cells(&quot;b&quot;).hideHeader();
+
+    var talaBarWidth = artLayout.cells(&quot;a&quot;).getWidth();
+    dhxTalaBar = artLayout.cells(&quot;a&quot;).attachToolbar();
+    dhxTalaBar.setIconsPath(&quot;graphics&#x2F;&quot;);
+
+    barNr = 0;
+    dhxTalaBar.addText(&quot;dhxTalaBarText&quot;, ++barNr, &quot;&lt;u&gt;Toimetamisala&lt;&#x2F;u&gt;&quot;);
+
+    dhxTalaBar.addButton(&quot;btnViewXsl1&quot;, ++barNr, &quot;&lt;span style=&#x27;font-weight:bold;&#x27;&gt; XML &lt;&#x2F;span&gt;&quot;, null, null);
+    &#x2F;&#x2F;    &#x2F;&#x2F;    toolbar.addButtonTwoState(id, pos, text, imgEnabled, imgDisabled);
+    &#x2F;&#x2F;    dhxTalaBar.addButtonTwoState(&quot;btnViewXsl1&quot;, ++barNr, &quot;&lt;span style=&#x27;font-weight:bold;&#x27;&gt; XML &lt;&#x2F;span&gt;&quot;, null, null);
+    &#x2F;&#x2F;    dhxTalaBar.setItemState(&quot;btnViewXsl1&quot;, false); &#x2F;&#x2F; state = true&#x2F;false
+
+    dhxTalaBar.addButton(&quot;btnViewXsl2&quot;, ++barNr, &quot;&lt;span style=&#x27;font-weight:bold;&#x27;&gt; Tabel &lt;&#x2F;span&gt;&quot;, null, null);
+    &#x2F;&#x2F;    &#x2F;&#x2F;    toolbar.addButtonTwoState(id, pos, text, imgEnabled, imgDisabled);
+    &#x2F;&#x2F;    dhxTalaBar.addButtonTwoState(&quot;btnViewXsl2&quot;, ++barNr, &quot;&lt;span style=&#x27;font-weight:bold;&#x27;&gt; Tabel &lt;&#x2F;span&gt;&quot;, null, null);
+    &#x2F;&#x2F;    dhxTalaBar.setItemState(&quot;btnViewXsl2&quot;, true); &#x2F;&#x2F; state = true&#x2F;false
+
+    dhxTalaBar.addSeparator(&quot;seprPealeToimetamisalaVaateid&quot;, ++barNr);
+
+
+    dhxTalaBar.addButton(&quot;btnReadFirst&quot;, ++barNr, null, &quot;DataContainer_MoveFirstHS.png&quot;, null);
+    dhxTalaBar.setItemToolTip(&quot;btnReadFirst&quot;, &quot;Esimene artikkel&quot;);
+    dhxTalaBar.addButton(&quot;btnReadPrev&quot;, ++barNr, null, &quot;DataContainer_MovePreviousHS.png&quot;, null);
+    dhxTalaBar.setItemToolTip(&quot;btnReadPrev&quot;, &quot;Eelmine artikkel&quot;);
+    dhxTalaBar.addButton(&quot;btnReadNext&quot;, ++barNr, null, &quot;DataContainer_MoveNextHS.png&quot;, null);
+    dhxTalaBar.setItemToolTip(&quot;btnReadNext&quot;, &quot;Järgmine artikkel&quot;);
+    dhxTalaBar.addButton(&quot;btnReadLast&quot;, ++barNr, null, &quot;DataContainer_MoveLastHS.png&quot;, null);
+    dhxTalaBar.setItemToolTip(&quot;btnReadLast&quot;, &quot;Viimane artikkel&quot;);
+
+    dhxTalaBar.addSeparator(&quot;seprPealeNavigeerimist&quot;, ++barNr);
+
+
+    dhxTalaBar.addText(&quot;dhxTalaBarDummy&quot;, ++barNr, &quot; &quot;);
+    dhxTalaBar.setWidth(&quot;dhxTalaBarDummy&quot;, talaBarWidth - (28 * 16));
+
+    dhxTalaBar.addSeparator(&quot;seprPealeDummyt&quot;, ++barNr);
+
+    &#x2F;&#x2F;    dhxTalaBar.addButton(&quot;btnSave&quot;, ++barNr, null, &quot;Save.ico&quot;, &quot;Save_disabled.ico&quot;);
+    dhxTalaBar.addButton(&quot;btnSave&quot;, ++barNr, null, &quot;saveHS.png&quot;, &quot;saveHS_Gray.png&quot;);
+    dhxTalaBar.setItemToolTip(&quot;btnSave&quot;, &quot;Salvesta artikkel&quot;);
+    &#x2F;&#x2F; võib ju olla alles sisestatud artikkel oma tühjade kastidega
+    &#x2F;&#x2F;    dhxTalaBar.disableItem(&quot;btnSave&quot;);
+
+    &#x2F;&#x2F;    dhxTalaBar.addButton(&quot;btnDelete&quot;, ++barNr, null, &quot;delart_16-16.ico&quot;);
+    &#x2F;&#x2F;    dhxTalaBar.addButton(&quot;btnDelete&quot;, ++barNr, null, &quot;DeleteHS.png&quot;, &quot;DeleteHS.png&quot;);
+    dhxTalaBar.addButton(&quot;btnDelete&quot;, ++barNr, null, &quot;delete.png&quot;, &quot;DeleteHS.png&quot;);
+    dhxTalaBar.setItemToolTip(&quot;btnDelete&quot;, &quot;Kustuta artikkel&quot;);
+
+    dhxTalaBar.addSeparator(&quot;seprPealeKustutamist&quot;, ++barNr);
+
+
+    dhxTalaBar.addText(&quot;dhxTalaBarUndoRedoInfo&quot;, ++barNr, &quot;(&lt;span id=&#x27;currBuffNr&#x27; title=&#x27;Puhvri number&#x27;&gt; &lt;&#x2F;span&gt;&#x2F;&lt;span id=&#x27;buffCount&#x27; title=&#x27;Puhvrite arv&#x27;&gt; &lt;&#x2F;span&gt;)&quot;);
+    dhxTalaBar.addButton(&quot;btnUndo&quot;, ++barNr, null, &quot;Edit_UndoHS.png&quot;, &quot;Edit_UndoHS_Gray.png&quot;);
+    dhxTalaBar.setItemToolTip(&quot;btnUndo&quot;, &quot;Tühista (\&quot;Undo\&quot;)&quot;);
+    dhxTalaBar.disableItem(&quot;btnUndo&quot;);
+    dhxTalaBar.addButton(&quot;btnRedo&quot;, ++barNr, null, &quot;Edit_RedoHS.png&quot;, &quot;Edit_RedoHS_Gray.png&quot;);
+    dhxTalaBar.setItemToolTip(&quot;btnRedo&quot;, &quot;Taasta (\&quot;Redo\&quot;)&quot;);
+    dhxTalaBar.disableItem(&quot;btnRedo&quot;);
+
+    dhxTalaBar.attachEvent(&quot;onClick&quot;, function (id) {
+        dhxTalaBarOnClick(id);
+    });
+
+    var tala = artLayout.cells(&quot;a&quot;).attachURL(&quot;tala.htm&quot;);
+
+
+    dhxValaBar = artLayout.cells(&quot;b&quot;).attachToolbar();
+    dhxValaBar.setIconsPath(&quot;graphics&#x2F;&quot;);
+
+    barNr = 0;
+    dhxValaBar.addText(&quot;dhxValaBarText&quot;, ++barNr, &quot;&lt;u&gt;Vaade&lt;&#x2F;u&gt;&quot;);
+
+    var vala = artLayout.cells(&quot;b&quot;).attachURL(&quot;vala.htm&quot;);
+
+
+    dhxAccord.addItem(&quot;loend&quot;, &quot;Loend&quot;);
+    brGrid = dhxAccord.cells(&quot;loend&quot;).attachGrid();
+    brGrid.setImagePath(&quot;html&#x2F;dhtmlx&#x2F;dhtmlxGrid&#x2F;codebase&#x2F;imgs&#x2F;&quot;);
+    brGrid.setHeader(&quot;Jnr,Kd.,Märksõna(d),Leid,K.,K. lõpp,T.,T. aeg,T. lõpp,Pt.&quot;);
+    brGrid.setInitWidths(&quot;50,50,100,*,100,150,100,150,200,100&quot;);
+    brGrid.setColAlign(&quot;center,center,left,left,left,left,left,left,left,left&quot;);
+    brGrid.enableEditEvents(false, false, false); &#x2F;&#x2F; click, dblclick, F2
+    brGrid.setColSorting(&quot;int,str,str,str,str,str,str,str,str,str&quot;);
+    brGrid.setColTypes(&quot;ro,ro,ro,ro,ro,ro,ro,ro,ro,ro&quot;);
+    brGrid.enableTooltips(&quot;false,false,false,false,false,false,false,false,false,false&quot;);
+    brGrid.setSkin(&quot;xp&quot;);
+    &#x2F;&#x2F;    brGrid.enableAutoHeight(true); &#x2F;&#x2F; aeglus
+    brGrid.attachHeader(&quot; ,#cspan,#text_search,#text_filter,#combo_filter,#text_filter,#combo_filter,#text_filter,#text_filter,#combo_filter&quot;);
+    &#x2F;&#x2F; setStyle(ss_header, ss_grid, ss_selCell, ss_selRow)
+    &#x2F;&#x2F;    brGrid.setStyle(&quot;background-color:navy;color:white; font-weight:bold;&quot;, &quot;&quot;, &quot;color:red;&quot;, &quot;&quot;);
+    &#x2F;&#x2F;    brGrid.setStyle(&quot;&quot;, &quot;background-color:&quot; + bgColor + &quot;;&quot;, &quot;&quot;, &quot;background-color:silver;&quot;);
+    brGrid.init();
+&#x2F;&#x2F;    brGrid.enableSmartRendering(true);
+
+    brGrid.attachEvent(&quot;onRowSelect&quot;, function (id, ind) {
+        gridOnRowSelect(id, ind);
+    });
+    brGrid.attachEvent(&quot;onRightClick&quot;, function (id, ind, obj) {
+        gridOnRightClick(id, ind, obj);
+    });
+
+    dhxAccord.setEffect(false); &#x2F;&#x2F; tüütu
+    tooEsileArtikkel();
+
+    sbMain = dhxLayout.cells(&quot;a&quot;).attachStatusBar(); &#x2F;&#x2F; returns status bar object
+
+    if (talaXsl == talaXslXsl2) {
+        dhxTalaBar.disableItem(&quot;btnViewXsl2&quot;);
+        dhxTalaBar.enableItem(&quot;btnViewXsl1&quot;);
+    } else if (talaXsl == talaXslXsl1) {
+        dhxTalaBar.disableItem(&quot;btnViewXsl1&quot;);
+        dhxTalaBar.enableItem(&quot;btnViewXsl2&quot;);
+    }
+
+    bodyOnResize();
+
+    var xh, rspDom;
+    xh = exCGISync(&quot;tools.cgi&quot;, &quot;appOpen&quot; + PD + dic_desc + PD + sUsrName + PD + brVer);
+    if (xh.statusText == &quot;OK&quot;) {
+        rspDOM = ParseHTTPResponse(xh);
+        if (rspDOM) {
+            var opStatus = getXmlSingleNodeValue(rspDOM, &quot;rsp&#x2F;sta&quot;);
+            if (opStatus == &quot;Success&quot;) {
+            } else {
+            }
+        }
+    }
+
+
+    elemInput.focus();
+
+} &#x2F;&#x2F;bodyOnLoad
+
+
+&#x2F;**
+* Kutsutakse välja, kui keegi on riba (bar) peal vajutanud ja kutsub välja vajaliku funktsiooni.
+*
+* @method toolBarOnClick
+* @param {String} clickedId
+*&#x2F;
+function toolBarOnClick(clickedId) {
+    var itmType = dhxBar.getType(clickedId);
+    if (itmType == &quot;buttonSelectButton&quot;) { &#x2F;&#x2F; köidete, elementide
+        if (clickedId.substr(0, 3) == dic_desc) { &#x2F;&#x2F; mõne köite id
+            var tekst = dhxBar.getListOptionText(&quot;volSelect&quot;, clickedId);
+            dhxBar.setItemText(&quot;volSelect&quot;, tekst);
+            elemInput.focus();
+        } else if (clickedId.substr(0, 4) == &quot;elm_&quot;) { &#x2F;&#x2F; mõne elemendi id
+            elemInput.focus();
+        } else if (clickedId.substr(0, 4) == &quot;att_&quot;) { &#x2F;&#x2F; mõne atribuudi id
+            &#x2F;&#x2F;            elemInput.focus();
+        }
+    } else if (itmType == &quot;button&quot;) {
+        if (clickedId == &quot;btnSrch&quot;) {
+            otsing(qryMethod);
+        } else if (clickedId == &quot;btnValiArtikkel&quot;) {
+            var isOp = dhxAccord.cells(&quot;artikkel&quot;).isOpened(); &#x2F;&#x2F; returns true&#x2F;false
+            if (isOp) {
+                tooEsileLoend();
+            } else {
+                tooEsileArtikkel();
+            }
+        } else if (clickedId == &quot;btnLisaArtikkel&quot;) {
+            imgArtAddClick();
+        }
+    }
+} &#x2F;&#x2F; toolBarOnClick
+
+
+&#x2F;**
+* Kutsutakse välja, kui keegi klikib Toimetamisala ribal, ja kutsub välja vajaliku funktsiooni.
+*
+* @method dhxTalaBarOnClick
+* @param {String} clickedId
+*&#x2F;
+function dhxTalaBarOnClick(clickedId) {
+    var currBuffNrElement;
+
+    if (clickedId == &quot;btnSave&quot;) {
+        imgArtSaveClick();
+    } else if (clickedId == &quot;btnDelete&quot;) {
+        kustutamine();
+    } else if (clickedId == &quot;btnViewXsl1&quot;) {
+        talaXsl = talaXslXsl1;
+        talaXslProse = new XSLTProcessor();
+        talaXslProse.importStylesheet(talaXsl);
+        vaatedRefresh(2, true, false);
+        dhxTalaBar.disableItem(&quot;btnViewXsl1&quot;);
+        dhxTalaBar.enableItem(&quot;btnViewXsl2&quot;);
+    } else if (clickedId == &quot;btnViewXsl2&quot;) {
+        talaXsl = talaXslXsl2;
+        talaXslProse = new XSLTProcessor();
+        talaXslProse.importStylesheet(talaXsl);
+        vaatedRefresh(2, true, false);
+        dhxTalaBar.disableItem(&quot;btnViewXsl2&quot;);
+        dhxTalaBar.enableItem(&quot;btnViewXsl1&quot;);
+    } else if (clickedId == &quot;btnUndo&quot;) {
+        if (urIndex &gt; 0) {
+            urIndex--;
+            oEditDOM = BuildXMLFromString(urArray[urIndex]);
+            oEditDOMRoot = oEditDOM.documentElement;
+            vaatedRefresh(&quot;UndoRedo&quot;, true, true);
+            currBuffNrElement = document.getElementById(&quot;currBuffNr&quot;);
+            currBuffNrElement.textContent = urIndex + 1;
+        }
+    } else if (clickedId == &quot;btnRedo&quot;) {
+        if (urIndex &lt; urArray.length - 1) {
+            urIndex++;
+            oEditDOM = BuildXMLFromString(urArray[urIndex]);
+            oEditDOMRoot = oEditDOM.documentElement;
+            vaatedRefresh(&quot;UndoRedo&quot;, true, true);
+            currBuffNrElement = document.getElementById(&quot;currBuffNr&quot;);
+            currBuffNrElement.textContent = urIndex + 1;
+        }
+    } else if (clickedId == &quot;btnReadFirst&quot;) {
+        showPrevNextEntry(0);
+    } else if (clickedId == &quot;btnReadPrev&quot;) {
+        showPrevNextEntry(-1);
+    } else if (clickedId == &quot;btnReadNext&quot;) {
+        showPrevNextEntry(+1);
+    } else if (clickedId == &quot;btnReadLast&quot;) {
+        showPrevNextEntry(1000000);
+    }
+} &#x2F;&#x2F; dhxTalaBarOnClick
+
+
+&#x2F;**
+* Kutsutakse välja, kui klikatakse Sõnastiku tööriistade menüü valikul. Ja käivitab vajaliku funktsiooni.
+*
+* @method srMenuOnClick
+* @param {String} mnuItmId
+*&#x2F;
+function srMenuOnClick(mnuItmId) {
+    if (mnuItmId == &quot;idViewLogs&quot;) {
+        showDicLogs();
+    } else if (mnuItmId == &quot;idSrvXmlValidate&quot;) {
+        srvXmlValidate();
+    }
+} &#x2F;&#x2F; srMenuOnClick
+
+&#x2F;**
+* Toob artikli esile ja näitab nuppu otsingutulemuste esiletoomiseks. 
+*
+* @method tooEsileArtikkel
+*&#x2F;
+function tooEsileArtikkel() {
+    dhxAccord.cells(&quot;artikkel&quot;).open();
+    dhxBar.setItemImage(&quot;btnValiArtikkel&quot;, &quot;TableHS.png&quot;);
+    dhxBar.setItemToolTip(&quot;btnValiArtikkel&quot;, &quot;Too esile otsingutulemuste loend&quot;);
+}
+
+
+&#x2F;**
+* Toob esile otsingutulemuste tabeli ja näitab nuppu artikli esiletoomiseks. 
+*
+* @method tooEsileLoend
+*&#x2F;
+function tooEsileLoend() {
+    dhxAccord.cells(&quot;loend&quot;).open();
+    dhxBar.setItemImage(&quot;btnValiArtikkel&quot;, &quot;AppWindow.png&quot;);
+    dhxBar.setItemToolTip(&quot;btnValiArtikkel&quot;, &quot;Too esile artikkel&quot;);
+}
+
+
+&#x2F;**
+* Käivitab otsingupäringu.
+* 
+* @method otsing
+* @param {String} parQM Päringumeetod (XML või MySQL).
+*&#x2F;
+function otsing(parQM) {
+
+    var withCase = 0, withSymbols = 0;
+    var ft, attXmlPred = &quot;&quot;, attSqlPred = &quot;&quot;, mySqlAttCond = &quot;&quot;, sNodeTest, seldQn, qt, qtMySql;
+    var artRada, elemRada, evPath, srchPtrn, fakPtrn = &quot;&quot;, mySqlPtrn = &quot;&quot;, hlPtrn = &quot;&quot;, pQrySql = &quot;&quot;;
+    var hasSeldText = false;
+
+    var qM = parQM;
+
+    if (withSymbols &lt; 1) {
+        ft = jsTrim(dhxBar.getValue(&quot;txtElemOtsitav&quot;));
+    } else {
+        ft = dhxBar.getValue(&quot;txtElemOtsitav&quot;);
+    }
+
+    sQryInfo = dhxBar.getItemText(&quot;volSelect&quot;) + &quot;: &quot; + dhxBar.getItemText(&quot;elemSelect&quot;) + &quot; = &#x27;&quot; + ft + &quot;&#x27;&quot;;
+
+    &#x2F;&#x2F;sNodeTest algab artiklist: &quot;q:A&#x2F;...&quot; jne
+    sNodeTest = default_query;
+    seldQn = sNodeTest.substr(sNodeTest.lastIndexOf(&quot;&#x2F;&quot;) + 1);
+    hasSeldText = true;
+
+    &#x2F;&#x2F;qt: .&#x2F;&#x2F;text(), self::node(), text()
+    qt = &quot;self::node()&quot;;
+    if (qt == &quot;.&#x2F;&#x2F;text()&quot;) {
+        qtMySql = &quot;&#x2F;&#x2F;text()&quot;;
+    } else if (qt == &quot;self::node()&quot;) {
+        qtMySql = &quot;&#x2F;&#x2F;text()&quot;;
+    } else if (qt == &quot;text()&quot;) {
+        qtMySql = &quot;&#x2F;text()&quot;;
+    }
+
+    artRada = qn_art;
+    evPath = sNodeTest;
+    if (sNodeTest == artRada) { &#x2F;&#x2F;A
+        elemRada = &quot;&quot;;
+    } else {
+        if (1 == 1) { &#x2F;&#x2F; use_global linnuke
+            elemRada = &quot;.&#x2F;&#x2F;&quot; + seldQn;
+            evPath = &quot;.&#x2F;&#x2F;&quot; + seldQn;
+        } else {
+            elemRada = sNodeTest.substr(sNodeTest.indexOf(&quot;&#x2F;&quot;) + 1); &#x2F;&#x2F;&#x27;q:A&#x2F; - st edasi ...
+        }
+    }
+
+
+    &#x2F;&#x2F; valitud artikkel ning otsitakse kas tühja v olematut artiklit
+    if (sNodeTest == artRada &amp;&amp; (ft == &quot;&quot; || ft == &quot;=NULL&quot;)) {
+        return;
+    }
+
+    if (seldQn == qn_ms &amp;&amp; fakult.length &gt; 0 &amp;&amp; withSymbols == -1) {
+        fakPtrn = fakult;
+    }
+
+
+    if (ft == &quot;=.&quot;) {
+        return;
+    } else if (ft == &quot;!=.&quot;) {
+        return;
+    } else if (jsLeft(ft, 2) == &quot;§§&quot;) {
+        withSymbols = 1;
+        withCase = 1;
+        qM = &quot;XML&quot;;
+        srchPtrn = ft.substr(2);
+        srchPtrn = jsReplace(srchPtrn, &quot;\\u&quot;, &quot;\\p{Lu}&quot;); &#x2F;&#x2F;&#x27;suurtähed;
+        srchPtrn = jsReplace(srchPtrn, &quot;\\l&quot;, &quot;\\p{Ll}&quot;); &#x2F;&#x2F;&#x27;väiketähed;
+        srchPtrn = jsReplace(srchPtrn, &quot;\\k&quot;, &quot;[bcdfghjklmnpqrsšzžtvwx]&quot;); &#x2F;&#x2F;&#x27;eesti konsonandid;
+        srchPtrn = jsReplace(srchPtrn, &quot;\\v&quot;, &quot;[aeiouõäöüy]&quot;); &#x2F;&#x2F;&#x27;eesti vokaalid;
+        elpred = &quot;[al_p:srch(.) &gt; 0]&quot;;
+        if (sNodeTest == artRada) { &#x2F;&#x2F;A;
+            elm_xpath = &quot;self::node()&quot;;
+            art_xpath = artRada + attXmlPred + &quot;[&quot; + qt + elpred + &quot;]&quot;;
+            evPath = artRada + attSqlPred + qtMySql;
+        } else {
+            arttingimus = elemRada + attXmlPred + &quot;[&quot; + qt + elpred + &quot;]&quot;;
+            elm_xpath = arttingimus;
+            art_xpath = artRada + &quot;[&quot; + arttingimus + &quot;]&quot;;
+            evPath = elemRada + attSqlPred + qtMySql;
+        }
+    } else if (jsLeft(ft, 1) == &quot;§&quot;) {
+        elpred = &quot;[&quot; + jsTrim(ft).substr(1) + &quot;]&quot;;
+        if (sNodeTest == artRada) { &#x2F;&#x2F;A;
+            elm_xpath = &quot;self::node()&quot;;
+            art_xpath = artRada + attXmlPred + elpred;
+        } else {
+            arttingimus = elemRada + attXmlPred + elpred;
+            elm_xpath = arttingimus;
+            art_xpath = artRada + &quot;[&quot; + arttingimus + &quot;]&quot;;
+        }
+        &#x2F;&#x2F;MySQL &quot;extractValue&quot; tegutseb juurika tasemel (ehk siis &quot;A&quot;);
+        evPath = evPath + attSqlPred + elpred + qtMySql;
+        &#x2F;&#x2F;•The :: operator == ! supported in combination with node types such as the following;
+        if ((elpred.indexOf(&quot;::comment()&quot;) &gt; -1 || elpred.indexOf(&quot;::text()&quot;) &gt; -1 || elpred.indexOf(&quot;::processing-instruction()&quot;) &gt; -1 || elpred.indexOf(&quot;::node()&quot;) &gt; -1)) {
+            qM = &quot;XML&quot;;
+        }
+        &#x2F;&#x2F;axes ! supported in MySQL ExtractValue;
+        if ((elpred.indexOf(&quot;following-sibling::&quot;) &gt; -1 || elpred.indexOf(&quot;following::&quot;) &gt; -1 || elpred.indexOf(&quot;preceding-sibling::&quot;) &gt; -1 || elpred.indexOf(&quot;preceding::&quot;) &gt; -1)) {
+            qM = &quot;XML&quot;;
+        }
+        &#x2F;&#x2F;functions ! supported in MySQL ExtractValue;
+        if ((elpred.indexOf(&quot;id(&quot;) &gt; -1 || elpred.indexOf(&quot;lang(&quot;) &gt; -1 || elpred.indexOf(&quot;local-name(&quot;) &gt; -1 || elpred.indexOf(&quot;name(&quot;) &gt; -1 || elpred.indexOf(&quot;namespace-uri(&quot;) &gt; -1 || elpred.indexOf(&quot;normalize-space(&quot;) &gt; -1 || elpred.indexOf(&quot;starts-with(&quot;) &gt; -1 || elpred.indexOf(&quot;string(&quot;) &gt; -1 || elpred.indexOf(&quot;substring-after(&quot;) &gt; -1 || elpred.indexOf(&quot;substring-before(&quot;) &gt; -1 || elpred.indexOf(&quot;translate(&quot;) &gt; -1)) {
+            qM = &quot;XML&quot;;
+        }
+        &#x2F;&#x2F;ka Perl funktsioonid tuleb siit välja arvata (srch, srch2);
+        if ((elpred.indexOf(&quot;al_p:srch&quot;) &gt; -1)) {
+            qM = &quot;XML&quot;;
+        }
+        &#x2F;&#x2F;kui XPath tingimuse SEES on on veel mingi tingimus ja sisemist tingimust rahuldab rohkem kui 1 juhus,;
+        &#x2F;&#x2F;select * from vsl where extractvalue(art,&quot;z:A[z:P&#x2F;z:mg[z:m[not(@z:zs)] &amp;&amp; z:etg&#x2F;z:etgg&#x2F;z:keel = &#x27;ld&#x27;]]&#x2F;&#x2F;text()&quot;) != &#x27;&#x27; &amp;&amp; vol_nr&gt;0;;
+        &#x2F;&#x2F;select * from vsl where extractvalue(art,&quot;z:A&#x2F;z:P&#x2F;z:mg[z:m[not(@z:zs)] &amp;&amp; z:etg&#x2F;z:etgg&#x2F;z:keel = &#x27;ld&#x27;]&#x2F;&#x2F;text()&quot;) != &#x27;&#x27; &amp;&amp; vol_nr&gt;0;;
+        &#x2F;&#x2F;MySQL ei suuda seda leida. Senikaua - kui selgusetu - olgu alati &quot;XML&quot;;
+        withSymbols = 1;
+        withCase = 1;
+        qM = &quot;XML&quot;;
+        &#x2F;&#x2F; et kas elemendil on teksti ette näthud v mitte (hasSeldText)
+        &#x2F;&#x2F; kui &#x27;false&#x27;, siis läheb alati ExtractValue kaudu
+        hasSeldText = false;
+        pQrySql = getSqlQuery(seldQn, ft, hasSeldText, withSymbols, withCase, evPath, elemRada, mySqlAttCond);
+    } else {
+
+        var qtTing;
+        if (ft == &quot;*&quot;) {
+            withSymbols = 1; &#x2F;&#x2F; XML: vahet pole; mysql: art_alt ja val_nos on tühjad. Vale tulemus
+            elpred = &quot;&quot;;
+            qtTing = &quot;&quot;;
+            evPath = evPath + attSqlPred + qtMySql;
+        } else if (ft == &quot;&quot;) {
+            withSymbols = 1; &#x2F;&#x2F; XML: vahet pole; mysql: art_alt ja val_nos on tühjad. Vale tulemus
+            elpred = &quot;[. = &#x27;&#x27;]&quot;;
+            qtTing = elpred;
+            evPath = evPath + attSqlPred + elpred + qtMySql;
+        } else if (ft == &quot;=NULL&quot;) { &#x2F;&#x2F;&#x27;A korral ei täideta, vt ülal;
+            seldQn = artRada;
+            hasSeldText = false;  &#x2F;&#x2F;otsitav element muutus &lt;A&gt;, sellel pole mysql tabelites teksti ega atribuute;
+            withSymbols = 1;
+            withCase = 1;
+            &#x2F;&#x2F;        elpred = &quot;[not(&quot; + elemRada + &quot;)]&quot; &#x27; see vist ei käivitunud MySql XML-i &quot;not()&quot; iseärasuste tõttu
+            elpred = &quot;[count(&quot; + elemRada + &quot;) = 0]&quot;;
+            qtTing = elpred;
+            evPath = artRada + elpred + &quot;&#x2F;&#x2F;text()&quot; &#x2F;&#x2F;&#x27;sõltumata &quot;qtMySql&quot; - ist
+            attXmlPred = &quot;&quot;; &#x2F;&#x2F;&#x27;ei ole kasutatav atr tingimus, kui otsime elementi, mida pole;
+            mySqlAttCond = &quot;&quot;;
+        } else {
+            ft = RemoveSymbols(ft, &quot;*? &quot;);
+
+            &#x2F;&#x2F;serveris otsib &#x27;srch&#x27; tectContent&#x27; abil, selles aga &#x27;&amp;amp;&#x27; -&gt; &#x27;&amp;&#x27;;
+            &#x2F;&#x2F; juba &quot;RemoveSymbols&quot; - is tehtud
+            srchPtrn = jsReplace(ft, &quot;&amp;amp;&quot;, &quot;&amp;&quot;);
+            srchPtrn = getSrPn2(srchPtrn, &quot;XML&quot;);
+
+            elpred = &quot;[al_p:srch(.) &gt; 0]&quot;;
+            qtTing = &quot;[&quot; + qt + elpred + &quot;]&quot;;
+            evPath = evPath + attSqlPred + qtMySql;
+        }
+
+        if (seldQn == artRada) { &#x2F;&#x2F;A;
+            elm_xpath = &quot;self::node()&quot;;
+            art_xpath = artRada + attXmlPred + qtTing;
+        } else {
+            arttingimus = elemRada + attXmlPred + qtTing;
+            elm_xpath = arttingimus;
+            art_xpath = artRada + &quot;[&quot; + arttingimus + &quot;]&quot;;
+        }
+
+        &#x2F;&#x2F;value = &#x27;qname|name|URI|IsElement|kirjeldav&#x27;;
+        if (&quot;1&quot; == &quot;1&quot;) { &#x2F;&#x2F; aElemInfo[3], IsElement
+            pQrySql = getSqlQuery(seldQn, ft, hasSeldText, withSymbols, withCase, evPath, elemRada, mySqlAttCond);
+        }
+
+    }
+
+    pQrySql += &quot; LIMIT 500&quot;;
+    art_xpath += &quot;[position() &amp;lt; 501]&quot;;
+
+    var currentVolId = dhxBar.getListOptionSelected(&quot;volSelect&quot;);
+
+    sCmdId = &quot;ClientRead&quot;;
+    var cmdXml = &quot;&lt;prm&gt;&quot; +
+                    &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+                    &quot;&lt;vol&gt;&quot; + currentVolId + &quot;&lt;&#x2F;vol&gt;&quot; +
+                    &quot;&lt;nfo&gt;&quot; + sQryInfo + &quot;&lt;&#x2F;nfo&gt;&quot; +
+                    &quot;&lt;axp&gt;&quot; + art_xpath + &quot;&lt;&#x2F;axp&gt;&quot; +
+                    &quot;&lt;exp&gt;&quot; + elm_xpath + &quot;&lt;&#x2F;exp&gt;&quot; +
+                    &quot;&lt;wC&gt;&quot; + withCase + &quot;&lt;&#x2F;wC&gt;&quot; +
+                    &quot;&lt;wS&gt;&quot; + withSymbols + &quot;&lt;&#x2F;wS&gt;&quot; +
+                    &quot;&lt;evP&gt;&quot; + evPath + &quot;&lt;&#x2F;evP&gt;&quot; +
+                    &quot;&lt;qn&gt;&quot; + seldQn + &quot;&lt;&#x2F;qn&gt;&quot; +
+                    &quot;&lt;fSrP&gt;&quot; + srchPtrn + &quot;&lt;&#x2F;fSrP&gt;&quot; +
+                    &quot;&lt;pFakPtrn&gt;&quot; + fakPtrn + &quot;&lt;&#x2F;pFakPtrn&gt;&quot; +
+                    &quot;&lt;fMsqlP&gt;&quot; + mySqlPtrn + &quot;&lt;&#x2F;fMsqlP&gt;&quot; +
+                    &quot;&lt;hlP&gt;&quot; + hlPtrn + &quot;&lt;&#x2F;hlP&gt;&quot; +
+                    &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+                    &quot;&lt;pQrySql&gt;&quot; + pQrySql + &quot;&lt;&#x2F;pQrySql&gt;&quot; +
+                &quot;&lt;&#x2F;prm&gt;&quot;;
+
+    var cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+    StartOperation(cmdXmlDom);
+} &#x2F;&#x2F; otsing
+
+
+&#x2F;**
+* Avatud artikli kustutamine. Kontrollib, kas artikkel avatud, kas kasutaja ikka tahab kustutada ja seejärel kutsub kustutaArtikkel().
+* 
+* @method kustutamine
+*&#x2F;
+function kustutamine() {
+    if (!(oEditDOMRoot.hasChildNodes())) {
+        return;
+    }
+
+    &#x2F;&#x2F;DEL_WORD
+    var nRetBtn = window.confirm(&quot;Kas soovid kustutada artikli &#x27;&quot; + document.getElementById(&quot;artMsTekst&quot;).textContent + &quot;&#x27;?&quot;);
+    if (!nRetBtn) {
+        return;
+    }
+
+    kustutaArtikkel()
+} &#x2F;&#x2F; kustutamine
+
+
+&#x2F;**
+* Kustutab avatud artikli ära.
+* 
+* @method kustutaArtikkel
+*&#x2F;
+function kustutaArtikkel() {
+    var destVol, orgVolFile, sqlVol;
+    if (sFromVolume == sDeldVolId) {
+        &#x2F;&#x2F;        sCmdId = &quot;ClientRestore&quot;;
+        &#x2F;&#x2F;        if ((dic_vols_count &gt; 1)) {
+        &#x2F;&#x2F;            orgVolFile = oEditDOMRoot.selectSingleNode(DICPR + &quot;:A&quot;).getAttribute(DICPR + &quot;:KF&quot;);
+        &#x2F;&#x2F;            if ((orgVolFile == &quot;&quot;)) {
+        &#x2F;&#x2F;                orgVolFile = prompt(&quot;Sisesta köite number!&quot;);
+        &#x2F;&#x2F;                if ((orgVolFile == &quot;&quot; || parseInt(orgVolFile) &lt; 1 || parseInt(orgVolFile) &gt; dic_vols_count)) {
+        &#x2F;&#x2F;                    return;
+        &#x2F;&#x2F;                } else {
+        &#x2F;&#x2F;                    orgVolFile = dic_desc + orgVolFile;
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            }
+        &#x2F;&#x2F;            destVol = orgVolFile;
+        &#x2F;&#x2F;        } else {
+        &#x2F;&#x2F;            destVol = dic_desc + &quot;1&quot;;
+        &#x2F;&#x2F;        }
+        &#x2F;&#x2F;        sqlVol = destVol;
+        return;
+    } else {
+        sCmdId = &quot;ClientDelete&quot;;
+        destVol = sDeldVolId;
+        sqlVol = sFromVolume;
+    }
+
+    var msNode, sMarkSona, homNr, sMSortVal;
+    msNode = getXmlSingleNode(oEditDOMRoot, first_default);
+    if (msNode) {
+        sMarkSona = msNode.textContent;
+    }
+    if (!sMarkSona) {
+        alert(&quot;Ei salvesta ... (&lt;m&gt;)&quot;);
+        return;
+    }
+    homNr = msNode.getAttribute(DICPR + &quot;:i&quot;);
+    sMSortVal = msNode.getAttribute(qn_sort_attr);
+    if (!sMSortVal) {
+        alert(&quot;Ei salvesta ... (@O)&quot;);
+        return;
+    }
+
+    sQryInfo = sMSortVal;
+
+    var artGuid, qM, seldQn, srchPtrn, homonyymsed, art_xpath, elm_xpath, sql;
+    artGuid = getXmlSingleNode(oEditDOMRoot, DICPR + &quot;:A&#x2F;&quot; + qn_guid).textContent;
+    qM = &quot;MySql&quot;;
+    seldQn = qn_ms;  &#x2F;&#x2F;pärast otsitakse nn homonüümseid märksõnu, st millised veel sama märksõnaga on;
+    srchPtrn = &quot;^&quot; + sMSortVal + &quot;$&quot;;
+    homonyymsed = &quot;&quot;;
+    &#x2F;&#x2F;    if (!(oXslEdit == oXsl1)) {
+    homonyymsed = jsMid(first_default, first_default.indexOf(&quot;&#x2F;&quot;) + 1) + &quot;[. = &quot; + GCV(sMarkSona, &quot;&quot;, 2);
+    sql = &quot;SELECT &quot; + dic_desc + &quot;.md AS md, &quot; + &quot;msid.ms AS l, &quot; + &quot;msid.ms_att_i AS ms_att_i, &quot; + &quot;msid.ms_att_liik AS ms_att_liik, &quot; + &quot;msid.ms_att_ps AS ms_att_ps, &quot; + &quot;msid.ms_att_tyyp AS ms_att_tyyp, &quot; + &quot;msid.ms_att_mliik AS ms_att_mliik, &quot; + &quot;msid.ms_att_k AS ms_att_k, &quot; + &quot;msid.ms_att_mm AS ms_att_mm, &quot; + &quot;msid.ms_att_st AS ms_att_st, &quot; + &quot;msid.ms_att_vm AS ms_att_vm, &quot; + &quot;msid.ms_att_all AS ms_att_all, &quot; + &quot;msid.ms_att_uus AS ms_att_uus, &quot; + &quot;msid.ms_att_zs AS ms_att_zs, &quot; + dic_desc + &quot;.G AS G, &quot; + dic_desc + &quot;.art AS art, &quot; + dic_desc + &quot;.K AS K, &quot; + dic_desc + &quot;.T AS T, &quot; + dic_desc + &quot;.TA AS TA, &quot; + dic_desc + &quot;.PT AS PT, &quot; + dic_desc + &quot;.vol_nr AS vol_nr &quot; + &quot;FROM msid, &quot; + dic_desc + &quot; &quot; + &quot;WHERE (&quot; + dic_desc + &quot;.G = msid.G &quot; + &quot;AND msid.dic_code = &#x27;&quot; + dic_desc + &quot;&#x27; &quot; + &quot;AND (msid.ms = \&quot;&quot; + sMarkSona + &quot;\&quot;&quot;;
+    homonyymsed = homonyymsed + &quot;]&quot;;
+    sql = sql + &quot;) &quot; + &quot;AND msid.vol_nr = &quot; + jsMid(sqlVol, 3, 1);
+    sql = sql + &quot;) &quot;; &#x2F;&#x2F;&#x27;WHERE tingimuse lõpp;
+    sql = sql + &quot;ORDER BY &quot; + dic_desc + &quot;.ms_att_OO&quot;;
+    elm_xpath = homonyymsed;
+    homonyymsed = DICPR + &quot;:A[&quot; + homonyymsed + &quot;]&quot;;
+    art_xpath = homonyymsed;
+    &#x2F;&#x2F;    }
+
+    var cmdXml = &quot;&lt;prm&gt;&quot; +
+                    &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+                    &quot;&lt;vol&gt;&quot; + sFromVolume + &quot;&lt;&#x2F;vol&gt;&quot; +
+                    &quot;&lt;nfo&gt;&quot; + sQryInfo + &quot;&lt;&#x2F;nfo&gt;&quot; +
+                    &quot;&lt;axp&gt;&quot; + art_xpath + &quot;&lt;&#x2F;axp&gt;&quot; +
+                    &quot;&lt;exp&gt;&quot; + elm_xpath + &quot;&lt;&#x2F;exp&gt;&quot; +
+                    &quot;&lt;wC&gt;0&lt;&#x2F;wC&gt;&quot; +
+                    &quot;&lt;wS&gt;1&lt;&#x2F;wS&gt;&quot; +
+                    &quot;&lt;fSrP&gt;&quot; + srchPtrn + &quot;&lt;&#x2F;fSrP&gt;&quot; +
+                    &quot;&lt;G&gt;&quot; + artGuid + &quot;&lt;&#x2F;G&gt;&quot; +
+                    &quot;&lt;sql&gt;&quot; + sql + &quot;&lt;&#x2F;sql&gt;&quot; +
+                    &quot;&lt;dV&gt;&quot; + destVol + &quot;&lt;&#x2F;dV&gt;&quot; +
+                    &quot;&lt;qn&gt;&quot; + seldQn + &quot;&lt;&#x2F;qn&gt;&quot; +
+                    &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+                &quot;&lt;&#x2F;prm&gt;&quot;;
+
+    var cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+    StartOperation(cmdXmlDom);
+
+} &#x2F;&#x2F;kustutaArtikkel
+
+
+&#x2F;**
+* Käivitab operatsiooni, mille vastus jõuab pikka rada pidi funktsioonile ParseSrvInfo.
+* 
+* @method StartOperation
+* @param {Object} oPrmDom
+@example 
+	&#x2F;&#x2F; See on funktsioonist kustutaArtikkel:
+    var cmdXml = &quot;&lt;prm&gt;&quot; +
+                    &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+                    &quot;&lt;vol&gt;&quot; + sFromVolume + &quot;&lt;&#x2F;vol&gt;&quot; +
+                    &quot;&lt;nfo&gt;&quot; + sQryInfo + &quot;&lt;&#x2F;nfo&gt;&quot; +
+                    &quot;&lt;axp&gt;&quot; + art_xpath + &quot;&lt;&#x2F;axp&gt;&quot; +
+                    &quot;&lt;exp&gt;&quot; + elm_xpath + &quot;&lt;&#x2F;exp&gt;&quot; +
+                    &quot;&lt;wC&gt;0&lt;&#x2F;wC&gt;&quot; +
+                    &quot;&lt;wS&gt;1&lt;&#x2F;wS&gt;&quot; +
+                    &quot;&lt;fSrP&gt;&quot; + srchPtrn + &quot;&lt;&#x2F;fSrP&gt;&quot; +
+                    &quot;&lt;G&gt;&quot; + artGuid + &quot;&lt;&#x2F;G&gt;&quot; +
+                    &quot;&lt;sql&gt;&quot; + sql + &quot;&lt;&#x2F;sql&gt;&quot; +
+                    &quot;&lt;dV&gt;&quot; + destVol + &quot;&lt;&#x2F;dV&gt;&quot; +
+                    &quot;&lt;qn&gt;&quot; + seldQn + &quot;&lt;&#x2F;qn&gt;&quot; +
+                    &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+                &quot;&lt;&#x2F;prm&gt;&quot;;
+	var cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+    StartOperation(cmdXmlDom);
+
+*&#x2F;
+function StartOperation(oPrmDom) {
+    var cmdId = oPrmDom.documentElement.getElementsByTagName(&quot;cmd&quot;)[0].textContent;
+
+    &#x2F;&#x2F;esimeseks tuleb siis &quot;app_lang&quot;, siis &quot;dic_desc&quot;, lõppu kasutajanimi
+    var nNode;
+    nNode = oPrmDom.documentElement.insertBefore(oPrmDom.createElement(&quot;dic_desc&quot;), oPrmDom.documentElement.firstChild);
+    nNode.textContent = dic_desc;
+    nNode = oPrmDom.documentElement.insertBefore(oPrmDom.createElement(&quot;app_lang&quot;), oPrmDom.documentElement.firstChild);
+    nNode.textContent = sAppLang;
+    nNode = oPrmDom.documentElement.appendChild(oPrmDom.createElement(&quot;un&quot;));
+    nNode.textContent = sUsrName;
+
+    sbMain.setText(&quot;&quot;);
+
+    dhxBar.disableItem(&quot;btnSrch&quot;);
+
+    dtOpStart = new Date();
+    dhxLayout.progressOn();
+    QueryResponseAsync(oPrmDom);
+} &#x2F;&#x2F;StartOperation
+
+
+&#x2F;**
+* Käivitub, kui serverist päring tagasi tuleb. Ajax päringu abifunktsioon.
+* 
+* @method asyncCompleted
+* @param {Object} objXMLDom
+*&#x2F; 
+function asyncCompleted(objXMLDom) {
+    if (!objXMLDom) {
+        StopOperation();
+        return;
+    }
+
+    ParseSrvInfo(objXMLDom);
+    StopOperation();
+
+} &#x2F;&#x2F;asyncCompleted
+
+
+&#x2F;**
+* Ajax päringu abifunktsioon. Paneb progress bari kinni.
+* 
+* @method StopOperation
+*&#x2F;
+function StopOperation() {
+    dhxBar.enableItem(&quot;btnSrch&quot;);
+
+    dhxLayout.progressOff();
+    var interval = (new Date().getTime() - dtOpStart.getTime());
+    var seconds = Math.floor(interval &#x2F; 1000);
+    &#x2F;&#x2F;    window.status = window.status + &quot;; (&quot; + Math.floor(seconds &#x2F; 60) + &quot;m, &quot; + (seconds % 60) + &quot;s)&quot;;
+} &#x2F;&#x2F;StopOperation
+
+
+&#x2F;**
+* Töötleb serveri vastuseid. Funktsiooniga StartOperation tehtud päringute vastused jõuavad siia.
+* 
+* @method ParseSrvInfo
+* @param {Object} oRespDom XML Dom.
+*&#x2F;
+function ParseSrvInfo(oRespDom) {
+    var sta, cnt, vol, qM, vastus;
+
+    sta = oRespDom.documentElement.getElementsByTagName(&quot;sta&quot;)[0].textContent;
+    cnt = oRespDom.documentElement.getElementsByTagName(&quot;cnt&quot;)[0].textContent;
+    cnt = parseInt(cnt);
+    vol = oRespDom.documentElement.getElementsByTagName(&quot;vol&quot;)[0].textContent;
+    qM = oRespDom.documentElement.getElementsByTagName(&quot;qM&quot;)[0].textContent;
+    if (sta == &quot;Success&quot;) {
+        if (sCmdId == &quot;ClientRead&quot; || sCmdId == &quot;BrowseRead&quot; || sCmdId == &quot;prevNextRead&quot; || sCmdId == &quot;msSarnased&quot; || sCmdId == &quot;tyhjadViited&quot;) {
+            if (cnt == 0) {
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &quot; + sQryInfo + &quot; - artikleid ei leitud [&quot; + qM + &quot;].&quot;);
+            } else if (cnt == 1) {
+
+                setButtonSelectId(&quot;volSelect&quot;, vol);
+                sFromVolume = vol;
+
+                vastus = oRespDom.documentElement.getElementsByTagNameNS(DICURI, &quot;A&quot;)[0];
+                FillArtFrames(vastus, true);
+                tooEsileArtikkel();
+
+                talaDiv.scrollIntoView(true);
+                valaDiv.scrollIntoView(true);
+
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &quot; + sQryInfo + &quot; - &quot; + cnt + &quot; artikkel [&quot; + qM + &quot;].&quot;);
+
+            } else if (cnt &gt; 1 || cnt == -1) {
+                vastus = oRespDom.documentElement.getElementsByTagName(&quot;outDOM&quot;)[0];
+                FillBrowseFrame(vastus);
+                tooEsileLoend();
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &quot; + sQryInfo + &quot; - &quot; + cnt + &quot; artiklit [&quot; + qM + &quot;].&quot;);
+            }
+        } else if (sCmdId == &quot;ClientWrite&quot;) {
+            if (cnt == 1) {
+
+                &#x2F;&#x2F;                setButtonSelectId(&quot;volSelect&quot;, vol);
+                &#x2F;&#x2F;                sFromVolume = vol;
+
+                vastus = oRespDom.documentElement.getElementsByTagNameNS(DICURI, &quot;A&quot;)[0];
+                FillArtFrames(vastus, false);
+                &#x2F;&#x2F;                tooEsileArtikkel();
+
+                &#x2F;&#x2F;                talaDiv.scrollIntoView(true);
+                &#x2F;&#x2F;                valaDiv.scrollIntoView(true);
+
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &#x27;&quot; + sQryInfo + &quot;&#x27; edukalt salvestatud [&quot; + qM + &quot;].&quot;);
+
+            } else if (cnt &gt; 1) {
+                vastus = oRespDom.documentElement.getElementsByTagName(&quot;outDOM&quot;)[0];
+                &#x2F;&#x2F; &quot;Homonüümsete kontroll sihtköites&quot;
+                sQryInfo = vastus.getAttribute(&quot;qinfo&quot;);
+                FillBrowseFrame(vastus);
+                tooEsileLoend();
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &quot; + sQryInfo + &quot; - &quot; + cnt + &quot; artiklit [&quot; + qM + &quot;].&quot;);
+            } else if (cnt == 0) {
+                &#x2F;&#x2F; homonüümsete kontrollil läks midagi metsa
+                vastus = oRespDom.documentElement.getElementsByTagNameNS(DICURI, &quot;A&quot;)[0];
+                FillArtFrames(vastus, false);
+
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &#x27;&quot; + sQryInfo + &quot;&#x27; edukalt salvestatud [&quot; + qM + &quot;] (Homonüümsete kontroll = 0!).&quot;);
+            }
+        } else if (sCmdId == &quot;ClientAdd&quot;) {
+            if (cnt == 1) {
+
+                setButtonSelectId(&quot;volSelect&quot;, vol);
+                sFromVolume = vol;
+
+                vastus = oRespDom.documentElement.getElementsByTagNameNS(DICURI, &quot;A&quot;)[0];
+                FillArtFrames(vastus, true);
+                tooEsileArtikkel();
+
+                talaDiv.scrollIntoView(true);
+                valaDiv.scrollIntoView(true);
+
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &#x27;&quot; + sQryInfo + &quot;&#x27; edukalt lisatud [&quot; + qM + &quot;].&quot;);
+
+            } else if (cnt &gt; 1) {
+                vastus = oRespDom.documentElement.getElementsByTagName(&quot;outDOM&quot;)[0];
+                &#x2F;&#x2F; &quot;Homonüümsete kontroll sihtköites&quot;
+                sQryInfo = vastus.getAttribute(&quot;qinfo&quot;);
+                FillBrowseFrame(vastus);
+                tooEsileLoend();
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &quot; + sQryInfo + &quot; - &quot; + cnt + &quot; artiklit [&quot; + qM + &quot;].&quot;);
+            }
+        } else if (sCmdId == &quot;ClientDelete&quot;) {
+
+            oClicked = null;
+            oEditDOMRoot.removeChild(oEditDOMRoot.firstChild);
+
+            vaatedRefresh(2, true, true);
+
+            &#x2F;&#x2F;0 peaks näitama, et ühtegi (homonüümset) ei jäänud;
+            if (cnt == 0) {
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &#x27;&quot; + sQryInfo + &quot;&#x27; edukalt kustutatud [&quot; + qM + &quot;].&quot;);
+                sFromVolume = &quot;&quot;;
+            } else {
+                vastus = oRespDom.documentElement.getElementsByTagName(&quot;outDOM&quot;)[0];
+                &#x2F;&#x2F; &quot;Homonüümsete kontroll sihtköites&quot;
+                sQryInfo = vastus.getAttribute(&quot;qinfo&quot;);
+                FillBrowseFrame(vastus);
+                tooEsileLoend();
+                sbMain.setText(&quot;&lt;img src=&#x27;graphics&#x2F;info.png&#x27; style=&#x27;width:16px;&#x27;&gt; &quot; + sQryInfo + &quot; - &quot; + cnt + &quot; artiklit [&quot; + qM + &quot;].&quot;);
+            }
+        } else if (sCmdId == &quot;srvXmlValidate&quot;) {
+            if (cnt &gt; 0) {
+                vastus = oRespDom.documentElement.getElementsByTagName(&quot;outDOM&quot;)[0];
+                FillBrowseFrame(vastus);
+                tooEsileLoend();
+            }
+            sbMain.setText(sQryInfo + &quot; - Vigaseid artikleid &quot; + cnt + &quot; tk [&quot; + qM + &quot;].&quot;);
+        }
+    }
+    else {
+        alert(getXmlString(oRespDom));
+        return;
+    }
+
+    &#x2F;&#x2F;                } else if ((sCmdId == &quot;ClientDelete&quot;)) {
+    &#x2F;&#x2F;                    oEditDOMRoot.removeChild(oEditDOMRoot.firstChild);
+    &#x2F;&#x2F;                    &#x2F;&#x2F;kui art puudub, on view.xsl tulemusena HTML-is ikkagi 10 BR-i ...;
+    &#x2F;&#x2F;                    oEditAll(&quot;ifrdiv&quot;).innerHTML = oEditDOM.transformNode(oXslEdit);
+    &#x2F;&#x2F;                    oViewAll(&quot;ifrviewdiv&quot;).innerHTML = oEditDOM.transformNode(oXslView);
+    &#x2F;&#x2F;                    &#x2F;&#x2F;0 peaks näitama, et ühtegi homonüümset ei jäänud;
+    &#x2F;&#x2F;                    if ((cnt == 0)) {
+    &#x2F;&#x2F;                        ShowStatusInfo(DEL_OK + &quot; [&quot; + qM + &quot;]&quot;);
+    &#x2F;&#x2F;                        sFromVolume = &quot;&quot;;
+    &#x2F;&#x2F;                    } else {
+    &#x2F;&#x2F;                        oBrowseNode = oRespDom.documentElement.selectSingleNode(&quot;outDOM&quot;);
+    &#x2F;&#x2F;                        sQryInfo = oBrowseNode.getAttribute(&quot;qinfo&quot;);
+    &#x2F;&#x2F;                        filterBy = &quot;&quot;;
+    &#x2F;&#x2F;                        FillBrowseFrame(oBrowseNode);
+    &#x2F;&#x2F;                        bringZIndexToFront(&quot;frame_Browse&quot;);
+    &#x2F;&#x2F;                        ShowStatusInfo(jsReplace(ART_MANY_FOUND, &quot;[%s]&quot;, jsFormatNumber(cnt, 0, -2, -2, -2)) + &quot; [&quot; + qM + &quot;]&quot;);
+    &#x2F;&#x2F;                    }
+    &#x2F;&#x2F;                } else if ((sCmdId == &quot;ClientRestore&quot;)) {
+    &#x2F;&#x2F;                    oEditDOMRoot.removeChild(oEditDOMRoot.firstChild);
+    &#x2F;&#x2F;                    &#x2F;&#x2F;kui art puudub, on view.xsl tulemusena HTML-is ikkagi 10 BR-i ...;
+    &#x2F;&#x2F;                    oEditAll(&quot;ifrdiv&quot;).innerHTML = oEditDOM.transformNode(oXslEdit);
+    &#x2F;&#x2F;                    oViewAll(&quot;ifrviewdiv&quot;).innerHTML = oEditDOM.transformNode(oXslView);
+    &#x2F;&#x2F;                    &#x2F;&#x2F;1 peaks näitama, et sihtköites on 1 homonüümne;
+    &#x2F;&#x2F;                    if ((cnt == 1)) {
+    &#x2F;&#x2F;                        ShowStatusInfo(DEL_OK + &quot; [&quot; + qM + &quot;]&quot;);
+    &#x2F;&#x2F;                        sFromVolume = &quot;&quot;;
+    &#x2F;&#x2F;                    } else if ((cnt &gt; 1)) {
+    &#x2F;&#x2F;                        oBrowseNode = oRespDom.documentElement.selectSingleNode(&quot;outDOM&quot;);
+    &#x2F;&#x2F;                        sQryInfo = oBrowseNode.getAttribute(&quot;qinfo&quot;);
+    &#x2F;&#x2F;                        filterBy = &quot;&quot;;
+    &#x2F;&#x2F;                        FillBrowseFrame(oBrowseNode);
+    &#x2F;&#x2F;                        bringZIndexToFront(&quot;frame_Browse&quot;);
+    &#x2F;&#x2F;                        ShowStatusInfo(jsReplace(ART_MANY_FOUND, &quot;[%s]&quot;, jsFormatNumber(cnt, 0, -2, -2, -2)) + &quot; [&quot; + qM + &quot;]&quot;);
+    &#x2F;&#x2F;                    }
+
+} &#x2F;&#x2F;ParseSrvInfo
+
+
+&#x2F;**
+* Sätib Vaateala elemendi taustavärvi (jätab meelde, mis oli elemendi värv enne aktiivseks tegemist ja kui element enam aktiivne pole, paneb meelde jäetud värvi tagasi). 
+* 
+* @method SetValaElement
+*&#x2F;
+function SetValaElement() {
+    if (valaElement) {
+        valaElement.style.backgroundColor = valaElementBgc;
+    }
+    valaElement = valaDoc.getElementById(oClicked.id);
+    if (valaElement) {
+        valaElementBgc = valaElement.style.backgroundColor;
+        valaElement.style.backgroundColor = seldValaElementBgc;
+        valaElement.scrollIntoView();
+    }
+} &#x2F;&#x2F; SetValaElement
+
+
+&#x2F;**
+* Arvatavasti otsib põhielemente. TODO
+* 
+* @method getMajors
+* @param {Object} yldStruNode
+* @param {Object} editDomNode
+*&#x2F;
+function getMajors(yldStruNode, editDomNode) {
+    var useRequiredStr = yldStruNode.getAttribute(&quot;pr_sd:useRequired&quot;);
+    if (useRequiredStr) {
+        useRequiredStr = useRequiredStr.substr(1, useRequiredStr.length - 2); &#x2F;&#x2F; semikoolonid alguses ja lõpus
+        var useRequired = useRequiredStr.split(&quot;;&quot;);
+        for (var ix2 = 0; ix2 &lt; useRequired.length; ix2++) {
+            var yldStruAttr = yldStruNode.attributes.getNamedItem(useRequired[ix2]);
+            var uusAttr = oEditDOM.createAttributeNS(yldStruAttr.namespaceURI, useRequired[ix2]);
+            getReqValue(uusAttr, yldStruAttr);
+            &#x2F;&#x2F; Returns the removed attribute node or null if no attribute was removed !!
+            var oldAttr = editDomNode.attributes.setNamedItemNS(uusAttr);
+        }
+    }
+    if (yldStruNode.getAttribute(&quot;pr_sd:ct&quot;) != 2) { &#x2F;&#x2F; 1, 3, &#x27;&#x27;
+        getReqValue(editDomNode, yldStruNode);
+    }
+    &#x2F;&#x2F; XPathResult tüüpi, evaluate meetod
+    var majorElements = getXmlNodes(yldStruNode, &quot;*[@pr_sd:major = &#x27;1&#x27;]&quot;);
+    if (majorElements) {
+        var iter = majorElements.iterateNext();
+        while (iter) {
+            var frDocNode = editDomNode.appendChild(oEditDOM.createElementNS(DICURI, iter.nodeName));
+            getMajors(iter, frDocNode);
+            iter = majorElements.iterateNext();
+        }
+    }
+} &#x2F;&#x2F; getMajors
+
+
+
+&#x2F;**
+* Tegeleb klikkidega Toimetamisalal. Sarnane funktsioon Vaatealale on handleView.
+* 
+* @method handleEdit
+* @param {Object} thisEvent
+*&#x2F;
+function handleEdit(thisEvent) {
+
+    var thisTarget = thisEvent.target ? thisEvent.target : thisEvent.srcElement;
+    var oSrc = thisTarget;
+
+    &#x2F;&#x2F;parandamisel vaate stiilis:
+    &#x2F;&#x2F;entiteedid pannakase kaldkirjas, alakaareke mingi teise (MS Mincho) fondiga;
+    &#x2F;&#x2F;hiirega saab pihta ainult &quot;I&quot; - le, &quot;B&quot; - le või &quot;FONT&quot; - ile; osa spane on em teisendustest
+    if (oSrc.tagName == &quot;FONT&quot; || oSrc.tagName == &quot;B&quot; || oSrc.tagName == &quot;I&quot;) {
+        oSrc = oSrc.parentElement;
+    }
+
+    var tnode, tarr;
+
+    &#x2F;&#x2F;xsl1 - s ei ole LI-del id-sid, SP uuel toimetamisel (17juun11) on ja vaates tehakse halliks terve vastav &#x27;LI&#x27;
+    if (oSrc.tagName == &quot;SPAN&quot; || oSrc.tagName == &quot;LI&quot;) {
+        oClicked = oSrc;
+        if (oClicked.className == &quot;delatt&quot;) {
+            var attElement = oClicked.nextSibling;
+            var attId = attElement.id;
+            if (attId) {
+                var attXmlNode = getXmlSingleNode(oEditDOMRoot, attId);
+                if (attXmlNode) {
+                    var attrOwner = attXmlNode.ownerElement;
+                    attrOwner.removeAttributeNode(attXmlNode);
+                    setATTAPlokid(attrOwner);
+                    vaatedRefresh(2, true, true);
+                    return;
+                }
+            }
+        }
+        if (trueTalaClick &amp;&amp; oClicked.id.length &gt; 0) {
+            SetValaElement();
+        }
+        SetVars(thisEvent);
+        if (clEditable) {
+            SetEdits();
+        }
+    } else if (oSrc.tagName == &quot;UL&quot;) {
+        &#x2F;&#x2F;SP, 17juun11
+
+    } else if (oSrc.tagName == &quot;IMG&quot;) {
+        &#x2F;&#x2F;0 - creategrupp&#x2F;addgrupp&#x2F;addlisad&#x2F;dellisad ... kinniLahti ...;
+        &#x2F;&#x2F;1 - MIDA luua&#x2F;lisada (QN);
+        &#x2F;&#x2F;2 - rajaID;
+        tarr = oSrc.id.split(&quot;|&quot;);
+
+        var frdoc, frDocRoot, yldStruNode, lisatav;
+        var follNimed, refNode;
+
+        if (tarr[0] == &quot;creategrupp&quot; || tarr[0] == &quot;addgrupp&quot; || tarr[0] == &quot;addlisad&quot; || tarr[0] == &quot;dellisad&quot; || tarr[0] == &quot;addAttr&quot; || tarr[0] == &quot;delgrupp&quot; || tarr[0] == &quot;kinniLahti&quot; || tarr[0] == &quot;sndListen&quot;) {
+
+            tnode = getXmlSingleNode(oEditDOMRoot, tarr[2]);
+
+            if (tnode) {
+                if (tarr[0] == &quot;kinniLahti&quot;) {
+                } else if (tarr[0] == &quot;creategrupp&quot;) {
+                    follNimed = getFollowingSiblings(tarr[2], tarr[1]);
+                    if (follNimed != &quot;Ei saa&quot;) {
+                        if (follNimed.length &gt; 0) {
+                            refNode = getXmlSingleNode(tnode, follNimed);
+                        }
+                        if (yldStruDom.documentElement.getAttribute(&quot;pr_sd:ver&quot;) == &quot;2.0&quot;) {
+                            frdoc = oEditDOM.createDocumentFragment();
+                            frDocRoot = frdoc.appendChild(oEditDOM.createElementNS(DICURI, tarr[1]));
+                            yldStruNode = getXmlSingleNode(yldStruDom, &quot;.&#x2F;&#x2F;&quot; + tarr[1]);
+                            if (yldStruNode) {
+                                getMajors(yldStruNode, frDocRoot);
+                            }
+                            lisatav = frDocRoot;
+                        }
+                        if (lisatav) {
+                            tnode.insertBefore(lisatav, refNode);
+                            AddGruppChecks(lisatav);  &#x2F;&#x2F;@nrl, tähendusnumbrite ümberarvutused;
+                            setATTAPlokid(lisatav);
+                            vaatedRefresh(2, true, true);
+                        }
+                    }
+                } else if (tarr[0] == &quot;addgrupp&quot;) {
+                    refNode = tnode.nextSibling;
+                    if (yldStruDom.documentElement.getAttribute(&quot;pr_sd:ver&quot;) == &quot;2.0&quot;) {
+                        frdoc = oEditDOM.createDocumentFragment();
+                        frDocRoot = frdoc.appendChild(oEditDOM.createElementNS(DICURI, tnode.nodeName));
+                        yldStruNode = getXmlSingleNode(yldStruDom, &quot;.&#x2F;&#x2F;&quot; + tnode.nodeName);
+                        if (yldStruNode) {
+                            getMajors(yldStruNode, frDocRoot);
+                        }
+                        lisatav = frDocRoot;
+                    }
+                    if (lisatav) {
+                        tnode.parentNode.insertBefore(lisatav, refNode);
+                        AddGruppChecks(lisatav);  &#x2F;&#x2F;@nrl, tähendusnumbrite ümberarvutused;
+                        setATTAPlokid(lisatav);
+                        vaatedRefresh(2, true, true);
+                    }
+                } else if (tarr[0] == &quot;addlisad&quot;) {
+                    var olemas = &quot;;&quot;;
+                    var allElems = getXmlNodes(tnode, &quot;*&quot;);
+                    if (allElems) {
+                        var iter = allElems.iterateNext();
+                        while (iter) {
+                            olemas += iter.nodeName + &quot;;&quot;;
+                            iter = allElems.iterateNext();
+                        }
+                        if (yldStruDom.documentElement.getAttribute(&quot;pr_sd:ver&quot;) == &quot;2.0&quot;) {
+                            yldStruNode = getXmlSingleNode(yldStruDom, &quot;.&#x2F;&#x2F;&quot; + tnode.nodeName);
+                            &#x2F;&#x2F; [not(@pr_sd:ct = &#x27;2&#x27;)]
+                            var lisatavad = getXmlNodes(yldStruNode, &quot;*&quot;);
+                            if (lisatavad) {
+                                lisatav = lisatavad.iterateNext();
+                                while (lisatav) {
+                                    if (olemas.indexOf(&#x27;;&#x27; + lisatav.nodeName + &#x27;;&#x27;) &lt; 0) {
+                                        follNimed = getFollowingSiblings(tarr[2], lisatav.nodeName);
+                                        if (follNimed != &quot;Ei saa&quot;) {
+                                            refNode = null;
+                                            if (follNimed.length &gt; 0) {
+                                                refNode = getXmlSingleNode(tnode, follNimed);
+                                            }
+                                            var uus = oEditDOM.createElementNS(DICURI, lisatav.nodeName);
+                                            getMajors(lisatav, uus);
+                                            var lisatud = tnode.insertBefore(uus, refNode);
+                                        }
+                                    }
+                                    lisatav = lisatavad.iterateNext();
+                                }
+                                setATTAPlokid(tnode);
+                                vaatedRefresh(2, true, true);
+                            }
+                        }
+                    }
+                } else if (tarr[0] == &quot;dellisad&quot;) {
+                    var maha = getXmlSingleNode(tnode, &quot;*[normalize-space(.) = &#x27;&#x27;]&quot;);
+                    while (maha) {
+                        maha.parentNode.removeChild(maha);
+                        maha = getXmlSingleNode(tnode, &quot;*[normalize-space(.) = &#x27;&#x27;]&quot;);
+                    }
+                    setATTAPlokid(tnode);
+                    vaatedRefresh(2, true, true);
+                } else if (tarr[0] == &quot;delgrupp&quot;) {
+                    tnode.parentNode.removeChild(tnode);
+                    setATTAPlokid(tnode);
+                    vaatedRefresh(2, true, true);
+                } else if (tarr[0] == &quot;addAttr&quot;) {
+                    if (yldStruDom.documentElement.getAttribute(&quot;pr_sd:ver&quot;) == &quot;2.0&quot;) {
+                        yldStruNode = getXmlSingleNode(yldStruDom, &quot;.&#x2F;&#x2F;&quot; + tnode.nodeName);
+                        var yldStruAttr = yldStruNode.attributes.getNamedItem(tarr[1]);
+                        var uusAttr = oEditDOM.createAttributeNS(DICURI, tarr[1]);
+                        getReqValue(uusAttr, yldStruAttr);
+                        &#x2F;&#x2F; Returns the removed attribute node or null if no attribute was removed !!
+                        var oldAttr = tnode.attributes.setNamedItemNS(uusAttr);
+
+                        var tyybiAttrNimi = &quot;pr_sd:att_&quot; + tarr[1].replace(&quot;:&quot;, &quot;_&quot;) + &quot;_tn&quot;;
+                        var tyybiNimi = yldStruNode.getAttribute(tyybiAttrNimi);
+                        var tyybiQName = tyybiNimi.split(&quot;:&quot;);
+
+                        if (uusAttr.value == &#x27;&#x27; &amp;&amp; tyybiQName[0] == &quot;tyybid&quot;) {
+                            var loend;
+                            var tyybiFail = &quot;xsd&#x2F;&quot; + dic_desc + &quot;&#x2F;&quot; + dic_desc + &quot;_tyybid.xsd&quot;;
+                            var tyybidDom = IDD(&quot;File&quot;, tyybiFail, false, false, null);
+                            if (tyybidDom.evaluate) {
+                                var tyybiXPath = &quot;xs:simpleType[@name = &#x27;&quot; + tyybiQName[1] + &quot;&#x27;]&quot;
+                                var xpathResult = tyybidDom.evaluate(tyybiXPath, tyybidDom.documentElement, NSResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                                if (xpathResult.singleNodeValue) {
+                                    var tyybiNode = xpathResult.singleNodeValue;
+                                    try {
+                                        var enumIterator = tyybidDom.createNodeIterator(tyybiNode, NodeFilter.SHOW_ELEMENT, ElementCheckerXS, false);
+
+                                        loend = new Array();
+                                        var loendur = -1;
+
+                                        &#x2F;&#x2F; get the first matching node
+                                        var enumNode = enumIterator.nextNode();
+
+                                        while (enumNode) {
+
+                                            loendur += 1;
+
+                                            var enumValue = enumNode.getAttribute(&quot;value&quot;);
+                                            loend.push(enumValue);
+                                            enumNode = enumIterator.nextNode();
+                                        }
+                                    }
+                                    catch (e) {
+                                        &#x2F;&#x2F;        alert(&quot;Your browser does not support the createNodeIterator method!&quot;);
+                                        alert(e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;);
+                                        return;
+                                    }
+                                }
+                            }
+                            if (loendur == 0) {
+                                uusAttr.value = loend[0];
+                            }
+                        } &#x2F;&#x2F; if (uusAttr.value == &#x27;&#x27; &amp;&amp; tyybiQName[0] == &quot;tyybid&quot;) {
+                        setATTAPlokid(tnode);
+                        vaatedRefresh(2, true, true);
+                    } &#x2F;&#x2F; if (yldStruDom.documentElement.getAttribute(&quot;pr_sd:ver&quot;) == &quot;2.0&quot;) {
+                } else if (tarr[0] == &quot;sndListen&quot;) {
+                    &#x2F;&#x2F;                            var nX, nY;
+                    &#x2F;&#x2F;                            nX = event.clientX;
+                    &#x2F;&#x2F;                            nY = event.clientY - (div_ArtJWPlayerImage.style.pixelWidth &#x2F; 2); &#x2F;&#x2F; ico on ruudukujuline, height asemel width
+                    &#x2F;&#x2F;                    var jwpi = document.getElementById(&quot;div_ArtJWPlayerImage&quot;);
+                    &#x2F;&#x2F;                    jwpi.style.pixelLeft = 480;
+                    &#x2F;&#x2F;                    jwpi.style.pixelTop = 320;
+                    &#x2F;&#x2F;                    jwpi.style.display = &quot;&quot;;
+                    &#x2F;&#x2F;                    var flvFile = &quot;__sr&#x2F;&quot; + dic_desc + &quot;&#x2F;__heli&#x2F;&quot; + tnode.textContent;
+                    &#x2F;&#x2F;                        events: { onError: function (event) { sndError(event); }, onPlay: function (event) { sndStarted(event); }, onComplete: function () { sndCompleted(); } }
+                    &#x2F;&#x2F;                    var opts = {
+                    &#x2F;&#x2F;                        autostart: true,
+                    &#x2F;&#x2F;                        flashplayer: &quot;html&#x2F;jwplayer&#x2F;player.swf&quot;,
+                    &#x2F;&#x2F;                        file: flvFile,
+                    &#x2F;&#x2F;                        controlbar: &quot;none&quot;,
+                    &#x2F;&#x2F;                        icons: false,
+                    &#x2F;&#x2F;                        wmode: &quot;transparent&quot;,
+                    &#x2F;&#x2F;                        width: 0,
+                    &#x2F;&#x2F;                        height: 0
+                    &#x2F;&#x2F;                    };
+                    &#x2F;&#x2F;                    jwplayer(&quot;div_ArtJWPlayer&quot;).setup(opts);
+                }
+            } &#x2F;&#x2F; if (tnode) {
+        }
+    } else if (oSrc.tagName == &quot;A&quot;) {
+        window.open(oSrc.href, oSrc.target);
+        thisEvent.preventDefault();
+    }
+} &#x2F;&#x2F;handleEdit
+
+
+&#x2F;**
+*  Tühi funktsioon. Vaata kommentaari.
+* 
+* @method sndError
+* @param {Object} evnt
+*&#x2F;
+function sndError(evnt) {
+    &#x2F;&#x2F;    var jwpi = document.getElementById(&quot;div_ArtJWPlayerImage&quot;);
+    &#x2F;&#x2F;    jwpi.style.display = &quot;none&quot;;
+    &#x2F;&#x2F;    alert(evnt.message);
+}
+
+
+&#x2F;**
+*  Tühi funktsioon. Vaata kommentaari.
+* 
+* @method sndStarted
+* @param {Object} evnt
+*&#x2F;
+function sndStarted(evnt) {
+    &#x2F;&#x2F;    var jwpi = document.getElementById(&quot;div_ArtJWPlayerImage&quot;);
+    &#x2F;&#x2F;    jwpi.style.display = &quot;&quot;;
+    &#x2F;&#x2F;    alert(&#x27;started:\n&#x27; + evnt.oldstate);
+}
+
+
+&#x2F;**
+*  Tühi funktsioon. Vaata kommentaari.
+* 
+* @method sndCompleted
+*&#x2F;
+function sndCompleted() {
+    &#x2F;&#x2F;    var jwpi = document.getElementById(&quot;div_ArtJWPlayerImage&quot;);
+    &#x2F;&#x2F;    jwpi.style.display = &quot;none&quot;;
+}
+
+
+&#x2F;**
+*  Tegeleb klikkidega Vaatealal. Sarnane funktsioon Toimetamisalale on 
+* 
+* @method handleView
+* @param {Object} thisEvent
+*&#x2F;
+function handleView(thisEvent) {
+
+    if (valaElement) {
+        valaElement.style.backgroundColor = valaElementBgc;
+    }
+
+    var thisTarget = thisEvent.target ? thisEvent.target : thisEvent.srcElement;
+    var oSrc = thisTarget;
+
+    &#x2F;&#x2F;entiteedid pannakase kaldkirjas, alakaareke mingi teise (MS Mincho) fondiga;
+    &#x2F;&#x2F;hiirega saab pihta ainult &quot;I&quot; - le, &quot;B&quot; - le või &quot;FONT&quot; - ile; osa spane on em teisendustest
+    if (oSrc.tagName == &quot;FONT&quot; || oSrc.tagName == &quot;B&quot; || oSrc.tagName == &quot;I&quot; || oSrc.tagName == &quot;U&quot;) {
+        oSrc = oSrc.parentElement;
+    }
+
+    var elId, thisElement;
+    if (oSrc.tagName == &quot;A&quot;) {
+        elId = oSrc.parentElement.id; &#x2F;&#x2F;SPAN id, nt &quot;f:A[1]&#x2F;f:P[1]&#x2F;f:mvt[1]&#x2F;text()[1]&quot;;
+        thisEvent.preventDefault();
+        return; &#x2F;&#x2F; generaatoris ei kasutata &lt;A&gt;
+    } else {
+        elId = oSrc.id; &#x2F;&#x2F;SPAN id, nt &quot;f:A[1]&#x2F;f:P[1]&#x2F;f:mvt[1]&#x2F;text()[1]&quot;;
+    }
+    &#x2F;&#x2F;HTML:li
+    if (elId.substr(0, 5) == &quot;HTML:&quot;) {
+        elId = elId.substr(elId.indexOf(&quot;&#x2F;&quot;) + 1);
+    }
+
+    if (elId.length &gt; 0) {
+        thisElement = getXmlSingleNode(oEditDOMRoot, elId);
+    }
+
+    if (!thisElement) { &#x2F;&#x2F; nt pildid vaates on ilma ID-ta
+        if (oSrc.tagName != &quot;IMG&quot;)
+            return;
+    }
+
+    var msTekst = &quot;&quot;;
+    var tNoded, iter;
+    if (thisElement) { &#x2F;&#x2F;nt &quot;divFrameView&quot; ei ole
+        if (thisElement.nodeType == Node.TEXT_NODE) {
+            &#x2F;&#x2F; XPathResult tüüpi, evaluate meetod
+            tNoded = getXmlNodes(thisElement.parentNode, &quot;text()&quot;);
+            if (tNoded) {
+                iter = tNoded.iterateNext();
+                while (iter) {
+                    msTekst += getXmlString(iter);
+                    iter = tNoded.iterateNext();
+                }
+            }
+            thisElement = thisElement.parentNode;
+        } else if (thisElement.nodeType == Node.ATTRIBUTE_NODE) { &#x2F;&#x2F; ÕS 2006 mvt&#x2F;@kuhu
+            msTekst = thisElement.textContent;
+            thisElement = thisElement.ownerElement;
+        }
+    }
+
+    if (oSrc.tagName == &quot;SPAN&quot; &amp;&amp; oSrc.className.indexOf(&quot; lingike&quot;) &gt; -1) {
+
+        &#x2F;&#x2F;        if (salvestaJaKatkesta()) {
+        &#x2F;&#x2F;            return;
+        &#x2F;&#x2F;        }
+
+        &#x2F;&#x2F; kui aga klõpsamisel on vaja hoopis näidata pilti (its: iref&#x2F;@dst)
+        var href, fullHREF;
+        href = thisElement.getAttribute(DICPR + &quot;:dst&quot;);
+        if (href) {
+            fullHREF = asuKoht + &#x27;__sr&#x2F;&#x27; + dic_desc + &#x27;&#x2F;__pildid&#x2F;&#x27; + href;
+            window.open(fullHREF, &#x27;_blank&#x27;);
+            return;
+        }
+        &#x2F;&#x2F; its: stn&#x2F;@href
+        href = thisElement.getAttribute(DICPR + &quot;:href&quot;);
+        if (href) {
+            window.open(href, &#x27;_blank&#x27;);
+            return;
+        }
+
+
+        &#x2F;&#x2F; nt har viidatakse artiklis &#x27;performance&#x27; märksõnale &#x27;happening&#x27;, mis on tsitaatsõna (liik=&#x27;z&#x27;)
+        &#x2F;&#x2F; teistes aga vsl: &#x27;pentaad&#x27; -&gt; &#x27;pent-&#x27;
+
+        var qM = &quot;MySql&quot;;
+        if (thisEvent.ctrlKey) {
+            qM = &quot;XML&quot;;
+        }
+
+        sQryInfo = jsTrim(msTekst);
+
+        var kfAttr, gAttr;
+        kfAttr = thisElement.getAttribute(DICPR + &quot;:KF&quot;); &#x2F;&#x2F; # &quot;ief1&quot; jne
+        if (!kfAttr) {
+            kfAttr = thisElement.getAttribute(DICPR + &quot;:aKF&quot;);
+        }
+        gAttr = thisElement.getAttribute(DICPR + &quot;:g&quot;);
+        if (!gAttr) {
+            gAttr = thisElement.getAttribute(DICPR + &quot;:aG&quot;);
+        }
+
+        var elpred, arttingimus, art_xpath, elm_xpath, evPath, pQrySql;
+        var withCase, withSymbols;
+        var cmdXml, cmdXmlDom;
+
+        &#x2F;&#x2F;combo valikust saadud andmed ...;
+        if (kfAttr &amp;&amp; gAttr) {
+            sCmdId = &quot;BrowseRead&quot;;
+
+            cmdXml = &quot;&lt;prm&gt;&quot; +
+                             &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+                             &quot;&lt;vol&gt;&quot; + kfAttr + &quot;&lt;&#x2F;vol&gt;&quot; +
+                             &quot;&lt;nfo&gt;&quot; + sQryInfo + &quot;&lt;&#x2F;nfo&gt;&quot; +
+                             &quot;&lt;G&gt;&quot; + gAttr + &quot;&lt;&#x2F;G&gt;&quot; +
+                             &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+                         &quot;&lt;&#x2F;prm&gt;&quot;;
+
+            cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+            StartOperation(cmdXmlDom);
+
+        } else {
+
+            var currentVolId = dhxBar.getListOptionSelected(&quot;volSelect&quot;);
+
+            &#x2F;&#x2F;            var i, vahemik;
+            &#x2F;&#x2F;            &#x2F;&#x2F;vajalik köide paika!;
+            &#x2F;&#x2F;            &#x2F;&#x2F;(vali &quot;Kõik köited&quot;);
+            &#x2F;&#x2F;            &#x2F;&#x2F;(sel_Vol.selectedIndex = sel_Vol.options.length - 2);
+            &#x2F;&#x2F;            if (dic_vols_count &gt; 1) {
+            &#x2F;&#x2F;                var oConfigDOM, vollid, otsad;
+            &#x2F;&#x2F;                oConfigDOM = IDD(&quot;File&quot;, &quot;shsconfig_&quot; + dic_desc + &quot;.xml&quot;, false, false, null);
+            &#x2F;&#x2F;                if (oConfigDOM.parseError.errorCode != 0) {
+            &#x2F;&#x2F;                    ShowXMLParseError(oConfigDOM);
+            &#x2F;&#x2F;                    return;
+            &#x2F;&#x2F;                }
+            &#x2F;&#x2F;                vollid = oConfigDOM.documentElement.selectNodes(&quot;vols&#x2F;vol&quot;);
+            &#x2F;&#x2F;                for (i = 0; i &lt; vollid.length; i++) {
+            &#x2F;&#x2F;                    vahemik = vollid[i].text;
+            &#x2F;&#x2F;                    &#x2F;&#x2F; PSV teine köide &#x27;AB&#x27; artiklid: &lt;vol nr=&quot;2&quot;&gt;AB: A - Y&lt;&#x2F;vol&gt;
+            &#x2F;&#x2F;                    if (vahemik.indexOf(&quot;:&quot;) &gt; -1) {
+            &#x2F;&#x2F;                        vahemik = jsTrim(vahemik.substr(vahemik.indexOf(&quot;:&quot;) + 1));
+            &#x2F;&#x2F;                    }
+            &#x2F;&#x2F;                    otsad = vahemik.split(&quot; - &quot;);
+            &#x2F;&#x2F;                    if (((jsStrComp(jsLeft(RemoveSymbols(msTekst, &quot; &quot;), otsad[0].length), otsad[0], 1) &gt;= 0) &amp;&amp; (jsStrComp(jsLeft(RemoveSymbols(msTekst, &quot; &quot;), otsad[1].length), otsad[1], 1) &lt;= 0))) {
+            &#x2F;&#x2F;                        sel_Vol.selectedIndex = i;
+            &#x2F;&#x2F;                        break;
+            &#x2F;&#x2F;                    }
+            &#x2F;&#x2F;                }
+            &#x2F;&#x2F;                oConfigDOM = null;
+            &#x2F;&#x2F;            }
+
+            var vHomTing, homNrNode, mySqlMsAttCond;
+            vHomTing = &quot;&quot;;
+            mySqlMsAttCond = &quot;&quot;;
+            &#x2F;&#x2F;&lt;mvt&gt;  -viide märksõnale; &lt;lvt&gt; - SP-s viide pereliikmele;
+            homNrNode = thisElement.getAttribute(DICPR + &quot;:iv&quot;);
+            if (!homNrNode) {
+                homNrNode = getXmlSingleNode(thisElement, DICPR + &quot;:vhom&quot;);
+                if (homNrNode)
+                    homNrNode = homNrNode.textContent;
+            }
+            if (!homNrNode) {
+                &#x2F;&#x2F;sõnaperedes ja SS1-s &lt;mvt&gt; küljes;
+                homNrNode = thisElement.getAttribute(DICPR + &quot;:i&quot;);
+            }
+            if (homNrNode) {
+                vHomTing = &quot;[@&quot; + DICPR + &quot;:i = &#x27;&quot; + homNrNode + &quot;&#x27;]&quot;;
+            }
+
+            var qn, otsitav = msTekst;
+            if (thisElement.localName == &quot;lvt&quot;) { &#x2F;&#x2F; sp_ viide pereliikmele
+                qn = DICPR + &quot;:ml&quot;;
+                if (vHomTing.length &gt; 0) {
+                    &#x2F;&#x2F;lähtutud SP pereliikmete @i, temale viidatakse &lt;lvt&gt; abil;
+                    mySqlMsAttCond = &quot; AND atribuudid_&quot; + dic_desc + &quot;.nimi = &#x27;&quot; + DICPR + &quot;:i&#x27;&quot; + &quot; AND atribuudid_&quot; + dic_desc + &quot;.val = &#x27;&quot; + homNrNode + &quot;&#x27;&quot; + &quot; AND atribuudid_&quot; + dic_desc + &quot;.elG = elemendid_&quot; + dic_desc + &quot;.elG&quot;;
+                }
+            } else if (thisElement.baseName == &quot;mstvt&quot;) { &#x2F;&#x2F; its viide mõistele
+                qn = DICPR + &quot;:Gmst&quot;;
+                otsitav = thisElement.getAttribute(DICPR + &quot;:Gmst&quot;);
+            } else {
+                qn = qn_ms;
+                if (vHomTing.length &gt; 0) {
+                    mySqlMsAttCond = &quot; AND msid.ms_att_i = &quot; + homNrNode;
+                }
+            }
+
+            if (!otsitav)
+                return;
+
+            &#x2F;&#x2F;tuleb märkidega ja tõstutundlik otsing (Liivi-saksas tõstutundetu);
+            var srchPtrn = getSrPn2(otsitav, &quot;XML&quot;)
+
+            withSymbols = &quot;1&quot;;
+            withCase = &quot;1&quot;;
+            elpred = &quot;[. = &quot; + GCV(otsitav, &quot;&quot;, 2) + &quot;]&quot;;
+            if (dic_desc == &quot;ldw&quot;) {
+                withCase = &quot;0&quot;;
+                elpred = &quot;[al_p:srch(.) &gt; 0]&quot;;
+            }
+
+            arttingimus = &quot;.&#x2F;&#x2F;&quot; + qn + vHomTing + elpred;
+            art_xpath = default_query.substr(0, default_query.indexOf(&quot;&#x2F;&quot;)) + &quot;[&quot; + arttingimus + &quot;]&quot;;
+            elm_xpath = arttingimus;
+            evPath = &quot;.&#x2F;&#x2F;&quot; + qn + vHomTing + &quot;&#x2F;text()&quot;;
+
+            pQrySql = getSqlQuery(qn, otsitav, true, withSymbols, withCase, evPath, &quot;&quot;, mySqlMsAttCond);
+
+            sCmdId = &quot;ClientRead&quot;;
+
+            cmdXml = &quot;&lt;prm&gt;&quot; +
+                                        &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+                                        &quot;&lt;vol&gt;&quot; + currentVolId + &quot;&lt;&#x2F;vol&gt;&quot; +
+                                        &quot;&lt;nfo&gt;&quot; + sQryInfo + &quot;&lt;&#x2F;nfo&gt;&quot; +
+                                        &quot;&lt;axp&gt;&quot; + art_xpath + &quot;&lt;&#x2F;axp&gt;&quot; +
+                                        &quot;&lt;exp&gt;&quot; + elm_xpath + &quot;&lt;&#x2F;exp&gt;&quot; +
+                                        &quot;&lt;wC&gt;&quot; + withCase + &quot;&lt;&#x2F;wC&gt;&quot; +
+                                        &quot;&lt;wS&gt;&quot; + withSymbols + &quot;&lt;&#x2F;wS&gt;&quot; +
+                                        &quot;&lt;fSrP&gt;&quot; + srchPtrn + &quot;&lt;&#x2F;fSrP&gt;&quot; +
+                                        &quot;&lt;qn&gt;&quot; + qn + &quot;&lt;&#x2F;qn&gt;&quot; +
+                                        &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+                                        &quot;&lt;pQrySql&gt;&quot; + pQrySql + &quot;&lt;&#x2F;pQrySql&gt;&quot; +
+                                     &quot;&lt;&#x2F;prm&gt;&quot;;
+
+            cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+            StartOperation(cmdXmlDom);
+        }
+
+    } else if (oSrc.tagName == &quot;SPAN&quot;) {
+        if (elId.length &gt; 0) {
+            valaElement = oSrc;
+
+            valaElementBgc = valaElement.style.backgroundColor;
+            valaElement.style.backgroundColor = seldValaElementBgc;
+
+            talaElement = talaDoc.getElementById(elId);
+            if (talaElement) {
+                talaElement.scrollIntoView();
+                talaElement.focus();
+                trueTalaClick = false;
+                talaElement.click();
+                trueTalaClick = true;
+            }
+        }
+    } else if (oSrc.tagName == &quot;IMG&quot;) {
+        if (oSrc.id == &quot;exit_copy&quot;) {
+        }
+        else {
+            window.open(oSrc.src, &#x27;_blank&#x27;);
+        }
+    }
+
+} &#x2F;&#x2F;handleView
+
+
+&#x2F;**
+*  Arvatavasti tegeleb klikkidega Vaatealal.
+* 
+* @method handleView
+* @param {Object} thisEvent
+*&#x2F;
+function handleContext(event) {
+    &#x2F;&#x2F;    if (event.target.tagName == &quot;DIV&quot;) {
+    &#x2F;&#x2F;        if (event.target.getAttribute(&quot;title&quot;) == &quot;MySQL | XML&quot; || event.target.parentElement.getAttribute(&quot;title&quot;) == &quot;MySQL | XML&quot;) {
+    &#x2F;&#x2F;            otsing(&quot;XML&quot;);
+    &#x2F;&#x2F;        }
+    &#x2F;&#x2F;    }
+    event.preventDefault();
+} &#x2F;&#x2F; handleContext
+
+
+
+&#x2F;**
+*  Brauseri akna suuruse muutmise korral kaasajastab komponentide suuruse.
+* 
+* @method bodyOnResize
+*&#x2F;
+function bodyOnResize() {
+    dhxLayout.setSizes();
+    dhxAccord.setSizes();
+    artLayout.setSizes();
+} &#x2F;&#x2F; bodyOnResize
+
+
+&#x2F;**
+*  Seadistab Toimetamisala (taustavärv, tala.css, font, ...). (TODO kus seda kutsutakse?)
+* 
+* @method setTala
+*&#x2F;
+function setTala() {
+    if (!talaDoc) {
+        var ifr = artLayout.cells(&quot;a&quot;).getFrame();
+        var ifrDoc;
+        if (_isIE) {
+            ifrDoc = ifr.contentWindow.document;
+        } else {
+            ifrDoc = ifr.contentDocument;
+        }
+        ifrDoc.body.style.backgroundColor = bgColor;
+        talaDiv = ifrDoc.getElementById(&quot;talaDiv&quot;);
+
+        if (editFont) {
+            talaDiv.style.fontFamily = editFont;
+        }
+        if (editFontSize) {
+            talaDiv.style.fontSize = editFontSize + &#x27;pt&#x27;;
+        }
+
+        talaCss = ifrDoc.getElementById(&quot;talaCss&quot;);
+        var d = new Date();
+        &#x2F;&#x2F; The getTime method returns an integer value representing the number of milliseconds between midnight, 
+        &#x2F;&#x2F; January 1, 1970 and the time value in the Date object
+        var t = Math.floor(d.getTime() &#x2F; 1000);
+        talaCss.setAttribute(&quot;href&quot;, &quot;css&#x2F;gendEdit_&quot; + dic_desc + &quot;.css?p=&quot; + t);
+
+        talaDoc = ifrDoc;
+    }
+} &#x2F;&#x2F; setTala
+
+
+&#x2F;**
+*  Seadistab Vaateala (taustavärv, vala.css, font, ...). (TODO kus seda kutsutakse?)
+* 
+* @method setVala
+*&#x2F;
+function setVala() {
+    if (!valaDoc) {
+        var ifr = artLayout.cells(&quot;b&quot;).getFrame();
+        var ifrDoc;
+        if (_isIE) {
+            ifrDoc = ifr.contentWindow.document;
+        } else {
+            ifrDoc = ifr.contentDocument;
+        }
+        ifrDoc.body.style.backgroundColor = bgColor;
+        valaDiv = ifrDoc.getElementById(&quot;valaDiv&quot;);
+
+        if (viewFont) {
+            valaDiv.style.fontFamily = viewFont;
+        }
+        if (viewFontSize) {
+            valaDiv.style.fontSize = viewFontSize + &#x27;pt&#x27;;
+        }
+
+        valaCss = ifrDoc.getElementById(&quot;valaCss&quot;);
+        var d = new Date();
+        &#x2F;&#x2F; The getTime method returns an integer value representing the number of milliseconds between midnight, 
+        &#x2F;&#x2F; January 1, 1970 and the time value in the Date object
+        var t = Math.floor(d.getTime() &#x2F; 1000);
+        valaCss.setAttribute(&quot;href&quot;, &quot;css&#x2F;gendView_&quot; + dic_desc + &quot;.css?p=&quot; + t);
+
+        valaDoc = ifrDoc;
+    }
+} &#x2F;&#x2F; setVala
+
+
+&#x2F;**
+*  Teeb XML prefiksist nimeruumi URI.
+* 
+* @method NSResolver
+* @param {String} nsPrefix
+*&#x2F;
+function NSResolver(nsPrefix) {
+    if (nsPrefix == DICPR) {
+        return DICURI;
+    } else if (nsPrefix == SDPR) {
+        return SDURI;
+    } else if (nsPrefix == NS_XS_PR) {
+        return NS_XS;
+    } else if (nsPrefix == &quot;xml&quot;) {
+        return NS_XML;
+    } else if (nsPrefix == NS_XSL_PR) {
+        return NS_XSL;
+    }
+    return null;
+}
+
+
+&#x2F;**
+*  Toimetamisala abifunktsioon toimetamisel andmete salvestasmiseks. Peaks tulema blurri korral. Kutsutakse välja funktsioonis handleEdit.
+* 
+* @method SetVars
+* @param {Object} currEvent
+*&#x2F;
+function SetVars(currEvent) {
+
+    scv = oClicked.textContent;
+
+    elemlang = oClicked.lang;
+
+    nodePath = oClicked.id;
+    if (nodePath.substr(0, 5) == &quot;HTML:&quot;) {
+        nodePath = nodePath.substr(nodePath.indexOf(&quot;&#x2F;&quot;) + 1);
+    }
+
+    document.getElementById(&quot;spnNodeXPath&quot;).innerHTML = nodePath;
+
+    var tarr = oClicked.className.split(&quot; &quot;);
+    &#x2F;&#x2F;&quot;ehitatud&quot; elementidel on struktuur, tühja koha klikkamine ei tohi pahandusi tekitada
+    &#x2F;&#x2F;className peab alati koosnema vähemalt 3-st
+    if (tarr.length &gt; 2) {
+        clType = tarr[0].substr(0, 2);  &#x2F;&#x2F;et, en, at jt;
+    } else {
+        clType = &quot;&quot;;
+        clEditable = false;
+        clickedNode = null;
+        selectedNode = null
+        fatherNode = null;
+        snQName = &quot;&quot;;
+        return;
+    }
+
+
+    &#x2F;&#x2F;clickedNode mõte on eristada #text erinevaid tükke elementide sees
+
+    &#x2F;&#x2F;väärtuse klikkamisel on:
+    &#x2F;&#x2F;elemendi teksti korral on clickedNode-iks #text ning selectedNode-ks element ise
+    &#x2F;&#x2F;atribuudi teksti korral on nii clickedNode-iks kui ka selectedNode-ks atribuut ise
+    &#x2F;&#x2F;kommentaari teksti korral on clickedNode-iks #comment ning selectedNode-ks element, milles kommentaar paikneb
+
+    &#x2F;&#x2F;nime klikkamisel on:
+    &#x2F;&#x2F;nii elemendi kui ka atribuudi (praegu - 20mai 2006 - pole) nime korral on clickedNode-ks ja selectedNode-ks
+    &#x2F;&#x2F;element või atribuut ise
+
+    &#x2F;&#x2F;fatherNode on:
+    &#x2F;&#x2F;elemendi korral elemendi parentElement
+    &#x2F;&#x2F;atribuudi korral element, millele atribuut kuulub
+
+    var xmlLangNode;
+    if (nodePath != &quot;&quot;) { &#x2F;&#x2F;&#x27;nt ec (&quot;element create&quot;) korral = &quot;&quot;
+
+        if (oEditDOM.evaluate) {
+            var xpathResult = oEditDOM.evaluate(nodePath, oEditDOMRoot, NSResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+            &#x2F;&#x2F; while (param = params.iterateNext())
+            if (xpathResult.singleNodeValue) {
+                clickedNode = xpathResult.singleNodeValue;
+                if (clickedNode.nodeType == Node.TEXT_NODE) {
+                    selectedNode = clickedNode.parentNode;
+                    fatherNode = selectedNode.parentNode;
+                    xmlLangNode = selectedNode;
+                } else if (clickedNode.nodeType == Node.ATTRIBUTE_NODE) {
+                    selectedNode = clickedNode;
+                    fatherNode = selectedNode.ownerElement;
+                    xmlLangNode = fatherNode;
+                } else if (clickedNode.nodeType == Node.ELEMENT_NODE) {
+                    selectedNode = clickedNode;
+                    fatherNode = selectedNode.parentNode;
+                    xmlLangNode = selectedNode;
+                }
+                &#x2F;&#x2F;                if (!elemlang) {
+                &#x2F;&#x2F;                    while (xmlLangNode) {
+                &#x2F;&#x2F;                        elemlang = xmlLangNode.getAttribute(&quot;xml:lang&quot;);
+                &#x2F;&#x2F;                        if (elemlang) {
+                &#x2F;&#x2F;                            break;
+                &#x2F;&#x2F;                        }
+                &#x2F;&#x2F;                        xmlLangNode = xmlLangNode.parentNode;
+                &#x2F;&#x2F;                    }
+                &#x2F;&#x2F;                }
+                snQName = selectedNode.nodeName;
+            }
+        }
+
+        &#x2F;&#x2F;        &#x2F;&#x2F;viga juhul, kui clickedNode on null, nt ANY sees mitte ettenähtud element ??;
+        &#x2F;&#x2F;        clickedNode = oEditDOMRoot.selectSingleNode(nodePath);
+        &#x2F;&#x2F;        if ((clickedNode.nodeType == NODE_TEXT || clickedNode.nodeType == NODE_COMMENT || clickedNode.nodeType == NODE_CDATA_SECTION)) {
+        &#x2F;&#x2F;            selectedNode = clickedNode.parentNode;
+        &#x2F;&#x2F;        } else {
+        &#x2F;&#x2F;            selectedNode = clickedNode;
+        &#x2F;&#x2F;        }
+        &#x2F;&#x2F;        fatherNode = selectedNode.selectSingleNode(&quot;..&quot;); &#x2F;&#x2F;&#x27;atribuudil ei ole parentNode-t
+
+        &#x2F;&#x2F;        try {
+        &#x2F;&#x2F;            &#x2F;&#x2F;viga juhul, kui elementi skeemis pole ...;
+        &#x2F;&#x2F;            snDecl = oXmlSc.getDeclaration(selectedNode);
+        &#x2F;&#x2F;            if (!(snDecl.namespaceURI == &quot;&quot;)) {
+        &#x2F;&#x2F;                sPr = oXmlNsm.getPrefixes(snDecl.namespaceURI).item(0);
+        &#x2F;&#x2F;                if ((sPr == &quot;&quot;)) {
+        &#x2F;&#x2F;                    snQName = snDecl.name;
+        &#x2F;&#x2F;                } else {
+        &#x2F;&#x2F;                    snQName = sPr + &quot;:&quot; + snDecl.name;
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            } else {
+        &#x2F;&#x2F;                snQName = snDecl.name;
+        &#x2F;&#x2F;            }
+        &#x2F;&#x2F;            if ((snDecl.itemType == SOMITEM_ELEMENT)) {
+        &#x2F;&#x2F;                xsdPath = &quot;.&#x2F;&#x2F;&quot; + NS_XS_PR + &quot;:element[@name=&#x27;&quot; + snDecl.name + &quot;&#x27;]&#x2F;&quot; + NS_XS_PR + &quot;:annotation&#x2F;&quot; + NS_XS_PR + &quot;:documentation[@xml:lang=&#x27;&quot; + sAppLang + &quot;&#x27;]&quot;;
+        &#x2F;&#x2F;            } else if ((snDecl.itemType == SOMITEM_ATTRIBUTE)) {
+        &#x2F;&#x2F;                xsdPath = &quot;.&#x2F;&#x2F;&quot; + NS_XS_PR + &quot;:attribute[@name=&#x27;&quot; + snDecl.name + &quot;&#x27;]&#x2F;&quot; + NS_XS_PR + &quot;:annotation&#x2F;&quot; + NS_XS_PR + &quot;:documentation[@xml:lang=&#x27;&quot; + sAppLang + &quot;&#x27;]&quot;;
+        &#x2F;&#x2F;            }
+        &#x2F;&#x2F;            xsdNode = oXsdDOM.documentElement.selectSingleNode(xsdPath);
+        &#x2F;&#x2F;            if (!(xsdNode == null)) {
+        &#x2F;&#x2F;                cmHeading = jsReplace(jsTrim(xsdNode.text), &quot;;&quot;, &quot;&quot;);
+        &#x2F;&#x2F;            } else {
+        &#x2F;&#x2F;                cmHeading = snQName;
+        &#x2F;&#x2F;            }
+        &#x2F;&#x2F;        }
+        &#x2F;&#x2F;        catch (e) {
+        &#x2F;&#x2F;            snDecl = null;
+        &#x2F;&#x2F;            snQName = clickedNode.nodeName;
+        &#x2F;&#x2F;            cmHeading = snQName;
+        &#x2F;&#x2F;        }
+
+        &#x2F;&#x2F;        snKirjeldavQName = cmHeading + &quot; (&quot;;
+        &#x2F;&#x2F;        if ((snDecl.itemType == SOMITEM_ATTRIBUTE)) {
+        &#x2F;&#x2F;            snKirjeldavQName = snKirjeldavQName + &quot;@&quot;;
+        &#x2F;&#x2F;        }
+        &#x2F;&#x2F;        snKirjeldavQName = snKirjeldavQName + snQName + &quot;)&quot;
+
+        &#x2F;&#x2F;        try {
+        &#x2F;&#x2F;            &#x2F;&#x2F;juhul, kui elementi skeemis pole ...;
+        &#x2F;&#x2F;            pnDecl = oXmlSc.getDeclaration(fatherNode);
+        &#x2F;&#x2F;        }
+        &#x2F;&#x2F;        catch (e) {
+        &#x2F;&#x2F;            pnDecl = null;
+        &#x2F;&#x2F;        }
+
+        &#x2F;&#x2F;        if ((clType == &quot;en&quot; || clType == &quot;an&quot;)) {
+        &#x2F;&#x2F;            cmHeading = &quot;&#x27;&quot; + cmHeading + &quot;&#x27;&quot;;
+        &#x2F;&#x2F;        } else if ((clType == &quot;et&quot; || clType == &quot;ct&quot;)) {
+        &#x2F;&#x2F;            cmHeading = &quot;&#x27;&quot; + cmHeading + &quot;&#x27; &quot; + jsMid(nodePath, nodePath.lastIndexOf(&quot;&#x2F;&quot;) + 1);
+        &#x2F;&#x2F;        } else if ((clType == &quot;at&quot;)) {
+        &#x2F;&#x2F;            cmHeading = &quot;&#x27;@&quot; + cmHeading + &quot;&#x27; &quot; + VALUE_WORD;
+        &#x2F;&#x2F;        }
+        &#x2F;&#x2F;        spn_NodeInfo.title = &quot;[&quot; + oClicked.tagName + &quot;: &quot; + snKirjeldavQName + &quot;]: lang: &#x27;&quot; + elemlang + &quot;&#x27;; className: &#x27;&quot; + oClicked.className + &quot;&#x27;; nodeType: &quot; + clickedNode.nodeType + &quot; (&quot; + clickedNode.nodeTypeString + &quot;)&quot;
+
+    } else { &#x2F;&#x2F;nt ec (&quot;element create&quot;) korral = &quot;&quot;;
+        clickedNode = null;
+        selectedNode = null
+        fatherNode = null;
+        snQName = &quot;&quot;;
+        return;
+    }
+
+    var elemNoEditOtsitav, attrNoEditOtsitav;
+    if (neElems.indexOf(&quot;&#x2F;&quot;) &gt; -1) {
+        elemNoEditOtsitav = fatherNode.nodeName + &quot;&#x2F;&quot; + selectedNode.nodeName;
+    } else {
+        elemNoEditOtsitav = selectedNode.nodeName;
+    }
+    if (neAttribs.indexOf(&quot;&#x2F;&quot;) &gt; -1) {
+        attrNoEditOtsitav = fatherNode.nodeName + &quot;&#x2F;@&quot; + selectedNode.nodeName;
+    } else {
+        attrNoEditOtsitav = selectedNode.nodeName;
+    }
+    clEditable = false;
+    if (clickedNode) {
+        if (clickedNode.nodeType == Node.TEXT_NODE || clickedNode.nodeType == Node.ATTRIBUTE_NODE) {
+            if (tarr[2] == &quot;edit&quot;) {
+                clEditable = true;
+            }
+            if (clickedNode.nodeType == Node.TEXT_NODE) {
+                if (neElems.indexOf(&quot;;&quot; + elemNoEditOtsitav + &quot;;&quot;) &gt; -1) {
+                    clEditable = false;
+                }
+            } else if (clickedNode.nodeType == Node.ATTRIBUTE_NODE) {
+                if (neAttribs.indexOf(&quot;;&quot; + attrNoEditOtsitav + &quot;;&quot;) &gt; -1) {
+                    clEditable = false;
+                }
+            }
+            if (currEvent.ctrlKey &amp;&amp; eeLexAdmin.indexOf(&quot;;&quot; + sUsrName + &quot;;&quot;) &gt; -1) {
+                clEditable = true;
+            }
+        }
+    }
+
+} &#x2F;&#x2F;SetVars
+
+
+
+
+&#x2F;**
+* Toimetamisala abifunktsioon. Teeb toimetamiseks kasti. Kutsutakse välja funktsioonis handleEdit. TODO
+* 
+* @method SetEdits
+*&#x2F;
+function SetEdits() {
+    var cee = oClicked;
+
+    oClickedBorder = oClicked.style.border;
+    oClicked.style.border = &quot;red 2px solid&quot;;
+
+    &#x2F;&#x2F;mT - meedia tüüp
+    var mT = &#x27;&#x27;;
+
+    if (selectedNode.nodeType == Node.ELEMENT_NODE) {
+        if (snQName != &quot;x:link&quot;) { &#x2F;&#x2F; its::&lt;link&gt; elemendil on küll @mT, kuid parandada tuleb @href ennast
+            mT = selectedNode.getAttribute(DICPR + &quot;:mT&quot;); &#x2F;&#x2F;&#x27;Pärtel Lippus - foneetika terminite sõnastik, pildifail;
+            if (!mT) {
+                mT = &quot;&quot;;
+            }
+        }
+    } else if (selectedNode.nodeType == Node.ATTRIBUTE_NODE) { &#x2F;&#x2F; &#x27;its&#x27; link&#x2F;@href
+        &#x2F;&#x2F;        if (selectedNode.baseName == &#x27;href&#x27;) {
+        &#x2F;&#x2F;            mT = fatherNode.getAttribute(DICPR + &quot;:mT&quot;);
+        &#x2F;&#x2F;        }
+    }
+
+    if (mT == &quot;&quot;) {
+        if (snQName == &quot;n:aa&quot;) { &#x2F;&#x2F;&#x27;Eesti kohanimeraamat: kirjandus; teos: autor aasta;
+            mT = &quot;pikkLoend&quot;;
+        } else if (snQName == &quot;x:stn&quot;) { &#x2F;&#x2F; its: standard
+            mT = &quot;pikkLoend&quot;;
+        } else if (snQName == &quot;c:vbf&quot;) { &#x2F;&#x2F;&#x27;põhisõnavara sõnastik; viipe fail;
+            mT = &quot;flashPlayer&quot;;
+        } else if (snQName == &quot;x:pilt&quot;) { &#x2F;&#x2F;&#x27;its pilt &lt;pilt&gt;
+            mT = &quot;flashPlayerImage&quot;;
+        } else if (snQName == &quot;x:dst&quot;) { &#x2F;&#x2F;&#x27;its: link pildile iref&#x2F;@dst
+            mT = &quot;flashPlayerImage&quot;;
+        }
+    } else {
+        if (mT == &quot;img&quot;) { &#x2F;&#x2F;&#x27;pilt;
+            mT = &quot;flashPlayerImage&quot;;
+        } else if (mT == &quot;f?v&quot;) {
+            mT = &quot;flashPlayer&quot;;
+        } else if (mT == &quot;snd&quot;) {
+            mT = &quot;flashPlayerSound&quot;;
+        }
+    }
+
+    if (!trueTalaClick) {
+        if (mT) {
+            oClicked.style.border = oClickedBorder
+            return;
+        }
+    }
+
+
+    var yldStruNode, yldStruNodePath, tyybiNimi, xpathResult;
+    yldStruNodePath = nodePath.replace(&#x2F;(\[\d+\])&#x2F;g, &quot;&quot;);
+    if (yldStruNodePath.substr(yldStruNodePath.lastIndexOf(&quot;&#x2F;&quot;)) == &quot;&#x2F;text()&quot;) {
+        &#x2F;&#x2F; yldStru - st saame leida elemente ja atribuute
+        yldStruNodePath = yldStruNodePath.substr(0, yldStruNodePath.lastIndexOf(&quot;&#x2F;&quot;));
+    }
+    if (yldStruDom.evaluate) {
+        xpathResult = yldStruDom.evaluate(yldStruNodePath, yldStruDom.documentElement, NSResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        if (xpathResult.singleNodeValue) {
+            yldStruNode = xpathResult.singleNodeValue;
+            if (yldStruNode.nodeType == Node.ELEMENT_NODE) {
+                var it = yldStruNode.getAttribute(&quot;pr_sd:it&quot;);
+                if (it == SOMITEM_SIMPLETYPE) { &#x2F;&#x2F; 8704
+                    tyybiNimi = yldStruNode.getAttribute(&quot;pr_sd:tn&quot;);
+                } else if (it == SOMITEM_COMPLEXTYPE) { &#x2F;&#x2F; 9216
+                    var ct = yldStruNode.getAttribute(&quot;pr_sd:ct&quot;);
+                    if (ct == SCHEMACONTENTTYPE_TEXTONLY) { &#x2F;&#x2F; 1
+                        tyybiNimi = yldStruNode.getAttribute(&quot;pr_sd:tn&quot;);
+                    } else if (ct == SCHEMACONTENTTYPE_MIXED) { &#x2F;&#x2F; 3
+                        tyybiNimi = &quot;xs:string&quot;;
+                    }
+                } else { &#x2F;&#x2F; kõik, mis eraldi tüübiga, on ka märgitud tüübinimega (xs:string nt)
+                    tyybiNimi = yldStruNode.getAttribute(&quot;pr_sd:tn&quot;);
+                }
+            }
+            else if (yldStruNode.nodeType == Node.ATTRIBUTE_NODE) {
+                var tyybiAttrNimi = &quot;pr_sd:att_&quot; + yldStruNode.nodeName.replace(&quot;:&quot;, &quot;_&quot;) + &quot;_tn&quot;;
+                tyybiNimi = yldStruNode.ownerElement.getAttribute(tyybiAttrNimi);
+            }
+        }
+    }
+
+    if (tyybiNimi) {
+
+        var smdArgs, retVal;
+        var opts = &quot;&quot;;
+        var seldInd = -1;
+
+        var tyybiQName = tyybiNimi.split(&quot;:&quot;);
+
+        var tyybiFail = &quot;xsd&#x2F;&quot; + dic_desc + &quot;&#x2F;&quot; + dic_desc + &quot;_tyybid.xsd&quot;;
+
+        if (mT == &quot;pikkLoend&quot; &amp;&amp; tyybiQName[0] == &quot;tyybid&quot;) {
+            smdArgs = new Array(dic_desc, tyybiFail, tyybiQName[1], scv, sAppLang);
+            retVal = window.showModalDialog(&quot;html&#x2F;listingLoend.htm&quot;, smdArgs, &quot;dialogHeight:300px;dialogWidth:1024px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no&quot;);
+            oClicked.style.border = oClickedBorder;
+            if (retVal) {
+                if (retVal != scv) {
+                    clickedNode.textContent = retVal;
+                    oClicked.innerHTML = retVal;
+                    updMuudatused(&quot;S&quot;, retVal);
+                    ValueChecks(retVal, scv) &#x2F;&#x2F;märksõna, hom.nr, kom;
+                    vaatedRefresh(1, true, true);
+                }
+            }
+            return;
+        } else if (mT == &quot;flashPlayer&quot;) {
+            smdArgs = new Array(dic_desc, sAppLang, sUsrName, scv, &quot;&#x2F;__video&#x2F;&quot;);
+            retVal = window.showModalDialog(&quot;html&#x2F;showVideo.htm&quot;, smdArgs, &quot;dialogHeight:600px;dialogWidth:800px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no&quot;);
+            oClicked.style.border = oClickedBorder;
+            if (retVal) {
+                if (retVal != scv) {
+                    clickedNode.textContent = retVal;
+                    oClicked.innerHTML = retVal;
+                    updMuudatused(&quot;S&quot;, retVal);
+                    vaatedRefresh(1, true, true);
+                }
+            }
+            return;
+        } else if (mT == &quot;flashPlayerImage&quot;) {
+            smdArgs = new Array(dic_desc, sAppLang, sUsrName, scv, &quot;&#x2F;__pildid&#x2F;&quot;);
+            retVal = window.showModalDialog(&quot;html&#x2F;showVideo.htm&quot;, smdArgs, &quot;dialogHeight:600px;dialogWidth:800px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no&quot;);
+            oClicked.style.border = oClickedBorder;
+            if (retVal) {
+                if (retVal != scv) {
+                    clickedNode.textContent = retVal;
+                    oClicked.innerHTML = retVal;
+                    updMuudatused(&quot;S&quot;, retVal);
+                    vaatedRefresh(1, true, true);
+                }
+            }
+            return;
+        } else if (mT == &quot;flashPlayerSound&quot;) {
+            smdArgs = new Array(dic_desc, sAppLang, sUsrName, scv, &quot;&#x2F;__heli&#x2F;&quot;);
+            retVal = window.showModalDialog(&quot;html&#x2F;showVideo.htm&quot;, smdArgs, &quot;dialogHeight:600px;dialogWidth:800px;center:yes;edge:sunken;help:no;resizable:yes;scroll:yes;status:no;unadorned:no&quot;);
+            oClicked.style.border = oClickedBorder;
+            if (retVal) {
+                if (retVal != scv) {
+                    clickedNode.textContent = retVal;
+                    oClicked.innerHTML = retVal;
+                    updMuudatused(&quot;S&quot;, retVal);
+                    vaatedRefresh(1, true, true);
+                }
+            }
+            return;
+        }
+
+        if (tyybiQName[0] == &quot;tyybid&quot;) {
+            var tyybidDom = IDD(&quot;File&quot;, tyybiFail, false, false, null);
+            if (tyybidDom.evaluate) {
+                var tyybiXPath = &quot;xs:simpleType[@name = &#x27;&quot; + tyybiQName[1] + &quot;&#x27;]&quot;
+                xpathResult = tyybidDom.evaluate(tyybiXPath, tyybidDom.documentElement, NSResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                if (xpathResult.singleNodeValue) {
+                    var tyybiNode = xpathResult.singleNodeValue;
+                    try {
+                        var enumIterator = tyybidDom.createNodeIterator(tyybiNode, NodeFilter.SHOW_ELEMENT, ElementCheckerXS, false);
+
+                        var loendur = -1;
+
+                        &#x2F;&#x2F; get the first matching node
+                        var enumNode = enumIterator.nextNode();
+
+                        while (enumNode) {
+
+                            var optTitle;
+                            var optKirjeldav, optVasteKirjeldav;
+
+                            loendur += 1;
+
+                            var enumValue = enumNode.getAttribute(&quot;value&quot;);
+                            optTitle = enumValue;
+                            var annotNode = enumNode.getElementsByTagNameNS(NS_XS, &quot;annotation&quot;)[0];
+                            var docnNodes = annotNode.getElementsByTagNameNS(NS_XS, &quot;documentation&quot;);
+                            for (var ix = 0; ix &lt; docnNodes.length; ix++) {
+                                if (docnNodes[ix].getAttribute(&quot;xml:lang&quot;) == sAppLang) {
+                                    optKirjeldav = jsTrim(docnNodes[ix].textContent);
+                                    if (!dest_language) {
+                                        break;
+                                    }
+                                    else {
+                                        continue;
+                                    }
+                                }
+                                if (dest_language) {
+                                    if (docnNodes[ix].getAttribute(&quot;xml:lang&quot;) == dest_language) {
+                                        optVasteKirjeldav = jsTrim(docnNodes[ix].textContent);
+                                    }
+                                }
+                            }
+
+                            if (optKirjeldav) {
+                                optTitle += &quot; - &quot; + optKirjeldav;
+                                if (optVasteKirjeldav) {
+                                    optTitle += &quot; &#x2F; &quot; + optVasteKirjeldav;
+                                }
+                            }
+
+                            opts += &quot;&lt;option id=&#x27;&quot; + enumValue + &quot;&#x27;&gt;&quot; + optTitle + &quot;&lt;&#x2F;option&gt;&quot;;
+                            if (enumValue == scv) {
+                                seldInd = loendur + 1; &#x2F;&#x2F;sest ette tuleb veel tühi;
+                            }
+
+                            enumNode = enumIterator.nextNode();
+                        }
+                        oClicked.innerHTML = &quot;&lt;select id=&#x27;oClickedSelect&#x27; tabIndex=&#x27;0&#x27;&gt;&quot; + &quot;&lt;option id=&#x27;&#x27;&gt;&lt;&#x2F;option&gt;&quot; + opts + &quot;&lt;&#x2F;select&gt;&quot;;
+                        cee = oClicked.firstChild;
+                        if (seldInd &gt; -1) {
+                            cee.options[seldInd].selected = true;
+                        }
+                    }
+                    catch (e) {
+                        &#x2F;&#x2F;        alert(&quot;Your browser does not support the createNodeIterator method!&quot;);
+                        alert(e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;);
+                    }
+                }
+            }
+        } else if (tyybiQName[0] == &quot;xs&quot;) {
+            if (tyybiNimi == &quot;xs:language&quot;) {
+                opts = getKeeledOptString(scv);
+                oClicked.innerHTML = &quot;&lt;select id=&#x27;oClickedSelect&#x27; tabIndex=&#x27;0&#x27;&gt;&quot; + &quot;&lt;option id=&#x27;&#x27;&gt;&lt;&#x2F;option&gt;&quot; + opts + &quot;&lt;&#x2F;select&gt;&quot;;
+                cee = oClicked.firstChild;
+            } else if (tyybiNimi == &quot;xs:boolean&quot;) {
+                opts += &quot;&lt;option id=&#x27;false&#x27;&gt;ei  - false&lt;&#x2F;option&gt;&quot;;
+                opts += &quot;&lt;option id=&#x27;true&#x27;&gt;jah - true&lt;&#x2F;option&gt;&quot;;
+                if (scv == &quot;false&quot;) {
+                    seldInd = 1; &#x2F;&#x2F;sest ette tuleb veel tühi;
+                } else if (scv == &quot;true&quot;) {
+                    seldInd = 2; &#x2F;&#x2F;sest ette tuleb veel tühi;
+                }
+                oClicked.innerHTML = &quot;&lt;select id=&#x27;oClickedSelect&#x27; tabIndex=&#x27;0&#x27;&gt;&quot; + &quot;&lt;option id=&#x27;&#x27;&gt;&lt;&#x2F;option&gt;&quot; + opts + &quot;&lt;&#x2F;select&gt;&quot;;
+                cee = oClicked.firstChild;
+                if (seldInd &gt; -1) {
+                    cee.options[seldInd].selected = true;
+                }
+            } else if (tyybiNimi == &quot;xs:decimal&quot;) {
+                oClicked.innerHTML = &quot;&lt;input id=&#x27;oClickedTextArea&#x27; tyybiNimi=&#x27;xs:decimal&#x27; type=&#x27;text&#x27; style=&#x27;width:95%;&#x27; tabIndex=&#x27;0&#x27;&gt;&lt;&#x2F;input&gt;&quot;;
+                cee = oClicked.firstChild;
+                cee.value = scv;
+            } else if (tyybiNimi == &quot;xs:positiveInteger&quot;) {
+                oClicked.innerHTML = &quot;&lt;input id=&#x27;oClickedTextArea&#x27; tyybiNimi=&#x27;xs:positiveInteger&#x27; type=&#x27;text&#x27; style=&#x27;width:95%;&#x27; tabIndex=&#x27;0&#x27;&gt;&lt;&#x2F;input&gt;&quot;;
+                cee = oClicked.firstChild;
+                cee.value = scv;
+            } else if (tyybiNimi == &quot;xs:dateTime&quot;) {
+                oClicked.innerHTML = &quot;&lt;input id=&#x27;oClickedTextArea&#x27; tyybiNimi=&#x27;xs:dateTime&#x27; type=&#x27;text&#x27; style=&#x27;width:95%;&#x27; tabIndex=&#x27;0&#x27;&gt;&lt;&#x2F;input&gt;&quot;;
+                cee = oClicked.firstChild;
+                cee.value = scv;
+            } else { &#x2F;&#x2F; ka xs:string ning veel midagi?
+                var parWidth = oClicked.parentElement.offsetWidth;
+                var taStyle = &quot;width:&quot; + (parWidth - 10) + &quot;px;&quot;;
+                oClicked.innerHTML = &quot;&lt;textarea id=&#x27;oClickedTextArea&#x27; tyybiNimi=&#x27;&quot; + tyybiNimi + &quot;&#x27; style=&#x27;&quot; + taStyle + &quot;&#x27; rows=&#x27;1&#x27; tabIndex=&#x27;0&#x27;&gt;&lt;&#x2F;textarea&gt;&quot;;
+                cee = oClicked.firstChild;
+                cee.value = scv;
+
+                if (scv == &quot;-???-&quot; || scv == &quot;|???|&quot; || scv == &quot;|vaste|&quot; || scv == &quot;|tõlge|&quot;) {
+                    cee.select();
+                }
+            }
+        }
+    } else { &#x2F;&#x2F; tyybiNimi
+        oClicked.style.border = oClickedBorder;
+        return;
+    }
+
+    if (cee.tagName == &quot;INPUT&quot; || cee.tagName == &quot;TEXTAREA&quot;) {
+        cee.addEventListener(&quot;keyup&quot;, txtInpOnKeyUp, true);
+    }
+    cee.addEventListener(&quot;blur&quot;, HandleCeeBlur, true);
+
+    cee.focus();
+
+} &#x2F;&#x2F;SetEdits
+
+&#x2F;**
+* Enteri puhul blurrib toimetamise kastikese.
+* 
+* @method txtInpOnKeyUp
+* @param {Object} event
+*&#x2F;
+function txtInpOnKeyUp(event) {
+    var keyCode = (&#x27;which&#x27; in event) ? event.which : event.keyCode;
+    var target = event.target ? event.target : event.srcElement;
+    if (keyCode == 13) {
+        target.blur();
+    }
+} &#x2F;&#x2F; txtInpOnKeyUp
+
+&#x2F;**
+* Uuendab keelte valikut, kui on olemas xmllang_tyyp; muidu loetakse failist iso639_1.xml.
+* 
+* @method updKeelteValik
+* @param {String} schLocation
+*&#x2F;
+function updKeelteValik(schLocation) {
+    var keelteDom = IDD(&quot;File&quot;, &quot;xsd&#x2F;&quot; + schLocation, false, false, null);
+
+    var xpathResult, enumIterator, enumNode, loendur, ix, appLangKeel;
+
+    if (keelteDom.evaluate) {
+        var tyybiXPath = &quot;xs:simpleType[@name = &#x27;xmllang_tyyp&#x27;]&quot;
+        xpathResult = keelteDom.evaluate(tyybiXPath, keelteDom.documentElement, NSResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        if (xpathResult.singleNodeValue) {
+            keelteValik = new Array();
+            var tyybiNode = xpathResult.singleNodeValue;
+            try {
+                enumIterator = keelteDom.createNodeIterator(tyybiNode, NodeFilter.SHOW_ELEMENT, ElementCheckerXS, false);
+
+                loendur = -1;
+
+                &#x2F;&#x2F; get the first matching node
+                enumNode = enumIterator.nextNode();
+
+                while (enumNode) {
+
+                    loendur += 1;
+
+                    var enumValue = enumNode.getAttribute(&quot;value&quot;);
+                    var annotNode = enumNode.getElementsByTagNameNS(NS_XS, &quot;annotation&quot;)[0];
+                    var docnNodes = annotNode.getElementsByTagNameNS(NS_XS, &quot;documentation&quot;);
+                    appLangKeel = &#x27;&#x27;;
+                    for (ix = 0; ix &lt; docnNodes.length; ix++) {
+                        if (docnNodes[ix].getAttribute(&quot;xml:lang&quot;) == sAppLang) {
+                            appLangKeel = jsTrim(docnNodes[ix].textContent);
+                            break;
+                        }
+                    }
+
+                    keelteValik.push(enumValue + PD + appLangKeel);
+
+                    enumNode = enumIterator.nextNode();
+                }
+            }
+            catch (e) {
+                &#x2F;&#x2F;        alert(&quot;Your browser does not support the createNodeIterator method!&quot;);
+                alert(e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;);
+            }
+        } else {
+            if (keelteValik.length == 0) {
+                keelteDom = IDD(&quot;File&quot;, &quot;iso639_1.xml&quot;, false, false, null);
+                try {
+                    enumIterator = keelteDom.createNodeIterator(keelteDom.documentElement, NodeFilter.SHOW_ELEMENT, ElementCheckerXS, false);
+
+                    loendur = -1;
+
+                    &#x2F;&#x2F; get the first matching node
+                    enumNode = enumIterator.nextNode();
+
+                    while (enumNode) {
+
+                        loendur += 1;
+
+                        var enKeel = &#x27;&#x27;, nativeKeel;
+                        appLangKeel = &#x27;&#x27;;
+                        var nameNodes = enumNode.getElementsByTagName(&quot;name&quot;);
+                        for (ix = 0; ix &lt; nameNodes.length; ix++) {
+                            var xmlLangAttr = nameNodes[ix].getAttribute(&quot;xml:lang&quot;);
+                            if (xmlLangAttr) {
+                                if (xmlLangAttr == sAppLang) {
+                                    appLangKeel = jsTrim(nameNodes[ix].textContent);
+                                }
+                            } else {
+                                enKeel = jsTrim(nameNodes[ix].textContent);
+                            }
+                        }
+                        nameNodes = enumNode.getElementsByTagName(&quot;native&quot;)[0];
+                        if (nameNodes) {
+                            nativeKeel = nameNodes.textContent;
+                        }
+                        else {
+                            nativeKeel = enKeel;
+                        }
+                        if (appLangKeel) {
+                            appLangKeel = &#x27; = &#x27; + appLangKeel;
+                        }
+
+                        keelteValik.push(enumNode.getAttribute(&quot;code&quot;) + PD + nativeKeel + &#x27; (&#x27; + enKeel + appLangKeel + &#x27;)&#x27;);
+
+                        enumNode = enumIterator.nextNode();
+                    }
+                }
+                catch (e) {
+                    &#x2F;&#x2F;        alert(&quot;Your browser does not support the createNodeIterator method!&quot;);
+                    alert(e.name + &quot; 0x&quot; + hex(e.number, true) + &quot;: &#x27;&quot; + e.description + &quot;&#x27;.&quot;);
+                }
+            }
+        }
+    }
+} &#x2F;&#x2F; updKeelteValik
+
+
+&#x2F;**
+* Koostatakse HTML optionite loend Toimetamisalale keele valikuks.
+* 
+* @method getKeeledOptString
+* @param {String} kVal Keele kood.
+* @returns {String} Optionsite loend &lt;option&gt; jne.
+*&#x2F;
+function getKeeledOptString(kVal) {
+    var opts = &#x27;&#x27;;
+    for (var i = 0; i &lt; keelteValik.length; i++) {
+        var keel = keelteValik[i].split(PD);
+        opts += &quot;&lt;option id=&#x27;&quot; + keel[0] + &quot;&#x27;&quot;;
+        if (keel[0] == kVal) {
+            opts += &quot; selected&quot;;
+        }
+        opts += &quot;&gt;&quot; + keel[0] + &quot; - &quot; + keel[1] + &quot;&lt;&#x2F;option&gt;&quot;;
+    }
+    return opts;
+} &#x2F;&#x2F; getKeeledOptString
+
+
+&#x2F;**
+* Kutsutakse toimetamiskastikese blurri korral. 
+* 
+* @method HandleCeeBlur
+* @param {Object} event 
+*&#x2F;
+function HandleCeeBlur(event) {
+    var nsv;  &#x2F;&#x2F;new span value
+
+    var oBlur = event.target ? event.target : event.srcElement;
+
+    var checkSta = false, kontrollida = true;
+
+    if (oBlur.tagName == &quot;SELECT&quot;) {
+        if (oBlur.selectedIndex &gt; -1) {
+            nsv = jsTrim(oBlur.options[oBlur.selectedIndex].id);
+        }
+        else {
+            nsv = scv;  &#x2F;&#x2F;vana väärtus tagasi;
+        }
+        if (nsv) { &#x2F;&#x2F; üldse ei luba tühja teksti
+            checkSta = true;
+        }
+        kontrollida = false;
+    } else if (oBlur.tagName == &quot;TEXTAREA&quot; || oBlur.tagName == &quot;INPUT&quot;) {
+        nsv = jsTrim(oBlur.value);
+        if (nsv != scv || nsv == &#x27;&#x27;) {
+            var tyybiNimi = oBlur.getAttribute(&quot;tyybiNimi&quot;);
+            var rex;
+            switch (tyybiNimi) {
+                case &quot;xs:decimal&quot;:
+                    rex = &#x2F;^\d+[,\.]\d+$&#x2F;;
+                    if (nsv.match(rex)) {
+                        nsv = nsv.replace(&quot;,&quot;, &quot;.&quot;);
+                        checkSta = true;
+                    }
+                    break;
+                case &quot;xs:positiveInteger&quot;:
+                    rex = &#x2F;^\d+$&#x2F;;
+                    if (nsv.match(rex)) {
+                        checkSta = true;
+                    }
+                    break;
+                case &quot;xs:dateTime&quot;:
+                    rex = &#x2F;^\d{4}\-\d{2}\-\d{2}T\d{2}:\d{2}:\d{2}$&#x2F;;
+                    if (nsv.match(rex)) {
+                        checkSta = true;
+                    }
+                    break;
+                case &quot;xs:string&quot;:
+                    &#x2F;&#x2F;                    if (doSpellCheck) {
+                    &#x2F;&#x2F;                    }
+                    if (nsv) { &#x2F;&#x2F; üldse ei luba tühja teksti
+                        checkSta = true;
+                    }
+                    break;
+                default:
+                    if (nsv) { &#x2F;&#x2F; üldse ei luba tühja teksti
+                        checkSta = true;
+                    }
+                    break;
+            }
+        }
+        else {
+            checkSta = true; &#x2F;&#x2F; tekst olemas ja sama mis enne
+        }
+    }
+    if (!checkSta) {
+        oBlur.focus();
+        oBlur.select();
+        return;
+    }
+
+    if (oBlur.tagName == &quot;INPUT&quot; || oBlur.tagName == &quot;TEXTAREA&quot;) {
+        oBlur.removeEventListener(&quot;keyup&quot;, txtInpOnKeyUp, true);
+    }
+    oBlur.removeEventListener(&quot;blur&quot;, HandleCeeBlur, true);
+    oClicked.style.border = oClickedBorder;
+
+    oClicked.innerHTML = scv;
+
+    if (nsv != scv) {
+
+        if (kontrollida) {
+            nsv = tekstiTeisendused(nsv);
+        }
+
+        clickedNode.textContent = nsv;
+        oClicked.innerHTML = nsv;
+
+        updMuudatused(&quot;S&quot;, nsv);
+
+        ValueChecks(nsv, scv);  &#x2F;&#x2F;märksõna, hom.nr, kom;
+
+        vaatedRefresh(2, true, true);
+    }
+
+    oClicked.focus();
+
+} &#x2F;&#x2F;HandleCeeBlur
+
+
+&#x2F;**
+* Teisendab Date objekti stringiks. 
+* 
+* @method GetXSDDateTime
+* @param {Object} dNow 
+* @returns {String} Kuupäev EELexis kasutataval kujul.
+*&#x2F;
+function GetXSDDateTime(dNow) {
+    var y4 = dNow.getFullYear();
+    var mo2 = (dNow.getMonth() &lt; 9 ? &#x27;0&#x27; : &#x27;&#x27;) + (dNow.getMonth() + 1);
+    var d2 = (dNow.getDate() &lt; 10 ? &#x27;0&#x27; : &#x27;&#x27;) + (dNow.getDate());
+    var h2 = (dNow.getHours() &lt; 10 ? &#x27;0&#x27; : &#x27;&#x27;) + (dNow.getHours());
+    var mi2 = (dNow.getMinutes() &lt; 10 ? &#x27;0&#x27; : &#x27;&#x27;) + (dNow.getMinutes());
+    var s2 = (dNow.getSeconds() &lt; 10 ? &#x27;0&#x27; : &#x27;&#x27;) + (dNow.getSeconds());
+    var sDateTime = y4 + &#x27;-&#x27; + mo2 + &#x27;-&#x27; + d2 + &#x27;T&#x27; + h2 + &#x27;:&#x27; + mi2 + &#x27;:&#x27; + s2;
+    return sDateTime;
+} &#x2F;&#x2F;GetXSDDateTime
+
+
+&#x2F;**
+* TODO Kui toimetamisalale tuleb liiga pikk tekst, siis algusosa on nähtav ja ülejäänu ei ole nähtav (30. tähemärgist edasi). 
+* 
+* @method updMuudatused
+* @param {String} op S, K, U, R
+* @param {String} tekst Töödeldav tekst
+*&#x2F;
+function updMuudatused(op, tekst) {
+    var n2idatav = tekst;
+    if (n2idatav.length &gt; 30) {
+        n2idatav = n2idatav.substr(0, 30) + &quot; {...}&quot;;
+    }
+    var muudetav;
+    if (op == &quot;S&quot; || op == &quot;K&quot;) { &#x2F;&#x2F;&#x27;U ja R korral ei pruugi &#x27;selectedNode&#x27;-i olla
+        if (selectedNode) {
+            muudetav = selectedNode.nodeName;
+            if (clType == &quot;at&quot;) {
+                muudetav = &quot;@&quot; + muudetav;
+            }
+            muudetav = fatherNode.nodeName + &quot;&#x2F;&quot; + muudetav;
+        } else {
+            muudetav = &quot;Op.:&quot;;
+        }
+    }
+    if (op == &quot;S&quot;) {
+        artMuudatused += &quot;|&quot; + muudetav + &quot; = &#x27;&quot; + n2idatav + &quot;&#x27;&quot;;
+    } else if (op == &quot;K&quot;) {
+        &#x2F;&#x2F;siin on miinusmärk, mitte sidekriips, ära uisa-päisa kustuta! :);
+        artMuudatused += &quot;|&quot; + muudetav + &quot;[&#x27;&quot; + n2idatav + &quot;&#x27;] − &quot;;
+    } else if (op == &quot;U&quot; || op == &quot;R&quot;) {
+        artMuudatused += &quot;|&quot; + n2idatav;
+    }
+} &#x2F;&#x2F;updMuudatused
+
+
+&#x2F;**
+* TODO
+* 
+* @method FillArtFrames
+* @param {Object} oArtNode XML node
+* @param {String} delURHistory
+*&#x2F;
+function FillArtFrames(oArtNode, delURHistory) {
+
+    &#x2F;&#x2F;    &#x2F;&#x2F;lisatakse tühjad tekstinoodid &quot;&quot; elementidele, millel pole alamelemente ega teksti
+    &#x2F;&#x2F;    AddEmptyTexts(oArtNode);
+
+    &#x2F;&#x2F;    var avatavad, avatav, kinniLahtid, kinniLahti, edOAttr, avatud;
+
+    &#x2F;&#x2F;    &#x2F;&#x2F;xml võrdlemiseks muudatuste kindlakstegemisel, &#x27;oArtNode&#x27; algab &lt;A&gt;
+    &#x2F;&#x2F;    oOrgArtNode = oArtNode.cloneNode(true);
+    &#x2F;&#x2F;    avatavad = oOrgArtNode.selectNodes(&quot;.&#x2F;&#x2F;*&#x2F;@&quot; + DICPR + &quot;:edO&quot;);
+    &#x2F;&#x2F;    avatavad.removeAll();
+
+    &#x2F;&#x2F;    if ((delURHistory)) {
+    &#x2F;&#x2F;        urfragment = oEditDOM.createDocumentFragment();
+    &#x2F;&#x2F;        urindex = -1;
+    &#x2F;&#x2F;        urlast = urindex;
+
+    &#x2F;&#x2F;        if (!(yldStruDom == null)) {
+    &#x2F;&#x2F;            &#x2F;&#x2F;Sõnapered: &quot;maa&quot; ja &quot;töö&quot;: üle 30000 märgi;
+    &#x2F;&#x2F;            if ((oArtNode.xml.length &gt; 10240)) {
+    &#x2F;&#x2F;                avatud = &quot;0&quot;;
+    &#x2F;&#x2F;            } else {
+    &#x2F;&#x2F;                avatud = &quot;1&quot;;
+    &#x2F;&#x2F;            }
+    &#x2F;&#x2F;            edOAttr = oArtNode.ownerDocument.createNode(NODE_ATTRIBUTE, DICPR + &quot;:edO&quot;, DICURI);
+    &#x2F;&#x2F;            avatavad = yldStruDom.documentElement.selectNodes(&quot;.&#x2F;&#x2F;*[@&quot; + DICPR + &quot;:edO]&quot;);
+    &#x2F;&#x2F;            for (i = 0; i &lt; avatavad.length; i++) {
+    &#x2F;&#x2F;                avatav = avatavad[i];
+    &#x2F;&#x2F;                kinniLahtid = oArtNode.selectNodes(&quot;.&#x2F;&#x2F;&quot; + avatav.nodeName);
+    &#x2F;&#x2F;                for (j = 0; j &lt; kinniLahtid.length; j++) {
+    &#x2F;&#x2F;                    kinniLahti = kinniLahtid[j];
+    &#x2F;&#x2F;                    &#x2F;&#x2F;see siga ei tööta prefiksiga ..., vähemasti järgneva XSLt teisenduse jaoks;
+    &#x2F;&#x2F;                    &#x2F;&#x2F;neid on küll, nt @O salvestamisel;
+    &#x2F;&#x2F;                    &#x2F;&#x2F;ilmselt salvestamisel ikkagi käheb kõik korda ...;
+    &#x2F;&#x2F;                    &#x2F;&#x2F;kinniLahti.setAttribute(DICPR + &quot;:edO&quot;, &quot;0&quot;);
+    &#x2F;&#x2F;                    edOAttr.value = avatud;
+    &#x2F;&#x2F;                    kinniLahti.attributes.setNamedItem(edOAttr.cloneNode(true));
+    &#x2F;&#x2F;                }
+    &#x2F;&#x2F;            }
+    &#x2F;&#x2F;        }
+    &#x2F;&#x2F;    }
+
+
+    if (oEditDOMRoot.hasChildNodes()) {
+        oEditDOMRoot.replaceChild(oArtNode, oEditDOMRoot.firstChild);
+    } else {
+        oEditDOMRoot.appendChild(oArtNode);
+    }
+
+
+    if (delURHistory) {
+        urArray = new Array();
+        urIndex = -1;
+    } else { &#x2F;&#x2F; ainult ClientWrite
+        urArray = urArray.slice(0, urIndex + 1);
+    }
+    artMuudatused = &quot;&quot;;
+    artOrgString = getXmlString(oEditDOM);
+    urIndex = urArray.push(artOrgString) - 1;
+
+    var oM1Node = null;
+    if (oEditDOM.evaluate) {
+        var xpathResult = oEditDOM.evaluate(first_default, oEditDOMRoot, NSResolver, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+        &#x2F;&#x2F; while (param = params.iterateNext())
+        if (xpathResult.singleNodeValue) {
+            oM1Node = xpathResult.singleNodeValue;
+            if (oM1Node.nodeType == Node.ELEMENT_NODE) {
+                sOrgMarkSona = oM1Node.textContent;
+            }
+            sOrgHomnr = oM1Node.getAttribute(qn_homnr);
+        }
+    }
+
+    var ptElem, pt = &#x27;&#x27;, tElem, t = &#x27;&#x27;, tlElem, tlTekst = &#x27;&#x27;, klElem, kElem, k = &#x27;&#x27;;
+    ptElem = oEditDOMRoot.firstChild.getElementsByTagNameNS(DICURI, &quot;PT&quot;)[0];
+    if (ptElem) {
+        pt = ptElem.textContent;
+    }
+    tElem = oEditDOMRoot.firstChild.getElementsByTagNameNS(DICURI, &quot;T&quot;)[0];
+    if (tElem) {
+        t = tElem.textContent;
+    }
+    tlElem = oEditDOMRoot.firstChild.getElementsByTagNameNS(DICURI, &quot;TL&quot;)[0];
+    if (tlElem) {
+        tlTekst = tlElem.textContent;
+        if (dic_desc != &#x27;psv&#x27;) {
+            if (t.length &gt; 0) {
+                tlTekst = t + &quot;, &quot; + tlTekst;
+            }
+        }
+    }
+    klElem = oEditDOMRoot.firstChild.getElementsByTagNameNS(DICURI, &quot;KL&quot;)[0];
+    if (klElem) {
+        kElem = oEditDOMRoot.firstChild.getElementsByTagNameNS(DICURI, &quot;K&quot;)[0];
+        k = kElem.textContent;
+    }
+
+    var msgSisu;
+    if (k) {
+        msgSisu = &quot;&lt;img src=&#x27;graphics&#x2F;Info.ico&#x27;&gt;&lt;span style=&#x27;color:green;&#x27;&gt; &quot; + String(&quot;Artiklile on lisatud koostamise lõpu märge &#x27;[%s]&#x27; poolt.&quot;).replace(&quot;[%s]&quot;, k) + &quot;&lt;&#x2F;span&gt;&quot;;
+    }
+    if (tlTekst) {
+        msgSisu = &quot;&lt;img src=&#x27;graphics&#x2F;Info.ico&#x27;&gt;&lt;span style=&#x27;color:blue;&#x27;&gt; Artiklile on lisatud toimetamise lõpu märge: &#x27;&quot; + tlTekst + &quot;&#x27;.&lt;&#x2F;span&gt;&quot;;
+    }
+    if (pt) {
+        msgSisu = &quot;&lt;img src=&#x27;graphics&#x2F;Info.ico&#x27;&gt;&lt;span style=&#x27;color:red;&#x27;&gt; &quot; + String(&quot;Artiklile on lisatud peatoimetaja märge &#x27;[%s]&#x27; poolt.&quot;).replace(&quot;[%s]&quot;, pt) + &quot;&lt;&#x2F;span&gt;&quot;;
+    }
+
+    if (msgSisu) {
+        sbMain.setText(msgSisu);
+    }
+
+    &#x2F;&#x2F;    bArtSaveAllowed = false;
+    &#x2F;&#x2F;    bArtDelAllowed = false;
+
+    &#x2F;&#x2F;    if ((pt != &quot;&quot;)) {
+    &#x2F;&#x2F;        if (sUsrName == pt &amp;&amp; bArtSignAllowed) { &#x2F;&#x2F;bArtSignAllowed: srtegija ja ptd hulgas;
+    &#x2F;&#x2F;            bArtSaveAllowed = true;
+    &#x2F;&#x2F;            bArtDelAllowed = true;
+    &#x2F;&#x2F;        }
+    &#x2F;&#x2F;    } else {
+    &#x2F;&#x2F;        &#x2F;&#x2F; 09. sept 11: toimetajad saavad üle kirjutada artikleid, millele on märgitud juurde toimetamise lõpp
+    &#x2F;&#x2F;        &#x2F;&#x2F; nt PSV: Liivi Hollman lisab juurde videod Jelena lõpuni toimetatud artiklitele
+    &#x2F;&#x2F;        if ((srTegija)) {
+    &#x2F;&#x2F;            if (dic_desc == &quot;psv&quot;) {
+    &#x2F;&#x2F;                bArtSaveAllowed = true;
+    &#x2F;&#x2F;                bArtDelAllowed = true;
+    &#x2F;&#x2F;            }
+    &#x2F;&#x2F;            else {
+    &#x2F;&#x2F;                if (tlTekst != &#x27;&#x27;) {
+    &#x2F;&#x2F;                    if (sUsrName == t) {
+    &#x2F;&#x2F;                        bArtSaveAllowed = true;
+    &#x2F;&#x2F;                        bArtDelAllowed = true;
+    &#x2F;&#x2F;                    }
+    &#x2F;&#x2F;                }
+    &#x2F;&#x2F;                else {
+    &#x2F;&#x2F;                    bArtSaveAllowed = true;
+    &#x2F;&#x2F;                    bArtDelAllowed = true;
+    &#x2F;&#x2F;                }
+    &#x2F;&#x2F;            }
+    &#x2F;&#x2F;        }
+    &#x2F;&#x2F;    }
+
+    &#x2F;&#x2F;    div_ArtToolsMenu.innerHTML = &quot;&quot;;
+    &#x2F;&#x2F;    if (srTegija) {
+    &#x2F;&#x2F;        if (!(document.all(&quot;img_ArtTools&quot;) == null)) {
+    &#x2F;&#x2F;            lisa_KL_TL_PT();
+    &#x2F;&#x2F;            lisaVeelArtToolse();
+    &#x2F;&#x2F;            if (!(div_ArtToolsMenu.innerHTML == &quot;&quot;)) {
+    &#x2F;&#x2F;                bArtToolsEnabled = true;
+    &#x2F;&#x2F;            } else {
+    &#x2F;&#x2F;                bArtToolsEnabled = false;
+    &#x2F;&#x2F;            }
+    &#x2F;&#x2F;        }
+    &#x2F;&#x2F;        if ((zeus.indexOf(&quot;;&quot; + sUsrName + &quot;;&quot;) &gt; -1)) {
+    &#x2F;&#x2F;            bArtSaveAllowed = true;
+    &#x2F;&#x2F;            bArtDelAllowed = true;
+    &#x2F;&#x2F;        }
+    &#x2F;&#x2F;    }
+
+    &#x2F;&#x2F;    &#x2F;&#x2F;&#x27;16. juuni 2011
+    &#x2F;&#x2F;    &#x2F;&#x2F;var tyhi
+    &#x2F;&#x2F;    &#x2F;&#x2F;set tyhi = oEditDOMRoot.selectSingleNode(&quot;.&#x2F;&#x2F;text()[. = &#x27;&#x27;]&quot;)
+    &#x2F;&#x2F;    &#x2F;&#x2F;if(! (tyhi == null)){
+    &#x2F;&#x2F;    &#x2F;&#x2F;    &#x27;kui see on kunagi lisatud tähelepanu juthimiseks, siis olgu juba
+    &#x2F;&#x2F;    &#x2F;&#x2F;    tyhi.text = &quot;???----------------------------------------------------------------------???&quot;
+    &#x2F;&#x2F;    &#x2F;&#x2F;}
+
+    &#x2F;&#x2F;    oClicked = null;
+
+    var artMsTekstElement = document.getElementById(&quot;artMsTekst&quot;);
+    if (artMsTekstElement) {
+        artMsTekstElement.textContent = &quot;&#x27;&quot; + sOrgMarkSona + &quot;&#x27;&quot;;
+    }
+
+    vaatedRefresh(2, true, true);
+
+    &#x2F;&#x2F;    if (!(document.all(&quot;img_artHistory&quot;) == null)) {
+    &#x2F;&#x2F;        var tblAjalugu, rida, veerg, artGuid;
+    &#x2F;&#x2F;        tblAjalugu = div_ArtHistoryMenu.all(&quot;tbl_ArtHistoryMenu&quot;);
+    &#x2F;&#x2F;        if ((tblAjalugu.rows.length == 100)) {
+    &#x2F;&#x2F;            tblAjalugu.deleteRow(tblAjalugu.rows.length - 1);
+    &#x2F;&#x2F;        }
+    &#x2F;&#x2F;        rida = tblAjalugu.insertRow(0);
+    &#x2F;&#x2F;        rida.className = &quot;mi&quot;;
+    &#x2F;&#x2F;        artGuid = oEditDOMRoot.selectSingleNode(DICPR + &quot;:A&#x2F;&quot; + qn_guid).text;
+    &#x2F;&#x2F;        rida.id = artGuid;
+    &#x2F;&#x2F;        rida.setAttribute(&quot;v&quot;, sFromVolume); &#x2F;&#x2F;&#x27;&quot;ief1&quot; jne;
+    &#x2F;&#x2F;        veerg = rida.insertCell();
+    &#x2F;&#x2F;        veerg.style.width = &quot;50%&quot;;
+    &#x2F;&#x2F;        veerg.innerHTML = sOrgMarkSona;
+    &#x2F;&#x2F;        veerg = rida.insertCell();
+    &#x2F;&#x2F;        veerg.innerHTML = new Date();
+    &#x2F;&#x2F;    }
+
+} &#x2F;&#x2F;FillArtFrames
+
+
+
+&#x2F;**
+* Uuendab Toimetamisala ja Vaateala.
+* 
+* @method vaatedRefresh
+* @param {String} nr Eristab, kas on &quot;UndoRedo&quot; või mitte.
+* @param {Boolean} uuendaTala 
+* @param {Boolean} uuendaVala
+*&#x2F;
+function vaatedRefresh(nr, uuendaTala, uuendaVala) {
+
+    var oclid, newFragment;
+
+    if (uuendaTala) {
+        if (oClicked) {
+            oclid = oClicked.id;
+        }
+        newFragment = talaXslProse.transformToFragment(oEditDOM, document);
+        talaDiv.innerHTML = &quot;&quot;;
+        &#x2F;&#x2F; kui XSL-iga peaks mingi jama olema ...
+        if (newFragment) {
+            talaDiv.appendChild(newFragment);
+            if (oclid) {
+                oClicked = talaDoc.getElementById(oclid);
+            }
+        }
+    }
+
+    if (uuendaVala) {
+        newFragment = valaXslProse.transformToFragment(oEditDOM, document);
+        valaDiv.innerHTML = &quot;&quot;;
+        if (newFragment) {
+            valaDiv.appendChild(newFragment);
+        }
+    }
+
+    var artMsMuudetudElement = document.getElementById(&quot;artMsMuudetud&quot;);
+    if (artOrgString) {
+        var jooksevArtStr = getXmlString(oEditDOM);
+        if (jooksevArtStr == artOrgString) {
+            artMsMuudetudElement.textContent = &quot;&quot;;
+            &#x2F;&#x2F; võib ju olla alles sisestatud artikkel oma tühjade kastidega
+            &#x2F;&#x2F;            dhxTalaBar.disableItem(&quot;btnSave&quot;);
+        }
+        else {
+            artMsMuudetudElement.textContent = &quot;*&quot;;
+            &#x2F;&#x2F;            dhxTalaBar.enableItem(&quot;btnSave&quot;);
+        }
+
+        if (jooksevArtStr != urArray[urIndex]) {
+            &#x2F;&#x2F; vist ei ole võimalik igasugu NS-de pärast stringe ikka täpselt võrrelda
+            if (nr != &quot;UndoRedo&quot;) {
+                urArray = urArray.slice(0, urIndex + 1);
+                urIndex = urArray.push(jooksevArtStr) - 1;
+            }
+        }
+
+        var currBuffNrElement = document.getElementById(&quot;currBuffNr&quot;);
+        currBuffNrElement.textContent = urIndex + 1;
+        var buffCountElement = document.getElementById(&quot;buffCount&quot;);
+        buffCountElement.textContent = urArray.length;
+
+        if (urIndex &lt;= 0) {
+            dhxTalaBar.disableItem(&quot;btnUndo&quot;);
+        } else {
+            dhxTalaBar.enableItem(&quot;btnUndo&quot;);
+        }
+        if (urIndex &gt;= urArray.length - 1) {
+            dhxTalaBar.disableItem(&quot;btnRedo&quot;);
+        } else {
+            dhxTalaBar.enableItem(&quot;btnRedo&quot;);
+        }
+
+    }
+} &#x2F;&#x2F;vaatedRefresh
+
+
+&#x2F;**
+* TODO
+* 
+* @method ElementChecker
+* @param {Object} node
+* @returns {String} A või ...
+*&#x2F;
+function ElementChecker(node) {
+    if (node.nodeName == &#x27;A&#x27;) {
+        return NodeFilter.FILTER_ACCEPT;
+    }
+    return NodeFilter.FILTER_SKIP;
+} &#x2F;&#x2F; ElementChecker
+
+
+&#x2F;**
+* TODO
+* 
+* @method ElementCheckerXS
+* @param {Object} node
+* @returns {String} xs:enumeration, record või ...
+*&#x2F;
+function ElementCheckerXS(node) {
+    if (node.nodeName == &#x27;xs:enumeration&#x27;) {
+        return NodeFilter.FILTER_ACCEPT;
+    }
+    if (node.nodeName == &#x27;record&#x27;) {
+        return NodeFilter.FILTER_ACCEPT;
+    }
+    return NodeFilter.FILTER_SKIP;
+} &#x2F;&#x2F; ElementCheckerXS
+
+
+&#x2F;**
+* Lõhub stringi ;-ga juppideks ja kirjutab tükid optionideks.
+* 
+* @method getLoadXmlString
+* @param {String} s
+* @returns {String} HTML optionid.
+*&#x2F;
+function getLoadXmlString(s) {
+    var arr = s.split(&quot;;&quot;);
+    var opts = &quot;&lt;complete&gt;&quot;;
+    for (var ix = 0; ix &lt; arr.length; ix++) {
+        if (arr[ix]) { &#x2F;&#x2F; alguses ja lõpus ;
+            opts += &quot;&lt;option value=&#x27;&quot; + arr[ix] + &quot;&#x27;&gt;&quot; + arr[ix] + &quot;&lt;&#x2F;option&gt;&quot;;
+        }
+    }
+    opts += &quot;&lt;&#x2F;complete&gt;&quot;;
+    return opts;
+} &#x2F;&#x2F; getLoadXmlString
+
+
+&#x2F;**
+* TODO Koostab otsingutulemuste tabeli.
+* 
+* @method FillBrowseFrame
+* @param {Object} outDOMNode
+*&#x2F;
+function FillBrowseFrame(outDOMNode) {
+
+    brGrid.clearAll(); &#x2F;&#x2F; deletes all rows in the grid (kui argumendiks on veel &#x27;true&#x27;, siis koos päisega)
+
+    &#x2F;&#x2F; outDOMNode: &lt;outDOM&gt;, atribuudid @qinfo, @leide
+    &#x2F;&#x2F; firstChild: &lt;sr&gt;, neid võib mitu olla
+    var artiklid = getXmlNodesSnapshot(outDOMNode, &quot;sr&#x2F;A&quot;), artikleid = 0, ix, artikkel;
+    if (&#x27;snapshotLength&#x27; in artiklid) {
+        artikleid = artiklid.snapshotLength;
+    } else if (&#x27;length&#x27; in artiklid) {
+        artikleid = artiklid.length;
+    }
+
+    var toimetajad = &quot;;&quot;;
+    var koostajad = &quot;;&quot;;
+    var peaToimetajad = &quot;;&quot;;
+
+    var rowsXml = &quot;&lt;rows&gt;&quot;;
+    for (ix = 0; ix &lt; artikleid; ix++) {
+        if (&#x27;snapshotLength&#x27; in artiklid) {
+            artikkel = artiklid.snapshotItem(ix);
+        } else if (&#x27;length&#x27; in artiklid) {
+            artikkel = artiklid[ix];
+        }
+        var volFile = getXmlSingleNodeValue(artikkel, &quot;vf&quot;);
+        var volNr = volFile.substr(3, 1);
+        var G = getXmlSingleNodeValue(artikkel, &quot;G&quot;);
+        var mdTekst = getXmlSingleNodeValue(artikkel, &quot;md&#x2F;t&quot;);
+        mdTekst = &quot;&lt;![CDATA[&lt;span style=&#x27;text-decoration:underline;color:blue;cursor:pointer;&#x27;&gt;&quot; + entitiesToHtml(mdTekst) + &quot;&lt;&#x2F;span&gt;]]&gt;&quot;;
+        var lTekst = getXmlSingleNodeValue(artikkel, &quot;l&quot;);
+        &#x2F;&#x2F;            var ut = getXmlString(ANode.getElementsByTagName(&quot;l&quot;)[0].getElementsByTagName(&quot;t&quot;)[0]);
+        &#x2F;&#x2F;            ut = &quot;&lt;![CDATA[&quot; + ut + &quot;]]&gt;&quot;;
+        var KTekst = getXmlSingleNodeValue(artikkel, &quot;K&quot;);
+        if (koostajad.indexOf(&quot;;&quot; + KTekst + &quot;;&quot;) &lt; 0) {
+            koostajad += KTekst + &quot;;&quot;;
+        }
+        var KLTekst = getXmlSingleNodeValue(artikkel, &quot;KL&quot;);
+        var TTekst = getXmlSingleNodeValue(artikkel, &quot;T&quot;);
+        if (toimetajad.indexOf(&quot;;&quot; + TTekst + &quot;;&quot;) &lt; 0) {
+            toimetajad += TTekst + &quot;;&quot;;
+        }
+        var TATekst = getXmlSingleNodeValue(artikkel, &quot;TA&quot;);
+        var TLTekst = getXmlSingleNodeValue(artikkel, &quot;TL&quot;);
+        var PTTekst = getXmlSingleNodeValue(artikkel, &quot;PT&quot;);
+        if (peaToimetajad.indexOf(&quot;;&quot; + PTTekst + &quot;;&quot;) &lt; 0) {
+            peaToimetajad += PTTekst + &quot;;&quot;;
+        }
+        var kirjeNr = ix + 1;
+
+        rowsXml += &quot;&lt;row id=&#x27;&quot; + kirjeNr + &quot;&#x27;&gt;&quot;;
+        rowsXml += &quot;&lt;userdata name=&#x27;artKeys&#x27;&gt;&quot; + volFile + &quot;;&quot; + G + &quot;&lt;&#x2F;userdata&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + kirjeNr + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + romanize(volNr) + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + mdTekst + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + lTekst + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + KTekst + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + KLTekst + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + TTekst + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + TATekst + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + TLTekst + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;cell&gt;&quot; + PTTekst + &quot;&lt;&#x2F;cell&gt;&quot;;
+        rowsXml += &quot;&lt;&#x2F;row&gt;&quot;;
+    }
+    rowsXml += &quot;&lt;&#x2F;rows&gt;&quot;;
+    brGrid.parse(rowsXml);
+
+    var cmb = brGrid.getFilterElement(4);
+    cmb.loadXMLString(getLoadXmlString(koostajad));
+    cmb = brGrid.getFilterElement(6);
+    cmb.loadXMLString(getLoadXmlString(toimetajad));
+    cmb = brGrid.getFilterElement(9);
+    cmb.loadXMLString(getLoadXmlString(peaToimetajad));
+
+} &#x2F;&#x2F;FillBrowseFrame
+
+
+&#x2F;**
+* Otsingutulemuste nimekirjas millelegi peale klikates käivitub.
+* 
+* @method gridOnRowSelect
+* @param {String} rowId
+* @param {String} colInd
+*&#x2F;
+function gridOnRowSelect(rowId, colInd) {
+    if (colInd == 2) { &#x2F;&#x2F; märksõna veerg
+        doBrowseRead(qryMethod, rowId, colInd);
+    }
+} &#x2F;&#x2F; gridOnRowSelect
+
+
+&#x2F;**
+* Teeb XML päringu. Otsingutulemuste nimekirjas millelegi peale klikates käivitub.
+* 
+* @method gridOnRightClick
+* @param {String} rowId
+* @param {String} colInd
+* @param {String} evntObj
+*&#x2F;
+function gridOnRightClick(rowId, colInd, evntObj) {
+    if (colInd == 2) { &#x2F;&#x2F; märksõna veerg
+        doBrowseRead(&quot;XML&quot;, rowId, colInd);
+    }
+} &#x2F;&#x2F; gridOnRightClick
+
+&#x2F;**
+* Teeb BrowseRead päringu. Otsingutulemuste nimekirjas millelegi peale klikates käivitub.
+* 
+* @method doBrowseRead
+* @param {String} qM Query Method
+* @param {String} rowId
+* @param {String} colInd
+*&#x2F;
+function doBrowseRead(qM, rowId, colInd) {
+    sQryInfo = brGrid.cells(rowId, colInd).getValue();
+    var userdata = brGrid.getUserData(rowId, &quot;artKeys&quot;);
+    var udData = userdata.split(&quot;;&quot;);
+    sCmdId = &quot;BrowseRead&quot;;
+    var cmdXml = &quot;&lt;prm&gt;&quot; +
+            &quot;&lt;cmd&gt;&quot; + sCmdId + &quot;&lt;&#x2F;cmd&gt;&quot; +
+            &quot;&lt;vol&gt;&quot; + udData[0] + &quot;&lt;&#x2F;vol&gt;&quot; +
+            &quot;&lt;nfo&gt;&quot; + sQryInfo + &quot;&lt;&#x2F;nfo&gt;&quot; +
+            &quot;&lt;G&gt;&quot; + udData[1] + &quot;&lt;&#x2F;G&gt;&quot; +
+            &quot;&lt;qM&gt;&quot; + qM + &quot;&lt;&#x2F;qM&gt;&quot; +
+        &quot;&lt;&#x2F;prm&gt;&quot;;
+
+    var cmdXmlDom = IDD(&quot;String&quot;, cmdXml, false, false, null);
+    StartOperation(cmdXmlDom);
+} &#x2F;&#x2F; doBrowseRead
+
+
+&#x2F;**
+* 
+* 
+* @method setButtonSelectId
+* @param {Object} buttonSelectId 
+* @param {Object} listOptId
+*&#x2F;
+function setButtonSelectId(buttonSelectId, listOptId) {
+    dhxBar.setListOptionSelected(buttonSelectId, listOptId);
+    var seldTekst = dhxBar.getListOptionText(buttonSelectId, listOptId);
+    dhxBar.setItemText(buttonSelectId, seldTekst);
+} &#x2F;&#x2F; setButtonSelectId
+
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

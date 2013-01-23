@@ -1,0 +1,54 @@
+﻿<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+	<title>Illustratsioon</title>
+    
+
+    <script language="vbscript" type="text/vbscript">
+
+<!--
+
+Option Explicit
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+
+Dim currId, dic_desc, lrg
+currId = window.opener.largePicId
+dic_desc = window.opener.dic_desc
+if (dic_desc = "od_") then
+    lrg = "_med"
+else
+    lrg = "_large"
+end if
+
+document.title = document.title & ": " & currId
+
+Dim divHTML
+divHTML = "<img id='largeImage' style='border:solid 2 black;' " & _
+    "src='../__sr/" & dic_desc & "/pictures/" & currId & lrg & ".jpg'></img>"
+
+largeImageDiv.innerHTML = divHTML
+
+'Dim img
+'set img = largeImageDiv.all("largeImage")
+
+'if (img.width > largeImageBody.clientWidth) then
+'    img.height = CInt(((largeImageBody.clientWidth - largeImageDiv.offsetLeft - img.offsetLeft - 2 - 8) / img.width) * img.height)
+'end if
+
+End Sub 'bodyOnLoad
+
+
+-->
+
+    </script>
+
+</head>
+<body id="largeImageBody" scroll="yes" onload="bodyOnLoad()">
+    <div id="largeImageDiv">
+    </div>
+</body>
+</html>

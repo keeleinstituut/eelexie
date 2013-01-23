@@ -1,0 +1,7 @@
+Options -Indexes
+AuthType Digest
+AuthName "'SHS'"
+AuthUserFile /usr/local/www/apache22/shs_users/shs_digest_users.txt
+AuthGroupFile /usr/local/www/apache22/shs_users/shs_groups.txt
+Require valid-user
+

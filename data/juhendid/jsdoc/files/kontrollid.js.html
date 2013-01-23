@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>kontrollid.js</title>
+    <link rel="stylesheet" href="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;3.7.0&#x2F;build&#x2F;cssgrids&#x2F;cssgrids-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="..&#x2F;assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="..&#x2F;assets/favicon.png">
+    <script src="http:&#x2F;&#x2F;yui.yahooapis.com&#x2F;combo?3.7.0&#x2F;build&#x2F;yui&#x2F;yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="..&#x2F;assets/css/logo.png" title=""></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: </em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="..&#x2F;classes/dxf.html">dxf</a></li>
+            
+                <li><a href="..&#x2F;classes/komponendid.html">komponendid</a></li>
+            
+                <li><a href="..&#x2F;classes/kontrollid.html">kontrollid</a></li>
+            
+                <li><a href="..&#x2F;classes/lisad.html">lisad</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_app.html">procs_app</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_edt.html">procs_edt</a></li>
+            
+                <li><a href="..&#x2F;classes/procs_TextContMenu.html">procs_TextContMenu</a></li>
+            
+                <li><a href="..&#x2F;classes/tools.html">tools</a></li>
+            
+                <li><a href="..&#x2F;classes/tools_dx.html">tools_dx</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: kontrollid.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+&#x2F;&#x2F;Copyright© 2006 - 2012. Andres Loopmann, EKI, andres.loopmann@eki.ee. All rights reserved.
+&#x2F;**
+* kontrollid.js
+* Funktsioonid, mis toimetamise ajal kontrollivad ja muudavad tähendusnumbreid jms.
+*
+* @class kontrollid
+*&#x2F;
+
+
+&#x2F;**
+* (TODO Kus see välja kutsutakse?) Teisendab teksti
+*
+* @method tekstiTeisendused
+* @param {String} tekst
+* @returns {String} 
+*&#x2F;
+function tekstiTeisendused(tekst) {
+    var uusTekst = tekst, tarr, i;
+
+    uusTekst = uusTekst.replace(&#x2F;&lt;&#x2F;g, &quot;\u2039&quot;);
+    uusTekst = uusTekst.replace(&#x2F;&gt;&#x2F;g, &quot;\u203A&quot;);
+    uusTekst = uusTekst.replace(&#x2F;\r|\n&#x2F;g, &quot;&quot;);
+    uusTekst = uusTekst.replace(&#x2F;\t&#x2F;g, &quot; &quot;);
+
+    if (dic_desc == &quot;ukr&quot;) {
+        if (elemlang == &quot;uk&quot;) {
+            tarr = uusTekst.split(&quot;\&quot;&quot;);
+            for (i = 1; i &lt; tarr.length; i++) {
+                tarr[i] = tarr[i].substr(0, 1) + &quot;\u0301&quot; + tarr[i].substr(1);
+            }
+            uusTekst = tarr.join(&quot;&quot;);
+        }
+    }
+    if (dic_desc == &quot;ems&quot;) {
+        uusTekst = uusTekst.replace(&#x2F;•&#x2F;g, &quot;·&quot;); &#x2F;&#x2F; 2022 -&gt; B7
+    }
+    return uusTekst
+} &#x2F;&#x2F; tekstiTeisendused
+
+
+
+&#x2F;**
+* (TODO Kus see välja kutsutakse?) Kontrollib.
+*
+* @method ValueChecks
+* @param {String} newTxtVal 
+* @param {String} oldTxtVal 
+*&#x2F;
+function ValueChecks(newTxtVal, oldTxtVal) {
+
+    var boundNode, tekst = newTxtVal;
+
+    &#x2F;&#x2F; märksõna
+    if (selectedNode.nodeName == qn_ms &amp;&amp; selectedNode.nodeType == NODE_ELEMENT) { &#x2F;&#x2F; Node.ELEMENT_NODE
+        setMyNSAttribute(selectedNode, DICURI, qn_sort_attr, getSortVal(selectedNode, true, true));
+    }
+    &#x2F;&#x2F; hom nr
+    if (selectedNode.nodeName == qn_homnr &amp;&amp; selectedNode.nodeType == NODE_ATTRIBUTE &amp;&amp; fatherNode.nodeName == qn_ms) { &#x2F;&#x2F; Node.ATTRIBUTE_NODE
+        setMyNSAttribute(fatherNode, DICURI, qn_sort_attr, getSortVal(fatherNode, true, true));
+    }
+
+    &#x2F;&#x2F; kommentaar
+    if (selectedNode.nodeName == DICPR + &quot;:kom&quot;) {
+        if (dic_desc != &quot;od_&quot;) {
+            boundNode = getXmlSingleNode(fatherNode, DICPR + &quot;:kaut&quot;);
+            if (!boundNode) {
+                boundNode = fatherNode.appendChild(createMyNSElement(oEditDOM, DICPR + &quot;:kaut&quot;, DICURI));
+            }
+            setXmlNodeValue(boundNode, sUsrName);
+            boundNode = getXmlSingleNode(fatherNode, DICPR + &quot;:kaeg&quot;);
+            if (!boundNode) {
+                boundNode = fatherNode.appendChild(createMyNSElement(oEditDOM, DICPR + &quot;:kaeg&quot;, DICURI));
+            }
+            setXmlNodeValue(boundNode, GetXSDDateTime(new Date()));
+        }
+    }
+
+    &#x2F;&#x2F; märkus
+    if (selectedNode.nodeName == DICPR + &quot;:mrk&quot;) {
+        setMyNSAttribute(selectedNode, DICURI, DICPR + &quot;:maut&quot;, sUsrName);
+        setMyNSAttribute(selectedNode, DICURI, DICPR + &quot;:maeg&quot;, GetXSDDateTime(new Date()));
+    }
+
+    &#x2F;&#x2F; tüübinumber
+    if (selectedNode.nodeName == DICPR + &quot;:mt&quot;) {
+        if (dic_desc == &quot;mab&quot; || dic_desc == &quot;ex_&quot;) {
+            if (tekst.length &lt; 2) {
+                tekst = &quot;0&quot; + tekst;
+                setXmlNodeValue(selectedNode, tekst);
+            }
+        }
+    }
+
+    ValueDicChecks(tekst);
+
+    setATTAPlokid(selectedNode);
+
+} &#x2F;&#x2F;ValueChecks
+
+
+&#x2F;&#x2F;&#x2F;&#x2F;-----------------------------------------------------------------------------------
+&#x2F;&#x2F;function setATTAPlokid(kontrollitav) {
+&#x2F;&#x2F;    if (aTTAPlokid.length &gt; 1) {
+&#x2F;&#x2F;        var currNode = kontrollitav;
+&#x2F;&#x2F;        while (currNode) {
+&#x2F;&#x2F;            if (aTTAPlokid.indexOf(&quot;;&quot; + currNode.nodeName + &quot;;&quot;) &gt; -1) {
+&#x2F;&#x2F;                currNode.setAttributeNS(DICURI, DICPR + &quot;:aT&quot;, sUsrName);
+&#x2F;&#x2F;                currNode.setAttributeNS(DICURI, DICPR + &quot;:aTA&quot;, GetXSDDateTime(new Date()));
+&#x2F;&#x2F;                break;
+&#x2F;&#x2F;            }
+&#x2F;&#x2F;            currNode = currNode.parentNode;
+&#x2F;&#x2F;        }
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;} &#x2F;&#x2F; setATTAPlokid
+
+
+&#x2F;**
+* (TODO Kus, miks kellele välja kutsutakse? ) Määrab aT ja aTA.
+*
+* @method setATTAPlokid
+* @param {Object} kontrollitav 
+*&#x2F;
+function setATTAPlokid(kontrollitav) {
+    if (aTTAPlokid.length &gt; 1) {
+        var muudetav = getXmlSingleNode(kontrollitav, &quot;ancestor-or-self::*[contains(&#x27;&quot; + aTTAPlokid + &quot;&#x27;, concat(&#x27;;&#x27;, name(), &#x27;;&#x27;))][1]&quot;);
+        if (muudetav) {
+            setMyNSAttribute(muudetav, DICURI, DICPR + &quot;:aT&quot;, sUsrName);
+            setMyNSAttribute(muudetav, DICURI, DICPR + &quot;:aTA&quot;, GetXSDDateTime(new Date()));
+        }
+    }
+} &#x2F;&#x2F; setATTAPlokid
+
+
+&#x2F;**
+* TODO Arvatavasti kontroll, mis tehakse elemendi väljalt lahkudes.
+*
+* @method ValueDicChecks
+* @param {String} uusTekst Muudetava elemendi väärtus.
+*&#x2F;
+function ValueDicChecks(uusTekst) {
+    if (dic_desc == &quot;eos&quot;) {
+        &#x2F;&#x2F;        var boundNode, paariliseMuutus;
+        &#x2F;&#x2F;        paariliseMuutus = false;
+
+        &#x2F;&#x2F;        var otsitav = &quot;|&quot; + DICPR + &quot;:soov|&quot; + DICPR + &quot;:anto|&quot; + DICPR + &quot;:type|&quot;;
+        &#x2F;&#x2F;        if ((otsitav.indexOf(&quot;|&quot; + selectedNode.nodeName + &quot;|&quot;) &gt; -1)) {
+        &#x2F;&#x2F;            if ((selectedNode.nodeName == DICPR + &quot;:soov&quot; &amp;&amp; cVal == &quot;ep&quot;)) {
+        &#x2F;&#x2F;                paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:m|&quot; + DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:hdr|ancestor::&quot; + DICPR + &quot;:tahendus&quot;, DICPR + &quot;:k1&quot;, &quot;parem:&quot;);
+        &#x2F;&#x2F;                if (!(paariliseMuutus)) {
+        &#x2F;&#x2F;                    paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:m|&quot; + DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:naited&quot;, DICPR + &quot;:k&quot;, &quot;parem:&quot;);
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            } else if ((selectedNode.nodeName == DICPR + &quot;:soov&quot; &amp;&amp; cVal == &quot;np&quot;)) {
+        &#x2F;&#x2F;                paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:n|&quot; + DICPR + &quot;:no|&quot; + DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:hdr|ancestor::&quot; + DICPR + &quot;:tahendus&quot;, DICPR + &quot;:k1&quot;, &quot;parem kui&quot;);
+        &#x2F;&#x2F;                if (!(paariliseMuutus)) {
+        &#x2F;&#x2F;                    paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:n|&quot; + DICPR + &quot;:no|&quot; + DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:naited&quot;, DICPR + &quot;:k&quot;, &quot;parem kui&quot;);
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            } else if ((selectedNode.nodeName == DICPR + &quot;:anto&quot; &amp;&amp; cVal == &quot;ap&quot;)) {
+        &#x2F;&#x2F;                paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:tahendus&quot;, DICPR + &quot;:k1&quot;, &quot;Vastand&quot;);
+        &#x2F;&#x2F;                if (!(paariliseMuutus)) {
+        &#x2F;&#x2F;                    paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:naited&quot;, DICPR + &quot;:k&quot;, &quot;vastand&quot;);
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            } else if ((selectedNode.nodeName == DICPR + &quot;:type&quot; &amp;&amp; cVal == &quot;ei&quot;)) {
+        &#x2F;&#x2F;                paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:t&quot;, &quot;ancestor::&quot; + DICPR + &quot;:tahendus&quot;, DICPR + &quot;:k1&quot;, &quot;ei soovita tähenduses:&quot;);
+        &#x2F;&#x2F;                if (!(paariliseMuutus)) {
+        &#x2F;&#x2F;                    paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:t&quot;, &quot;ancestor::&quot; + DICPR + &quot;:naited&quot;, DICPR + &quot;:k&quot;, &quot;ei soovita tähenduses:&quot;);
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            }
+        &#x2F;&#x2F;        }
+
+        &#x2F;&#x2F;        if ((paariliseMuutus)) {
+        &#x2F;&#x2F;            otsitav = &quot;|&quot; + DICPR + &quot;:soov|&quot; + DICPR + &quot;:anto|&quot;;
+        &#x2F;&#x2F;            if ((otsitav.indexOf(&quot;|&quot; + selectedNode.nodeName + &quot;|&quot;) &gt; -1)) {
+        &#x2F;&#x2F;                alert(PARTNER_CHANGED_TITLE + &#x27;\n\n&#x27; + PARTNER_CHANGED_TEXT);
+        &#x2F;&#x2F;            }
+        &#x2F;&#x2F;            needsRefresh = true;
+        &#x2F;&#x2F;        }
+    } else if (dic_desc == &quot;qs_&quot;) {
+        &#x2F;&#x2F;        var boundNode, paariliseMuutus;
+        &#x2F;&#x2F;        paariliseMuutus = false;
+
+        &#x2F;&#x2F;        if ((selectedNode.nodeName == DICPR + &quot;:mvt&quot;)) {
+        &#x2F;&#x2F;            boundNode = selectedNode.attributes.getNamedItem(DICPR + &quot;:kuhu&quot;);
+        &#x2F;&#x2F;            if ((boundNode == null)) {
+        &#x2F;&#x2F;                boundNode = oEditDOM.createNode(NODE_ATTRIBUTE, DICPR + &quot;:kuhu&quot;, DICURI);
+        &#x2F;&#x2F;                selectedNode.attributes.setNamedItem(boundNode);
+        &#x2F;&#x2F;            }
+        &#x2F;&#x2F;            boundNode.value = cVal;
+        &#x2F;&#x2F;            needsRefresh = true;
+        &#x2F;&#x2F;        }
+
+        &#x2F;&#x2F;        var otsitav = &quot;|&quot; + DICPR + &quot;:soov|&quot; + DICPR + &quot;:anto|&quot; + DICPR + &quot;:type|&quot;;
+        &#x2F;&#x2F;        if (otsitav.indexOf(&quot;|&quot; + selectedNode.nodeName + &quot;|&quot;) &gt; -1) {
+        &#x2F;&#x2F;            if ((selectedNode.nodeName == DICPR + &quot;:soov&quot; &amp;&amp; cVal == &quot;ep&quot;)) {
+        &#x2F;&#x2F;                paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:m|&quot; + DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:hdr|ancestor::&quot; + DICPR + &quot;:tahendus&quot;, DICPR + &quot;:k1&quot;, &quot;parem:&quot;);
+        &#x2F;&#x2F;                if (!(paariliseMuutus)) {
+        &#x2F;&#x2F;                    paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:m|&quot; + DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:naited&quot;, DICPR + &quot;:k&quot;, &quot;parem:&quot;);
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            } else if ((selectedNode.nodeName == DICPR + &quot;:soov&quot; &amp;&amp; cVal == &quot;np&quot;)) {
+        &#x2F;&#x2F;                paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:n|&quot; + DICPR + &quot;:no|&quot; + DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:hdr|ancestor::&quot; + DICPR + &quot;:tahendus&quot;, DICPR + &quot;:k1&quot;, &quot;parem kui&quot;);
+        &#x2F;&#x2F;                if (!(paariliseMuutus)) {
+        &#x2F;&#x2F;                    paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:n|&quot; + DICPR + &quot;:no|&quot; + DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:naited&quot;, DICPR + &quot;:k&quot;, &quot;parem kui&quot;);
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            } else if ((selectedNode.nodeName == DICPR + &quot;:anto&quot; &amp;&amp; cVal == &quot;ap&quot;)) {
+        &#x2F;&#x2F;                paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:tahendus&quot;, DICPR + &quot;:k1&quot;, &quot;Vastand&quot;);
+        &#x2F;&#x2F;                if (!(paariliseMuutus)) {
+        &#x2F;&#x2F;                    paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:a&quot;, &quot;ancestor::&quot; + DICPR + &quot;:naited&quot;, DICPR + &quot;:k&quot;, &quot;vastand&quot;);
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            } else if ((selectedNode.nodeName == DICPR + &quot;:type&quot; &amp;&amp; cVal == &quot;ei&quot;)) {
+        &#x2F;&#x2F;                paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:t&quot;, &quot;ancestor::&quot; + DICPR + &quot;:tahendus&quot;, DICPR + &quot;:k1&quot;, &quot;ei soovita tähenduses:&quot;);
+        &#x2F;&#x2F;                if (!(paariliseMuutus)) {
+        &#x2F;&#x2F;                    paariliseMuutus = SetAttrEsiTekstid(DICPR + &quot;:t&quot;, &quot;ancestor::&quot; + DICPR + &quot;:naited&quot;, DICPR + &quot;:k&quot;, &quot;ei soovita tähenduses:&quot;);
+        &#x2F;&#x2F;                }
+        &#x2F;&#x2F;            }
+        &#x2F;&#x2F;        }
+        &#x2F;&#x2F;        otsitav = &quot;|&quot; + DICPR + &quot;:soov|&quot; + DICPR + &quot;:anto|&quot;;
+        &#x2F;&#x2F;        if ((paariliseMuutus)) {
+        &#x2F;&#x2F;            if (otsitav.indexOf(&quot;|&quot; + selectedNode.nodeName + &quot;|&quot;) &gt; -1) {
+        &#x2F;&#x2F;                alert(PARTNER_CHANGED_TITLE + &#x27;\n\n&#x27; + PARTNER_CHANGED_TEXT);
+        &#x2F;&#x2F;            }
+        &#x2F;&#x2F;            needsRefresh = true;
+        &#x2F;&#x2F;        }
+    } else if (dic_desc == &quot;sp_&quot; || dic_desc == &quot;spi&quot; || dic_desc == &quot;spp&quot;) {
+        if ((selectedNode.nodeName == DICPR + &quot;:ml&quot;) &amp;&amp; selectedNode.nodeType == NODE_ELEMENT) {
+            setMyNSAttribute(selectedNode, DICURI, DICPR + &quot;:mm&quot;, SetMsMall(selectedNode));
+        }
+    } else if (dic_desc == &quot;mab&quot;) {
+        if (selectedNode.nodeName == DICPR + &quot;:mt&quot;) {
+            &#x2F;&#x2F;teha valmis tüvede grupid &lt;tvg&gt; koos koodidega&lt;tvk&gt;
+            var tyveKoodid = {
+                &quot;00&quot;: &quot;a0 b0&quot;,
+                &quot;01&quot;: &quot;a0 a0r&quot;,
+                &quot;02&quot;: &quot;a0 b0 b0r c0&quot;,
+                &quot;03&quot;: &quot;an (at) bt btr&quot;,
+                &quot;04&quot;: &quot;a0 b0&quot;,
+                &quot;05&quot;: &quot;an (at) bt btr&quot;,
+                &quot;06&quot;: &quot;an at&quot;,
+                &quot;07&quot;: &quot;an (at) bt btr&quot;,
+                &quot;08&quot;: &quot;an (at) bt&quot;,
+                &quot;09&quot;: &quot;a0 b0&quot;,
+                &quot;10&quot;: &quot;a0 b0 c0&quot;,
+                &quot;11&quot;: &quot;a0 b0 b0v&quot;,
+                &quot;12&quot;: &quot;a0 b0 c0 b0v&quot;,
+                &quot;13&quot;: &quot;at (bt) an bn bnv&quot;,
+                &quot;14&quot;: &quot;at (bt) an bn cn ct&quot;,
+                &quot;15&quot;: &quot;at (bt) bn ct cn&quot;,
+                &quot;16&quot;: &quot;a0 a0g&quot;,
+                &quot;17&quot;: &quot;a0 a0g a0v&quot;,
+                &quot;18&quot;: &quot;at an atv atg anv&quot;,
+                &quot;19&quot;: &quot;a0 b0 b0v&quot;,
+                &quot;20&quot;: &quot;a0 b0 b0g&quot;,
+                &quot;21&quot;: &quot;at bt bn btg&quot;,
+                &quot;22&quot;: &quot;at bt bn btv bnv&quot;,
+                &quot;23&quot;: &quot;at bt an bn btv bnv&quot;,
+                &quot;24&quot;: &quot;an bn bt bnv btv&quot;,
+                &quot;25&quot;: &quot;at bt bn btv bnv&quot;,
+                &quot;26&quot;: &quot;a0 a0r&quot;,
+                &quot;27&quot;: &quot;a0&quot;,
+                &quot;28&quot;: &quot;at an&quot;,
+                &quot;29&quot;: &quot;at an&quot;,
+                &quot;30&quot;: &quot;at (bt) bn&quot;,
+                &quot;31&quot;: &quot;a0 b0&quot;,
+                &quot;32&quot;: &quot;at (bt) bn&quot;,
+                &quot;33&quot;: &quot;at (bt) bn&quot;,
+                &quot;34&quot;: &quot;at (bt) bn cn&quot;,
+                &quot;35&quot;: &quot;at (bt) bn ct cn&quot;,
+                &quot;36&quot;: &quot;an bn bt cn ct&quot;,
+                &quot;37&quot;: &quot;at an&quot;,
+                &quot;38&quot;: &quot;at an bt bn ct cn&quot;
+            };
+            var tyved = tyveKoodid[uusTekst];
+            var maha = getXmlSingleNode(selectedNode, &quot;following-sibling::&quot; + DICPR + &quot;:tvg[not(contains(&#x27; &quot; + tyved + &quot; &#x27;, concat(&#x27; &#x27;, &quot; + DICPR + &quot;:tvk, &#x27; &#x27;)))]&quot;);
+            while (maha) {
+                maha.parentNode.removeChild(maha);
+                maha = getXmlSingleNode(selectedNode, &quot;following-sibling::&quot; + DICPR + &quot;:tvg[not(contains(&#x27; &quot; + tyved + &quot; &#x27;, concat(&#x27; &#x27;, &quot; + DICPR + &quot;:tvk, &#x27; &#x27;)))]&quot;);
+            }
+            var tyvedArr = tyved.split(&#x2F;\s+&#x2F;);
+            for (var ix = 0; ix &lt; tyvedArr.length; ix++) {
+                var tyvi = tyvedArr[ix];
+                var tyviNood = getXmlSingleNode(selectedNode, &quot;following-sibling::&quot; + DICPR + &quot;:tvg[&quot; + DICPR + &quot;:tvk = &#x27;&quot; + tyvi + &quot;&#x27;]&quot;);
+                if (!tyviNood) {
+                    var uusTvg = createMyNSElement(oEditDOM, DICPR + &quot;:tvg&quot;, DICURI);
+                    var uusTvk = uusTvg.appendChild(createMyNSElement(oEditDOM, DICPR + &quot;:tvk&quot;, DICURI));
+                    setXmlNodeValue(uusTvk, tyvi);
+                    var uusTyvi = uusTvg.appendChild(createMyNSElement(oEditDOM, DICPR + &quot;:tyvi&quot;, DICURI));
+                    setXmlNodeValue(uusTyvi, &quot;&quot;);
+                    var refStr = &#x27;&#x27;, refNode = null;
+                    for (var k = ix + 1; k &lt; tyvedArr.length; k++) {
+                        if (refStr) {
+                            refStr += &quot;|&quot;;
+                        }
+                        refStr += &quot;following-sibling::&quot; + DICPR + &quot;:tvg[&quot; + DICPR + &quot;:tvk = &#x27;&quot; + tyvedArr[k] + &quot;&#x27;]&quot;;
+                    }
+                    if (refStr) {
+                        refNode = getXmlSingleNode(selectedNode, refStr);
+                    }
+                    fatherNode.insertBefore(uusTvg, refNode);
+                }
+            }
+        }
+
+    }
+} &#x2F;&#x2F;ValueDicChecks
+
+
+&#x2F;**
+* Kontrollib artiklit. Kutsutakse välja enne salvestamist.
+*
+* @method ArtSaveChecks
+*&#x2F;
+function ArtSaveChecks() {
+    if (dic_desc == &quot;sp_&quot;) {
+        SetMallid();
+    } else if (dic_desc == &quot;geo&quot; || dic_desc == &quot;har&quot; || dic_desc == &quot;med&quot;) {
+        var sisuFrag = oEditDOM.createDocumentFragment();
+        var sisuNode = getXmlSingleNode(oEditDOMRoot.firstChild, DICPR + &quot;:S&quot;);
+        if (sisuNode) {
+            var mitu, sisuElem, ix, j, k, uued, mitu2, uus;
+            var sisuElems = getXmlNodesSnapshot(sisuNode, &quot;*&quot;);
+            if (&#x27;snapshotLength&#x27; in sisuElems) {
+                mitu = sisuElems.snapshotLength;
+            } else if (&#x27;length&#x27; in sisuElems) {
+                mitu = sisuElems.length;
+            }
+            for (ix = 0; ix &lt; mitu; ix++) {
+                if (&#x27;snapshotLength&#x27; in sisuElems) {
+                    sisuElem = sisuElems.snapshotItem(ix);
+                } else if (&#x27;length&#x27; in sisuElems) {
+                    sisuElem = sisuElems[ix];
+                }
+                if (sisuElem.nodeName == DICPR + &quot;:xp&quot;) {
+                    for (j = 0; j &lt; keelteValik.length; j++) { &#x2F;&#x2F; keelteValik - Array
+                        uued = getXmlNodesSnapshot(sisuNode, DICPR + &quot;:xp[@xml:lang = &#x27;&quot; + keelteValik[j].split(JR)[0] + &quot;&#x27;]&quot;);
+                        if (&#x27;snapshotLength&#x27; in uued) {
+                            mitu2 = uued.snapshotLength;
+                        } else if (&#x27;length&#x27; in uued) {
+                            mitu2 = uued.length;
+                        }
+                        for (k = 0; k &lt; mitu2; k++) {
+                            if (&#x27;snapshotLength&#x27; in uued) {
+                                uus = uued.snapshotItem(k);
+                            } else if (&#x27;length&#x27; in uued) {
+                                uus = uued[k];
+                            }
+                            sisuFrag.appendChild(uus);
+                        }
+                    }
+                } else {
+                    sisuFrag.appendChild(sisuElem);
+                }
+            }
+
+            sisuNode.appendChild(sisuFrag);
+        }
+    }
+} &#x2F;&#x2F;ArtSaveChecks
+
+
+
+&#x2F;**
+* Kasutatakse sõnaperedega. Tegeleb elementidega ml, mm.
+*
+* @method SetMallid
+*&#x2F;
+function SetMallid() {
+
+    var mlNodes = getXmlNodesSnapshot(oEditDOMRoot, &quot;.&#x2F;&#x2F;&quot; + DICPR + &quot;:ml&quot;);
+    var mlNode, ix;
+    if (&#x27;snapshotLength&#x27; in mlNodes) {
+        for (ix = 0; ix &lt; mlNodes.snapshotLength; ix++) {
+            mlNode = mlNodes.snapshotItem(ix);
+            setMyNSAttribute(mlNode, DICURI, DICPR + &quot;:mm&quot;, SetMsMall(mlNode));
+        }
+    } else if (&#x27;length&#x27; in mlNodes) { &#x2F;&#x2F; nodeList, MSXML
+        for (ix = 0; ix &lt; mlNodes.length; ix++) {
+            mlNode = mlNodes[ix];
+            setMyNSAttribute(mlNode, DICURI, DICPR + &quot;:mm&quot;, SetMsMall(mlNode));
+        }
+    }
+} &#x2F;&#x2F;SetMallid
+
+
+&#x2F;**
+* (TODO kus välja kutsutakse?) Tagastab märksõnast üleliigsed märgid.
+*
+* @method SetMallid
+* @param {Object} oNode
+* @returns {String} 
+*&#x2F;
+function SetMsMall(oNode) {
+    var sText, sMall, i, isLetterLaRuOrDigit, mitteMall;
+
+    isLetterLaRuOrDigit = &quot;0123456789&quot; + REG_LETT_LA + REG_LETT_RU;
+    mitteMall = &quot;.&#x27;(){}&quot;;
+
+    sText = jsTrim(getXmlNodeValue(oNode));
+
+    sText = sText.replace(&#x2F;(&amp;\w+;)&#x2F;g, &quot;&quot;);
+    sText = sText.replace(&#x2F;\s&#x2F;g, &quot;_&quot;);
+
+    sMall = &quot;&quot;;
+
+    for (i = 0; i &lt; sText.length; i++) {
+        if (isLetterLaRuOrDigit.indexOf(sText.charAt(i).toLowerCase()) &lt; 0) {
+            if (mitteMall.indexOf(sText.charAt(i)) &lt; 0) {
+                sMall += sText.charAt(i);
+            }
+        }
+    }
+    return sMall;
+} &#x2F;&#x2F;SetMsMall
+
+
+
+
+&#x2F;&#x2F; procs_dic_qs_
+&#x2F;&#x2F; 
+&#x2F;&#x2F;&#x2F;&#x2F;-----------------------------------------------------------------------------------
+&#x2F;&#x2F;function SetAttrEsiTekstid(attrElement, elemAsukoht, esiElement, esiTekst) {
+&#x2F;&#x2F;    var esiLisatud, ptNode, boundNode, gsp, gspq, refNode;
+&#x2F;&#x2F;    var tarr, i
+
+&#x2F;&#x2F;    esiLisatud = false;
+&#x2F;&#x2F;    ptNode = selectedNode.selectSingleNode(&quot;..&quot;);
+
+&#x2F;&#x2F;    if (attrElement.indexOf(ptNode.nodeName) &gt; -1) {
+&#x2F;&#x2F;        if (!(ptNode.selectSingleNode(elemAsukoht) == null)) {
+&#x2F;&#x2F;            boundNode = ptNode.selectSingleNode(&quot;preceding-sibling::&quot; + esiElement);
+&#x2F;&#x2F;            if ((boundNode == null)) {
+&#x2F;&#x2F;                &#x2F;&#x2F;GetSchemaPath: korjab xpath - ist predikaadid ära;
+&#x2F;&#x2F;                &#x2F;&#x2F;GetSchemaPosQuery: teeb schema_dom - ist päringu following-sibling nimede kohta;
+&#x2F;&#x2F;                tarr = GetSchemaPath(oClicked.id).split(&quot;&#x2F;&quot;);
+&#x2F;&#x2F;                gsp = &quot;&quot;;
+&#x2F;&#x2F;                for (i = 0; i &lt; tarr.length - 3; i++) {
+&#x2F;&#x2F;                    gsp = gsp + &quot;&#x2F;&quot; + tarr(i);
+&#x2F;&#x2F;                }
+&#x2F;&#x2F;                gspq = GetSchemaPosQuery(jsMid(gsp, 1), esiElement);
+&#x2F;&#x2F;                if (!(gspq == &quot;Ei saa&quot;)) {
+&#x2F;&#x2F;                    if ((gspq == &quot;Suvaline&quot;)) {
+&#x2F;&#x2F;                        refNode = ptNode;
+&#x2F;&#x2F;                    } else {
+&#x2F;&#x2F;                        refNode = ptNode.parentNode.selectSingleNode(gspq);
+&#x2F;&#x2F;                    }
+&#x2F;&#x2F;                    boundNode = oEditDOM.createNode(NODE_ELEMENT, esiElement, tns);
+&#x2F;&#x2F;                    boundNode.text = esiTekst;
+&#x2F;&#x2F;                    ptNode.parentNode.insertBefore(boundNode, refNode);
+&#x2F;&#x2F;                    esiLisatud = true;
+&#x2F;&#x2F;                }
+&#x2F;&#x2F;            }
+&#x2F;&#x2F;        }
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    return esiLisatud;
+&#x2F;&#x2F;} &#x2F;&#x2F;SetAttrEsiTekstid
+
+
+&#x2F;&#x2F; procs_dic_eos
+&#x2F;&#x2F; 
+&#x2F;&#x2F;&#x2F;&#x2F;-----------------------------------------------------------------------------------
+&#x2F;&#x2F;function SetAttrEsiTekstid(attrElement, elemAsukoht, esiElement, esiTekst) {
+&#x2F;&#x2F;    var esiLisatud, ptNode, boundNode, gsp, gspq, refNode;
+&#x2F;&#x2F;    var tarr, i
+
+&#x2F;&#x2F;    esiLisatud = false;
+&#x2F;&#x2F;    ptNode = selectedNode.selectSingleNode(&quot;..&quot;);
+
+&#x2F;&#x2F;    if ((attrElement.indexOf(ptNode.nodeName) &gt; -1)) {
+&#x2F;&#x2F;        if (!(ptNode.selectSingleNode(elemAsukoht) == null)) {
+&#x2F;&#x2F;            boundNode = ptNode.selectSingleNode(&quot;preceding-sibling::&quot; + esiElement);
+&#x2F;&#x2F;            if ((boundNode == null)) {
+&#x2F;&#x2F;                &#x2F;&#x2F;GetSchemaPath: korjab xpath - ist predikaadid ära;
+&#x2F;&#x2F;                &#x2F;&#x2F;GetSchemaPosQuery: teeb schema_dom - ist päringu following-sibling nimede kohta;
+&#x2F;&#x2F;                tarr = GetSchemaPath(oClicked.id).split(&quot;&#x2F;&quot;);
+&#x2F;&#x2F;                gsp = &quot;&quot;;
+&#x2F;&#x2F;                for (i = 0; i &lt; tarr.length - 3; i++) {
+&#x2F;&#x2F;                    gsp = gsp + &quot;&#x2F;&quot; + tarr[i];
+&#x2F;&#x2F;                }
+&#x2F;&#x2F;                gspq = GetSchemaPosQuery(jsMid(gsp, 1), esiElement);
+&#x2F;&#x2F;                if (!(gspq == &quot;Ei saa&quot;)) {
+&#x2F;&#x2F;                    if ((gspq == &quot;Suvaline&quot;)) {
+&#x2F;&#x2F;                        refNode = ptNode;
+&#x2F;&#x2F;                    } else {
+&#x2F;&#x2F;                        refNode = ptNode.parentNode.selectSingleNode(gspq);
+&#x2F;&#x2F;                    }
+&#x2F;&#x2F;                    boundNode = oEditDOM.createNode(NODE_ELEMENT, esiElement, tns);
+&#x2F;&#x2F;                    boundNode.text = esiTekst;
+&#x2F;&#x2F;                    ptNode.parentNode.insertBefore(boundNode, refNode);
+&#x2F;&#x2F;                    esiLisatud = true;
+&#x2F;&#x2F;                }
+&#x2F;&#x2F;            }
+&#x2F;&#x2F;        }
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    return esiLisatud;
+&#x2F;&#x2F;} &#x2F;&#x2F;SetAttrEsiTekstid
+
+
+
+&#x2F;&#x2F; procs_dic_lit
+&#x2F;&#x2F; 
+&#x2F;&#x2F;&#x2F;&#x2F;-----------------------------------------------------------------------------------
+&#x2F;&#x2F;function setExtLatin(vanaTekst) {
+&#x2F;&#x2F;    var uusTekst;
+&#x2F;&#x2F;    uusTekst = vanaTekst
+
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;;ae&quot;, &quot;æ&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:;ae&quot;, &quot;ǣ&quot;) &#x27;lv
+
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:a&quot;, &quot;ā&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:A&quot;, &quot;Ā&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,a&quot;, &quot;ą&quot;) &#x27;lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,A&quot;, &quot;Ą&quot;) &#x27;lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,c&quot;, &quot;č&quot;) &#x27;lv, lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,C&quot;, &quot;Č&quot;) &#x27;lv, lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:e&quot;, &quot;ē&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:E&quot;, &quot;Ē&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,e&quot;, &quot;ę&quot;) &#x27;lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,E&quot;, &quot;Ę&quot;) &#x27;lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;.e&quot;, &quot;ė&quot;) &#x27;lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;.E&quot;, &quot;Ė&quot;) &#x27;lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,g&quot;, &quot;ģ&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,G&quot;, &quot;Ģ&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:i&quot;, &quot;ī&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:I&quot;, &quot;Ī&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,i&quot;, &quot;į&quot;) &#x27;lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,I&quot;, &quot;Į&quot;) &#x27;lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,k&quot;, &quot;ķ&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,K&quot;, &quot;Ķ&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,l&quot;, &quot;ļ&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,L&quot;, &quot;Ļ&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,n&quot;, &quot;ņ&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,N&quot;, &quot;Ņ&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:o&quot;, &quot;ō&quot;) &#x27;lv;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:u&quot;, &quot;ū&quot;) &#x27;lv, lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;:U&quot;, &quot;Ū&quot;) &#x27;lv, lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,u&quot;, &quot;ų&quot;) &#x27;lt;
+&#x2F;&#x2F;    &#x2F;&#x2F;uusTekst = Replace(uusTekst, &quot;,U&quot;, &quot;Ų&quot;) &#x27;lt
+
+&#x2F;&#x2F;    return uusTekst;
+&#x2F;&#x2F;} &#x2F;&#x2F;setExtLatin
+
+
+&#x2F;&#x2F; procs_dic_evs
+&#x2F;&#x2F; 
+
+&#x2F;**
+* (TODO kus välja kutsutakse?) Ei tee midagi.
+*
+* @method TeisendaDOM
+* @param {Object} thisdomdoc Muudetav DOM.
+*&#x2F;
+function TeisendaDOM(thisdomdoc) {
+
+    &#x2F;&#x2F; 05. nov 11
+    return;
+
+    &#x2F;&#x2F;var rxpath, rnodes, rnode, venenodename, prs, rkrxpath, vanemnode;
+    &#x2F;&#x2F;var rkriips, tagaosa, post, rohk, i, uustekst, tarr, sona, mark, ixRNode;
+
+    &#x2F;&#x2F;prs = DICPR + &quot;:&quot;;
+
+    &#x2F;&#x2F;rxpath = &quot;&#x2F;&#x2F;v:vgvormid&#x2F;text()|&#x2F;&#x2F;v:vgervorm&#x2F;text()|&#x2F;&#x2F;v:agvormid&#x2F;text()&quot;;
+    &#x2F;&#x2F;rnodes = thisdomdoc.selectNodes(rxpath);
+    &#x2F;&#x2F;for(ixRNode=0; ixRNode&lt; rnodes.length;ixRNode++){
+    &#x2F;&#x2F;rnode=rnodes[ixRNode];
+    &#x2F;&#x2F; venenodename = rnode.parentNode.nodeName;
+    &#x2F;&#x2F; if((venenodename == prs + &quot;vgvormid&quot; || venenodename == prs + &quot;vgervorm&quot;)){
+    &#x2F;&#x2F;  rkrxpath = &quot;ancestor::&quot; + prs + &quot;xg&#x2F;&quot; + prs + &quot;x&quot;;
+    &#x2F;&#x2F; }else if((venenodename == prs + &quot;agvormid&quot;)){
+    &#x2F;&#x2F;  rkrxpath = &quot;ancestor::&quot; + prs + &quot;xg&#x2F;&quot; + prs + &quot;aspvst&quot;;
+    &#x2F;&#x2F; }
+    &#x2F;&#x2F;vanemnode = rnode.selectSingleNode(rkrxpath);
+    &#x2F;&#x2F; if(! (vanemnode == null)){
+    &#x2F;&#x2F;  rkriips = vanemnode.text;
+    &#x2F;&#x2F;  tagaosa = &quot;&quot;;
+    &#x2F;&#x2F;  post = 0;
+    &#x2F;&#x2F;  rohk = &quot;ees&quot;;
+    &#x2F;&#x2F;  i = rkriips.indexOf(&quot;|&quot;);
+    &#x2F;&#x2F;  if((i &gt; -1)){
+    &#x2F;&#x2F;   post = 1;
+    &#x2F;&#x2F;   rkriips = jsMid(vanemnode.text, 0, i);
+    &#x2F;&#x2F;   tagaosa = jsMid(vanemnode.text, i+1);
+    &#x2F;&#x2F;   if((tagaosa.indexOf(&quot;\&quot;&quot;) &gt; -1 || tagaosa.indexOf(&quot;ё&quot;) &gt; -1)){
+    &#x2F;&#x2F;    rohk = &quot;taga&quot;;
+    &#x2F;&#x2F;   }
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  if((rkriips.length &gt; 1)){
+    &#x2F;&#x2F;   uustekst = &quot;&quot;;
+    &#x2F;&#x2F;   tarr = rnode.nodeValue.split(&quot; &quot;);
+    &#x2F;&#x2F;   for (i = 0; i&lt; tarr.length;i++){
+    &#x2F;&#x2F;    sona = tarr(i);
+    &#x2F;&#x2F;    if((sona != &quot;&quot;)){
+    &#x2F;&#x2F;     mark = &quot;&quot;;
+    &#x2F;&#x2F;     if((&quot;,;&quot;.indexOf(jsRight(sona, 1)) &gt; -1)){
+    &#x2F;&#x2F;      mark = jsRight(sona, 1);
+    &#x2F;&#x2F;      sona = jsLeft(sona, sona.length-1);
+    &#x2F;&#x2F;     }
+    &#x2F;&#x2F;     &#x2F;&#x2F;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;;
+    &#x2F;&#x2F;     &#x2F;&#x2F;ühesilbilised: &quot;aju II&quot;, &quot;laud&quot; 2.täh, &quot;stepp I&quot;, &quot;surm&quot; 1.täh;
+    &#x2F;&#x2F;     &#x2F;&#x2F;palju vorme: &quot;rebenemiskindel&quot; - пр&quot;оч|ный;
+    &#x2F;&#x2F;     &#x2F;&#x2F;palju rõhu liikumisi: &quot;sündima&quot;;
+    &#x2F;&#x2F;     &#x2F;&#x2F;vorm langeb kokku rkriips-uga: &quot;karjatama_1&quot; - пас|т&quot;и;
+    &#x2F;&#x2F;     &#x2F;&#x2F;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;;
+    &#x2F;&#x2F;     if(((sona.length &gt; rkriips.length) &amp;&amp; (jsLeft(sona, rkriips.length) == rkriips))){
+    &#x2F;&#x2F;      if(( (jsMid(sona, rkriips.length).indexOf(&quot;\&quot;&quot;) &gt; -1 || jsMid(sona, rkriips.length).indexOf(&quot;ё&quot;) &gt; -1) &amp;&amp; rohk == &quot;ees&quot;)){
+    &#x2F;&#x2F;       uustekst = uustekst + &quot; &quot; + sona + mark;
+    &#x2F;&#x2F;      }else{
+    &#x2F;&#x2F;       uustekst = uustekst + &quot; -&quot; + jsMid(sona, rkriips.length) + mark;
+    &#x2F;&#x2F;      }
+    &#x2F;&#x2F;     }else{
+    &#x2F;&#x2F;      uustekst = uustekst + &quot; &quot; + sona + mark;
+    &#x2F;&#x2F;     }
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;   }
+    &#x2F;&#x2F;   rnode.nodeValue = jsTrim(uustekst);
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F; }
+    &#x2F;&#x2F;}
+    &#x2F;&#x2F;rxpath = &quot;&#x2F;&#x2F;*[lang(&#x27;ru&#x27;)]&#x2F;text()&quot;;
+    &#x2F;&#x2F;rnodes = thisdomdoc.selectNodes(rxpath);
+    &#x2F;&#x2F;for(ixRNode=0; ixRNode&lt; rnodes.length;ixRNode++){
+    &#x2F;&#x2F;rnode=rnodes[ixRNode];
+    &#x2F;&#x2F; rnode.nodeValue = VeneRohk(rnode.nodeValue);
+    &#x2F;&#x2F; rnode.nodeValue = jsReplace(rnode.nodeValue, &quot;[*]&quot;, &quot;&lt;sup&gt;[&lt;&#x2F;sup&gt;*&lt;sup&gt;]&lt;&#x2F;sup&gt;&quot;);
+    &#x2F;&#x2F;}
+
+
+    &#x2F;&#x2F;var fmtbegin, fmtend, fmtnode, msnode, ms, homnr, rtilde, plussid, r2nodes, r2node, jnr;
+
+    &#x2F;&#x2F;rxpath = prs + &quot;sr&#x2F;&quot; + prs + &quot;A&quot;;
+    &#x2F;&#x2F;rnodes = thisdomdoc.selectNodes(rxpath);
+    &#x2F;&#x2F;for(ixRNode=0; ixRNode&lt; rnodes.length;ixRNode++){
+    &#x2F;&#x2F;rnode=rnodes[ixRNode];
+    &#x2F;&#x2F; fmtbegin = &quot;&quot;;
+    &#x2F;&#x2F; fmtend = &quot;&quot;;
+    &#x2F;&#x2F;fmtnode = rnode.selectSingleNode(&quot;.&#x2F;&#x2F;&quot; + prs + &quot;m[@&quot; + prs + &quot;liik=&#x27;z&#x27;]&quot;);
+    &#x2F;&#x2F; if(! (fmtnode == null)){
+    &#x2F;&#x2F;  fmtbegin = &quot;&lt;span style=&#x27;font-style:italic;&#x27;&gt;&quot;;
+    &#x2F;&#x2F;  fmtend = &quot;&lt;&#x2F;span&gt;&lt;span style=&#x27;font-style:normal;&#x27;&gt;&lt;&#x2F;span&gt;&quot;;
+    &#x2F;&#x2F; }
+    &#x2F;&#x2F;msnode = rnode.selectSingleNode(&quot;.&#x2F;&#x2F;&quot; + prs + &quot;m&#x2F;text()&quot;);
+    &#x2F;&#x2F; ms = msnode.nodeValue;
+    &#x2F;&#x2F; homnr = &quot;&quot;;
+    &#x2F;&#x2F; &#x2F;&#x2F;viitems;
+    &#x2F;&#x2F; if((jsLeft(ms, 1) = &quot;%&quot;)){
+    &#x2F;&#x2F;  ms = jsMid(ms, 1);
+    &#x2F;&#x2F;  if((ms.lastIndexOf(&quot;_&quot;) &gt; -1)){
+    &#x2F;&#x2F;   ms = jsMid(ms, 0, ms.indexOf(&quot;_&quot;)) + &quot;&lt;span style=&#x27;font-weight:normal;&#x27;&gt;&quot; + jsReplace(jsMid(ms, ms.indexOf(&quot;_&quot;)), &quot;_&quot;, &quot;&quot;) + &quot;&lt;&#x2F;span&gt;&quot;;
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  msnode.nodeValue = ms;
+    &#x2F;&#x2F; }else{
+    &#x2F;&#x2F;  if((ms.lastIndexOf(&quot;_&quot;) &gt; 0)){
+    &#x2F;&#x2F;   homnr = jsMid(ms, ms.lastIndexOf(&quot;_&quot;)+1);
+    &#x2F;&#x2F;   ms = jsMid(ms, 0, ms.indexOf(&quot;_&quot;));
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  rtilde = ms;
+    &#x2F;&#x2F;  if((ms.length &gt; 4)){
+    &#x2F;&#x2F;   plussid = jsMid(ms, 2, ms.length-4);
+    &#x2F;&#x2F;   ms = jsLeft(ms, 2) + jsReplace(plussid, &quot;+&quot;, &quot;&quot;) + jsRight(ms, 2);
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  if((homnr != &quot;&quot;)){
+    &#x2F;&#x2F;   homnr = RoomaNr(homnr);
+    &#x2F;&#x2F;   ms = ms + &quot; &quot; + homnr;
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  msnode.nodeValue = ms;
+    &#x2F;&#x2F;  if((jsLeft(rtilde, 2) == &quot;--&quot;)){
+    &#x2F;&#x2F;   rtilde = Mid(rtilde, 3);
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  post = 0;
+    &#x2F;&#x2F;  if((rtilde.indexOf(&quot;|&quot;) &gt; 0)){
+    &#x2F;&#x2F;   rtilde = jsMid(rtilde, 0, rtilde.indexOf(&quot;|&quot;));
+    &#x2F;&#x2F;   post = 1;
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  rtilde = jsReplace(rtilde, &quot;[+]&quot;, &quot;&quot;);
+    &#x2F;&#x2F;  rtilde = jsReplace(rtilde, &quot;+&quot;, &quot;&quot;);
+    &#x2F;&#x2F;  if((rtilde.length &gt; 1)){
+    &#x2F;&#x2F;  r2nodes = rnode.selectNodes(&quot;.&#x2F;&#x2F;&quot; + prs + &quot;n&#x2F;text()|.&#x2F;&#x2F;&quot; + prs + &quot;f&#x2F;text()&quot;);
+    &#x2F;&#x2F;for(ixR2Node=0; ixR2Node&lt; r2nodes.length;ixR2Node++){
+    &#x2F;&#x2F;r2node=r2nodes[ixR2Node];
+    &#x2F;&#x2F;    tarr = r2node.nodeValue.split(rtilde);
+    &#x2F;&#x2F;    uustekst = tarr(0);
+    &#x2F;&#x2F;    for (i = 0; i&lt; tarr.length - 1;i++){
+    &#x2F;&#x2F;     if((post == 0)){
+    &#x2F;&#x2F;      if((jsRight(tarr(i),1)==&quot; &quot;)){
+    &#x2F;&#x2F;       if((jsLeft(tarr(i+1), 1) == &quot;-&quot; || jsLeft(tarr(i+1), 1) == &quot;&#x2F;&quot;)){
+    &#x2F;&#x2F;        uustekst = uustekst + fmtbegin + rtilde + fmtend + tarr(i+1);
+    &#x2F;&#x2F;       }else{
+    &#x2F;&#x2F;        uustekst = uustekst + &quot;~&quot; + tarr(i+1);
+    &#x2F;&#x2F;       }
+    &#x2F;&#x2F;&#x2F;&#x2F;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;&#x27;
+    &#x2F;&#x2F;      }else if((InStr(1, &quot; &quot;, Left(tarr(i+1), 1)) &gt; 0)){
+    &#x2F;&#x2F;       if((Right(tarr(i), 1) = &quot;-&quot; || Right(tarr(i), 1) = &quot;&#x2F;&quot;)){
+    &#x2F;&#x2F;        uustekst = uustekst + fmtbegin + rtilde + fmtend + tarr(i+1);
+    &#x2F;&#x2F;       }else{
+    &#x2F;&#x2F;        uustekst = uustekst + &quot;~&quot; + tarr(i+1);
+    &#x2F;&#x2F;       }
+    &#x2F;&#x2F;      }else{
+    &#x2F;&#x2F;       uustekst = uustekst + fmtbegin + rtilde + fmtend + tarr(i+1);
+    &#x2F;&#x2F;      }
+    &#x2F;&#x2F;     }else{
+    &#x2F;&#x2F;      if((InStr(1, &quot; &quot;, Right(tarr(i), 1)) &gt; 0)){
+    &#x2F;&#x2F;       if(! (InStr(1, &quot;-&#x2F; &quot;, Left(tarr(i+1), 1)) &gt; 0)){
+    &#x2F;&#x2F;        uustekst = uustekst + &quot;~&quot; + tarr(i+1);
+    &#x2F;&#x2F;       }else{
+    &#x2F;&#x2F;        uustekst = uustekst + fmtbegin + rtilde + fmtend + tarr(i+1);
+    &#x2F;&#x2F;       }
+    &#x2F;&#x2F;      }else{
+    &#x2F;&#x2F;       if((InStr(1, &quot; &quot;, Left(tarr(i+1), 1)) &gt; 0)){
+    &#x2F;&#x2F;        if(! (InStr(1, &quot;-&#x2F; &quot;, Right(tarr(i), 1)) &gt; 0)){
+    &#x2F;&#x2F;         uustekst = uustekst + &quot;~&quot; + tarr(i+1);
+    &#x2F;&#x2F;        }else{
+    &#x2F;&#x2F;         uustekst = uustekst + fmtbegin + rtilde + fmtend + tarr(i+1);
+    &#x2F;&#x2F;        }
+    &#x2F;&#x2F;       }else{
+    &#x2F;&#x2F;        uustekst = uustekst + fmtbegin + rtilde + fmtend + tarr(i+1);
+    &#x2F;&#x2F;       }
+    &#x2F;&#x2F;      }
+    &#x2F;&#x2F;     }
+    &#x2F;&#x2F;    }
+    &#x2F;&#x2F;    r2node.nodeValue = Replace(uustekst, &quot;&#x2F;&quot;, &quot;&quot;);
+    &#x2F;&#x2F;   }
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F; }
+
+    &#x2F;&#x2F;r2nodes = rnode.selectNodes(&quot;.&#x2F;&#x2F;&quot; + prs + &quot;mvt&#x2F;text()&quot;);
+    &#x2F;&#x2F; jnr = 0;
+    &#x2F;&#x2F; for each r2node in r2nodes;
+    &#x2F;&#x2F;  ms = r2node.nodeValue;
+    &#x2F;&#x2F;  homnr = &quot;&quot;;
+    &#x2F;&#x2F;  if((InStrRev(ms, &quot;_&quot;) &gt; 0)){
+    &#x2F;&#x2F;   homnr = Mid(ms, InStrRev(ms, &quot;_&quot;)+1);
+    &#x2F;&#x2F;   ms = Mid(ms, 1, InStr(1, ms, &quot;_&quot;)-1);
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  if((Len(ms) &gt; 4)){
+    &#x2F;&#x2F;   plussid = Mid(ms, 3, Len(ms)-4);
+    &#x2F;&#x2F;   ms = Left(ms, 2) + Replace(plussid, &quot;+&quot;, &quot;&quot;) + Right(ms, 2);
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  if((homnr != &quot;&quot;)){
+    &#x2F;&#x2F;   homnr = RoomaNr(homnr);
+    &#x2F;&#x2F;   if((jnr &gt; 0)){
+    &#x2F;&#x2F;    ms = homnr;
+    &#x2F;&#x2F;   }else{
+    &#x2F;&#x2F;    ms = ms + &quot; &quot; + homnr;
+    &#x2F;&#x2F;   }
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  r2node.nodeValue = ms;
+    &#x2F;&#x2F;  jnr = jnr + 1;
+    &#x2F;&#x2F; next;
+    &#x2F;&#x2F;r2nodes = rnode.selectNodes(&quot;.&#x2F;&#x2F;&quot; + prs + &quot;tvt&#x2F;text()&quot;);
+    &#x2F;&#x2F; jnr = 0;
+    &#x2F;&#x2F; for each r2node in r2nodes;
+    &#x2F;&#x2F;  ms = r2node.nodeValue;
+    &#x2F;&#x2F;  homnr = &quot;&quot;;
+    &#x2F;&#x2F;  if((InStrRev(ms, &quot;_&quot;) &gt; 0)){
+    &#x2F;&#x2F;   homnr = Mid(ms, InStrRev(ms, &quot;_&quot;)+1);
+    &#x2F;&#x2F;   ms = Mid(ms, 1, InStr(1, ms, &quot;_&quot;)-1);
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  if((Len(ms) &gt; 4)){
+    &#x2F;&#x2F;   plussid = Mid(ms, 3, Len(ms)-4);
+    &#x2F;&#x2F;   ms = Left(ms, 2) + Replace(plussid, &quot;+&quot;, &quot;&quot;) + Right(ms, 2);
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  if((homnr != &quot;&quot;)){
+    &#x2F;&#x2F;   homnr = RoomaNr(homnr);
+    &#x2F;&#x2F;   ms = ms + &quot; &quot; + homnr;
+    &#x2F;&#x2F;  }
+    &#x2F;&#x2F;  r2node.nodeValue = ms;
+    &#x2F;&#x2F;  jnr = jnr + 1;
+    &#x2F;&#x2F; next;
+    &#x2F;&#x2F;next;
+    &#x2F;&#x2F;rxpath = &quot;&#x2F;&#x2F;&quot; + prs + &quot;d&#x2F;text()[contains(.,&#x27;[&#x27;)]&quot;;
+    &#x2F;&#x2F;rxpath = rxpath + &quot;|&#x2F;&#x2F;&quot; + prs + &quot;xr&#x2F;text()[contains(.,&#x27;[&#x27;)]&quot;;
+    &#x2F;&#x2F;rxpath = rxpath + &quot;|&#x2F;&#x2F;&quot; + prs + &quot;vrek&#x2F;text()[contains(.,&#x27;[&#x27;)]&quot;;
+    &#x2F;&#x2F;rxpath = rxpath + &quot;|&#x2F;&#x2F;&quot; + prs + &quot;r&#x2F;text()[contains(.,&#x27;[&#x27;)]&quot;
+    &#x2F;&#x2F;rnodes = thisdomdoc.selectNodes(rxpath);
+    &#x2F;&#x2F;for each rnode in rnodes;
+    &#x2F;&#x2F; rnode.nodeValue = Replace(rnode.nodeValue, &quot;[&quot;, &quot;&lt;span style=&#x27;font-style:normal;&#x27;&gt;[&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F; rnode.nodeValue = Replace(rnode.nodeValue, &quot;]&quot;, &quot;&lt;span style=&#x27;font-style:normal;&#x27;&gt;]&lt;&#x2F;span&gt;&quot;);
+    &#x2F;&#x2F;next;
+    &#x2F;&#x2F;rxpath = &quot;&#x2F;&#x2F;*&#x2F;text()[contains(.,&#x27;%v&#x27;)]|&#x2F;&#x2F;*&#x2F;text()[contains(.,&#x27;_&#x27;)]|&#x2F;&#x2F;*&#x2F;text()[contains(.,&#x27;#&#x27;)]|&#x2F;&#x2F;*&#x2F;text()[contains(.,&#x27;--&#x27;)]&quot;
+    &#x2F;&#x2F;rnodes = thisdomdoc.selectNodes(rxpath);
+    &#x2F;&#x2F;for each rnode in rnodes;
+    &#x2F;&#x2F; rnode.nodeValue = Replace(rnode.nodeValue, &quot;%v&quot;, &quot;&lt;i style=&#x27;font-weight:normal&#x27;&gt;v&lt;&#x2F;i&gt;&quot;);
+    &#x2F;&#x2F; rnode.nodeValue = Replace(rnode.nodeValue, &quot;_&quot;, &quot; &quot;);
+    &#x2F;&#x2F; rnode.nodeValue = Replace(rnode.nodeValue, &quot;#&quot;, &quot;&quot;&quot;&quot;);
+    &#x2F;&#x2F; rnode.nodeValue = Replace(rnode.nodeValue, &quot;--&quot;, ChrW(+H2013)) &#x27;En Dash;
+    &#x2F;&#x2F;next;
+    &#x2F;&#x2F;rxpath = &quot;&#x2F;&#x2F;&quot; + prs + &quot;mvl&#x2F;text()[contains(., &#x27;.&#x27;)]&quot;
+    &#x2F;&#x2F;rnodes = thisdomdoc.selectNodes(rxpath);
+    &#x2F;&#x2F;for each rnode in rnodes;
+    &#x2F;&#x2F; rnode.nodeValue = Replace(rnode.nodeValue, &quot;.&quot;, ChrW(+H00b7)) &#x27;Middle Dot;
+    &#x2F;&#x2F;next;
+
+} &#x2F;&#x2F;TeisendaDOM
+
+
+&#x2F;&#x2F;&#x2F;&#x2F;-----------------------------------------------------------------------------------
+&#x2F;&#x2F;function VeneRohk(instr) {
+&#x2F;&#x2F;    var tarr, i;
+&#x2F;&#x2F;    tarr = instr.split(&#x27;&quot;&#x27;);
+&#x2F;&#x2F;    &#x2F;&#x2F;for i=1 to UBound(tarr);
+&#x2F;&#x2F;    &#x2F;&#x2F; tarr(i) = Left(tarr(i), 1) + ChrW(+H0301) + Mid(tarr(i), 2);
+&#x2F;&#x2F;    &#x2F;&#x2F;next;
+&#x2F;&#x2F;    return tarr.join(&quot;&quot;);
+&#x2F;&#x2F;} &#x2F;&#x2F;VeneRohk
+
+
+&#x2F;&#x2F;&#x2F;&#x2F;-----------------------------------------------------------------------------------
+&#x2F;&#x2F;function RoomaNr(instr) {
+&#x2F;&#x2F;    var romanstr;
+&#x2F;&#x2F;    if ((instr == &quot;1&quot;)) {
+&#x2F;&#x2F;        romanstr = &quot;I&quot;;
+&#x2F;&#x2F;    } else if ((instr == &quot;2&quot;)) {
+&#x2F;&#x2F;        romanstr = &quot;II&quot;;
+&#x2F;&#x2F;    } else if ((instr == &quot;3&quot;)) {
+&#x2F;&#x2F;        romanstr = &quot;III&quot;;
+&#x2F;&#x2F;    } else if ((instr == &quot;4&quot;)) {
+&#x2F;&#x2F;        romanstr = &quot;IV&quot;;
+&#x2F;&#x2F;    } else if ((instr == &quot;5&quot;)) {
+&#x2F;&#x2F;        romanstr = &quot;V&quot;;
+&#x2F;&#x2F;    } else if ((instr == &quot;6&quot;)) {
+&#x2F;&#x2F;        romanstr = &quot;VI&quot;;
+&#x2F;&#x2F;    } else {
+&#x2F;&#x2F;        romanstr = &quot;MMMMMDLV&quot;; &#x2F;&#x2F;&#x27;5555;
+&#x2F;&#x2F;    }
+&#x2F;&#x2F;    return romanstr;
+&#x2F;&#x2F;} &#x2F;&#x2F;RoomaNr;
+
+
+
+&#x2F;**
+* Käivitatakse grupi loomisel. Tegeleb tähendusnumbritega.
+*
+* @method AddGruppChecks
+* @param {Object} oAddedNode
+*&#x2F;
+function AddGruppChecks(oAddedNode) {
+    if (oAddedNode.baseName == &quot;n&quot;) {
+        var yldStruNode = getXmlSingleNode(yldStruDom, &quot;.&#x2F;&#x2F;&quot; + oAddedNode.nodeName);
+        if (yldStruNode) {
+            var attNimi = DICPR + &quot;:nrl&quot;;
+            var nrlAttr = getXmlSingleNode(yldStruNode, &quot;@&quot; + attNimi);
+            if (nrlAttr) {
+                var tekst = getXmlNodeValue(nrlAttr);
+                if (!tekst) {
+                    tekst = &quot;var&quot;;
+                }
+                var eelmNode = getXmlSingleNode(oAddedNode, &quot;preceding-sibling::&quot; + oAddedNode.nodeName);
+                if (eelmNode) {
+                    setMyNSAttribute(oAddedNode, DICURI, attNimi, tekst);
+                }
+            }
+        }
+    }
+
+    arvutaTxhendusNumbrid(oAddedNode.parentNode, oAddedNode.nodeName); &#x2F;&#x2F; tnr, ntnr, rnr, anr, ftnr
+
+} &#x2F;&#x2F;AddGruppChecks
+
+&#x2F;**
+* Arvutab funktsioonile AddGruppChecks tähendusnumbrid.
+*
+* @method arvutaTxhendusNumbrid
+* @param {Object} parNode
+* @param {String} seldNodeName
+*&#x2F;
+function arvutaTxhendusNumbrid(parNode, seldNodeName) {
+    if (seldNodeName == DICPR + &quot;:tp&quot; || seldNodeName == DICPR + &quot;:qnp&quot; || (dic_desc == &quot;ems&quot; &amp;&amp; (seldNodeName == DICPR + &quot;:rp&quot; || seldNodeName == DICPR + &quot;:atp&quot;)) || (dic_desc == &quot;usv&quot; &amp;&amp; (seldNodeName == DICPR + &quot;:ftp&quot;))) {
+        var sAttrName, countnodes, i;
+        if (seldNodeName == DICPR + &quot;:tp&quot;) {
+            sAttrName = DICPR + &quot;:tnr&quot;;
+        } else if (seldNodeName == DICPR + &quot;:qnp&quot;) {
+            sAttrName = DICPR + &quot;:ntnr&quot;;
+        } else if (seldNodeName == DICPR + &quot;:rp&quot;) { &#x2F;&#x2F; ems
+            sAttrName = DICPR + &quot;:rnr&quot;;
+        } else if (seldNodeName == DICPR + &quot;:atp&quot;) { &#x2F;&#x2F; ems
+            sAttrName = DICPR + &quot;:anr&quot;;
+        } else if (seldNodeName == DICPR + &quot;:ftp&quot;) { &#x2F;&#x2F; usv
+            sAttrName = DICPR + &quot;:ftnr&quot;;
+        }
+
+        var countNodes = getXmlNodesSnapshot(parNode, seldNodeName);
+        var countNode, ix;
+        if (&#x27;snapshotLength&#x27; in countNodes) {
+            for (ix = 0; ix &lt; countNodes.snapshotLength; ix++) {
+                countNode = countNodes.snapshotItem(ix);
+                if (countNode.getAttribute(sAttrName) || countNodes.snapshotLength &gt; 1) {
+                    setMyNSAttribute(countNode, DICURI, sAttrName, ix + 1);
+                }
+            }
+        } else if (&#x27;length&#x27; in countNodes) { &#x2F;&#x2F; nodeList, MSXML
+            for (ix = 0; ix &lt; countNodes.length; ix++) {
+                countNode = countNodes[ix];
+                if (countNode.getAttribute(sAttrName) || countNodes.length &gt; 1) {
+                    setMyNSAttribute(countNode, DICURI, sAttrName, ix + 1);
+                }
+            }
+        }
+    }
+} &#x2F;&#x2F;arvutaTxhendusNumbrid
+
+
+
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="..&#x2F;assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="..&#x2F;assets/js/yui-prettify.js"></script>
+<script src="..&#x2F;assets/../api.js"></script>
+<script src="..&#x2F;assets/js/api-filter.js"></script>
+<script src="..&#x2F;assets/js/api-list.js"></script>
+<script src="..&#x2F;assets/js/api-search.js"></script>
+<script src="..&#x2F;assets/js/apidocs.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+/* MAIN OBJ */
+div.dhx_acc_base_dhx_web {
+	overflow: hidden;
+	amargin-top: -9px;
+}
+/* FULLSCREENED BODY */
+.dhxacc_fullscreened {
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	background-color: #ebebeb;
+	overflow: hidden;
+}
+/* SINGLE ITEM */
+div.dhx_acc_base_dhx_web div.dhx_acc_item {
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	background-color: #646464;
+	background-image: url("../imgs/dhxaccord_dhx_web/dhxacc_bg.gif");
+	background-repeat: repeat-x;
+	background-position: bottom;
+}
+div.dhx_acc_base_dhx_web div.dhx_acc_item.last_item {
+	background: none;
+	background-color: #646464;
+}
+/* white lines */
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhx_acc_hdr_line_l {
+	display: none;
+}
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhx_acc_hdr_line_r {
+	display: none;
+}
+/* SINGLE ITEM HIDDEN */
+div.dhx_acc_base_dhx_web div.dhx_acc_item_hidden {
+	display: none;
+}
+/* HEADER */
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhx_acc_item_label {
+	position: relative;
+	color: #f5f5f5;
+	font-family: "Trebuchet MS";
+	font-size: 14px;
+	font-weight: normal;
+	height: 26px;
+	line-height: 26px;
+	vertical-align: middle;
+	overflow: hidden;
+	-moz-user-select: none;
+	cursor: default;
+	background-color: #646464;
+	z-index: 4;
+}
+/* LABEL */
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhx_acc_item_label span {
+	margin: 0px 14px;
+}
+/* HOVERED HEADER */
+div.dhx_acc_base_dhx_web div.dhx_acc_item_lavel_hover {
+	
+}
+/* HEADER BOTTOM BORDER FAKE ?? */
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhx_acc_item_label div.dhx_acc_item_label_btmbrd {
+	display: none;
+	/*
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	bottom: 0px;
+	border-bottom: #a4bed4 1px solid;
+	*/
+}
+/* ICON */
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhx_acc_item_label img.dhx_acc_item_icon {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	left: 4px;
+	top: 5px;
+}
+
+/* ?? accordion attached to window */
+.dhtmlxAccordionAttached {
+	border: none !important;
+}
+
+
+/* tabbar */
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhx_tabbar_row {
+	background-color: #646464;
+}
+/* status bar */
+div.dhx_acc_base_dhx_web div.dhxcont_sb_container {
+	height: 41px;
+	position:relative;
+}
+table.dhtmlxLayoutPolyContainer_dhx_web div.dhxcont_sb_container div.dhxcont_statusbar {
+}
+div.dhx_acc_base_dhx_web div.dhxcont_statusbar {
+	background-color: #ECECEC;
+	color: #666666;
+	font-family: "Trebuchet MS";
+	font-size: 14px;
+	height: 32px;
+	line-height: 32px;
+	overflow: hidden;
+	padding: 0 12px;
+	position: relative;
+	top: 9px;
+	vertical-align: middle;
+	white-space: nowrap;
+	width: auto;
+}
+/* CONTAINER */
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhxcont_global_content_area {
+	position: absolute;
+	overflow: hidden;
+	background-color: #FFFFFF;
+}
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhxcont_global_content_area.dhxcont_acc_dhx_web {
+	border: white 8px solid;
+}
+
+
+/* ITEM ARROW */
+div.dhx_acc_base_dhx_web div.dhx_acc_item div.dhx_acc_item_arrow {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	right: 4px;
+	top: 6px;
+	background-image: url("../imgs/dhxaccord_dhx_web/dhxacc_btns.gif");
+	background-repeat: no-repeat;
+}
+div.dhx_acc_base_dhx_web div.dhx_acc_item_arrow.item_opened {
+	background-position: 0px 0px;
+}
+div.dhx_acc_base_dhx_web div.dhx_acc_item_arrow.item_closed {
+	background-position: -16px 0px;
+}
+div.dhxcont_content_blocker {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 101%;
+	height: 101%;
+	filter: alpha(opacity=0);
+	-moz-opacity: 0;
+	opacity: 0;
+	background: #FFFFFF;
+	z-index: 1;
+	-moz-user-select: none;
+}

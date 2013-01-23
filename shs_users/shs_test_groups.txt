@@ -1,0 +1,8 @@
+quest_dmo: 
+grp_dmo: PKasutaja
+grp_PTD: PKasutaja
+
+grp_TEH: 
+grp_LISAJAD: 
+grp_KIRJAD: 
+grp_DEV: PKasutaja

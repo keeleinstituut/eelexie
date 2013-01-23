@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Vaate genereerimine</h2>
+	
+Sõnastikuartikli küljendatud esitust nimetatakse EELexis vaateks. Kasutaja saab sõnaartikli küljenduskuju ehk vaate ise genereerida ja soovi korral muuta. Selleks ava Toimetamisalal üks artikkel ja vali <strong>Sõnastiku tööriistad <img src="files/sonastiku_tooriistad.png" alt="sonastiku_tooriistad.png" title="sonastiku_tooriistad.png" /></strong> -- <strong>Vaate genereerimine</strong>. Ilmub aken Artikli vaate kujundus, mis on jaotatud kolmeks paaniks: vasakul artikli XML-struktuur (struktuuriala), keskel sätete ja tingimuste ala ning paremal küljendatud vaade (jooksva vaate ala).<br />
+<img src="files/vaate_genereerimine.png" alt="vaate_genereerimine.png" title="vaate_genereerimine.png" style="height: 363px; width: 800px;" /><br />
+Elementi, mille küljendust hakkad määrama, saab aktiivseks muuta, klõpsates teda kas struktuuripuus (vasakus veerus) või küljendatud vaates (paremal). Selle peale ilmub valitud element koos kõigi tema atribuutidega, iga atribuut eraldi sinisel real.<br />
+<br />
+Kui soovid näha mõnda teist artiklit, vali parempoolselt paanilt kolme punktiga nupp <strong>...</strong> ja sisesta ilmunud aknasse soovitud artikli märksõna. Nupule <strong>tingArt</strong> vajutades näed artikli sisu asemel elementide nimesid küljendatuna. Vaade automaatselt ei uuene, vaid nupp <strong>art</strong> uuendab vaate.<br />
+<br />
+Küljenduse salvestamine käib nupu <strong>Salvesta</strong> abil, akna sulgeb nupp <strong>OK</strong> vasaku paani all või ristike ülal paremas nurgas.<br />
+<br />
+Iga sõnastiku jaoks on võimalik valmis teha mitut vaadet. Vaate genereerimise lehel on nupp kolme punktiga <strong>Salvesta …</strong>. Selle kaudu saab vaatevariante lisada (ja ka kustutada). Juhul, kui on rohkem kui üks genereeritud vaade, siis Sõnastiku esilehel tuleb vaateala päises nähtavale loend vaadetest, mida valida saab. Ka vaate genereerimisse minnakse selle vaatega, mis hetkel aktiivne on.<br />
+<br />
+Iga elemendi jaoks saab määrata, kas kuvada ta kald-, püst- või poolpaksus kirjas, allajoonitult või mingi mustast erineva värviga, kas kuvada kirjavahemärke ja/või teksti selle elemendi ette-taha (<strong>ees</strong> ja <strong>taga</strong>) või korduvate elementide vahele (<strong>vahel</strong>), jätta ta üldse kuvamata, määrata lingiks vms.<br />
+<br />
+Mõned selgitust vajavad linnukesed ja tekstiväljad:<br />
+<strong>Glob</strong>. - juhul, kui element kuulub mitmesse gruppi, siis siin linnuke määrab ta vaate kõikjal sõnastiku piires, vastasel juhul ainult valitud kohas.<br />
+<strong>Näidata</strong> - kui on linnuke, siis näidatakse seda elementi/atribuuti Vaategeneraatoris ja Sõnastiku tööakna vaatess (parempoolne ala).<br />
+<strong>Ei trüki</strong> - kui on linnuke, siis Wordki faili seda elementi/atribuuti ei trükita.<br />
+<strong>Uus rida</strong> - kui on linnuke, siis kuvab selle elemendi uuelt realt.<br />
+<strong>Sisaldub</strong><br />
+<strong>Lähtekeel</strong><br />
+<strong>Süm. eelm:</strong><br />
+<strong>Sõrendus</strong> - sisesta arv, mitu punkti jääb tähtede vahele.<br />
+<strong>Allelem</strong>. -<br />
+<strong>Asendus</strong>- tekstilahtrisse kirjuta, millised elemendi väärtused millega asendada, kujul vana väärtus ~ uus väärtus püstkriips vana väärtus ~ uus väärtus püstkirips jne (näide sõnaliikide asendamise kohta: A~Adj|D~Adv|G~Ag|I~Interj|J~Konj|K~PostPrep|N~Num|O~Num|P~Pron).<br />
+<strong>Tühikuga</strong> <br />
+<br />
+<h3 id="toc0"><a name="x--Tingimused vaates"></a>Tingimused vaates</h3>
+ Võimalik on seada vaate kuvamisele tingimusi, näiteks kuvada mingi elemendi väärtus tema mingi atribuudi mingite väärtuste korral ühtmoodi ja teiste väärtuste korral teisiti. Vaate generaatoris märgi aktiivseks muudetav element ja tee paremklikk sellel vaate sättel, mida muuta tahad (näiteks kliki parema hiireklahviga sõnal Suurus või Sõrendus). Ilmuvasse aknasse tipi X-Pathi tingimus. Vt <a class="wiki_link_new" href="s6naartikli_otsimine.html">Sõnaartikli otsimine</a>.<br />
+<br />
+Kui soovid oma veebisõnastikule teistsugust vaadet kui standardvaade, siis genereeri Salvesta ... nupuga oma sõnastikule eraldi vaade ja nimeta see Veebivaateks. Näiteks pabersõnastikus võib eelistada, et vasted on teineteise järel (ruumi kokkuhoid), veebisõnastikus aga üksteise all.<br />
+<br />
+<h3 id="toc1"><a name="x--Veebisõnastiku küljendus"></a>Veebisõnastiku küljendus</h3>
+ Kui soovid oma veebisõnastikule teistsugust vaadet kui standardvaade, siis genereeri nupuga Salvesta ... oma sõnastikule veel üks vaade ja pane sellele nimeks Veebivaade. Näiteks pabersõnastikus võib eelistada, et vasted on teineteise järel (ruumi kokkuhoid), veebisõnastikus aga üksteise all.
+    </div>
+  </body>
+</html>

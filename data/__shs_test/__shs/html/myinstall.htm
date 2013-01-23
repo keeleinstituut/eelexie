@@ -1,0 +1,53 @@
+﻿<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>Installeeri või uuenda tarkvara</title>
+        <meta http-equiv="cache-control" content="no-cache">
+        <meta http-equiv="pragma" content="no-cache">
+        <!--<meta http-equiv="refresh" content="10">-->
+        <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+        <meta name="author" content="Andres Loopmann">
+        <meta name="keywords" content="EELex">
+
+		<script language=vbscript type="text/vbscript">
+
+		<!--
+Option Explicit
+
+
+Sub LisaLoad()
+    Dim inArr, PD
+    PD = ChrW(&HE001)
+    if IsArray(window.dialogArguments) then
+	    inArr = window.dialogArguments
+    else
+	    inArr = Split(window.dialogArguments, PD)
+    end if
+    Dim myhref, infoStr
+
+	myhref = inArr(0)
+	infoStr = inArr(1)
+	id_a.href = myhref
+	id_infoDiv.innerHTML = infoStr
+End Sub 'LisaLoad
+
+Function HandleBodyKeyUp()
+    if (window.event.keyCode = 27) then
+	    window.close()
+    end if
+End Function 'HandleBodyKeyUp
+
+			-->
+
+		</script>
+	</head>
+	<body  style="background-color:buttonface" onload="LisaLoad()" onkeyup="HandleBodyKeyUp()">
+		<div id="id_body" style="padding:5mm 0 0 10mm;">
+		    <a id="id_a" href="?" onclick="window.close()">Installeeri või uuenda tarkvara</a>
+		    <br />
+		    <br />
+		    <div id="id_infoDiv" />
+		</div>
+	</body>
+</html>

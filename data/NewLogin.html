@@ -1,0 +1,355 @@
+<html XMLNS:shs="http://www.eki.ee/shs">
+<head>
+    <title>&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;&#xA0;</title>
+    <meta http-equiv="x-ua-compatible" content="IE=7"> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <STYLE>
+        shs\:cacher {behavior:url(#default#userData);}
+    </STYLE>
+    <script language="javascript" type="text/javascript">
+<!--
+
+/*
+Firefox:
+0) versioon oli 2.0.0.1 ja 24. märtsil 2007
+1) HTML nimeruumiks ei sobi talle xhtml oma, kui on, siis objekte lehel id järgi ära ei tunta.
+2) Ka !DOCTYPE sai maha võetud.
+3) "all" collection kehtib ainult "document" jaoks.
+4) "innerText" - i ei tunta.
+5) "execScript" - i pole.
+6) ("userData" nt) muidugi ka pole.
+7) span-style-width ei tee span-i suuremaks kui tekst tema sees.
+
+x) - ei ole mõttekas tegeleda mitme lehitsejaga!
+
+*/
+
+
+var sAppLang;
+var seldDictIndex;
+var useTestDB;
+
+var DOC_TITLE;
+var WRONG_BROWSER_TXT;
+var DICS;
+var LBL_LANG_ET_TXT;
+var LBL_LANG_EN_TXT;
+var LBL_TESTDB_TXT;
+var SPN_BROWSER_TXT;
+var GO_BTN_TXT;
+
+
+function bodyOnLoad() {
+testdb.checked = true;
+if (window.location.hostname == "localhost") {
+    hallRiba.style.backgroundImage = "url(vista_logo.jpg)";
+    testdb.checked = true;
+    testdb.disabled = true;
+}
+try {
+    // siinkohal paneb Firefox pange, sellepärast ka "try"
+    cacheTag.load("loginCache");
+}
+catch(e) {
+    window.status = "'UserData' behaviour not supported, use Internet Explorer.";
+}
+
+
+// muutujad: kui pole midagi omistatud, siis "undefined". Kui aga on omistatud olematu väärtus, siis "null"
+// võrdlemisel on kama, kas "null" või "undefined"
+sAppLang = cacheTag.getAttribute("sAppLang");
+//alert(sAppLang);
+sAppLang = "et"
+if (sAppLang == null) sAppLang = 'en';
+
+seldDictIndex = cacheTag.getAttribute("seldDictIndex");
+if (seldDictIndex == null) seldDictIndex = -1; else seldDictIndex = parseInt(seldDictIndex);
+
+useTestDB = cacheTag.getAttribute("useTestDB");
+if (useTestDB == null) useTestDB = 0; else useTestDB = parseInt(useTestDB);
+
+initConst();
+applyConst();
+
+if (seldDictIndex > -1) {
+    sel_dicts.selectedIndex = seldDictIndex;
+    if (document.all.item("goBtn") != null) {
+        goBtn.disabled = false;
+    }
+}
+
+//switch (sAppLang) {
+//    case "et":
+//        lang_et.checked = true;
+//        break;
+//    case "en":
+//        lang_en.checked = true;
+//        break;
+//    default:
+//        break;
+//}
+
+//testdb.checked = useTestDB;
+
+document.title = 'EELex - login';
+loginSisu.style.visibility = "visible";
+
+//ua.innerHTML = '&nbsp;' + window.navigator.userAgent;
+ua.innerHTML = '';
+//ua.innerHTML = ""
+//alert(window.navigator.userAgent);
+
+} // bodyOnLoad
+
+
+function initConst() {
+
+var xmlDoc;
+if (window.ActiveXObject) {
+    xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
+    xmlDoc.async=false;
+    xmlDoc.load("NewLogin.xml");
+    //alert("Variant 1");
+} else if (document.implementation && document.implementation.createDocument) {
+    xmlDoc=document.implementation.createDocument("","",null);
+    xmlDoc.load("NewLogin.xml");
+    //alert("Variant 2");
+}
+var elements = xmlDoc.getElementsByTagName("elem");
+var elem = xmlDoc.getElementsByTagName("lyh");
+var element_count = elements.length;
+DICS=''
+for (var i = 0; i < element_count; i++)
+{
+if (i==0){
+DICS=elements.item(i).text + '|' + elem.item(i).text
+}
+else{
+DICS=DICS + '||' + elements.item(i).text + '|' + elem.item(i).text
+}
+}
+
+    // Eesti-vene sõnaraamat (1997-2009)|evs||
+    // Estonian-Russian dictionary (1997-(2008))|evs||
+switch (sAppLang) {
+    case "et":
+        DOC_TITLE = "EKI sõnastike haldussüsteem EELex";
+        WRONG_BROWSER_TXT = "Kasuta <b>Internet Explorer</b> 7-t või uuemat!";
+        //DICS = "Õigekeelsussõnaraamat (ÕS 2006)|qs_||Eesti-läti sõnaraamat|lat||Eesti-leedu sõnaraamat|lit||Eesti-udmurdi sõnaraamat|udm||LEKS-baas|lex||Sõnaperede andmebaas (Silvi Vare)|sp_||Oxfordi-Dudeni piltsõnastik|od_||Vene õpilase ÕS|qqv||Õigekeelsussõnaraamat (ÕS 2006)|qs_||Eesti-läti sõnaraamat|lat||Eesti-leedu sõnaraamat|lit||Eesti-udmurdi sõnaraamat|udm||LEKS-baas|lex||Sõnaperede andmebaas (Silvi Vare)|sp_||Oxfordi-Dudeni piltsõnastik|od_||Vene õpilase ÕS|qqv";
+        LBL_LANG_ET_TXT = "eesti keeles";
+        LBL_LANG_EN_TXT = "inglise keeles";
+        LBL_TESTDB_TXT = "testversioon";
+        SPN_BROWSER_TXT = "Lehitseja:";
+        DIV_WEB_MASTER = "";
+        GO_BTN_TXT = "Sisene";
+        break;
+    case "en":
+        DOC_TITLE = "IEL Dictionary Management System EELex";
+        WRONG_BROWSER_TXT = "Please use <b>Internet Explorer</b> 7 or higher!";
+        DICS = "Dictionary of correct usage (ÕS 2006)|qs_||Estonian-Latvian dictionary|lat||Estonian-Lithuanian dictionary|lit||Estonian-Udmurtian dictionary|udm||LEKS-database|lex||Word formation database (Silvi Vare)|sp_||Oxford-Duden pictorial dictionary|od_||Russian student dictionary|qqv";
+        LBL_LANG_ET_TXT = "in Estonian";
+        LBL_LANG_EN_TXT = "in English";
+        LBL_TESTDB_TXT = "use test database";
+        DIV_WEB_MASTER = "Web master: Andres Loopmann [andres.loopmann@eki.ee]";
+        GO_BTN_TXT = "Enter";
+        break;
+    default:
+        break;
+}
+} // initConst
+
+
+function applyConst() {
+loginHeading.innerHTML = DOC_TITLE;
+
+var dicsArr = DICS.split('||');
+var i, dicArr, dictsHtml;
+for (i = 0; i < dicsArr.length; i++) {
+    dicArr = dicsArr[i].split('|');
+    dictsHtml += "<option id='" + dicArr[1] + "'>" + dicArr[0] + "</option>";
+}
+var seli = sel_dicts.selectedIndex;
+dictsTD.innerHTML = "<select id='sel_dicts' size='18' style='width:100%' onchange='selDictsOnChange()' ondblclick='selDictsOnDblClick()'>" + dictsHtml + "</select>";
+if (seli > -1)
+    sel_dicts.selectedIndex = seli;
+
+//lbl_lang_et.innerHTML = LBL_LANG_ET_TXT;
+//lbl_lang_en.innerHTML = LBL_LANG_EN_TXT;
+
+lbl_testdb.innerHTML = LBL_TESTDB_TXT;
+//spn_browser.innerHTML = SPN_BROWSER_TXT;
+//div_webmaster.innerHTML = DIV_WEB_MASTER;
+
+var gb = document.all("goBtn");
+if (gb != null) gb.value = GO_BTN_TXT;
+
+var wb = document.all("wrongBrowser");
+if (wb != null) wb.innerHTML = WRONG_BROWSER_TXT;
+
+} // applyConst
+
+
+function langChoiceOnClick(evnt) {
+var newLang;
+if (evnt.target == null) // IE
+    newLang = evnt.srcElement.value;
+else // Mozilla
+    newLang = evnt.target.value;
+
+if (newLang != sAppLang) {
+    sAppLang = newLang;
+    initConst();
+    applyConst();
+}
+} // langChoiceOnClick
+
+
+function selDictsOnChange() {
+if (sel_dicts.selectedIndex > -1)
+    goBtn.disabled = false;
+} // selDictsOnChange
+
+
+function selDictsOnDblClick() {
+goFn();
+} // selDictsOnDblClick
+
+
+function goFn() {
+cacheTag.setAttribute("sAppLang", sAppLang);
+
+//var actStr = "__shs";
+//if (testdb.checked) {
+//    cacheTag.setAttribute("useTestDB", 1);
+//    actStr += "_test";
+//}
+//else {
+//    cacheTag.setAttribute("useTestDB", 0);
+//}
+//actStr += "/art_";
+
+//var s = document.all("sel_dicts");
+//if (s.selectedIndex > -1) {
+//    cacheTag.setAttribute("seldDictIndex", s.selectedIndex);
+//    var o = s.options[s.selectedIndex].id;
+//    actStr += o;
+//    sdata.app_id.value = o;
+//}
+//actStr += ".cgi";
+
+
+var actStr = "";
+var s = document.all("sel_dicts");
+if (s.selectedIndex > -1) {
+    cacheTag.setAttribute("seldDictIndex", s.selectedIndex);
+    var o = s.options[s.selectedIndex].id;
+    sdata.app_id.value = o;
+    actStr += "elogin/";
+    actStr += o;
+
+}
+if (testdb.checked) {
+    actStr += "test.cgi";
+}
+else {
+    actStr += "work.cgi";
+}
+// alert(actStr);
+try {
+    // siinkohal paneb Firefox pange, sellepärast ka "try"
+    cacheTag.save("loginCache");
+}
+catch(e) {
+    window.status = "'UserData' behaviour not supported, use Internet Explorer.";
+}
+
+//sdata.app_lang.value = sAppLang;
+//if (sdata.app_id.value == 'evs')
+//    sdata.action = 'evslogin.cgi';
+//else
+//    sdata.action = actStr;
+
+sdata.action = actStr;
+
+//if (ua.innerHTML.indexOf('MSIE') > -1)
+if (navigator.userAgent.indexOf('MSIE') > -1)
+    sdata.submit();
+} // goFn
+
+
+function goBtnOnClick() {
+goFn();
+} // goBtnOnClick
+
+
+-->
+    </script>
+</head>
+<body onLoad="bodyOnLoad()" background="redtextb.jpg">
+
+<div id="piltDiv" style="background-color:#BFDBF0; width:100%; padding:10 0 5 10">
+    <img id="rmtd" src="EELEX2.png" />
+</div>
+
+<hr />
+
+<div id="loginSisu" style="visibility:hidden; font: font-family: Georgia, 'Times New Roman', Times, serif;font-size: 10px;">
+    <table align="center" width="75%" border="0">
+        <tr>
+            <td colspan="2">
+                <h1 id="loginHeading"></h1>
+            </td>
+        </tr>
+        <tr>
+            <td id="dictsTD" width="75%">
+                <select id="sel_dicts" size="20"></select>
+            </td>
+            <td valign="top">
+ 
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="checkbox" id="testdb"/>
+                <label id="lbl_testdb" for="testdb"></label>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <!--[if gte IE 7]>
+                    <br />
+                    <input id="goBtn" type="button" style="width:20mm" onclick="goBtnOnClick()" disabled />
+                    <br />
+                    <br />
+                <![endif]-->
+
+                <![if !gte IE 7]>
+                <p id="wrongBrowser" style="color:Red"></p>
+                <![endif]>
+            </td>
+        </tr>
+    </table>
+
+    <hr />
+
+    <div id="hallRiba" style="WIDTH:100%; HEIGHT:inherit; BACKGROUND-COLOR:silver" align="center" ></div>
+
+<br />
+    <DIV style="width:100%">
+      <span id="ua" style="color:gray;font-size:small"> </span>  
+    </DIV>
+    <div id="div_webmaster" style="font-size:x-small;"></div>
+     <div style="font-size:x-small;">
+      <div align="center">Copyright © Eesti Keele Instituut</div>
+    </div>
+</div>
+
+<shs:cacher id="cacheTag"></shs:cacher>
+
+<form name="sdata" method="post">
+	<input id="app_id" name="app_id" type="hidden">
+	<input id="app_lang" name="app_lang" type="hidden">
+</form>
+
+</body>
+</html>

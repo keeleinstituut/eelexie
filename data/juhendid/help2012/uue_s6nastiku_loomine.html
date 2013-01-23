@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <title>EELexi kasutusjuhend</title>
+    <link rel="stylesheet" href="static/style.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+  </head>
+  <body>
+    <div class="wiki" id="content_view" style="display: block;">
+	<h2>Uue sõnastiku loomine</h2>
+	
+Uue sõnastiku loomiseks klõpsa <a class="wiki_link_ext" href="http://eelextest.eki.ee/shs_access/login.cgi" rel="nofollow" target="_blank">EELexi töötoas</a> paremal servas lingil <a class="wiki_link_ext" href="http://eelextest.eki.ee/shs_manager/newdict/" rel="nofollow" target="_blank">Uus sõnastik</a>. Ilmuvas aknas tuleb valida sobiv viis jätkamiseks. Skeemi valimisel saad uuele sõnastikule aluseks standardskeemi, mida saab hiljem muuta skeemieditori abil (vt <a class="wiki_link_new" href="skeemi_genereerimine.html">Skeemi genereerimine</a>).<br />
+<br />
+<ul><li><strong>Minimaalne skeem</strong> - Kasuta juhul, kui soovid kogu uue sõnastiku skeemi luua EELexi skeemieditoriga.</li><li><strong>Kakskeelse sõnastiku põhiskeem</strong> - Kasuta siis, kui soovid luua tõlkesõnastikku, mis sisaldab piisavalt andmeid nii lähtekeele kui tulemkeele kohta.</li><li><strong>Kakskeelse sõnastiku väike skeem</strong> - Kasuta juhul, kui soovid luua lihtsa struktuuriga tõlkesõnastikku.</li><li><strong>Eesti-x sõnastikupõhi</strong> - Kasuta siis, kui soovid uue kakskeelse sõnastiku aluseks võtta eesti-x sõnastiku skeemi koos andmebaasiga, mis sisaldab sõnastiku eesti poolt.</li><li><strong>Diakroonilise sõnastiku skeem</strong> - Kasuta siis, kui soovid teha diakroonilist sõnastikku (eesti laenude sõnastiku eeskujul).</li><li><strong>Terminibaasi alus</strong> - Kasuta juhul, kui soovid teha terminibaasi või oskussõnastikku.</li><li><strong>Registreeri sõnastik</strong> - Kasuta juhul, kui lisad uue sõnastiku FTP-d kasutades (vt <a class="wiki_link" href="s6nastiku_loomine_ftp-d_kasutades.html">Sõnastiku loomine FTP-d kasutades,</a>aga see on vananenud moodus, eelista skeemi valimist).</li></ul><br />
+Võimalik on teha ka <strong>osasõnastikku (alamsõnastikku)</strong>, selle kohta vt allpool.<br />
+<br />
+Vali sobiv rida ja klõpsa <strong>Tegema</strong>. Sõltuvalt valitud sõnastiku loomise viisist süsteemi edasine käitumine varieerub. Alati küsitakse uue sõnastiku jaoks infot: <strong>sõnastiku id (kood)</strong>. Id peab olema kolmekohaline (kasuta väiketähti ja numbreid) ja algama väiketähega. Lisaks id-väljale on kohustuslik anda sõnastikule <strong>eestikeelne nimi</strong>. Nupp <strong>Kontrolli</strong> vaatab, kas soovitud id on vaba ja muud nõutud väljad täidetud. Kui kontroll läbitud, vajuta <strong>submit</strong> ja sõnastik luuakse.<br />
+<br />
+Kuvatud logi lõppu ilmuvad lingid, mille abil edasi tegutseda:<br />
+<strong>Sõnastiku avalehel</strong> - viib sõnastiku avalehele, kust saab edasi minna Testversiooni. (Tööversiooni loomist vt <a class="wiki_link_new" href="testversioon_ja_tooversioon.html">Testversioon ja tööversioon</a>.)<br />
+<strong>Sõnastike haldusesse</strong> - viib EELexi Sõnastike halduse nimekirja juurde (vt <a class="wiki_link_new" href="s6nastike_haldus.html">Sõnastike haldus</a>).<br />
+<strong>EELexi kodulehele</strong>.<br />
+<br />
+<h3 id="toc0"><a name="x--Eesti-x sõnastikupõhja andmete import"></a>Eesti-x sõnastikupõhja andmete import</h3>
+ Kui sõnastiku loomiseks on valitud eesti-x sõnastikupõhi, siis on võimalik kasutada olemasolevat andmebaasi: eestikeelseid märksõnu koos grammatilise infoga, seletusi, kasutusnäiteid jm. Teise ehk x-keele andmete jaoks on skeemis kohad (need täidab sõnastiku koostaja). Eesti-x on kolmeköiteline sõnastik, valida saab erinevate mahtude vahel, mis määrab imporditavate märksõnade hulga. Andmete laadimine toimub pärast sõnastiku loomist. Vajuta lingile <strong>Täida EX andmetega</strong> (ilmub vaid eesti-x sõnastikupõhja puhul). Vali sealt <strong>Maht</strong>, mida soovid kasutada ja sõnastiku <strong>teine keel</strong> ja <strong>submit</strong> . Selle käigus kopeeritakse uued andmed. Tulemuse kontrollimiseks vajuta lingile Sõnastiku juurde.<br />
+NB! Andmebaasi laadimiseks on vajalik leping Eesti Keele Instituudiga; võta ühendust eelex@eki.ee.<br />
+<br />
+Mahud:<br />
+K keskmine: ligi 40 000 märksõna<br />
+V väike: 15 000 märksõna<br />
+D demo: 72 märksõna<br />
+P põhisõnavara: 4500 märksõna<br />
+<br />
+<h3 id="toc1"><a name="x--Registreeri sõnastik (nagu vanasti)"></a>Registreeri sõnastik (nagu vanasti)</h3>
+ Eelista sellele meetodile teisi sõnastiku loomise võimalusi.<br />
+Kui soovitud id kontroll õnnestub, saad jätkata nupuga submit. Järgmisel lehel tuleb määrata loodava sõnastiku suvandid: tüüp, nimi eesti keeles ja soovi korral mõnes muus keeles, kas kohe alguses on avatud testversioon, tööversioon või mõlemad, mis on EELexi töötoas selle sõnastiku asukoht nimekirjas, kommentaar ja märkus. Klõpsates submit sõnastik luuakse, edasised juhtnöörid vt <a class="wiki_link_new" href="s6nastiku_loomine_ftp-d_kasutades.html">Sõnastiku loomine FTP-d kasutades</a> ja <a class="wiki_link_new" href="s6nastiku_sisu_import.html">Sõnastiku sisu import</a>.<br />
+<br />
+<h3 id="toc2"><a name="x--Mitmeköiteline sõnastik"></a>Mitmeköiteline sõnastik</h3>
+ Kuna EELex on loodud nii, et temaga oleks mugav luua ka pabersõnastikke, need aga antakse sageli välja mitmeköitelisena, siis toetab ka EELex tööd ühe sõnastiku mitme köitega. See omadus on loodud just selleks, et juba sõnastikutöö käigus oleks võimalik erinevaid köiteid eraldi käsitseda (nt sageli on köited erinevas tööetapis).<br />
+<br />
+See, mitmeks köiteks sõnastik jagada, sõltub sellest, kui suur peaks üks köide paberil välja nägema. Tehniliselt vastab ühele &quot;mõistlikule&quot; paberköitele ca 20 MB xml-faili kõvakettal. Näiteks ÕS 2006 on üheköiteline ja seda on ta ka EELex-is. ÕS-i veel saab ühes paberköites kasutada. Eesti-vene sõnaraamat (EVS) on viieköiteline ja viieköiteline on ta ka paberil. Samas Eesti-inglise sõnaraamatus on ca 100 000 artiklit aga seda pole praegu mõeldud paberil välja anda ning ta on seega ühes köites.<br />
+<br />
+Köidetevahelistele piiridele ei sea EELex mingeid nõudmisi, peatoimetajad määravad nad oma äranägemise järgi ja tavaliselt lähtuvalt ikkagi paberköite suurusest.<br />
+<br />
+<h3 id="toc3"><a name="x--Osasõnastiku loomine"></a>Osasõnastiku loomine</h3>
+ Brauserina IE-d kasutades peab olema vähemalt IE8 (muudel brauseritel ei pea viimane versioon olema).<br />
+Osasõnastik kujutab endast väljavõtet (alamhulka) olemasolevast rikkaliku infoga sõnastikust (nt üksikute murrete sõnastikud suurest murdesõnastikust, fraseoloogiasõnastik seletavast sõnastikust jne). Osasõnastik sisaldab mingi tunnuse alusel lähtesõnastikust valitud sõnaartikleid, milles on ainult valitud info. Genereeritud osasõnastikust on võimalik välja arendada täiesti uus sõnastik: skeemieditori abil puhastada skeem liigsest ja lisada vajalikud uued elemendid.<br />
+<br />
+Osasõnastik genereeri Sõnastike halduse kaudu (link EELexi töötoas), mis võimaldab kloonida olemasolevast sõnastikust uus, valida sinna päringutingimustele vastavad artiklid ja kustutada andmebaasis sõnaartikli mittevajalikud osad.<br />
+<br />
+<ul><li>Kõigepealt klooni mõne olemasoleva sõnastiku järgi endale uus sõnastik (<strong>EELexi töötuba</strong> -- <strong>Sõnastike haldus</strong> -- <strong>vali sõnastik</strong> ja <strong>Klooni</strong>). Kloonimise edukat lõppu näitava lehekülje lõpus klõpsa <strong>Tee osasõnastik</strong>.</li><li>Avanevas aknas määra, millised sõnaartiklid alles jäävad. <strong>Tingimusi lisades</strong> ja loogiliste tehete (<strong>eitus, ja, või</strong>) abil kombineerides sõelu välja sõnaartiklite alamhulk, mis loodavasse osasõnastikku läheb. Päringu käivitab nupp <strong>Sõnaartiklite valikutingimused</strong>. Jälgi lehe ülaosas muutuvat avaldist, kus iga tingimus on omaette sulgude sees, ja leitud artiklite arvu. Iga tingimuse juures on nupp <strong>Lisa rühmitus</strong>, mis loob antud tingimuse sisse nn alamtingimuse (avaldises uue paari sulge selle tingimuse sisse).</li><li>Kui sõnaartiklite alamhulk leitud, klõpsa <strong>Skeemi juurde</strong>, et avada kloonimise aluseks olnud sõnastiku skeem (struktuuripuu), kus saad linnukesi sättides valida uue sõnastiku jaoks vajalikud struktuurielemendid. Kui linnuke puudub, siis see element uude baasi ei ilmu. Nupp <strong>Käivita</strong> loob soovitud alamsõnastiku. Nupp <strong>Sõnastiku juurde</strong> avab sõnastiku avalehe.</li><li>Puhasta skeem mittevajalikust skeemieditori abil (Sõnastiku tööriistad <img src="files/sonastiku_tooriistad.png" alt="sonastiku_tooriistad.png" title="sonastiku_tooriistad.png" />-- Skeemi genereerimine).</li></ul>
+    </div>
+  </body>
+</html>

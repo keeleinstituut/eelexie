@@ -1,0 +1,36 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1257" />
+<link href="css/IPank.css" rel=stylesheet type=text/css> 
+<title>EELexi kasutusjuhend</title>
+<script type="text/javascript" language="JavaScript">
+//alert(getParameterByName("RET") );
+
+function jsHeader()
+{
+  headx.innerHTML=getParameterByName("RET");
+}
+function jsInsert()
+{
+	eval("parent"+".location='IP_List_2_L.asp'");
+}
+function getParameterByName(name)
+{
+   name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+   var regexS = "[\\?&]" + name + "=([^&#]*)";
+   var regex = new RegExp(regexS);
+   var results = regex.exec(window.location.href);
+   if(results == null)
+     return "-";
+   else
+   return decodeURIComponent(results[1].replace(/\+/g, " ")); }
+
+//eval("headFrame"+".location='ED_Doc_H.html?RET=ain'");
+//eval("mainFrame"+".location='doc/ED_Doc_Y_1.htm'");
+location.href="ED_Doc_H.html?RET=ain target='headFrame'";
+location.href="doc/ED_Doc_Y_1.htm  target='headFrame'";
+</script>
+</head>
+<body> 
+</body>
+</html>

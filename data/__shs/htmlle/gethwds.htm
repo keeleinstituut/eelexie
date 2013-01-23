@@ -1,0 +1,326 @@
+﻿<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta http-equiv="x-ua-compatible" content="IE=EmulateIE9" >
+		<title>märksõnade loend</title>
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
+    <!--<meta http-equiv="refresh" content="10">-->
+    <meta name="copyright" content="Eesti Keele Instituut, Andres Loopmann">
+    <meta name="author" content="Andres Loopmann">
+    <meta name="keywords" content="EELex">
+
+		<script language="JScript" type="text/jscript" src="tools.js"></script>
+		<style type="text/css">
+		    .myDiv {padding:5mm;}
+		    .seldDiv {padding:5mm;background-color:navy;}
+		    .myText {background-color:silver;}
+		</style>
+		<script language="vbscript" type="text/vbscript">
+
+<!--
+
+Option Explicit
+
+Dim dic_desc, usrName, sAppLang, PD, pathBase
+Dim dic_vols_count, DICPR
+Dim wTitleStart
+Dim fId
+
+Dim spanBgColor
+Dim spanNumber
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnLoad()
+
+    spanBgColor = "silver"
+    spanNumber = ""
+
+PD = ChrW(&HE001)
+Dim inArr
+if IsArray(window.dialogArguments) then
+	inarr = window.dialogArguments
+else
+	inarr = Split(window.dialogArguments, PD)
+end if
+
+dic_desc = inArr(0)
+sAppLang = inArr(1)
+usrName = inArr(3)
+pathBase = inArr(4)
+
+    wTitleStart = UCase(dic_desc) & " " & document.title
+    document.title = wTitleStart
+    
+    Dim oConfigDOM
+    set oConfigDOM = IDD("File", "../shsconfig_" & dic_desc & ".xml", False, False, Nothing)
+    if (oConfigDOM.parseError.errorCode <> 0) then
+	    Call ShowXMLParseError(oConfigDOM)
+	    Exit Sub
+    end if
+    dic_vols_count = oConfigDOM.documentElement.selectNodes("vols/vol").length
+    DICPR = oConfigDOM.documentElement.selectSingleNode("dicpr").text
+
+    Dim i, btnStr
+    btnStr = "<table height='100%' cellspacing='5'>"
+    btnStr = btnStr & "<tr style='vertical-align:middle;'>"
+    for i = 1 to dic_vols_count
+        btnStr = btnStr & "<td><input id='" & i & "' type='button' value='" & UCase(dic_desc) & " " & i & ".'></td>"
+    next
+    btnStr = btnStr & "</tr>"
+    btnStr = btnStr & "<table>"
+    volButtons.innerHTML = btnStr
+
+End Sub 'bodyOnLoad
+
+
+'-----------------------------------------------------------------------------------
+Sub bodyOnKeyUp()
+    if (window.event.keyCode = 27) then
+	    window.close()
+    elseif (window.event.keyCode = 13) then
+	    Call SetReturnV()
+    end if
+End Sub 'bodyOnKeyUp
+
+			
+'-----------------------------------------------------------------------------------
+Sub SetReturnV()
+	'impVolNr, impMs, g, pathBase
+	window.returnValue = impVolNr & PD & m & PD & g & PD & pathBase
+	window.close()
+End Sub 'SetReturnV
+
+
+'-----------------------------------------------------------------------------------
+Sub OKClick()
+    Call SetReturnV()
+End Sub 'OKClick
+
+
+Dim impVolNr
+'-----------------------------------------------------------------------------------
+Sub btnsOnClick()
+    Dim oSrc
+    set oSrc = window.event.srcElement
+    if (oSrc.tagName <> "INPUT") then
+        Exit Sub
+    end if
+    
+    Dim dtOpStart
+    dtOpStart = Now
+
+    document.title = wTitleStart
+    chunkInfo.innerHTML = "&nbsp;"
+    chunkTime.innerHTML = "&nbsp;"
+    nrSpans.innerHTML = "&nbsp;"
+    
+    Dim hdwdsDoc
+'    document.all.frame_HdWds.src = "browseframe.htm"
+'    set hdwdsDoc = document.frames("frame_HdWds").document.open("text/html", "replace")
+'    hdwdsDoc.write ""
+'    hdwdsDoc.close
+'    document.frames("frame_HdWds").document.body.innerHTML = ""
+
+    impVolNr = oSrc.id 'number
+    
+    Dim xh
+    'impVolNr: number
+    '"../__shs/__sr": tööversioon
+    set xh = exCGISync("../tools.cgi", "getHeadWords" & PD & dic_desc & PD & usrName & PD & pathBase & PD & impVolNr)
+    
+    Dim artCount
+
+    if (xh.statusText = "OK") then
+
+        Dim rspDOM, sta
+        set rspDOM = IDD("", "", False, False, Nothing)
+        sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+        
+        if (sta) then
+
+            fId = rspDOM.selectSingleNode("rsp/outDOM/fId").text
+        
+            Dim fNodes, spnStr, i, txt
+            spnStr = "<table height='100%' cellspacing='5'>"
+            spnStr = spnStr & "<tr style='vertical-align:middle;'>"
+            set fNodes = rspDOM.selectNodes("rsp/outDOM/hwl")
+            for i = 1 to fNodes.length
+                txt = fNodes(i - 1).text
+                if (i = 1) then
+                    chunkInfo.innerHTML = txt & ";"
+                end if
+                if ((i Mod 15) = 0) then
+                    spnStr = spnStr & "</tr>"
+                    spnStr = spnStr & "<tr>"
+                end if
+                spnStr = spnStr & "<td><span id = '" & i & "' style='background-color:" & spanBgColor & ";cursor:hand;width:15mm;padding-left:6mm;' title = """ & txt & """>" & i & "</span></td>"
+            next
+            spnStr = spnStr & "</tr>"
+            spnStr = spnStr & "<table>"
+            nrSpans.innerHTML = spnStr
+
+            artCount = showHwdsTable(rspDOM)
+
+            chunkTime.innerHTML = artCount & " artiklit."
+
+        end if
+
+    else
+        MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+            xh.responseText, _
+            vbCritical
+    end if
+
+    spanNumber = "1"
+    nrSpans.all(spanNumber).style.backgroundColor = "gray"
+
+    Dim nOpSpan
+    nOpSpan = DateDiff("s", dtOpStart, Now, vbMonday, vbFirstJan1)
+
+    document.title = wTitleStart & ": " & oSrc.id & ". kd; " & artCount & " artiklit; " & (nOpSpan \ 60) & "m, " & (nOpSpan Mod 60) & "s"
+
+End Sub 'btnsOnClick
+
+
+'-----------------------------------------------------------------------------------
+Sub spansOnClick()
+    Dim oSrc
+    set oSrc = window.event.srcElement
+    if (oSrc.tagName <> "SPAN") then
+        Exit Sub
+    end if
+
+    Dim dtOpStart
+    dtOpStart = Now
+    
+    if Not (spanNumber = "") then
+        nrSpans.all(spanNumber).style.backgroundColor = spanBgColor
+    end if
+    chunkInfo.innerHTML = "&nbsp;"
+    chunkTime.innerHTML = "&nbsp;"
+
+    Dim xh
+    'oSrc.id: number
+    set xh = exCGISync("../tools.cgi", "getHeadWordsChunk" & PD & dic_desc & PD & usrName & PD & fId & PD & oSrc.id)
+
+    Dim artCount
+
+    if (xh.statusText = "OK") then
+
+        Dim rspDOM, sta
+        set rspDOM = IDD("", "", False, False, Nothing)
+        sta = rspDOM.load(xh.responseXML) 'responseXML: TypeName = DomDocument
+        
+        if (sta) then
+            artCount = showHwdsTable(rspDOM)
+        end if
+
+    else
+        MsgBox xh.status & ": " & xh.statusText & vbCrLf & vbCrLf & _
+            xh.responseText, _
+            vbCritical
+    end if
+
+    spanNumber = oSrc.id
+    nrSpans.all(spanNumber).style.backgroundColor = "gray"
+
+    Dim nOpSpan
+    nOpSpan = DateDiff("s", dtOpStart, Now, vbMonday, vbFirstJan1)
+    
+    chunkInfo.innerHTML = oSrc.title & ";"
+    chunkTime.innerHTML = artCount & " artiklit; " & (nOpSpan \ 60) & "m, " & (nOpSpan Mod 60) & "s"
+
+End Sub 'spansOnClick
+
+
+Dim hdwdsTable
+Dim selRow
+'-----------------------------------------------------------------------------------
+Function showHwdsTable(inDom)
+    Dim artNodes, artNode, hdwdsDoc, md, g
+
+    set artNodes = inDom.selectNodes("rsp/outDOM/sr/A")
+
+    set hdwdsDoc = document.frames("frame_HdWds").document.open("text/html", "replace")
+    hdwdsDoc.writeln "<table id='hdwdsTable' width='100%'>"
+    for each artNode in artNodes
+        md = artNode.selectSingleNode("md").text
+        g = artNode.selectSingleNode("G").text
+        hdwdsDoc.writeln "<tr id='" & g & "'><td>" & md & "</td></tr>"
+    next
+    hdwdsDoc.writeln "</table>"
+    hdwdsDoc.close
+
+    set hdwdsTable = frame_HdWds.document.all("hdwdsTable")
+    selRow = -1
+    document.frames("frame_HdWds").document.body.onclick = GetRef("handleHwdsClick")
+
+    showHwdsTable = artNodes.length
+
+End Function 'showHwdsTable
+
+
+Dim g, m
+'-----------------------------------------------------------------------------------
+Sub handleHwdsClick()
+    Dim oSrc
+    set oSrc = frame_HdWds.event.srcElement
+    if (oSrc.tagName <> "TD") then
+        Exit Sub
+    end if
+
+    if (selRow > -1) then
+        hdwdsTable.rows(selRow).style.backgroundColor = ""
+    end if
+    g = oSrc.parentElement.id
+    m = oSrc.innerText
+    oSrc.parentElement.style.backgroundColor = "gray"
+    selRow = oSrc.parentElement.rowIndex
+    okButton.disabled = false
+End Sub 'handleHwdsClick
+
+
+-->
+
+		</script>
+	</head>
+	<body id="getHwdsBody" style="background-color:buttonface;padding:10mm;" onload="bodyOnLoad()" onkeyup="bodyOnKeyUp()">
+
+        <div id="sisu" style="width:100%;height:100%;">
+            <div style="height:32px;">
+                <table cellspacing='5'>
+                    <tr>
+                        <td>
+                            <span id="chunkInfo" style="text-decoration:underline;font-weight:bold;"></span>
+                        </td>
+                        <td>
+                            <span id="chunkTime"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <iframe id="frame_HdWds" style="width:100%;height:60%;"></iframe>
+            <br />
+
+            <div id="nrSpans" style="height:64px;" onclick="spansOnClick()">
+            </div>
+            
+            <div id="volButtons" style="height:32px;" onclick="btnsOnClick()">
+            </div>
+
+            <div>
+                <table cellspacing='5'>
+                    <tr>
+                        <td>
+                            <input disabled type="button" id="okButton" value="   Import   " onclick="OKClick()" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+	</body>
+</html>
